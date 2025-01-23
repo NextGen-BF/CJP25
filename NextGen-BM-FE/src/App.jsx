@@ -1,10 +1,21 @@
-import { useState } from 'react'
 import './App.css'
 import { HomePage } from './pages/HomePage'
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
+import { MainLayout } from './layouts/MainLayout'
+import { LoginPage } from './pages/LoginPage'
 
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path='/login' element={<LoginPage />} />
+      </Route>
+    )
+  )
+
   return (
-      <HomePage />
+    <RouterProvider router={router} />
   )
 }
 
