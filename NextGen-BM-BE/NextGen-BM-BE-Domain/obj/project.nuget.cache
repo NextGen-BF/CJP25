@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "v3f53vclI/c=",
+  "dgSpecHash": "1jc0eWoTW9g=",
   "success": true,
   "projectFilePath": "/Users/Kiril.Syuleyman/CJP25/NextGen-BM-BE/NextGen-BM-BE-Domain/NextGen-BM-BE-Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/Kiril.Syuleyman/.nuget/packages/ardalis.specification/8.0.0/ardalis.specification.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

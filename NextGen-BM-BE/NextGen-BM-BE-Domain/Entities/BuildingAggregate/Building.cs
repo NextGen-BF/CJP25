@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 public class Building{
     public int BuildingID { get; set; }
     public int AddressID {get; set; }
@@ -7,4 +7,5 @@ public class Building{
     public double TotalBuildingSize { get; set; }
     public DateOnly DateBuilt { get; set; }
     public int NumOfElevators { get; set; }
+    public Address address { get; set;}
 }

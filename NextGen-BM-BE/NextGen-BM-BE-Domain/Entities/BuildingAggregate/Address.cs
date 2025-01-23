@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 public class Address{
     public int AddressID { get; set; }
     public int StreetNumber { get; set; }

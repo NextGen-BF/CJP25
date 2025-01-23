@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NextGen-BM-BE-Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40e8009fe2eb7de9a936420aab18b8db4cb76d5e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37a5ae9daa15b3fafbd45ddc6c18a6be52a502e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("NextGen-BM-BE-Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NextGen-BM-BE-Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,9 +1,9 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
 public class RequestNotes{
     public int NoteID { get; set; }
     public int RequestId { get; set; }
     public string NoteText { get; set; }
-    public DateOnly Date { get; set; }
+    public DateOnly CreateDate { get; set; }
     public int CreatedBy { get; set; }
 }
