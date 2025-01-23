@@ -1,5 +1,4 @@
-namespace NextGen_BM_BE_Domain;
-
+namespace NextGen_BM_BE_Domain.Entities{
 public class Property{
     public int PropertyID { get; set; }
     public int PropertyNumber { get; set; }
@@ -11,3 +10,4 @@ public class Property{
     public bool entranceIsExternal { get; set; }
 
 }
+};

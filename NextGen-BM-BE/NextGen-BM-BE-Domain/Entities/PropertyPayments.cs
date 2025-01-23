@@ -1,14 +1,4 @@
-namespace NextGen_BM_BE_Domain;
-// PaymentID int
-// PropertyID int FK
-// AmountOwed decimal
-// DateOpened date
-// DueDate date
-// PropertyExpenseID FK int
-// StatusID int FK
-// PaymentParentID ? int
-// PaymentMethod FK
-
+namespace NextGen_BM_BE_Domain.Entities{
 public class PropertyPayments{
     public int PaymentID { get; set; }
     public int PropertyID { get; set; }
@@ -20,3 +10,4 @@ public class PropertyPayments{
     public int PaymentParentID { get; set; }
     public int PaymentMethod { get; set; }
 }
+};

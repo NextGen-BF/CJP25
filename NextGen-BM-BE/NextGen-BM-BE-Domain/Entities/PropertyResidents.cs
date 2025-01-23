@@ -1,5 +1,4 @@
-namespace NextGen_BM_BE_Domain;
-
+namespace NextGen_BM_BE_Domain.Entities{
 public class PropertyResidents{
     public int ResidentHistoryID { get; set; }
     public string FirstName { get; set; }
@@ -9,3 +8,4 @@ public class PropertyResidents{
     public DateOnly EnterDate { get; set; }
     public DateOnly LeaveDate { get; set; }
 }
+};

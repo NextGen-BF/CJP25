@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities{
 public class BuildingExpense{
     public int BuildingExpenseID { get; set; }
     public int BuildingID { get; set; }
@@ -13,3 +13,4 @@ public class BuildingExpense{
     public int RepeatPeriodID { get; set; }
     public string InvoiceURL { get; set; }
 }
+};

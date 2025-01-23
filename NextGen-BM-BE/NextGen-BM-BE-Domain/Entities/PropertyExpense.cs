@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities{
 public class PropertyExpense{
     public int PropertyExpenseID { get; set; }
     public int PropertyExpenseTemplateID { get; set; }
@@ -8,3 +8,4 @@ public class PropertyExpense{
     public DateOnly EndDate { get; set; }
     public string Description { get; set; }
 }
+};

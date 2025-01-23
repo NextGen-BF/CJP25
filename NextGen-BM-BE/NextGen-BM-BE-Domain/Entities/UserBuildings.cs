@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain;
+namespace NextGen_BM_BE_Domain.Entities{
 public class UserBuildings{
     public int UserID { get; set; }
     public int BuildingID { get; set; }
@@ -7,3 +7,4 @@ public class UserBuildings{
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
 }
+};
