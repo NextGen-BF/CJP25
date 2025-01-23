@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Domain.Entities{
+namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
 public class PropertyPayments{
     public int PaymentID { get; set; }
     public int PropertyID { get; set; }
