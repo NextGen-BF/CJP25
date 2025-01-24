@@ -7,8 +7,9 @@ import {
 import MainLayout from "./layouts/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import { FC } from "react";
 
-function App(): JSX.Element {
+const App: FC = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
@@ -18,6 +19,6 @@ function App(): JSX.Element {
     ),
   );
   return <RouterProvider router={router} />;
-}
+};
 
 export default App;
