@@ -1,4 +1,4 @@
-using NextGen_BM_BE_Domain.Entities;
+using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 
 namespace NextGen_BM_BE_Domain.Interfaces{
 
