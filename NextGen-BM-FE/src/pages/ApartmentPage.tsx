@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const ApartmentsPage: FC = () => {
+const ApartmentPage: FC = () => {
   return <h1>Apartment Details Page</h1>;
 };
-export default ApartmentsPage;
+export default ApartmentPage;
