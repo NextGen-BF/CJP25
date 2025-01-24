@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NextGen-BM-BE-Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1a264c5bd9a7f54c71fafbb24c54bfe61a643ff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9b49652a332dcd78dc9f30b567b34e29171c1b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("NextGen-BM-BE-Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NextGen-BM-BE-Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
