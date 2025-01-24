@@ -8,7 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 
-function App() {
+function App(): JSX.Element {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
