@@ -1,10 +1,11 @@
-namespace NextGen_BM_BE_Domain.Entities{
+namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate
+{
 public class BuildingExpense{
     public int BuildingExpenseID { get; set; }
     public int BuildingID { get; set; }
     public string Title { get; set; }
     public double TotalAmount { get; set; }
-    public string Supplier { get; set; }
+    public int SupplierID { get; set; }
     public DateOnly DateOpened { get; set; }
     public DateOnly DueDate { get; set; }
     public DateOnly PaymentDate { get; set; }

@@ -6,7 +6,8 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate.Specifications{
         public BuildingWithAddress(int buildingID)
         {
             Query.Where(building => building.BuildingID == buildingID)
-            .Include(building => building.address);
+            .Include(building => building.BuildingAddress)
+            .Include(building => building.BuildingExpenses);
         }
     }
 };
