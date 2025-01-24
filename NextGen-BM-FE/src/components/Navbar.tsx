@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { NavLink } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar: FC = () => {
   return (
     <nav>
       <ul>
