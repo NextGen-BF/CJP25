@@ -4,27 +4,27 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
     public class BuildingRepository : IBuildingRepository
     {
-        public Task CreateBuilding(Building building)
+        public async Task CreateBuildingAsync(Building building)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteBuilding(int buildingID)
+        public async Task DeleteBuildingAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Building>> GetAllBuildings()
+        public async Task<List<Building>> GetAllBuildingsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Building> GetBuildingByID(int buildingID)
+        public async Task<Building> GetBuildingByIdAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateBuilding(Building building)
+        public async Task UpdateBuildingAsync(Building building)
         {
             throw new NotImplementedException();
         }

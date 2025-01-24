@@ -3,42 +3,42 @@ using NextGen_BM_BE_Domain.Interfaces;
 namespace NextGen_BM_BE_Infrastructure.Repositories{
     public class ExpensesRepository : IExpensesRepository
     {
-        public Task CreateExpenseForProperties(List<int> propertyIDs)
+        public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreatePropertyExpense(PropertyExpense propertyExpense)
+        public async Task CreatePropertyExpenseAsync(PropertyExpense propertyExpense)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeletePropertyExpense(int propertyExpenseID)
+        public async Task DeletePropertyExpenseAsync(int propertyExpenseId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<PropertyExpense>> GetPropertyExpenseByBuildingID(int buildingID)
+        public async Task<List<PropertyExpense>> GetPropertyExpenseByBuildingIdAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PropertyExpense> GetPropertyExpenseByID(int propertyExpenseID)
+        public async Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<PropertyExpense>> GetPropertyExpenseByPropertyID(int propertyID)
+        public Task<List<PropertyExpense>> GetPropertyExpenseByPropertyIdAsync(int propertyId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<PropertyExpense>> GetPropertyExpenseByUserID(int userID)
+        public async Task<List<PropertyExpense>> GetPropertyExpenseByUserIdAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdatePropertyExpense(PropertyExpense propertyExpense)
+        public async Task UpdatePropertyExpenseAsync(PropertyExpense propertyExpense)
         {
             throw new NotImplementedException();
         }

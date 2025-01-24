@@ -5,52 +5,52 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
     public class RequestRepository : IRequestRepository
     {
-        public Task CreateRepairRequest(RepairRequest repairRequest)
+        public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateRepairRequestNotes(RequestNotes requestNotes)
+        public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateUserBuildingRequest(UserBuildings userBuildings)
+        public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteRepairRequest(int requestNotes)
+        public async Task DeleteRepairRequestAsync(int requestNotes)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteRequestNotes(int requestNotesID)
+        public async Task DeleteRequestNotesAsync(int requestNotesId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<RepairRequest> GetRepairRequestByID(int requestID)
+        public async Task<RepairRequest> GetRepairRequestByIdAsync(int requestId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<RepairRequest>> GetRepairRequestsByBuildingID(int buildingID)
+        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserBuildings> GetUserBuildingRequests(int buildingID)
+        public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateRepairRequest(RepairRequest repairRequest)
+        public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateRequestNotes(RequestNotes requestNotes)
+        public async Task UpdateRequestNotesAsync(RequestNotes requestNotes)
         {
             throw new NotImplementedException();
         }
