@@ -1,6 +1,6 @@
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
 public class PropertyResidents{
-    public int ResidentHistoryId { get; set; }
+    public int PropertyResidentsId { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public int ResidentTypeId { get; set; }

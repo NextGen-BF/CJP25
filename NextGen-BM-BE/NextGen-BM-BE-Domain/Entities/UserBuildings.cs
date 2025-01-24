@@ -1,5 +1,6 @@
 namespace NextGen_BM_BE_Domain.Entities{
 public class UserBuildings{
+    public int UserBuildingsId { get; set; }
     public int UserId { get; set; }
     public int BuildingId { get; set; }
     public bool Approved { get; set; }
