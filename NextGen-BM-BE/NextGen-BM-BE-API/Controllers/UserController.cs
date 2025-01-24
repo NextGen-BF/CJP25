@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding users
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController: ControllerBase {
 
     public UserController()
@@ -16,37 +16,37 @@ public class UserController: ControllerBase {
     }
 
     [HttpGet]
-    [Route("/all")]
+    [Route("all")]
     public async Task<IActionResult> GetAllUsers(){
         return null;
     }
 
     [HttpGet]
-    [Route("/{userID}")]
-    public async Task<IActionResult> GetUserByID(int userID){
+    [Route("{userId}")]
+    public async Task<IActionResult> GetUserById(int userId){
         return null;
     }
 
     [HttpPost]
-    [Route("/property/{propertyID}")]
-    public async Task<IActionResult> GetUsersByPropertyID(int propertyID){
+    [Route("property/{propertyId}")]
+    public async Task<IActionResult> GetUsersByPropertyId(int propertyId){
         return null;
     }
 
     [HttpPost]
-    [Route("/new")]
-    public async Task<IActionResult> CreateUser(/*User user*/ ){
+    [Route("new")]
+    public async Task<IActionResult> CreateUser(/*User user*/){
         return null;
     }
 
     [HttpPost]
-    [Route("/update")]
+    [Route("update")]
     public async Task<IActionResult> UpdateUser(/*User user*/){
         return null;
     }
     [HttpPost]
-    [Route("/delete/{userID}")]
-    public async Task<IActionResult> DeleteUser(int userID){
+    [Route("delete/{userId}")]
+    public async Task<IActionResult> DeleteUser(int userId){
         return null;
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -6,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding buildings
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class BuildingController: ControllerBase {
 
     public BuildingController()
@@ -15,30 +16,30 @@ public class BuildingController: ControllerBase {
     }
 
     [HttpGet]
-    [Route("/all")]
+    [Route("all")]
     public async Task<IActionResult> GetAllBuildings(){
         return null;
     }
 
     [HttpGet]
-    [Route("/{buildingID}")]
-    public async Task<IActionResult> GetBuildingByID(int buildingID){
+    [Route("{buildingId}")]
+    public async Task<IActionResult> GetBuildingById(int buildingId){
         return null;
     }
 
     [HttpPost]
-    [Route("/new")]
-    public async Task<IActionResult> CreateBuilding(/*Building building*/ ){
+    [Route("new")]
+    public async Task<IActionResult> CreateBuilding(Building building ){
         return null;
     }
     [HttpPost]
-    [Route("/update")]
-    public async Task<IActionResult> UpdateBuilding(/*Building building*/){
+    [Route("update")]
+    public async Task<IActionResult> UpdateBuilding(Building building){
         return null;
     }
     [HttpPost]
-    [Route("/delete/{buildingID}")]
-    public async Task<IActionResult> DeleteBuilding(int buildingID){
+    [Route("delete/{buildingId}")]
+    public async Task<IActionResult> DeleteBuilding(int buildingId){
         return null;
     }
 }

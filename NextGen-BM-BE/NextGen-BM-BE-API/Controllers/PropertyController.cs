@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -6,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding properties
 /// </summary>
 [ApiController]
-[Route("[Controller]")]
+[Route("api/[controller]")]
 public class PropertyController: ControllerBase {
 
     public PropertyController()
@@ -15,44 +16,44 @@ public class PropertyController: ControllerBase {
     }
 
     [HttpGet]
-    [Route("/all")]
+    [Route("all")]
     public async Task<IActionResult> GetAllProperties(){
         return null;
     }
 
     [HttpGet]
-    [Route("/{propertyID}")]
-    public async Task<IActionResult> GetPropertyByID(int propertyID){
+    [Route("{propertyId}")]
+    public async Task<IActionResult> GetPropertyById(int propertyId){
         return null;
     }
 
     [HttpGet]
-    [Route("/user/{userID}")]
-    public async Task<IActionResult> GetPropertiesByUserID(int userID){
+    [Route("user/{userId}")]
+    public async Task<IActionResult> GetPropertiesByUserId(int userId){
         return null;
     }
 
     [HttpGet]
-    [Route("/building/{buildingID}")]
-    public async Task<IActionResult> GetPropertyByBuildingID(int buildingID){
+    [Route("building/{buildingId}")]
+    public async Task<IActionResult> GetPropertyByBuildingId(int buildingId){
         return null;
     }
 
     [HttpPost]
-    [Route("/new")]
-    public async Task<IActionResult> CreateProperty(/*Property property*/){
+    [Route("new")]
+    public async Task<IActionResult> CreateProperty(Property property){
         return null;
     }
 
     [HttpPost]
-    [Route("/update")]
-    public async Task<IActionResult> UpdateProperty(/*Property property*/){
+    [Route("update")]
+    public async Task<IActionResult> UpdateProperty(Property property){
         return null;
     }
 
     [HttpPost]
-    [Route("/delete/{propertyID}")]
-    public async Task<IActionResult> DeleteProperty(int propertyID){
+    [Route("delete/{propertyId}")]
+    public async Task<IActionResult> DeleteProperty(int propertyId){
         return null;
     }
 

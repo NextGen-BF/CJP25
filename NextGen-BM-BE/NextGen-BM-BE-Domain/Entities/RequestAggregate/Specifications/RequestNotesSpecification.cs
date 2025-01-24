@@ -6,7 +6,7 @@ namespace NextGen_BM_BE_Domain.Entities.RequestAggregate.Specifications{
         public RequestNotesSpecification(int requestID)
         {
             Query.Where(request => request.RequestId == requestID)
-            .Include(request => request.notes);
+            .Include(request => request.Notes);
         }
     }
 };
