@@ -5,13 +5,13 @@ namespace NextGen_BM_BE_Domain.Interfaces{
 
     public interface IExpensesRepository    
     {
-        Task<PropertyExpense> GetPropertyExpenseByID(int propertyExpenseID);
-        Task<List<PropertyExpense>> GetPropertyExpenseByUserID(int userID);
-        Task<List<PropertyExpense>> GetPropertyExpenseByBuildingID(int buildingID);        
-        Task<List<PropertyExpense>> GetPropertyExpenseByPropertyID(int propertyID);
-        Task CreatePropertyExpense(PropertyExpense propertyExpense);
-        Task CreateExpenseForProperties(List<int> propertyIDs);
-        Task UpdatePropertyExpense(PropertyExpense propertyExpense);
-        Task DeletePropertyExpense(int propertyExpenseID);
+        Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId);
+        Task<List<PropertyExpense>> GetPropertyExpenseByUserIdAsync(int userId);
+        Task<List<PropertyExpense>> GetPropertyExpenseByBuildingIdAsync(int buildingId);        
+        Task<List<PropertyExpense>> GetPropertyExpenseByPropertyIdAsync(int propertyId);
+        Task CreatePropertyExpenseAsync(PropertyExpense propertyExpense);
+        Task CreateExpenseForPropertiesAsync(List<int> propertyIds);
+        Task UpdatePropertyExpenseAsync(PropertyExpense propertyExpense);
+        Task DeletePropertyExpenseAsync(int propertyExpenseId);
     }
 }

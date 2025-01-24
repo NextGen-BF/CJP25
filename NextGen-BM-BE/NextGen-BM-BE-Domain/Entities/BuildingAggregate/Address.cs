@@ -1,6 +1,6 @@
 namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 public class Address{
-    public int AddressID { get; set; }
+    public int AddressId { get; set; }
     public int StreetNumber { get; set; }
     public string Entrance { get; set; }
     public string District { get; set; }
