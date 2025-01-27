@@ -12,12 +12,12 @@ CREATE TABLE  Address (
 	StreetNumber INT,
 	--	look up possible entrances
 	Entrance VARCHAR(5) NOT NULL,
-	StreetName VARCHAR(255) NOT NULL,
+	StreetName VARCHAR(40) NOT NULL,
 	District VARCHAR(40) NOT NULL,
 	City VARCHAR(40) NOT NULL,
-    --12 is (maybe) the longest possible postcode length
+    -- 12 is (maybe) the longest possible postcode length
 	PostalCode VARCHAR(12) NOT NULL,
-	Country VARCHAR(255) NOT NULL,
+	Country VARCHAR(40) NOT NULL,
 );
 -- Create the buildings table
 CREATE TABLE Buildings (
@@ -72,7 +72,7 @@ CREATE TABLE BuildingExpenses (
 	IsTemplate BIT NOT NULL,
 	RepeatPeriodId INT NOT NULL,
 	InvoiceURL TEXT NOT NULL,
-	FOREIGN KEY (BuildingId) REFERENCES Enums(EnumId),
+	FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
 	FOREIGN KEY (SupplierId) REFERENCES Enums(EnumId),
 	FOREIGN KEY (RepeatPeriodId) REFERENCES Enums(EnumId)
 );
@@ -100,7 +100,7 @@ CREATE TABLE PropertyExpenseTemplate (
 --Create table for email templates
 CREATE TABLE EmailTemplate (
     EmailTemplateId INT IDENTITY(1,1),
-    Title VARCHAR(255) NOT NULL,
+    Title VARCHAR(40) NOT NULL,
     Description TEXT NOT NULL,
     Body TEXT
 );
