@@ -40,7 +40,7 @@ CREATE TABLE BuildingExpenses(
     IsTemplate BIT NOT NULL,
     RepeatPeriodId INT NOT NULL, 
     InvoiceURL TEXT,
-    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
+    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId) ON DELETE CASCADE,
     FOREIGN KEY (SupplierId) REFERENCES Enums(EnumId),
     FOREIGN KEY (RepeatPeriodId) REFERENCES Enums(EnumId),
 );
@@ -55,7 +55,7 @@ CREATE TABLE Property(
     SizeOfIdealParts DECIMAL(6, 2) NOT NULL,
     PropertyTypeId INT NOT NULL, -- FK Enums
     EntranceIsExternal BIT NOT NULL,
-    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
+    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId) ON DELETE CASCADE,
     FOREIGN KEY (PropertyTypeId) REFERENCES Enums(EnumId),
 );
 
@@ -117,7 +117,7 @@ CREATE TABLE UserBuildings (
     RoleId INT, -- FK Roles
     StartDate DATE DEFAULT GETDATE(),
     EndDate DATE,
-    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
+    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId) ON DELETE CASCADE,
 );
 
 CREATE TABLE PropertyUsers (
@@ -140,7 +140,7 @@ CREATE TABLE RepairRequests (
     DateOpened DATE DEFAULT GETDATE(),
     DateSettled DATE,
     FOREIGN KEY (RequestStatusId) REFERENCES Enums(EnumId),
-    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
+    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId) ON DELETE CASCADE,
 );
 
 
