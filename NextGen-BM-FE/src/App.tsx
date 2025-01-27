@@ -13,7 +13,7 @@ import RequestsListPage from "./pages/Requests/RequestsListPage";
 import RequestPage from "./pages/Requests/RequestPage";
 import BuildingExpensesPage from "./pages/Buildings/BuildingExpensesPage";
 import PropertyFeesPage from "./pages/Properties/PropertyFeesPage";
-import PaymentPage from "./pages/PaymentPage";
+import PaymentPage from "./pages/Payments/PaymentPage";
 import CreatePropertyPage from "./pages/Properties/CreatePropertyPage";
 import PropertyListPage from "./pages/Properties/PropertyListPage";
 import PropertyPage from "./pages/Properties/PropertyPage";
