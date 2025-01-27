@@ -19,6 +19,8 @@ const Navbar: FC = () => {
         </li>
         <li>
           <NavLink to="/request">Request Details</NavLink>
+        </li>
+        <li>
           <NavLink to="/building/expenses">Building Expenses</NavLink>
         </li>
         <li>
@@ -26,6 +28,8 @@ const Navbar: FC = () => {
         </li>
         <li>
           <NavLink to="/payment">Payment</NavLink>
+        </li>
+        <li>
           <NavLink to="/create/apartment">Create Apartment</NavLink>
         </li>
         <li>
@@ -36,6 +40,8 @@ const Navbar: FC = () => {
         </li>
         <li>
           <NavLink to="/apartment/residents">Apartment Residents</NavLink>
+        </li>
+        <li>
           <NavLink to="/signup">Sign up</NavLink>
         </li>
         <li>
