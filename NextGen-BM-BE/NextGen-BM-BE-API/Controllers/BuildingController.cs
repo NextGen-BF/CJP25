@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding buildings
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class BuildingController: ControllerBase {
 
     public BuildingController()
@@ -18,29 +18,31 @@ public class BuildingController: ControllerBase {
     [HttpGet]
     [Route("all")]
     public async Task<IActionResult> GetAllBuildings(){
-        return null;
+        return Ok();
     }
 
     [HttpGet]
     [Route("{buildingId}")]
     public async Task<IActionResult> GetBuildingById(int buildingId){
-        return null;
+        return Ok();
     }
 
     [HttpPost]
     [Route("new")]
     public async Task<IActionResult> CreateBuilding(Building building ){
-        return null;
+        return Ok();
     }
+
     [HttpPost]
     [Route("update")]
     public async Task<IActionResult> UpdateBuilding(Building building){
-        return null;
+        return Ok();
     }
+    
     [HttpPost]
     [Route("delete/{buildingId}")]
     public async Task<IActionResult> DeleteBuilding(int buildingId){
-        return null;
+        return Ok();
     }
 }
 }
