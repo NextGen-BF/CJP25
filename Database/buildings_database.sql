@@ -127,7 +127,7 @@ CREATE TABLE PropertyUsers (
     RoleId INT, -- FK Roles,
     EffectiveDate DATE DEFAULT GETDATE(),
     EndDate DATE,
-    PercentOfApartmentOwned DECIMAL(6, 2) NOT NULL,
+    PercentOfApartmentOwned DECIMAL(6, 2) CHECK (PercentOfApartmentOwned BETWEEN 0.00 AND 100.00) NOT NULL,
     FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId) ON DELETE CASCADE,
 );
 
