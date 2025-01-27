@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/Account/LoginPage";
 import HomePage from "./pages/HomePage";
 import { FC } from "react";
 import CreateRequestPage from "./pages/CreateRequestPage";
@@ -14,13 +14,13 @@ import RequestPage from "./pages/RequestPage";
 import BuildingExpensesPage from "./pages/BuildingExpensesPage";
 import PropertyFeesPage from "./pages/Properties/PropertyFeesPage";
 import PaymentPage from "./pages/PaymentPage";
-import SignupPage from "./pages/SignupPage";
-import MyAccountPage from "./pages/MyAccountPage";
-import AccountRecoveryPage from "./pages/AccountRecoveryPage";
 import CreatePropertyPage from "./pages/Properties/CreatePropertyPage";
 import PropertyListPage from "./pages/Properties/PropertyListPage";
 import PropertyPage from "./pages/Properties/PropertyPage";
 import PropertyResidentsPage from "./pages/Properties/PropertyResidentsPage";
+import SignupPage from "./pages/Account/SignupPage";
+import MyAccountPage from "./pages/Account/MyAccountPage";
+import AccountRecoveryPage from "./pages/Account/AccountRecoveryPage";
 import CreateBuildingPage from "./pages/CreateBuildingPage";
 import BuildingsListPage from "./pages/BuildingListPage";
 import BuildingPage from "./pages/BuildingPage";
