@@ -117,7 +117,7 @@ INSERT INTO PropertyExpense (
     StartDate,
     EndDate,
     Description
-) VALUES (1, 600.00, NULL, '2023-04-05', 'Mocked Description 1'),
+) VALUES (1, 600.00, '2024-12-12', '2025-04-05', 'Mocked Description 1'),
 (2, 450.50, '2024-12-09', '2025-03-11', 'Mocked Description 2'),
 (3, 300.50, '2025-01-05', '2025-04-10', 'Mocked Description 3');
 
@@ -130,7 +130,7 @@ INSERT INTO PropertyPayments (
     StatusId,
     PaymentParentId,
     PaymentMethodId
-) VALUES (1, 450.00, NULL, '2025-03-01', 1, 1, NULL, 1),
+) VALUES (1, 450.00, '2025-01-15', '2025-03-01', 1, 1, NULL, 1),
 (2, 600.00, '2025-01-10', '2025-04-01', 2, 1, 1, 2),
 (3, 330.50, '2024-12-12', '2025-03-01', 1, 2, NULL, 2);
 
@@ -139,9 +139,9 @@ INSERT INTO UserBuildings (
     Approved,
     StartDate,
     EndDate
-) VALUES (1, 0, NULL, '2025-03-05'),
+) VALUES (1, 0, '2025-01-23', '2025-03-05'),
 (2, 1, '2025-01-03', '2025-03-01'),
-(3, 0, NULL, '2025-03-20');
+(3, 0, '2025-01-13', '2025-03-20');
 
 INSERT INTO PropertyUsers (
     PropertyId,
@@ -149,7 +149,7 @@ INSERT INTO PropertyUsers (
     EndDate,
     PercentOfApartmentOwned
 ) VALUES (1, '2024-12-18', '2025-02-02', 60.00),
-(2, NULL, '2025-02-22', 55.50),
+(2, '2025-01-19', '2025-02-22', 55.50),
 (3, '2025-01-05', '2025-02-01', 30.00);
 
 INSERT INTO RepairRequests (
@@ -160,7 +160,7 @@ INSERT INTO RepairRequests (
     DateSettled
 ) VALUES (1, 'Mocked Request Description 1', 1, '2025-01-09', '2025-01-27'),
 (2, 'Mocked Request Description 2', 2, '2024-12-21', '2025-01-11'),
-(3, 'Mocked Request Description 3', 1, NULL, '2025-01-04');
+(3, 'Mocked Request Description 3', 1, '2024-12-16', '2025-01-04');
 
 
 INSERT INTO RequestNotes (
@@ -170,5 +170,5 @@ INSERT INTO RequestNotes (
     CreatedBy
 ) VALUES (1, 'Mocked Note Text 1', '2025-01-07', 1),
 (2, 'Mocked Note Text 2', '2024-12-10', 2),
-(3, 'Mocked Note Text 3', NULL, 1);
+(3, 'Mocked Note Text 3', '2024-12-18', 1);
 
