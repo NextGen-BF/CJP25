@@ -68,7 +68,7 @@ CREATE TABLE PropertyResident(
     EnterDate DATE DEFAULT GETDATE(),
     LeaveDate DATE,
     FOREIGN KEY (ResidentTypeId) REFERENCES Enums(EnumId),
-    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId),
+    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId) ON DELETE CASCADE,
 );
 
 CREATE TABLE PropertyExpenseTemplate (
@@ -101,10 +101,10 @@ CREATE TABLE PropertyPayments (
     StatusId INT NOT NULL, -- FK -> Enums 
     PaymentParentId INT, -- FK to the same table
     PaymentMethodId INT NOT NULL, -- FK -> Enums 
-    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId),
+    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId) ON DELETE CASCADE,
     FOREIGN KEY (PropertyExpenseId) REFERENCES PropertyExpense(PropertyExpenseId),
     FOREIGN KEY (StatusId) REFERENCES Enums(EnumId),
-    FOREIGN KEY (PaymentParentId) REFERENCES PropertyPayments(PaymentId),
+    FOREIGN KEY (PaymentParentId) REFERENCES PropertyPayments(PaymentId) ON DELETE CASCADE,
     FOREIGN KEY (PaymentMethodId) REFERENCES Enums(EnumId),
 );
 
@@ -128,7 +128,7 @@ CREATE TABLE PropertyUsers (
     EffectiveDate DATE DEFAULT GETDATE(),
     EndDate DATE,
     PercentOfApartmentOwned DECIMAL(6, 2) NOT NULL,
-    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId),
+    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId) ON DELETE CASCADE,
 );
 
 CREATE TABLE RepairRequests (
@@ -150,7 +150,7 @@ CREATE TABLE RequestNotes (
     NoteText TEXT NOT NULL, 
     CreateDate DATE DEFAULT GETDATE(),
     CreatedBy INT, -- FK Users
-    FOREIGN KEY (RequestId) REFERENCES RepairRequests(RequestId),
+    FOREIGN KEY (RequestId) REFERENCES RepairRequests(RequestId) ON DELETE CASCADE,
 );
 
 
