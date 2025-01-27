@@ -12,6 +12,13 @@ const Navbar: FC = () => {
           <NavLink to="/login">Log in</NavLink>
         </li>
         <li>
+          <NavLink to="/create/request">Create Request</NavLink>
+        </li>
+        <li>
+          <NavLink to="/requests">Requests List</NavLink>
+        </li>
+        <li>
+          <NavLink to="/request">Request Details</NavLink>
           <NavLink to="/building/expenses">Building Expenses</NavLink>
         </li>
         <li>

@@ -8,6 +8,9 @@ import MainLayout from "./layouts/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import { FC } from "react";
+import CreateRequestPage from "./pages/CreateRequestPage";
+import RequestsListPage from "./pages/RequestsListPage";
+import RequestPage from "./pages/RequestPage";
 import BuildingExpensesPage from "./pages/BuildingExpensesPage";
 import ApartmentFeesPage from "./pages/ApartmentFeesPage";
 import PaymentPage from "./pages/PaymentPage";
@@ -28,6 +31,9 @@ const App: FC = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/create/request" element={<CreateRequestPage />} />
+        <Route path="/requests" element={<RequestsListPage />} />
+        <Route path="/request" element={<RequestPage />} />
         <Route path="/create/apartment" element={<CreateApartmentPage />} />
         <Route path="/apartments" element={<ApartmentsListPage />} />
         <Route path="/apartment" element={<ApartmentPage />} />
