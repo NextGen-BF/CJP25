@@ -12,15 +12,15 @@ import CreateRequestPage from "./pages/CreateRequestPage";
 import RequestsListPage from "./pages/RequestsListPage";
 import RequestPage from "./pages/RequestPage";
 import BuildingExpensesPage from "./pages/BuildingExpensesPage";
-import ApartmentFeesPage from "./pages/ApartmentFeesPage";
+import PropertyFeesPage from "./pages/Properties/PropertyFeesPage";
 import PaymentPage from "./pages/PaymentPage";
-import CreateApartmentPage from "./pages/CreateApartmentPage";
-import ApartmentsListPage from "./pages/ApartmentsListPage";
-import ApartmentPage from "./pages/ApartmentPage";
-import ApartmentResidentsPage from "./pages/ApartmentResidentsPage";
 import SignupPage from "./pages/SignupPage";
 import MyAccountPage from "./pages/MyAccountPage";
 import AccountRecoveryPage from "./pages/AccountRecoveryPage";
+import CreatePropertyPage from "./pages/Properties/CreatePropertyPage";
+import PropertyListPage from "./pages/Properties/PropertyListPage";
+import PropertyPage from "./pages/Properties/PropertyPage";
+import PropertyResidentsPage from "./pages/Properties/PropertyResidentsPage";
 import CreateBuildingPage from "./pages/CreateBuildingPage";
 import BuildingsListPage from "./pages/BuildingListPage";
 import BuildingPage from "./pages/BuildingPage";
@@ -34,10 +34,10 @@ const App: FC = () => {
         <Route path="/create/request" element={<CreateRequestPage />} />
         <Route path="/requests" element={<RequestsListPage />} />
         <Route path="/request" element={<RequestPage />} />
-        <Route path="/create/apartment" element={<CreateApartmentPage />} />
-        <Route path="/apartments" element={<ApartmentsListPage />} />
-        <Route path="/apartment" element={<ApartmentPage />} />
-        <Route path="/apartment/residents" element={<ApartmentResidentsPage />} />
+        <Route path="/create/property" element={<CreatePropertyPage />} />
+        <Route path="/properties" element={<PropertyListPage />} />
+        <Route path="/property" element={<PropertyPage />} />
+        <Route path="/property/residents" element={<PropertyResidentsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/account" element={<MyAccountPage />} />
         <Route path="/recover" element={<AccountRecoveryPage />} />
@@ -45,7 +45,7 @@ const App: FC = () => {
         <Route path="/buildings" element={<BuildingsListPage />} />
         <Route path="/building" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
-        <Route path="/apartment/fees" element={<ApartmentFeesPage />} />
+        <Route path="/property/fees" element={<PropertyFeesPage />} />
         <Route path="/payment" element={<PaymentPage />} />
       </Route>,
     ),

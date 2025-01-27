@@ -24,22 +24,22 @@ const Navbar: FC = () => {
           <NavLink to="/building/expenses">Building Expenses</NavLink>
         </li>
         <li>
-          <NavLink to="/apartment/fees">Apartment Fees</NavLink>
+          <NavLink to="/property/fees">property Fees</NavLink>
         </li>
         <li>
           <NavLink to="/payment">Payment</NavLink>
         </li>
         <li>
-          <NavLink to="/create/apartment">Create Apartment</NavLink>
+          <NavLink to="/create/property">Create property</NavLink>
         </li>
         <li>
-          <NavLink to="/apartments">Apartments List</NavLink>
+          <NavLink to="/properties">properties List</NavLink>
         </li>
         <li>
-          <NavLink to="/apartment">Apartment Details</NavLink>
+          <NavLink to="/property">property Details</NavLink>
         </li>
         <li>
-          <NavLink to="/apartment/residents">Apartment Residents</NavLink>
+          <NavLink to="/property/residents">property Residents</NavLink>
         </li>
         <li>
           <NavLink to="/signup">Sign up</NavLink>
