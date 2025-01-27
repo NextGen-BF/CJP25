@@ -134,11 +134,13 @@ CREATE TABLE PropertyUsers (
 CREATE TABLE RepairRequests (
     RequestId INT PRIMARY KEY IDENTITY (1, 1),
     UserId INT, -- FK Users
+    BuildingId INT NOT NULL, -- FK Buildings
     RequestDescription TEXT NOT NULL,
     RequestStatusId INT NOT NULL, -- FK Enums
     DateOpened DATE DEFAULT GETDATE(),
     DateSettled DATE,
     FOREIGN KEY (RequestStatusId) REFERENCES Enums(EnumId),
+    FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId),
 );
 
 
