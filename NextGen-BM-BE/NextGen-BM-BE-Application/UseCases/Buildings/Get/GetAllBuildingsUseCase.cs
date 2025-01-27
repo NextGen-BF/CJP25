@@ -1,3 +1,4 @@
+using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Application.UseCases.Buildings.Get
@@ -7,8 +8,9 @@ public sealed class GetAllBuildingsUseCase(IBuildingRepository _buildingReposito
     {
     private readonly IBuildingRepository buildingRepository = _buildingRepository;
 
-        public async Task Execute(){
-        await buildingRepository.GetAllBuildingsAsync();
+        public async Task<IList<Building>> Execute(){
+        var result = await buildingRepository.GetAllBuildingsAsync();
+        return result;
     }
 }
 }
