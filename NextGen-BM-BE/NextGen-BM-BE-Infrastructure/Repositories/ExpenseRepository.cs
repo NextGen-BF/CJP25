@@ -3,7 +3,7 @@ using NextGen_BM_BE_Domain.Interfaces;
 namespace NextGen_BM_BE_Infrastructure.Repositories{
     public class ExpensesRepository : IExpensesRepository
     {
-        public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds)
+        public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId)
         {
             throw new NotImplementedException();
         }

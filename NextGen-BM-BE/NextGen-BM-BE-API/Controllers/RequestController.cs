@@ -5,7 +5,7 @@ using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 namespace NextGen_BM_BE_API.Controllers{
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class RequestController: ControllerBase {
 
     [HttpGet]

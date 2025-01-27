@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding expenses
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class ExpenseController: ControllerBase {
 
     public ExpenseController()

@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// Controller for handling all API calls regarding properties
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class PropertyController: ControllerBase {
 
     public PropertyController()
