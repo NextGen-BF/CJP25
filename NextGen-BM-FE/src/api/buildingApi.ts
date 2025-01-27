@@ -11,8 +11,7 @@ export async function GetAllBuildings() {
 
 export async function GetBuildingByID(id: number): Promise<Building> {
     return await request<Building>(`${apiURL}/building/${id}`, {
-        method: "POST",
-        body: JSON.stringify(id),
+        method: "GET",
     });
 }
 
