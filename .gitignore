@@ -28,3 +28,5 @@ dist-ssr
 .DS_Store
 NextGen-BM-BE/NextGen-BM-BE-Domain/obj/*
 NextGen-BM-BE/NextGen-BM-BE-Infrastructure/obj/*
+NextGen-BM-BE/NextGen-BM-BE-API/obj/*
+NextGen-BM-BE/NextGen-BM-BE-Application/obj/*

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextGen-BM-BE-Domain", "Nex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextGen-BM-BE-Infrastructure", "NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj", "{26AAA60E-C772-4075-A021-2616420E4BD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextGen-BM-BE-Application", "NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj", "{F45B1B66-2EE3-4A8B-8B35-20C5CBD9747B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{26AAA60E-C772-4075-A021-2616420E4BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26AAA60E-C772-4075-A021-2616420E4BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26AAA60E-C772-4075-A021-2616420E4BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F45B1B66-2EE3-4A8B-8B35-20C5CBD9747B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45B1B66-2EE3-4A8B-8B35-20C5CBD9747B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45B1B66-2EE3-4A8B-8B35-20C5CBD9747B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45B1B66-2EE3-4A8B-8B35-20C5CBD9747B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
