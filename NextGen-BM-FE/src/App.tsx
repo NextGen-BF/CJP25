@@ -11,7 +11,7 @@ import { FC } from "react";
 import CreateRequestPage from "./pages/CreateRequestPage";
 import RequestsListPage from "./pages/RequestsListPage";
 import RequestPage from "./pages/RequestPage";
-import BuildingExpensesPage from "./pages/BuildingExpensesPage";
+import BuildingExpensesPage from "./pages/Buildings/BuildingExpensesPage";
 import PropertyFeesPage from "./pages/Properties/PropertyFeesPage";
 import PaymentPage from "./pages/PaymentPage";
 import CreatePropertyPage from "./pages/Properties/CreatePropertyPage";
@@ -21,9 +21,9 @@ import PropertyResidentsPage from "./pages/Properties/PropertyResidentsPage";
 import SignupPage from "./pages/Account/SignupPage";
 import MyAccountPage from "./pages/Account/MyAccountPage";
 import AccountRecoveryPage from "./pages/Account/AccountRecoveryPage";
-import CreateBuildingPage from "./pages/CreateBuildingPage";
-import BuildingsListPage from "./pages/BuildingListPage";
-import BuildingPage from "./pages/BuildingPage";
+import CreateBuildingPage from "./pages/Buildings/CreateBuildingPage";
+import BuildingsListPage from "./pages/Buildings/BuildingListPage";
+import BuildingPage from "./pages/Buildings/BuildingPage";
 
 const App: FC = () => {
   const router = createBrowserRouter(
