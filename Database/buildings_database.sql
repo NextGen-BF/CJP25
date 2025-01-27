@@ -104,7 +104,7 @@ CREATE TABLE PropertyPayments (
     FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId) ON DELETE CASCADE,
     FOREIGN KEY (PropertyExpenseId) REFERENCES PropertyExpense(PropertyExpenseId),
     FOREIGN KEY (StatusId) REFERENCES Enums(EnumId),
-    FOREIGN KEY (PaymentParentId) REFERENCES PropertyPayments(PaymentId) ON DELETE CASCADE,
+    FOREIGN KEY (PaymentParentId) REFERENCES PropertyPayments(PaymentId),
     FOREIGN KEY (PaymentMethodId) REFERENCES Enums(EnumId),
 );
 
