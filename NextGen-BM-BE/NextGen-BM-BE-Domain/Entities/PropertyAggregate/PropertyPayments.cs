@@ -1,6 +1,6 @@
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
 public class PropertyPayments{
-    public int PaymentId { get; set; }
+    public int PropertyPaymentsId { get; set; }
     public int PropertyId { get; set; }
     public double AmountOwed { get; set; }
     public DateOnly DateOpened { get; set; }
