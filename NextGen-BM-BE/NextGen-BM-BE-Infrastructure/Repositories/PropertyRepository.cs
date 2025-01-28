@@ -41,7 +41,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Properties.Where(p => p.Users.Any(u => u.UserId == userId)).ToListAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
