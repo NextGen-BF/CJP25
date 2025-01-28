@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
 public class PropertyPayments{
     public int PropertyPaymentsId { get; set; }
