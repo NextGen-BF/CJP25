@@ -13,3 +13,10 @@ export interface UserProperties{
     startDate: Date;
     endDate: Date;
 }
+
+export interface AuthToken {
+    tokenType: string;
+    accessToken: string;
+    expiresIn: 0;
+    refreshToken: string;
+  }
