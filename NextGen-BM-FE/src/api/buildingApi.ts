@@ -1,6 +1,5 @@
 import { Building } from "../models/building.ts"
-import { request } from "./shared.ts"
-import { apiURL } from "./shared.ts"
+import { request, apiURL } from "./shared.ts"
 
 
 export async function GetAllBuildings() {
