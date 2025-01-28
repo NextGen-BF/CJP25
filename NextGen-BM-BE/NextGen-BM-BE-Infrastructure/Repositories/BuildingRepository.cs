@@ -1,33 +1,60 @@
+using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
-namespace NextGen_BM_BE_Infrastructure.Repositories{
 
+namespace NextGen_BM_BE_Infrastructure.Repositories
+{
     public class BuildingRepository : IBuildingRepository
     {
+        private readonly DataContext _dbContext;
+
+        public BuildingRepository(DataContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task CreateBuildingAsync(Building building)
         {
-            throw new NotImplementedException();
+            await _dbContext.Buildings.AddAsync(building);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteBuildingAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            Building? buildingToDelete = await this.GetBuildingByIdAsync(buildingId);
+            if (buildingToDelete is not null)
+            {
+                _dbContext.Buildings.Remove(buildingToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Building>> GetAllBuildingsAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Buildings.ToListAsync();
         }
 
         public async Task<Building> GetBuildingByIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Building? foundBuilding = await _dbContext.Buildings.FindAsync(buildingId);
+                if (foundBuilding is null)
+                {
+                    throw new KeyNotFoundException("The building was not found.");
+                }
+                return foundBuilding;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetBuildingByIdAsync threw an error of: ", ex);
+            }
         }
 
         public async Task UpdateBuildingAsync(Building building)
         {
-            throw new NotImplementedException();
+            _dbContext.Buildings.Update(building);
+            await _dbContext.SaveChangesAsync();
         }
     }
-}
-;
+};

@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
@@ -22,6 +21,5 @@ namespace NextGen_BM_BE_Infrastructure
         public DbSet<RepairRequest> RepairRequest { get; set; }
         public DbSet<RequestNotes> RequestNotes { get; set; }
         public DbSet<PropertyExpenseTemplate> PropertyExpenseTemplates { get; set; }
-
     }
 }
