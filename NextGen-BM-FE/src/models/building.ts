@@ -1,3 +1,5 @@
+import { Property } from "./property"
+
 export interface Building {
     buildingId :number,
     address: Address,
@@ -7,6 +9,7 @@ export interface Building {
     dateBuilt: Date,
     numOfElevators: number,
     buildingExpenses: BuildingExpense[]
+    properties: Property[];
 }
 
 interface Address {
@@ -18,7 +21,7 @@ interface Address {
     Country: string,
 }
 
-interface BuildingExpense{
+export interface BuildingExpense{
     buildingExpenseId: number,
     title: string,
     totalAmount: number,

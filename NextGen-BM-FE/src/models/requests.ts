@@ -14,3 +14,13 @@ export interface RequestNotes{
     createDate: Date;
     noteText: string;
 }
+
+export interface UserBuildingRequests{
+    userBuildingsId: number;
+    userId: number;
+    buildingId: number;
+    approved: boolean;
+    role: string;
+    startDate: Date;
+    endDate: Date;
+}

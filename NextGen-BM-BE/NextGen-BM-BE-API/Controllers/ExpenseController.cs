@@ -15,13 +15,6 @@ public class ExpenseController: ControllerBase {
         
     }
 
-
-    [HttpGet]
-    [Route("{expenseId}")]
-    public async Task<IActionResult> GetExpenseById(int expenseId){
-        return null;
-    }
-
     [HttpGet]
     [Route("user/{userId}")]
     public async Task<IActionResult> GetExpenseByUserId(int userId){
@@ -47,8 +40,8 @@ public class ExpenseController: ControllerBase {
     }
 
     [HttpPost]
-    [Route("create/property")]
-    public async Task<IActionResult> CreateExpenseForProperties(List<int> propertyIds){
+    [Route("link/property/{expenseId}")]
+    public async Task<IActionResult> LinkExpenseToProperties(List<int> propertyIds, int expenseId){
         return null;
     }
 

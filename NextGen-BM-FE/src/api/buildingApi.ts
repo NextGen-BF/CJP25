@@ -8,7 +8,7 @@ export async function GetAllBuildings() {
     })
 }
 
-export async function GetBuildingByID(id: number): Promise<Building> {
+export async function GetBuildingById(id: number): Promise<Building> {
     return await request<Building>(`${apiURL}/building/${id}`, {
         method: "GET",
     });
