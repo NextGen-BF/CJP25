@@ -11,6 +11,6 @@ namespace NextGen_BM_BE_Application.DTOs{
         public string Description { get; set; }
         public bool IsTemplate { get; set; }
         public int RepeatPeriod { get; set; }
-        public string InvoiceUrl { get; set; }
+        public string? InvoiceUrl { get; set; }
     }
 }

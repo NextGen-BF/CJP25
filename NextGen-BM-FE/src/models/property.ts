@@ -6,9 +6,9 @@ export interface Property{
     floor: number;
     sizeOfIdealParts: number;
     entranceIsExternal: boolean;
-    propertyExpenses: PropertyExpense[];
-    payments: PropertyPayments[];
-    residentHistory: ResidentHistory[];
+    propertyExpenses: PropertyExpense[] | null;
+    payments: PropertyPayments[] | null;
+    residentHistory: ResidentHistory[] | null;
 }
 
 export interface ResidentHistory{

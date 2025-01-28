@@ -8,7 +8,7 @@ namespace NextGen_BM_BE_Application.DTOs{
         public double TotalBuildingSize { get; set; }
         public DateOnly DateBuilt { get; set; }
         public int NumOfElevators { get; set; }
-        public List<BuildingExpenseDTO> Expenses { get; set; }
-        public List<PropertyDTO> BuildingProperties { get; set; }
+        public List<BuildingExpenseDTO>? Expenses { get; set; }
+        public List<PropertyDTO>? BuildingProperties { get; set; }
     }
 }

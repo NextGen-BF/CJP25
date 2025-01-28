@@ -6,6 +6,6 @@ namespace NextGen_BM_BE_Application.DTOs{
         public string Status { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DateSettled { get; set; }
-        public List<RequestNotesDTO> Notes { get; set; }
+        public List<RequestNotesDTO>? Notes { get; set; }
     }
 }

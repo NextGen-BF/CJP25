@@ -8,8 +8,8 @@ export interface Building {
     totalBuildingSize: number,
     dateBuilt: Date,
     numOfElevators: number,
-    buildingExpenses: BuildingExpense[]
-    properties: Property[];
+    buildingExpenses: BuildingExpense[] | null;
+    properties: Property[] | null;
 }
 
 interface Address {

@@ -5,7 +5,7 @@ export interface RepairRequest{
     status: string;
     dateOpened: Date;
     dateSettled: Date;
-    notes: RequestNotes[];
+    notes: RequestNotes[] | null;
 }
 
 export interface RequestNotes{
