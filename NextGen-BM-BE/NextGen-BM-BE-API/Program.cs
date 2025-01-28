@@ -48,5 +48,6 @@ app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGroup("/account").MapIdentityApi<User>();
 
 app.Run();
