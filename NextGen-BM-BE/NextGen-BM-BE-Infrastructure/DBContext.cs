@@ -1,13 +1,18 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Entities.User;
 
 namespace NextGen_BM_BE_Infrastructure
 {
-    public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
+    public class DataContext : IdentityDbContext<User>
     {
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options) { }
+
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<BuildingExpense> BuildingExpense { get; set; }
