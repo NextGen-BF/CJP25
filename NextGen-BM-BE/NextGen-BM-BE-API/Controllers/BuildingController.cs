@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -10,38 +11,44 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class BuildingController: ControllerBase {
 
-    public BuildingController()
+    private readonly IBuildingService buildingService;
+    public BuildingController(IBuildingService _buildingService)
     {
-        
+        buildingService = _buildingService;
     }
 
     [HttpGet]
     [Route("all")]
     public async Task<IActionResult> GetAllBuildings(){
-        return Ok();
+        var result = await buildingService.GetAllBuildingsAsync();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("{buildingId}")]
     public async Task<IActionResult> GetBuildingById(int buildingId){
-        return Ok();
+        var result = await buildingService.GetBuildingByIdAsync(buildingId);
+        return Ok(result);
     }
 
     [HttpPost]
     [Route("new")]
     public async Task<IActionResult> CreateBuilding(Building building ){
+        await buildingService.CreateBuildingAsync(building);
         return Ok();
     }
 
     [HttpPost]
     [Route("update")]
     public async Task<IActionResult> UpdateBuilding(Building building){
+        await buildingService.UpdateBuildingAsync(building);
         return Ok();
     }
-    
+
     [HttpPost]
     [Route("delete/{buildingId}")]
     public async Task<IActionResult> DeleteBuilding(int buildingId){
+        await buildingService.DeleteBuildingAsync(buildingId);
         return Ok();
     }
 }
