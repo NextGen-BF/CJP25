@@ -1,18 +1,16 @@
 import { FC } from "react";
-import { AppProvider } from '@toolpad/core/AppProvider';
-import {
-  SignInPage,
-  type AuthProvider,
-} from '@toolpad/core/SignInPage';
-import { useTheme } from '@mui/material/styles';
+import { SignInPage } from "@toolpad/core/SignInPage";
 import { Link } from "@mui/material";
-import { Login } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
+import { loginCall } from "../../redux/services/loginService.ts";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../redux/store.ts";
+import { RootState } from "../../redux/store.ts";
 
 const providers = [
-  {id: 'credentials', name: 'email and password'},
-  {id: 'google', name: 'Google'}
-]
+  { id: "credentials", name: "email and password" },
+  { id: "google", name: "Google" },
+];
 
 function SignUpLink() {
   return (
@@ -23,39 +21,34 @@ function SignUpLink() {
 }
 
 const LoginPage: FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const userToken = useSelector((state: RootState) => state.loginReducer.value);
 
-  if(sessionStorage.getItem("accessToken")){
-    navigate("/")
-  }
-
-  const signIn = async (
-    signIn: AuthProvider,
-    formData: FormData,
-    redirectTo?: string,
-  ) => {
+  const signIn = async (formData: FormData) => {
     if (!formData.has("email") || !formData.has("password")) {
       return;
     }
-    await Login(
-      formData.get("email")!.toString(),
-      formData.get("password")!.toString(),
-    ).then((response) => {
-      if (response != undefined) {
-        sessionStorage.setItem("accessToken", response.accessToken);
-        console.log(response.accessToken);
-        navigate(redirectTo ?? "/");
-      }
-    });
+    dispatch(
+      loginCall({
+        email: formData.get("email")!.toString(),
+        password: formData.get("password")!.toString(),
+      }),
+    );
+    if (userToken.accessToken) {
+      //TODO: Fix bug where it doesn't register on first click
+      navigate("/");
+    }
   };
 
-  const theme = useTheme();
   return (
-    <AppProvider theme={theme}>
-      <SignInPage signIn={(provider, formData, redirectTo) => {
-          signIn(provider, formData, redirectTo);
-        }} providers={providers} slots={{signUpLink: SignUpLink}}/>
-    </AppProvider>
+    <SignInPage
+      signIn={(_, formData) => {
+        signIn(formData);
+      }}
+      providers={providers}
+      slots={{ signUpLink: SignUpLink }}
+    />
   );
 };
 export default LoginPage;
