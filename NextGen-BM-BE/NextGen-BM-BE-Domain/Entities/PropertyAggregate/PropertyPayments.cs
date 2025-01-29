@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
+[Table("PropertyPayments")]
 public class PropertyPayments{
     [Key]
     public int PaymentId { get; set; }

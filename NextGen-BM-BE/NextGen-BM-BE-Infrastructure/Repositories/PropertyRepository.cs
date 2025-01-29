@@ -19,9 +19,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task DeletePropertyAsync(int propertyId)
         {
-            var property=await GetPropertyByIdAsync(propertyId);
-            _dataContext.Properties.Remove(property);
-            await _dataContext.SaveChangesAsync();
+            await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).ExecuteDeleteAsync();
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
