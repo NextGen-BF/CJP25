@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate.Specifications;
 
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate{
 [Table("Property")]
 public class Property{
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int PropertyId { get; set; }
     public int PropertyNumber { get; set; }
     public int BuildingId { get; set; }

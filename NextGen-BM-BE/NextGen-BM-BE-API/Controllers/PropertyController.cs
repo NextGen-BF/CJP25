@@ -37,31 +37,35 @@ public class PropertyController: ControllerBase {
     [HttpGet]
     [Route("user/{userId}")]
     public async Task<IActionResult> GetPropertiesByUserId(int userId){
-        return null;
+        var result= await _propertyService.GetPropertyByUserIdAsync(userId);
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("building/{buildingId}")]
     public async Task<IActionResult> GetPropertyByBuildingId(int buildingId){
-        return null;
+        var result= await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
+        return Ok(result);
     }
 
     [HttpPost]
     [Route("new")]
     public async Task<IActionResult> CreateProperty(Property property){
-        return null;
+        await _propertyService.CreatePropertyAsync(property);
+        return Ok();
     }
 
     [HttpPost]
     [Route("update")]
     public async Task<IActionResult> UpdateProperty(Property property){
-        return null;
+        await _propertyService.UpdatePropertyAsync(property);
+        return Ok();
     }
-
     [HttpPost]
     [Route("delete/{propertyId}")]
     public async Task<IActionResult> DeleteProperty(int propertyId){
-        return null;
+        await _propertyService.DeletePropertyAsync(propertyId);
+        return Ok();
     }
 
 }

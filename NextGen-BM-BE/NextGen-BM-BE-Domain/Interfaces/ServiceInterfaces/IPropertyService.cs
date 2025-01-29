@@ -8,6 +8,7 @@ namespace NextGen_BM_BE_Domain.Services{
         Task DeletePropertyAsync(int propertyId); 
         Task UpdatePropertyAsync(Property property);
         Task<Property> GetPropertyByIdAsync(int propertyId);
+        Task<IList<Property>> GetPropertyByUserIdAsync(int userId);
+        Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId);
     }
-
 }

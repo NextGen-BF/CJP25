@@ -13,14 +13,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         }
         public async Task CreatePropertyAsync(Property property)
         {
-            
-            await _dataContext.AddAsync(property);
+            await _dataContext.Properties.AddAsync(property);
             _dataContext.SaveChangesAsync();
         }
 
         public async Task DeletePropertyAsync(int propertyId)
         {
-            throw new NotImplementedException();
+            var property=await GetPropertyByIdAsync(propertyId);
+            _dataContext.Properties.Remove(property);
+            _dataContext.SaveChangesAsync();
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
@@ -46,7 +47,8 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task UpdatePropertyAsync(Property property)
         {
-            throw new NotImplementedException();
+            _dataContext.Properties.Update(property);
+            await _dataContext.SaveChangesAsync();
         }
     }
 

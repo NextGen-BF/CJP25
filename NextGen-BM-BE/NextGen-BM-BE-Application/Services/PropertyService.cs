@@ -43,5 +43,15 @@ namespace NextGen_BM_BE_Application.Services{
         {
             return await _getPropertiesByIdUseCase.Execute(propertyId);
         }
+
+        public Task<IList<Property>> GetPropertyByUserIdAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
