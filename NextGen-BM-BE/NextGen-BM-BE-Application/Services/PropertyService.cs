@@ -44,14 +44,16 @@ namespace NextGen_BM_BE_Application.Services{
             return await _getPropertiesByIdUseCase.Execute(propertyId);
         }
 
-        public Task<IList<Property>> GetPropertyByUserIdAsync(int userId)
+        public async Task<IList<Property>> GetPropertyByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            var getPropertiesByUserIdUseCase = new GetPropertiesByUserIdUseCase(_propertyRepository);
+            return await getPropertiesByUserIdUseCase.Execute(userId);
         }
 
-        public Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId)
+        public async Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            var getPropertiesByBuildingIdUseCase = new GetPropertiesByBuildingIdUseCase(_propertyRepository);
+            return await getPropertiesByBuildingIdUseCase.Execute(buildingId);
         }
     }
 }

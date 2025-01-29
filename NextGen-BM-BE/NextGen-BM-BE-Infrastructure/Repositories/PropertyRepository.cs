@@ -21,23 +21,23 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             var property=await GetPropertyByIdAsync(propertyId);
             _dataContext.Properties.Remove(property);
-            _dataContext.SaveChangesAsync();
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            
             return await _dataContext.Properties.ToListAsync();
         }
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            var properties=await _dataContext.Properties.Where(p=>p.BuildingId==buildingId).ToListAsync();
+            return properties;
         }
 
         public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Properties.Where(p=>p.Users.Any(u=>u.UserId==userId)).ToListAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
