@@ -1,20 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>NextGen_BM_BE_API</RootNamespace>
+    <UserSecretsId>346e6da5-0d5a-4edd-8a31-b014199b62dc</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NextGen-BM-BE-Domain\NextGen-BM-BE-Domain.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj" />
+    <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
   </ItemGroup>
 </Project>

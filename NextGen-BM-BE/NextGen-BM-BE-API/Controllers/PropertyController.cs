@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Application.Services;
+using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
+using NextGen_BM_BE_Application.Services;
+using NextGen_BM_BE_Domain.Services;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -10,21 +14,24 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class PropertyController: ControllerBase {
 
-    public PropertyController()
+    readonly IPropertyService _propertyService;
+    public PropertyController(IPropertyService propertyService)
     {
-        
+        _propertyService=propertyService;
     }
 
     [HttpGet]
     [Route("all")]
     public async Task<IActionResult> GetAllProperties(){
-        return null;
+        var result = await _propertyService.GetAllPropertiesAsync();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("{propertyId}")]
     public async Task<IActionResult> GetPropertyById(int propertyId){
-        return null;
+        var result = await _propertyService.GetPropertyByIdAsync(propertyId);
+        return Ok(result);
     }
 
     [HttpGet]
