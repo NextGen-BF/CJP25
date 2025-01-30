@@ -6,5 +6,6 @@ namespace NextGen_BM_BE_Domain.Entities
         public required string ExpenseTitle { get; set; }
         public bool PerResident { get; set; }
         public int RepeatPeriodId { get; set; }
+        public DateOnly DeletedDate { get; set; }
     }
 };

@@ -13,5 +13,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public int StatusId { get; set; }
         public int PaymentParentId { get; set; }
         public int PaymentMethod { get; set; }
+        public DateOnly DeletedDate { get; set; }
     }
 };

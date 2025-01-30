@@ -9,5 +9,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public int PropertyId { get; set; }
         public DateOnly EnterDate { get; set; }
         public DateOnly LeaveDate { get; set; }
+        public DateOnly DeletedDate { get; set; }
     }
 };
