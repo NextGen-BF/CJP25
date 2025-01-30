@@ -1,8 +1,9 @@
 import { Button, TextField } from "@mui/material";
 import { FC, useState } from "react";
-import { Address, Building } from "../../models/building";
-import { useAppDispatch } from "../../redux/store";
-import { createBuilding } from "../../redux/services/buildingService";
+import { Address, Building } from "../../../models/building";
+import { useAppDispatch } from "../../../redux/store";
+import { createBuilding } from "../../../redux/services/buildingService";
+import "./createBuilding.scss"
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -49,9 +50,9 @@ const CreateBuildingPage: FC = () => {
 
 
   return (
-    <div>
-      <form onSubmit={(e) => submit(e)}>
-        <h1>Create a Building</h1>
+    <div className="text-field-container">
+      <form className="create-building-form" onSubmit={(e) => submit(e)}>
+        <h1 className="create-building-header">Create a Building</h1>
         <TextField
           name="alias"
           label="Building Alias"
