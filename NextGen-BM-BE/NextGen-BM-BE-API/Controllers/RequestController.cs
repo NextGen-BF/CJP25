@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Services;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -8,73 +9,91 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class RequestController: ControllerBase {
 
+    IRequestService _requestService;
+    public RequestController(IRequestService requestService)
+    {
+        _requestService=requestService;
+    }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
-    public Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
+    public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
     {
-        return null;
+        var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("repair/{requestId}")]
-    public Task<IActionResult> GetRepairRequestById(int requestId)
+    public async Task<IActionResult> GetRepairRequestByIdAsync(int requestId)
     {
-        return null;
+        var result = await _requestService.GetRepairRequestByIdAsync(requestId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
-    public Task<IActionResult> GetUserBuildingRequests(int buildingId)
+    public async Task<IActionResult> GetUserBuildingRequestsAsync(int buildingId)
     {
-        return null;
+        var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpPost]
     [Route("repair/new")]
-    public Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
     {
-        return null;
+        await _requestService.CreateRepairRequestAsync();
+        return Ok();
     }
 
     [HttpPost]
     [Route("user/building/new")]
-    public Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
+    public async Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
     {
-        return null;
+        await _requestService.CreateUserBuildingRequestAsync();
+        return Ok();
     }
     [HttpPost]
     [Route("note/new")]
-    public Task<IActionResult> CreateRepairRequestNote(RequestNotes requestNotes)
+    public async Task<IActionResult> CreateRepairRequestNote(RequestNotes requestNotes)
     {
-        return null;
+        await _requestService.CreateRequestNoteAsync();
+        return Ok();
     }
 
     [HttpPost]
     [Route("repair/update")]
-    public Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
     {
-        return null;
+        await _requestService.UpdateRepairRequestAsync(repairRequest);
+        return Ok();
     }
 
     [HttpPost]
     [Route("note/update")]
-    public Task<IActionResult> UpdateRequestNotes(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRequestNotes(RepairRequest repairRequest)
     {
-        return null;
+        await _requestService.UpdateRepairRequestAsync(repairRequest);
+        return Ok();
     }
 
     [HttpPost]
     [Route("repair/delete/{requestId}")]
-    public Task<IActionResult> DeleteRepairRequest(int requestId)
+    public async Task<IActionResult> DeleteRepairRequest(int requestId)
     {
-        return null;
+        await _requestService.DeleteRepairRequestAsync(requestId);
+        return Ok();
     }
 
     [HttpPost]
     [Route("note/delete/{requestNoteId}")]
-    public Task<IActionResult> DeleteRequestNote(int requestNoteId)
+    public async Task<IActionResult> DeleteRequestNote(int requestNoteId)
     {
-        return null;
+        await _requestService.DeleteRepairRequestAsync(requestNoteId);
+        return Ok();
     }
 }
 };
