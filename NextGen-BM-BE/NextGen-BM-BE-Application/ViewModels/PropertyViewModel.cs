@@ -1,7 +1,7 @@
 
-namespace NextGen_BM_BE_Application.DTOs{
+namespace NextGen_BM_BE_Application.ViewModels{
 
-    public class PropertyDTO{
+    public class PropertyViewModel{
         public int PropertyId { get; set; }
         public int PropertyNumber { get; set; }
         public int BuildingId { get; set; }
@@ -9,8 +9,8 @@ namespace NextGen_BM_BE_Application.DTOs{
         public int Floor { get; set; }
         public double SizeOfIdealParts { get; set; }
         public bool EntranceIsExternal { get; set; }
-        public List<PropertyExpenseDTO>? PropertyExpenses { get; set; }
-        public List<PropertyPaymentsDTO>? PropertyPayments { get; set; }
-        public List<ResidentHistoryDTO>? ResidentHistory { get; set; }
+        public List<PropertyExpenseViewModel>? PropertyExpenses { get; set; }
+        public List<PropertyPaymentsViewModel>? PropertyPayments { get; set; }
+        public List<ResidentHistoryViewModel>? ResidentHistory { get; set; }
     }
 }
