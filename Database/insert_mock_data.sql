@@ -31,11 +31,12 @@ INSERT INTO Address(
     Entrance,
     StreetName,
     District,
+    City,
     PostalCode,
     Country
-) VALUES ( 47, 'B', 'Mocked Street', 'Mocked Distr.', '9000', 'Bulgaria' ), 
-( 47, 'A', 'Mocked Street', 'Mocked Distr.', '9000', 'Bulgaria' ),
-( 49, 'A', 'Mocked Street', 'Mocked Distr.', '9000', 'Bulgaria' );
+) VALUES ( 47, 'B', 'Mocked Street', 'Mocked Distr.','Sofia', '9000', 'Bulgaria' ), 
+( 47, 'A', 'Mocked Street', 'Mocked Distr.', '9000','Sofia', 'Bulgaria' ),
+( 49, 'A', 'Mocked Street', 'Mocked Distr.', '9000','Sofia', 'Bulgaria' );
 
 INSERT INTO Buildings(
     AddressId,
