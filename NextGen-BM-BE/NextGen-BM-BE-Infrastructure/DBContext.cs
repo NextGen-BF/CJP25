@@ -18,8 +18,8 @@ namespace NextGen_BM_BE_Infrastructure
         public DbSet<BuildingExpense> BuildingExpense { get; set; }
         public DbSet<Enums> Enums { get; set; }
         public DbSet<UserBuildings> UserBuildings { get; set; }
-        public DbSet<Property> Properties { get; set; }
-        public DbSet<PropertyExpense> PropertyExpenses { get; set; }
+        public DbSet<Property> Property { get; set; }
+        public DbSet<PropertyExpense> PropertyExpense { get; set; }
         public DbSet<PropertyPayments> PropertyPayments { get; set; }
         public DbSet<PropertyUsers> PropertyUsers { get; set; }
         public DbSet<PropertyResidents> PropertyResidents { get; set; }

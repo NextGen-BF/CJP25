@@ -15,7 +15,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task CreatePropertyAsync(Property property)
         {
-            await _dbContext.Properties.AddAsync(property);
+            await _dbContext.Property.AddAsync(property);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -24,31 +24,31 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             Property? propertyToDelete = await this.GetPropertyByIdAsync(propertyId);
             if (propertyToDelete is not null)
             {
-                _dbContext.Properties.Remove(propertyToDelete);
+                _dbContext.Property.Remove(propertyToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            return await _dbContext.Properties.ToListAsync();
+            return await _dbContext.Property.ToListAsync();
         }
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)
         {
-            return await _dbContext.Properties.Where(p => p.BuildingId == buildingId).ToListAsync();
+            return await _dbContext.Property.Where(p => p.BuildingId == buildingId).ToListAsync();
         }
 
         public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
-            return await _dbContext.Properties.Where(p => p.Users.Any(u => u.UserId == userId)).ToListAsync();
+            return await _dbContext.Property.Where(p => p.Users.Any(u => u.UserId == userId)).ToListAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
             try
             {
-                Property? foundProperty = await _dbContext.Properties.FindAsync(propertyId);
+                Property? foundProperty = await _dbContext.Property.FindAsync(propertyId);
                 if (foundProperty is null)
                 {
                     throw new KeyNotFoundException("The property was not found.");
@@ -63,7 +63,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task UpdatePropertyAsync(Property property)
         {
-            _dbContext.Properties.Update(property);
+            _dbContext.Property.Update(property);
             await _dbContext.SaveChangesAsync();
         }
     }
