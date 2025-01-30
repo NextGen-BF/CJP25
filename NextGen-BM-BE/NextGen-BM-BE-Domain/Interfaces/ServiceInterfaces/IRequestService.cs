@@ -14,6 +14,7 @@ namespace NextGen_BM_BE_Domain.Services{
         Task<RepairRequest> GetRepairRequestByIdAsync(int requestId);
         Task<IList<RepairRequest>> GetUserBuildingRequestsAsync(int buildingId);
         Task UpdateRepairRequestAsync(RepairRequest repairRequest);
-    }
+        Task UpdateRequestNoteAsync(RequestNotes requestNote);
+        }
 
 }

@@ -74,9 +74,9 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("note/update")]
-    public async Task<IActionResult> UpdateRequestNotes(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRequestNotes(RequestNotes requestNotes)
     {
-        await _requestService.UpdateRepairRequestAsync(repairRequest);
+        await _requestService.UpdateRequestNoteAsync(requestNotes);
         return Ok();
     }
 

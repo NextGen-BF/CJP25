@@ -15,13 +15,16 @@ public class RequestService : IRequestService
     readonly GetAllRepairRequestsByBuildingIdUseCase _getAllRepairRequestsByBuildingIdUseCase;
     readonly GetRequestByIdUseCase _getRequestByIdUseCase; 
     readonly UpdateRepairRequestUseCase _updateRepairRequestUseCase;
+    readonly UpdateRequestNoteUseCase _updateRequestNoteUseCase;
     public RequestService( CreateRepairRequestUseCase createRepairRequestUseCase,
                             CreateRequestNotesUseCase createRequestNoteUseCase,
                             CreateUserBuildingRequestUseCase createUserBuildingRequestUseCase,
                             DeleteRepairRequestNoteUseCase deleteRepairRequestNoteUseCase,
                             DeleteRepairRequestUseCase deleteRepairRequestUseCase,
                             GetAllRepairRequestsByBuildingIdUseCase getAllRepairRequestsByBuildingIdUseCase,
-                            GetRequestByIdUseCase getRequestByIdUseCase)
+                            GetRequestByIdUseCase getRequestByIdUseCase,
+                            UpdateRepairRequestUseCase updateRepairRequestUseCase,
+                            UpdateRequestNoteUseCase updateRequestNoteUseCase)
     {
         _createRepairRequestUseCase=createRepairRequestUseCase;
         _createRequestNoteUseCase=createRequestNoteUseCase;
@@ -30,6 +33,8 @@ public class RequestService : IRequestService
         _deleteRepairRequestUseCase=deleteRepairRequestUseCase;
         _getAllRepairRequestsByBuildingIdUseCase=getAllRepairRequestsByBuildingIdUseCase;
         _getRequestByIdUseCase=getRequestByIdUseCase;
+        _updateRepairRequestUseCase=updateRepairRequestUseCase;
+        _updateRequestNoteUseCase=updateRequestNoteUseCase;
     }
     public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
     {
@@ -74,5 +79,10 @@ public class RequestService : IRequestService
     public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
     {
         await _updateRepairRequestUseCase.Execute(repairRequest);
+    }
+
+    public async Task UpdateRequestNoteAsync(RequestNotes requestNote)
+    {
+        await _updateRequestNoteUseCase.Execute(requestNote);
     }
 }
