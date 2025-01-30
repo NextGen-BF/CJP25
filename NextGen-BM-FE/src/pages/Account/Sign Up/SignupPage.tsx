@@ -1,73 +1,11 @@
 import { Button, TextField } from "@mui/material";
 import { FC, useState } from "react";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./signup.scss";
+import { validateFormData } from "../../../utils/signupValidation";
+import { validationConstants } from "../../../constants/validationConstants";
 
-interface ValidationError {
-  key: string;
-  error: string;
-}
-
-function validateNameField(field: string, value: string): ValidationError {
-  const regex = new RegExp("[0-9]");
-
-  if (value.length === 0) {
-    return { key: field, error: "Names must not be empty" };
-  }
-
-  if (regex.test(value)) {
-    return { key: field, error: "Names must not contain numbes" };
-  }
-
-  return { key: "", error: "" };
-}
-
-function validatePassword(key: string, value: string): ValidationError {
-  const regex = new RegExp(
-    `^(?=.*[A-Z])(?=.*[!@#$&*.,:;-=()])(?=.*[0-9])(?=.*[a-z]).{6,}$`,
-  );
-
-  if (value.length === 0) {
-    return { key: key, error: "Please enter a password" };
-  }
-
-  if (value.includes(" ")) {
-    return { key: key, error: "Password cannot contain white spaces" };
-  }
-
-  if (!regex.test(value)) {
-    return {
-      key: key,
-      error:
-        "Password requires at least 6 characters, one uppercase, one lower case letter, a number and a special character",
-    };
-  }
-
-  return { key: "", error: "" };
-}
-
-function validateFormData(data: FormData): Map<String, String> {
-  const errors = new Map<String, String>();
-  const firstName = data.firstName.trim();
-  const lastName = data.lastName.trim();
-  const password = data.password;
-  const confirmPassword = data.confirmPassword;
-
-  const firstNameError = validateNameField("firstName", firstName);
-  errors.set(firstNameError.key, firstNameError.error);
-  const lastNameError = validateNameField("lastName", lastName);
-  errors.set(lastNameError.key, lastNameError.error);
-  const passwordError = validatePassword("password", password);
-  errors.set(passwordError.key, passwordError.error);
-
-  if (password !== confirmPassword) {
-    errors.set("confirmPassword", "Passwords do not match")
-  }
-
-  return errors;
-}
-
-interface FormData {
+export interface FormData {
   firstName: string;
   lastName: string;
   email: string;
@@ -91,7 +29,7 @@ const SignupPage: FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    errors.delete(name)
+    errors.delete(name);
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
@@ -99,7 +37,7 @@ const SignupPage: FC = () => {
     event.preventDefault();
     setErrors(validateFormData(formData));
     if (errors.keys.length === 0) {
-      console.log("submited", formData)
+      console.log("submited", formData);
     }
   };
 
@@ -109,19 +47,19 @@ const SignupPage: FC = () => {
         <h2 className="sign-up-header">Sign Up</h2>
         <div className="names-container">
           <TextField
-            name="firstName"
+            name={validationConstants.firstNameField}
             label="First Name *"
-            error={errors.has("firstName")}
-            helperText={errors.get("firstName")}
+            error={errors.has(validationConstants.firstNameField)}
+            helperText={errors.get(validationConstants.firstNameField)}
             variant="outlined"
             size="small"
             onChange={(e) => handleChange(e)}
           />
           <TextField
-            name="lastName"
+            name={validationConstants.lastNameField}
             label="Last Name *"
-            error={errors.has("lastName")}
-            helperText={errors.get("lastName")}
+            error={errors.has(validationConstants.lastNameField)}
+            helperText={errors.get(validationConstants.lastNameField)}
             variant="outlined"
             size="small"
             onChange={(e) => handleChange(e)}
@@ -140,10 +78,10 @@ const SignupPage: FC = () => {
         />
 
         <TextField
-          name="password"
+          name={validationConstants.passwordField}
           label="Password *"
-          error={errors.has("password")}
-          helperText={errors.get("password")}
+          error={errors.has(validationConstants.passwordField)}
+          helperText={errors.get(validationConstants.passwordField)}
           type="password"
           variant="outlined"
           size="small"
@@ -152,10 +90,10 @@ const SignupPage: FC = () => {
         />
 
         <TextField
-          name="confirmPassword"
+          name={validationConstants.confirmPasswordField}
           label="Confirm Password *"
-          error={errors.has("confirmPassword")}
-          helperText={errors.get("confirmPassword")}
+          error={errors.has(validationConstants.confirmPasswordField)}
+          helperText={errors.get(validationConstants.confirmPasswordField)}
           type="password"
           variant="outlined"
           size="small"
