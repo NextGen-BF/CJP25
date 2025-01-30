@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Application.ViewModels{
+namespace NextGen_BM_BE_Domain.ViewModels{
     public class PropertyExpenseViewModel{
         public int PropertyExpenseId { get; set; }
         public int PropertyExpenseTemplateId { get; set; }

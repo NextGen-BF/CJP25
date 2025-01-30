@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Entities.User;
 using NextGen_BM_BE_Domain.Interfaces;
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("AppDb"));
 
