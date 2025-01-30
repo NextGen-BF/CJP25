@@ -45,7 +45,7 @@ public class RequestController: ControllerBase {
     [Route("repair/new")]
     public async Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
     {
-        await _requestService.CreateRepairRequestAsync();
+        await _requestService.CreateRepairRequestAsync(repairRequest);
         return Ok();
     }
 
@@ -60,7 +60,7 @@ public class RequestController: ControllerBase {
     [Route("note/new")]
     public async Task<IActionResult> CreateRepairRequestNote(RequestNotes requestNotes)
     {
-        await _requestService.CreateRequestNoteAsync();
+        await _requestService.CreateRequestNoteAsync(requestNotes);
         return Ok();
     }
 
