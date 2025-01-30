@@ -24,6 +24,7 @@ public class PropertyController: ControllerBase {
     [Route("all")]
     public async Task<IActionResult> GetAllProperties(){
         var result = await _propertyService.GetAllPropertiesAsync();
+        if (result==null) return BadRequest();
         return Ok(result);
     }
 
@@ -31,6 +32,7 @@ public class PropertyController: ControllerBase {
     [Route("{propertyId}")]
     public async Task<IActionResult> GetPropertyById(int propertyId){
         var result = await _propertyService.GetPropertyByIdAsync(propertyId);
+        if (result==null) return BadRequest();
         return Ok(result);
     }
 
@@ -38,6 +40,7 @@ public class PropertyController: ControllerBase {
     [Route("user/{userId}")]
     public async Task<IActionResult> GetPropertiesByUserId(int userId){
         var result= await _propertyService.GetPropertyByUserIdAsync(userId);
+        if (result==null) return BadRequest();
         return Ok(result);
     }
 
@@ -45,6 +48,7 @@ public class PropertyController: ControllerBase {
     [Route("building/{buildingId}")]
     public async Task<IActionResult> GetPropertyByBuildingId(int buildingId){
         var result= await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
+        if (result==null) return BadRequest();
         return Ok(result);
     }
 
