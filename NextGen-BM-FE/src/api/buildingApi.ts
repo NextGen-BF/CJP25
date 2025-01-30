@@ -1,6 +1,5 @@
 import { Building } from "../models/building.ts"
-import { request } from "./shared.ts"
-import { apiURL } from "./shared.ts"
+import { request, apiURL } from "./shared.ts"
 
 
 export async function GetAllBuildings() {
@@ -9,10 +8,9 @@ export async function GetAllBuildings() {
     })
 }
 
-export async function GetBuildingByID(id: number): Promise<Building> {
+export async function GetBuildingById(id: number): Promise<Building> {
     return await request<Building>(`${apiURL}/building/${id}`, {
-        method: "POST",
-        body: JSON.stringify(id),
+        method: "GET",
     });
 }
 
