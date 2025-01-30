@@ -34,7 +34,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task CreatePropertyExpenseAsync(PropertyExpense propertyExpense)
         {
-            await _dbContext.PropertyExpenses.AddAsync(propertyExpense);
+            await _dbContext.PropertyExpense.AddAsync(propertyExpense);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -45,7 +45,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             );
             if (propertyExpenseToDelete is not null)
             {
-                _dbContext.PropertyExpenses.Remove(propertyExpenseToDelete);
+                _dbContext.PropertyExpense.Remove(propertyExpenseToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -59,7 +59,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                PropertyExpense? foundPropertyExpense = await _dbContext.PropertyExpenses.FindAsync(
+                PropertyExpense? foundPropertyExpense = await _dbContext.PropertyExpense.FindAsync(
                     propertyExpenseId
                 );
                 if (foundPropertyExpense is null)
@@ -98,7 +98,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task UpdatePropertyExpenseAsync(PropertyExpense propertyExpense)
         {
-            _dbContext.PropertyExpenses.Update(propertyExpense);
+            _dbContext.PropertyExpense.Update(propertyExpense);
             await _dbContext.SaveChangesAsync();
         }
     }
