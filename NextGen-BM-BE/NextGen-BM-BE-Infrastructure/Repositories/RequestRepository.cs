@@ -15,7 +15,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
         {
-            await _dbContext.RepairRequest.AddAsync(repairRequest);
+            await _dbContext.RepairRequests.AddAsync(repairRequest);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -37,7 +37,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             if (repairRequestToDelete is not null)
             {
                 repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dbContext.RepairRequest.Update(repairRequestToDelete);
+                _dbContext.RepairRequests.Update(repairRequestToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -59,7 +59,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                RepairRequest? foundRepairRequest = await _dbContext.RepairRequest.FindAsync(
+                RepairRequest? foundRepairRequest = await _dbContext.RepairRequests.FindAsync(
                     requestId
                 );
                 if (foundRepairRequest is null)
@@ -100,7 +100,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
-            _dbContext.RepairRequest.Update(repairRequest);
+            _dbContext.RepairRequests.Update(repairRequest);
             await _dbContext.SaveChangesAsync();
         }
 
