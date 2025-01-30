@@ -1,6 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
-public class RequestNotes{
+public class RequestNotes
+{
+    [Key]
     public int RequestNotesId { get; set; }
     public int RequestId { get; set; }
     public required string NoteText { get; set; }

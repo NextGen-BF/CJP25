@@ -1,18 +1,28 @@
+using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
+
+
 namespace NextGen_BM_BE_Infrastructure.Repositories{
 
     public class RequestRepository : IRequestRepository
     {
+        readonly DataContext _dataContext;
+        public RequestRepository(DataContext dataContext)
+        {
+            _dataContext=dataContext;
+        } 
         public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
         {
-            throw new NotImplementedException();
+            await _dataContext.RepairRequests.AddAsync(repairRequest);
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
-            throw new NotImplementedException();
+            await _dataContext.RequestNotes.AddAsync(requestNotes);
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
@@ -20,39 +30,40 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
             throw new NotImplementedException();
         }
 
-        public async Task DeleteRepairRequestAsync(int requestNotes)
+        public async Task DeleteRepairRequestAsync(int requestId)
         {
-            throw new NotImplementedException();
+            await _dataContext.RepairRequests.Where(request=>request.RequestId==requestId).ExecuteDeleteAsync();
         }
 
         public async Task DeleteRequestNotesAsync(int requestNotesId)
         {
-            throw new NotImplementedException();
+            await _dataContext.RequestNotes.Where(note=>note.RequestNotesId==requestNotesId).ExecuteDeleteAsync();
         }
 
         public async Task<RepairRequest> GetRepairRequestByIdAsync(int requestId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.RepairRequests.FindAsync(requestId);
         }
 
         public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.RepairRequests.Where(request=>request.BuildingId==buildingId).ToListAsync();
         }
 
         public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
         {
             throw new NotImplementedException();
         }
-
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
-            throw new NotImplementedException();
+            _dataContext.RepairRequests.Update(repairRequest);
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task UpdateRequestNotesAsync(RequestNotes requestNotes)
         {
-            throw new NotImplementedException();
+            _dataContext.RequestNotes.Update(requestNotes);
+            await _dataContext.SaveChangesAsync();
         }
     }
 

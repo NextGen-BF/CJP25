@@ -23,7 +23,7 @@ namespace NextGen_BM_BE_Infrastructure
         public DbSet<PropertyPayments> PropertyPayments { get; set; }
         public DbSet<PropertyUsers> PropertyUsers { get; set; }
         public DbSet<PropertyResidents> PropertyResidents { get; set; }
-        public DbSet<RepairRequest> RepairRequest { get; set; }
+        public DbSet<RepairRequest> RepairRequests { get; set; }
         public DbSet<RequestNotes> RequestNotes { get; set; }
         public DbSet<PropertyExpenseTemplate> PropertyExpenseTemplates { get; set; }
     }
