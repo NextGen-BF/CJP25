@@ -82,6 +82,7 @@ const CreateBuildingPage: FC = () => {
         />
         <TextField
           name="dateBuilt"
+          slotProps={{ inputLabel: { shrink: true } }} 
           label="Date Built"
           type="date"
           variant="outlined"
