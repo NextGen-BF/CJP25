@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NextGen-BM-BE-Domain\NextGen-BM-BE-Domain.csproj" />
+    <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj" />
   </ItemGroup>
 </Project>

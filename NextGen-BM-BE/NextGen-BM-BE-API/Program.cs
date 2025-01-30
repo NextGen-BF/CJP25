@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Entities.User;
 using NextGen_BM_BE_Domain.Interfaces;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 
@@ -20,6 +22,7 @@ builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
 
 builder.Services.AddCors(options =>
 {
