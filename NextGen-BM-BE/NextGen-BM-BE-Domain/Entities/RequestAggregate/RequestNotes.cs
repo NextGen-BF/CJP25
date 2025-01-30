@@ -7,5 +7,5 @@ public class RequestNotes
     public required string NoteText { get; set; }
     public DateOnly CreateDate { get; set; }
     public int CreatedBy { get; set; }
-    public DateOnly DeletedDate { get; set; }
+    public DateOnly? DeletedDate { get; set; }
 }

@@ -14,6 +14,6 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate
         public bool IsTemplate { get; set; }
         public int RepeatPeriodId { get; set; }
         public string? InvoiceUrl { get; set; }
-        public DateOnly DeletedDate { get; set; }
+        public DateOnly? DeletedDate { get; set; }
     }
 };

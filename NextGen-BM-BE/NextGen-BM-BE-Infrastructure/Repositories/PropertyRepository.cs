@@ -24,14 +24,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             Property? propertyToDelete = await this.GetPropertyByIdAsync(propertyId);
             if (propertyToDelete is not null)
             {
-                _dbContext.Property.Remove(propertyToDelete);
+                propertyToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dbContext.Property.Update(propertyToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            return await _dbContext.Property.ToListAsync();
+            return await _dbContext.Property.Where(p => p.DeletedDate == null).ToListAsync();
         }
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)

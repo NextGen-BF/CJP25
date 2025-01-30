@@ -9,7 +9,7 @@ public class Building
     public decimal TotalBuildingSize { get; set; }
     public DateOnly DateBuilt { get; set; }
     public int NumOfElevators { get; set; }
-    public DateOnly DeletedDate { get; set; }
+    public DateOnly? DeletedDate { get; set; }
     public required Address BuildingAddress { get; set; }
     public ICollection<BuildingExpense>? BuildingExpenses { get; set; }
 }

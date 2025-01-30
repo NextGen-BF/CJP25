@@ -7,6 +7,6 @@ namespace NextGen_BM_BE_Domain.Entities
         public required string Title { get; set; }
         public required string Type { get; set; }
         public int Value { get; set; }
-        public DateOnly DeletedDate { get; set; }
+        public DateOnly? DeletedDate { get; set; }
     }
 };

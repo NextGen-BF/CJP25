@@ -36,7 +36,8 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             RepairRequest? repairRequestToDelete = await this.GetRepairRequestByIdAsync(requestId);
             if (repairRequestToDelete is not null)
             {
-                _dbContext.RepairRequest.Remove(repairRequestToDelete);
+                repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dbContext.RepairRequest.Update(repairRequestToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -48,7 +49,8 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             );
             if (requestNotesToDelete is not null)
             {
-                _dbContext.RequestNotes.Remove(requestNotesToDelete);
+                requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dbContext.RequestNotes.Update(requestNotesToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }

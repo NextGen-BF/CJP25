@@ -13,7 +13,7 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public decimal SizeOfIdealParts { get; set; }
         public int PropertyTypeId { get; set; }
         public bool EntranceIsExternal { get; set; }
-        public DateOnly DeletedDate { get; set; }
+        public DateOnly? DeletedDate { get; set; }
         public ICollection<PropertyExpense>? Expenses { get; set; }
         public ICollection<PropertyUsers>? Users { get; set; }
         public ICollection<PropertyPayments>? Payments { get; set; }

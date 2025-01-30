@@ -8,7 +8,7 @@ namespace NextGen_BM_BE_Domain.Entities
         public bool Approved { get; set; }
         public int Role { get; set; }
         public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
-        public DateOnly DeletedDate { get; set; }
+        public DateOnly? EndDate { get; set; }
+        public DateOnly? DeletedDate { get; set; }
     }
 };

@@ -45,7 +45,8 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             );
             if (propertyExpenseToDelete is not null)
             {
-                _dbContext.PropertyExpense.Remove(propertyExpenseToDelete);
+                propertyExpenseToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dbContext.PropertyExpense.Update(propertyExpenseToDelete);
                 await _dbContext.SaveChangesAsync();
             }
         }
