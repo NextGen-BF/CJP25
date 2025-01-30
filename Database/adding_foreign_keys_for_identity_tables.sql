@@ -1,0 +1,17 @@
+ALTER TABLE UserBuildings 
+ADD FOREIGN KEY (UserId) REFERENCES Users(UserId);
+
+ALTER TABLE PropertyUsers
+ADD FOREIGN KEY (UserId) REFERENCES Users(UserId);
+
+ALTER TABLE RepairRequests
+ADD FOREIGN KEY (UserId) REFERENCES Users(UserId);
+
+ALTER TABLE PropertyExpense
+ADD FOREIGN KEY (RoleId) REFERENCES Roles(RoleId);
+
+ALTER TABLE UserBuildings 
+ADD FOREIGN KEY (RoleId) REFERENCES Roles(RoleId);
+
+ALTER TABLE PropertyUsers
+ADD FOREIGN KEY (RoleId) REFERENCES Roles(RoleId);
