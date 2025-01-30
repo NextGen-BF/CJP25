@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
+using NextGen_BM_BE_Application.UseCases.Properties.Create;
+using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
@@ -21,6 +23,13 @@ builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 
 builder.Services.AddScoped<GetPropertiesByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
+builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
+builder.Services.AddScoped<UpdatePropertyUseCase>();
+
 
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 

@@ -9,35 +9,48 @@ namespace NextGen_BM_BE_Application.Services{
 
     public class PropertyService:IPropertyService
     {
-        readonly IPropertyRepository _propertyRepository;
         readonly GetPropertiesByIdUseCase _getPropertiesByIdUseCase;
-        public PropertyService(IPropertyRepository propertyRepository, GetPropertiesByIdUseCase getPropertiesByIdUseCase)
+        readonly GetAllPropertiesUseCase _getAllPropertiesUseCase;
+        readonly GetPropertiesByBuildingIdUseCase _getPropertiesByBuildingIdUseCase;
+        readonly GetPropertiesByUserIdUseCase _getPropertiesByUserIdUseCase;
+        readonly CreatePropertyUseCase _createPropertyUseCase;
+        readonly DeletePropertyUseCase _deletePropertyUseCase;
+        readonly UpdatePropertyUseCase _updatePropertyUseCase;
+
+        public PropertyService(GetPropertiesByIdUseCase getPropertiesByIdUseCase,
+                                GetAllPropertiesUseCase getAllPropertiesUseCase,
+                                GetPropertiesByBuildingIdUseCase getPropertiesByBuildingIdUseCase,
+                                GetPropertiesByUserIdUseCase getPropertiesByUserIdUseCase,
+                                CreatePropertyUseCase createPropertyUseCase,
+                                DeletePropertyUseCase deletePropertyUseCase,
+                                UpdatePropertyUseCase updatePropertyUseCase)
         {
-            _propertyRepository=propertyRepository;
             _getPropertiesByIdUseCase=getPropertiesByIdUseCase;
+            _getAllPropertiesUseCase=getAllPropertiesUseCase;
+            _getPropertiesByBuildingIdUseCase=getPropertiesByBuildingIdUseCase;
+            _getPropertiesByUserIdUseCase=getPropertiesByUserIdUseCase;
+            _createPropertyUseCase=createPropertyUseCase;
+            _deletePropertyUseCase=deletePropertyUseCase;
+            _updatePropertyUseCase=updatePropertyUseCase;
         }
 
         public async Task CreatePropertyAsync(Property property)
         {
-            var createPropertyUseCase = new CreatePropertyUseCase(_propertyRepository);
-            await createPropertyUseCase.Execute(property);
+            await _createPropertyUseCase.Execute(property);
         }
         public async Task DeletePropertyAsync(int propertyId)
         {
-            var deletePropertyUseCase = new DeletePropertyUseCase(_propertyRepository);
-            await deletePropertyUseCase.Execute(propertyId);
+            await _deletePropertyUseCase.Execute(propertyId);
         }
 
         public async Task<IList<Property>> GetAllPropertiesAsync()
         {
-            var getAllPropertiesUseCase = new GetAllPropertiesUseCase(_propertyRepository);
-            return await getAllPropertiesUseCase.Execute();
+            return await _getAllPropertiesUseCase.Execute();
         }
 
         public async Task UpdatePropertyAsync(Property property)
         {
-            var updatePropertyUseCase = new UpdatePropertyUseCase(_propertyRepository);
-            await updatePropertyUseCase.Execute(property);
+            await _updatePropertyUseCase.Execute(property);
         }
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
@@ -46,14 +59,12 @@ namespace NextGen_BM_BE_Application.Services{
 
         public async Task<IList<Property>> GetPropertyByUserIdAsync(int userId)
         {
-            var getPropertiesByUserIdUseCase = new GetPropertiesByUserIdUseCase(_propertyRepository);
-            return await getPropertiesByUserIdUseCase.Execute(userId);
+            return await _getPropertiesByUserIdUseCase.Execute(userId);
         }
 
         public async Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId)
         {
-            var getPropertiesByBuildingIdUseCase = new GetPropertiesByBuildingIdUseCase(_propertyRepository);
-            return await getPropertiesByBuildingIdUseCase.Execute(buildingId);
+            return await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
         }
     }
 }
