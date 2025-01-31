@@ -32,7 +32,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            return await _dbContext.Property.Where(p => p.DeletedDate == null).ToListAsync();
+            return await _dbContext
+                .Property.Where(p => p.DeletedDate == null)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)
@@ -42,7 +45,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
-            return await _dbContext.Property.Where(p => p.Users.Any(u => u.UserId == userId)).ToListAsync();
+            return await _dbContext
+                .Property.Where(p => p.Users.Any(u => u.UserId == userId))
+                .ToListAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)

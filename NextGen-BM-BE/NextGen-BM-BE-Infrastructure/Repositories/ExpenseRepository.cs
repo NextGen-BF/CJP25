@@ -94,6 +94,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 List<Property> propertiesByBuildingId = await _dbContext
                     .Property.Where(p => p.BuildingId == buildingId)
+                    .AsNoTracking()
                     .ToListAsync();
 
                 foreach (Property property in propertiesByBuildingId)
@@ -172,6 +173,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 {
                     List<Property> userProperties = await _dbContext
                         .Property.Where(p => p.PropertyId == user.PropertyId)
+                        .AsNoTracking()
                         .ToListAsync();
 
                     foreach (Property property in userProperties)

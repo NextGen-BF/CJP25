@@ -48,7 +48,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dbContext.Buildings.Where(b => b.DeletedDate == null).ToListAsync();
+                return await _dbContext
+                    .Buildings.Where(b => b.DeletedDate == null)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
