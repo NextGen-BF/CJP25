@@ -77,7 +77,7 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(); // not sure what to return here
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateExpense(PropertyExpense propertyExpense)
         {
@@ -85,7 +85,7 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(propertyExpense);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("delete/{expenseId}")]
         public async Task<IActionResult> DeleteExpense(int expenseId)
         {

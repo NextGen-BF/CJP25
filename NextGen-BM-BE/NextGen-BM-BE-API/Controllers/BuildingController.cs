@@ -46,7 +46,7 @@ namespace NextGen_BM_BE_API.Controllers
             );
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateBuilding(Building building)
         {
@@ -54,7 +54,7 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(building);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("delete/{buildingId}")]
         public async Task<IActionResult> DeleteBuilding(int buildingId)
         {
