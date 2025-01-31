@@ -2,6 +2,7 @@ using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Update;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Services;
 
@@ -13,6 +14,7 @@ public class RequestService : IRequestService
     readonly DeleteRepairRequestNoteUseCase _deleteRepairRequestNoteUseCase;
     readonly DeleteRepairRequestUseCase _deleteRepairRequestUseCase;
     readonly GetAllRepairRequestsByBuildingIdUseCase _getAllRepairRequestsByBuildingIdUseCase;
+    readonly GetUserBuildingRequests _getUserBuildingRequests;
     readonly GetRequestByIdUseCase _getRequestByIdUseCase; 
     readonly UpdateRepairRequestUseCase _updateRepairRequestUseCase;
     readonly UpdateRequestNoteUseCase _updateRequestNoteUseCase;
@@ -71,9 +73,9 @@ public class RequestService : IRequestService
         return await _getRequestByIdUseCase.Execute(requestId);
     }
 
-    public Task<IList<RepairRequest>> GetUserBuildingRequestsAsync(int buildingId)
+    public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
     {
-        throw new NotImplementedException();
+        return await _getUserBuildingRequests.Execute(buildingId);
     }
 
     public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)

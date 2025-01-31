@@ -1,5 +1,6 @@
 
 
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
 namespace NextGen_BM_BE_Domain.Services{
@@ -12,7 +13,7 @@ namespace NextGen_BM_BE_Domain.Services{
         Task DeleteRepairRequestAsync(int requestId);
         Task<IList<RepairRequest>> GetAllRepairRequestsByBuildingIdAsync(int buildingId);
         Task<RepairRequest> GetRepairRequestByIdAsync(int requestId);
-        Task<IList<RepairRequest>> GetUserBuildingRequestsAsync(int buildingId);
+        Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId);
         Task UpdateRepairRequestAsync(RepairRequest repairRequest);
         Task UpdateRequestNoteAsync(RequestNotes requestNote);
         }
