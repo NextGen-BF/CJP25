@@ -29,8 +29,10 @@ const SignupPage: FC = () => {
     phoneNumber: "",
   });
   let errors = new Map<String, String>();
-  const [presentedErrors, setpresentedErrors] = useState(errors)
-  const message = useSelector((state: RootState) => state.signupReducer.message)
+  const [presentedErrors, setpresentedErrors] = useState(errors);
+  const message = useSelector(
+    (state: RootState) => state.signupReducer.requestResultMessage,
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -43,8 +45,8 @@ const SignupPage: FC = () => {
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     errors = validateFormData(formData);
-    setpresentedErrors(errors)
-    errors.delete("")
+    setpresentedErrors(errors);
+    errors.delete("");
     if (errors.size === 0) {
       dispatch(signupCall({ ...formData }));
     }
@@ -54,7 +56,9 @@ const SignupPage: FC = () => {
     <div className="sign-up-container">
       <form className="sign-up-form" onSubmit={(e) => submit(e)}>
         <h2 className="sign-up-header">Sign Up</h2>
-        <h4 className="sign-up-message" hidden={message.length === 0}>{message}</h4>
+        <h4 className="sign-up-message" hidden={message.length === 0}>
+          {message}
+        </h4>
         <div className="names-container">
           <TextField
             name={validationConstants.firstNameField}
@@ -103,7 +107,9 @@ const SignupPage: FC = () => {
           name={validationConstants.confirmPasswordField}
           label="Confirm Password *"
           error={presentedErrors.has(validationConstants.confirmPasswordField)}
-          helperText={presentedErrors.get(validationConstants.confirmPasswordField)}
+          helperText={presentedErrors.get(
+            validationConstants.confirmPasswordField,
+          )}
           type="password"
           variant="outlined"
           size="small"

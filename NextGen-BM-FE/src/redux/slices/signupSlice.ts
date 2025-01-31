@@ -4,11 +4,11 @@ import { AxiosResponse } from "axios";
 import { getMessageForSignupError } from "../../utils/signupResponseError";
 
 interface SignUpState {
-  message: string;
+  requestResultMessage: string;
 }
 
 const initialState: SignUpState = {
-  message: "",
+  requestResultMessage: "",
 };
 
 const signupSlice = createSlice({
@@ -20,9 +20,9 @@ const signupSlice = createSlice({
       signupCall.fulfilled,
       (state, action: PayloadAction<AxiosResponse>) => {
         if (action.payload.status === 200) {
-          state.message = "Successful";
+          state.requestResultMessage = "Successful";
         } else {
-          state.message = getMessageForSignupError(action.payload);
+          state.requestResultMessage = getMessageForSignupError(action.payload);
         }
       },
     );
