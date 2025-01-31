@@ -3,7 +3,8 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 public class Address
 {
     public int AddressId { get; set; }
-    public int StreetNumber { get; set; }
+    public required string StreetName { get; set; }
+    public required string StreetNumber { get; set; }
     public required string Entrance { get; set; }
 
     public required string StreetName { get; set; }

@@ -1,3 +1,4 @@
+using NextGen_BM_BE_Domain.ViewModels;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 
 namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
@@ -6,8 +7,8 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
     {
         Task<Building> GetBuildingByIdAsync(int buildingId);
         Task<List<Building>> GetAllBuildingsAsync();
-        Task CreateBuildingAsync(Building building);
-        Task UpdateBuildingAsync(Building building);
+        Task CreateBuildingAsync(BuildingViewModel building);
+        Task UpdateBuildingAsync(BuildingViewModel building);
         Task DeleteBuildingAsync(int buildingId);
     }
 }

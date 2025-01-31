@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Application.ViewModels{
+namespace NextGen_BM_BE_Domain.ViewModels{
     public class PropertyPaymentsViewModel{
         public int PropertyId { get; set; }
         public double AmountOwed { get; set; }

@@ -1,5 +1,4 @@
-
-namespace NextGen_BM_BE_Application.ViewModels{
+namespace NextGen_BM_BE_Domain.ViewModels{
 
     public class PropertyViewModel{
         public int PropertyId { get; set; }

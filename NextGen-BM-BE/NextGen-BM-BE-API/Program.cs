@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
 using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration["ConnectionString"]!;
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+// builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();

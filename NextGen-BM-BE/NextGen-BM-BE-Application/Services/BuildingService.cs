@@ -4,6 +4,7 @@ using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 using NextGen_BM_BE_Application.UseCases.Buildings.Update;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.Services
 {
