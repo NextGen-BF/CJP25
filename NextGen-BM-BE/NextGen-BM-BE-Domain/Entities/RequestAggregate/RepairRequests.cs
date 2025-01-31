@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
 public class RepairRequest{
-    public int RepairRequestId { get; set; }
+    [Key]
+    public int RequestId { get; set; }
     public int UserId { get; set; }
     public required string RequestDescription { get; set; }
     public int RequestStatus { get; set; }

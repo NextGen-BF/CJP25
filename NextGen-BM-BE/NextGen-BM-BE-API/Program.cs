@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Entities.User;
+using NextGen_BM_BE_Application.UseCases.Expenses.Get;
+using NextGen_BM_BE_Application.UseCases.Properties.Create;
+using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
@@ -23,6 +26,21 @@ builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
+
+builder.Services.AddScoped<GetPropertiesByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
+builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
+builder.Services.AddScoped<UpdatePropertyUseCase>();
+
+
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+
+string connectionString=builder.Configuration["ConnectionString"];
+
+builder.Services.AddDbContext<DataContext>(options=>options.UseSqlServer(connectionString));
 
 builder.Services.AddCors(options =>
 {
