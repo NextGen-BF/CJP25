@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 
