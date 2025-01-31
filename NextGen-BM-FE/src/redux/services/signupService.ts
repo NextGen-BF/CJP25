@@ -22,7 +22,6 @@ export const signupCall = createAsyncThunk(
         if (axios.isAxiosError(err)) {
           return err.response;
         }
-        console.log("axios")
         return err;
       });
   },
