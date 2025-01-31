@@ -29,7 +29,7 @@ const SignupPage: FC = () => {
     phoneNumber: "",
   });
   let errors = new Map<String, String>();
-  const [presentedErrors, setErrors] = useState(errors)
+  const [presentedErrors, setpresentedErrors] = useState(errors)
   const message = useSelector((state: RootState) => state.signupReducer.message)
 
   const handleChange = (
@@ -43,7 +43,7 @@ const SignupPage: FC = () => {
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     errors = validateFormData(formData);
-    setErrors(errors)
+    setpresentedErrors(errors)
     errors.delete("")
     if (errors.size === 0) {
       dispatch(signupCall({ ...formData }));
