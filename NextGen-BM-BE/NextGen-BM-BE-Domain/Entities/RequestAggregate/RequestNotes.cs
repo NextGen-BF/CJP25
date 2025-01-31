@@ -8,4 +8,5 @@ public class RequestNotes
     public DateOnly CreateDate { get; set; }
     public int CreatedBy { get; set; }
     public DateOnly? DeletedDate { get; set; }
+    public required User User { get; set; }
 }
