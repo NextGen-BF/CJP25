@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 {
-    [Table("Property")]
     public class Property
     {
         public int PropertyId { get; set; }

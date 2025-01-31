@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
+using NextGen_BM_BE_Domain.Entities.User;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
@@ -53,7 +54,20 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<PropertyExpense>> GetPropertyExpenseByBuildingIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            List<PropertyExpense> propertyExpensesByBuildingId = new List<PropertyExpense>();
+
+            List<Property> propertiesByBuildingId = await _dbContext
+                .Property.Where(p => p.BuildingId == buildingId)
+                .ToListAsync();
+
+            foreach (Property property in propertiesByBuildingId)
+            {
+                if (property.Expenses is not null)
+                {
+                    propertyExpensesByBuildingId.AddRange(property.Expenses);
+                }
+            }
+            return propertyExpensesByBuildingId;
         }
 
         public async Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId)
