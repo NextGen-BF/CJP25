@@ -1,4 +1,4 @@
-namespace NextGen_BM_BE_Application.ViewModels{
+namespace NextGen_BM_BE_Domain.ViewModels{
     public class ResidentHistoryViewModel{
         public int PropertyResidentsId { get; set; }
         public required string FirstName { get; set; }
