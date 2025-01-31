@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
 
-interface signupData {
+interface UserSignupData {
   firstName: string;
   lastName: string;
   email: string;
@@ -12,7 +12,7 @@ interface signupData {
 
 export const signupCall = createAsyncThunk(
   "account/register",
-  async (data: signupData) => {
+  async (data: UserSignupData) => {
     return axios
       .post(`${apiURL}/account/register`, data)
       .then(function (response) {
