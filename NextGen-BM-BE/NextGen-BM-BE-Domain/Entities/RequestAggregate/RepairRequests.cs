@@ -14,5 +14,6 @@ public class RepairRequest
     public DateOnly? DeletedDate { get; set; }
     public required Building Building { get; set; }
     public required Enum RequestStatus { get; set; }
+    public required User User { get; set; }
     public ICollection<RequestNotes>? Notes { get; set; }
 }

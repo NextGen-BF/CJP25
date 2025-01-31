@@ -4,7 +4,6 @@ using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
-using NextGen_BM_BE_Domain.Entities.User;
 
 namespace NextGen_BM_BE_Infrastructure
 {

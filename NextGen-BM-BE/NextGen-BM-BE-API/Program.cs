@@ -9,7 +9,7 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
-using NextGen_BM_BE_Domain.Entities.User;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
