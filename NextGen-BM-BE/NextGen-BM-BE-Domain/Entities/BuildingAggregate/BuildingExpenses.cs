@@ -15,8 +15,8 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate
         public int RepeatPeriodId { get; set; }
         public string? InvoiceUrl { get; set; }
         public DateOnly? DeletedDate { get; set; }
-        public Building? Building { get; set; }
-        public Enum? Supplier { get; set; }
-        public Enum? RepeatPeriod { get; set; }
+        public required Building Building { get; set; }
+        public required Enum Supplier { get; set; }
+        public required Enum RepeatPeriod { get; set; }
     }
 };
