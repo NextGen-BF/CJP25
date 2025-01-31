@@ -10,7 +10,10 @@ using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using NextGen_BM_BE_Application.UseCases.Buildings.Create;
+using NextGen_BM_BE_Application.UseCases.Buildings.Update;
+using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
+using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,6 @@ string connectionString = $"Server={builder.Configuration["Server"]};Database={b
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 
@@ -54,6 +56,9 @@ builder.Services.AddAuthentication(options => {
         };
     });
 
+builder.Services.AddAuthorization();
+
+
 //Dependency Injection
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
@@ -61,6 +66,13 @@ builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<TokenGenerator>();
+
+//Use Cases
+builder.Services.AddScoped<CreateBuildingUseCase>();
+builder.Services.AddScoped<UpdateBuildingUseCase>();
+builder.Services.AddScoped<DeleteBuildingUseCase>();
+builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<GetBuildingByIdUseCase>();
 
 builder.Services.AddCors(options =>
 {
@@ -85,6 +97,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
