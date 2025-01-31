@@ -14,7 +14,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         public async Task CreatePropertyAsync(Property property)
         {
             await _dataContext.Properties.AddAsync(property);
-            _dataContext.SaveChangesAsync();
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task DeletePropertyAsync(int propertyId)
