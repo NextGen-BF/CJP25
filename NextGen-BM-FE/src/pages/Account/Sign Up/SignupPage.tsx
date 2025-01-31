@@ -31,7 +31,7 @@ const SignupPage: FC = () => {
   let errors = new Map<String, String>();
   const [presentedErrors, setpresentedErrors] = useState(errors);
   const message = useSelector(
-    (state: RootState) => state.signupReducer.requestResultMessage,
+    (state: RootState) => state.signupReducer.signupResultMessage,
   );
 
   const handleChange = (

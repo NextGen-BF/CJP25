@@ -3,11 +3,11 @@ import { signupCall } from "../services/signupService";
 import { getMessageForSignupError } from "../../utils/signupResponseError";
 
 interface SignUpState {
-  requestResultMessage: string;
+  signupResultMessage: string;
 }
 
 const initialState: SignUpState = {
-  requestResultMessage: "",
+  signupResultMessage: "",
 };
 
 const signupSlice = createSlice({
@@ -17,10 +17,10 @@ const signupSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signupCall.fulfilled, (state) => {
-        state.requestResultMessage = "Successful";
+        state.signupResultMessage = "Successful";
       })
       .addCase(signupCall.rejected, (state, action: PayloadAction<any>) => {
-        state.requestResultMessage = getMessageForSignupError(action.payload);
+        state.signupResultMessage = getMessageForSignupError(action.payload);
       });
   },
 });
