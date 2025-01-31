@@ -25,6 +25,10 @@ const LoginPage: FC = () => {
   const navigate = useNavigate();
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
 
+  if(userToken.accessToken){
+    navigate("/");
+  }
+
   const signIn = async (formData: FormData) => {
     if (!formData.has("email") || !formData.has("password")) {
       return;
@@ -35,10 +39,7 @@ const LoginPage: FC = () => {
         password: formData.get("password")!.toString(),
       }),
     );
-    if (userToken.accessToken) {
-      //TODO: Fix bug where it doesn't register on first click
-      navigate("/");
-    }
+      navigate("/login");
   };
 
   return (
