@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import "./signup.scss";
 import { validateFormData } from "../../../utils/signupValidation";
 import { validationConstants } from "../../../constants/validationConstants";
+import { useAppDispatch } from "../../../redux/store";
+import { signupCall } from "../../../redux/services/signupService";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store.ts";
 
 export interface FormData {
   firstName: string;
@@ -15,6 +19,7 @@ export interface FormData {
 }
 
 const SignupPage: FC = () => {
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -23,7 +28,9 @@ const SignupPage: FC = () => {
     confirmPassword: "",
     phoneNumber: "",
   });
-  const [errors, setErrors] = useState(new Map<String, String>());
+  let errors = new Map<String, String>();
+  const [presentedErrors, setErrors] = useState(errors)
+  const message = useSelector((state: RootState) => state.signupReducer.message)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -33,11 +40,13 @@ const SignupPage: FC = () => {
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrors(validateFormData(formData));
-    if (errors.keys.length === 0) {
-      console.log("submited", formData);
+    errors = validateFormData(formData);
+    setErrors(errors)
+    errors.delete("")
+    if (errors.size === 0) {
+      dispatch(signupCall({ ...formData }));
     }
   };
 
@@ -45,12 +54,13 @@ const SignupPage: FC = () => {
     <div className="sign-up-container">
       <form className="sign-up-form" onSubmit={(e) => submit(e)}>
         <h2 className="sign-up-header">Sign Up</h2>
+        <h4 className="sign-up-message" hidden={message.length === 0}>{message}</h4>
         <div className="names-container">
           <TextField
             name={validationConstants.firstNameField}
             label="First Name *"
-            error={errors.has(validationConstants.firstNameField)}
-            helperText={errors.get(validationConstants.firstNameField)}
+            error={presentedErrors.has(validationConstants.firstNameField)}
+            helperText={presentedErrors.get(validationConstants.firstNameField)}
             variant="outlined"
             size="small"
             onChange={(e) => handleChange(e)}
@@ -58,8 +68,8 @@ const SignupPage: FC = () => {
           <TextField
             name={validationConstants.lastNameField}
             label="Last Name *"
-            error={errors.has(validationConstants.lastNameField)}
-            helperText={errors.get(validationConstants.lastNameField)}
+            error={presentedErrors.has(validationConstants.lastNameField)}
+            helperText={presentedErrors.get(validationConstants.lastNameField)}
             variant="outlined"
             size="small"
             onChange={(e) => handleChange(e)}
@@ -80,8 +90,8 @@ const SignupPage: FC = () => {
         <TextField
           name={validationConstants.passwordField}
           label="Password *"
-          error={errors.has(validationConstants.passwordField)}
-          helperText={errors.get(validationConstants.passwordField)}
+          error={presentedErrors.has(validationConstants.passwordField)}
+          helperText={presentedErrors.get(validationConstants.passwordField)}
           type="password"
           variant="outlined"
           size="small"
@@ -92,8 +102,8 @@ const SignupPage: FC = () => {
         <TextField
           name={validationConstants.confirmPasswordField}
           label="Confirm Password *"
-          error={errors.has(validationConstants.confirmPasswordField)}
-          helperText={errors.get(validationConstants.confirmPasswordField)}
+          error={presentedErrors.has(validationConstants.confirmPasswordField)}
+          helperText={presentedErrors.get(validationConstants.confirmPasswordField)}
           type="password"
           variant="outlined"
           size="small"
@@ -104,8 +114,8 @@ const SignupPage: FC = () => {
         <TextField
           name="phoneNumber"
           label="Phone number"
-          error={errors.has("phoneNumber")}
-          helperText={errors.get("phoneNumber")}
+          error={presentedErrors.has("phoneNumber")}
+          helperText={presentedErrors.get("phoneNumber")}
           type="text"
           variant="outlined"
           size="small"
