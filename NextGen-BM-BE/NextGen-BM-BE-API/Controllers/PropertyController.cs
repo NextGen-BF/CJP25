@@ -3,7 +3,7 @@ using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Application.Services;
-using NextGen_BM_BE_Domain.Services;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 
 namespace NextGen_BM_BE_API.Controllers{
 

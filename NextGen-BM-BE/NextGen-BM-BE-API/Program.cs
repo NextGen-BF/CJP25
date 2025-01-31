@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using NextGen_BM_BE_Application.Services;
+using NextGen_BM_BE_Domain.Entities.User;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
-using NextGen_BM_BE_Domain.Services;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 
@@ -15,12 +15,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 //Dependency Injection
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
 
 builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
@@ -37,13 +42,19 @@ string connectionString=builder.Configuration["ConnectionString"];
 
 builder.Services.AddDbContext<DataContext>(options=>options.UseSqlServer(connectionString));
 
-builder.Services.AddCors(options => {
-    options.AddPolicy("CorsPolicy", builder => {
-        builder.AllowAnyHeader()
-        .AllowAnyMethod()
-        .SetIsOriginAllowed(host => true)
-        .AllowCredentials();
-    });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder =>
+        {
+            builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(host => true)
+                .AllowCredentials();
+        }
+    );
 });
 var app = builder.Build();
 
@@ -58,5 +69,6 @@ app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGroup("/account").MapIdentityApi<User>();
 
 app.Run();

@@ -50,7 +50,7 @@ public class RequestController: ControllerBase {
     }
 
     [HttpPost]
-    [Route("repair/update/")]
+    [Route("repair/update")]
     public Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
     {
         return null;

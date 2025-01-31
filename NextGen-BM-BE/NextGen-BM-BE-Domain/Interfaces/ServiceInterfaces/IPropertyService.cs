@@ -1,6 +1,6 @@
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 
-namespace NextGen_BM_BE_Domain.Services{
+namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces{
     public interface IPropertyService
     {
         Task<IList<Property>> GetAllPropertiesAsync(); 
