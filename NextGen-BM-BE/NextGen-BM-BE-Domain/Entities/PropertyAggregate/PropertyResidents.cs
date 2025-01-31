@@ -10,5 +10,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public DateOnly EnterDate { get; set; }
         public DateOnly? LeaveDate { get; set; }
         public DateOnly? DeletedDate { get; set; }
+        public required Property Property { get; set; }
     }
 };

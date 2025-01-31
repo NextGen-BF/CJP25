@@ -12,5 +12,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public DateOnly? EndDate { get; set; }
         public required string Description { get; set; }
         public DateOnly? DeletedDate { get; set; }
+        public required PropertyExpenseTemplate PropertyExpenseTemplate { get; set; }
     }
 };

@@ -1,3 +1,6 @@
+using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
+using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+
 namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 
 public class Building
@@ -11,5 +14,7 @@ public class Building
     public int NumOfElevators { get; set; }
     public DateOnly? DeletedDate { get; set; }
     public required Address BuildingAddress { get; set; }
+    public required ICollection<Property> Properties { get; set; }
     public ICollection<BuildingExpense>? BuildingExpenses { get; set; }
+    public ICollection<RepairRequest>? RepairRequests { get; set; }
 }

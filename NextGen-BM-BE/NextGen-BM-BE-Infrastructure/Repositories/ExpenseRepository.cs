@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
-using NextGen_BM_BE_Domain.Entities.User;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
@@ -15,7 +13,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId)
+        public async Task CreateExpenseForPropertiesAsync(
+            List<int> propertyIds,
+            int propertyPaymentsId
+        )
         {
             try
             {
@@ -26,13 +27,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 {
                     foreach (Property property in properties)
                     {
-                        PropertyExpense propertyExpense = await this.GetPropertyExpenseByIdAsync(
-                            expenseId
-                        );
+                        PropertyPayments? propertyPayments =
+                            await _dbContext.PropertyPayments.FindAsync(propertyPaymentsId);
 
-                        if (property.Expenses is not null)
+                        if (property.Payments is not null && propertyPayments is not null)
                         {
-                            property.Expenses.Add(propertyExpense);
+                            property.Payments.Add(propertyPayments);
                         }
                     }
                 }
@@ -86,11 +86,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyExpense>> GetPropertyExpenseByBuildingIdAsync(int buildingId)
+        public async Task<List<PropertyPayments>> GetPropertyExpenseByBuildingIdAsync(
+            int buildingId
+        )
         {
             try
             {
-                List<PropertyExpense> propertyExpensesByBuildingId = new List<PropertyExpense>();
+                List<PropertyPayments> propertyPaymentsByBuildingId = new List<PropertyPayments>();
 
                 List<Property> propertiesByBuildingId = await _dbContext
                     .Property.Where(p => p.BuildingId == buildingId)
@@ -99,12 +101,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 foreach (Property property in propertiesByBuildingId)
                 {
-                    if (property.Expenses is not null)
+                    if (property.Payments is not null)
                     {
-                        propertyExpensesByBuildingId.AddRange(property.Expenses);
+                        propertyPaymentsByBuildingId.AddRange(property.Payments);
                     }
                 }
-                return propertyExpensesByBuildingId;
+                return propertyPaymentsByBuildingId;
             }
             catch (Exception ex)
             {
@@ -134,7 +136,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyExpense>> GetPropertyExpenseByPropertyIdAsync(int propertyId)
+        public async Task<List<PropertyPayments>> GetPropertyExpenseByPropertyIdAsync(
+            int propertyId
+        )
         {
             try
             {
@@ -144,13 +148,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     throw new KeyNotFoundException("The property was not found.");
                 }
 
-                if (property.Expenses is not null)
+                if (property.Payments is not null)
                 {
-                    return property.Expenses.ToList();
+                    return property.Payments.ToList();
                 }
                 else
                 {
-                    return new List<PropertyExpense>();
+                    return new List<PropertyPayments>();
                 }
             }
             catch (Exception ex)
@@ -162,12 +166,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyExpense>> GetPropertyExpenseByUserIdAsync(int userId)
+        public async Task<List<PropertyPayments>> GetPropertyExpenseByUserIdAsync(int userId)
         {
             try
             {
                 PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId);
-                List<PropertyExpense> propertyExpensesByUserId = new List<PropertyExpense>();
+                List<PropertyPayments> propertyPaymentsByUserId = new List<PropertyPayments>();
 
                 if (user is not null)
                 {
@@ -178,13 +182,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                     foreach (Property property in userProperties)
                     {
-                        if (property.Expenses is not null)
+                        if (property.Payments is not null)
                         {
-                            propertyExpensesByUserId.AddRange(property.Expenses);
+                            propertyPaymentsByUserId.AddRange(property.Payments);
                         }
                     }
                 }
-                return propertyExpensesByUserId;
+                return propertyPaymentsByUserId;
             }
             catch (Exception ex)
             {
