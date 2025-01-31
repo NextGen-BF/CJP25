@@ -1,4 +1,5 @@
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
 {
@@ -8,9 +9,9 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
         Task<List<PropertyExpense>> GetPropertyExpenseByUserIdAsync(int userId);
         Task<List<PropertyExpense>> GetPropertyExpenseByBuildingIdAsync(int buildingId);
         Task<List<PropertyExpense>> GetPropertyExpenseByPropertyIdAsync(int propertyId);
-        Task CreatePropertyExpenseAsync(PropertyExpense propertyExpense);
+        Task CreatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);
         Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId);
-        Task UpdatePropertyExpenseAsync(PropertyExpense propertyExpense);
+        Task UpdatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);
         Task DeletePropertyExpenseAsync(int propertyExpenseId);
     }
 }

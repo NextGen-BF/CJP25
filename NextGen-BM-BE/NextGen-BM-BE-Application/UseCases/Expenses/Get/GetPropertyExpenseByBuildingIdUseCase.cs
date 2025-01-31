@@ -9,7 +9,7 @@ namespace NextGen_BM_BE_Application.UseCases.Expenses.Get
     {
         private readonly IExpensesRepository expensesRepository = _expensesRepository;
 
-        public async Task<IList<PropertyExpense>> Execute(int buildingId)
+        public async Task<IList<PropertyPayments>> Execute(int buildingId)
         {
             var result = await expensesRepository.GetPropertyExpenseByBuildingIdAsync(buildingId);
             return result;

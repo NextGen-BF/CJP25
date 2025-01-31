@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_API.Controllers
 {
@@ -56,7 +57,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        public async Task<IActionResult> CreateExpense(PropertyExpense propertyExpense)
+        public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
             return CreatedAtAction(
@@ -79,7 +80,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateExpense(PropertyExpense propertyExpense)
+        public async Task<IActionResult> UpdateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.UpdatePropertyExpenseAsync(propertyExpense);
             return Ok(propertyExpense);

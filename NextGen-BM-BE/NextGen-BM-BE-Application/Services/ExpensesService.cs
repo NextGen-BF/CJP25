@@ -1,9 +1,11 @@
+using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.Services
 {
@@ -23,6 +25,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly UpdateExpensesUseCase _updateExpensesUseCase;
 
         private readonly DeleteExpensesUseCase _deleteExpensesUseCase;
+        private readonly IMapper _mapper;
 
         public ExpensesService(
             GetPropertyExpenseByIdUseCase getPropertyExpenseByIdUseCase,
@@ -32,7 +35,8 @@ namespace NextGen_BM_BE_Application.Services
             CreateExpensesUseCase createExpensesUseCase,
             CreateExpenseForPropertiesUseCase createExpenseForPropertiesUseCase,
             UpdateExpensesUseCase updateExpensesUseCase,
-            DeleteExpensesUseCase deleteExpensesUseCase
+            DeleteExpensesUseCase deleteExpensesUseCase,
+            IMapper mapper
         )
         {
             _getPropertyExpenseByIdUseCase = getPropertyExpenseByIdUseCase;
@@ -43,6 +47,7 @@ namespace NextGen_BM_BE_Application.Services
             _createExpenseForPropertiesUseCase = createExpenseForPropertiesUseCase;
             _updateExpensesUseCase = updateExpensesUseCase;
             _deleteExpensesUseCase = deleteExpensesUseCase;
+            _mapper = mapper;
         }
 
         public async Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId)
@@ -68,9 +73,10 @@ namespace NextGen_BM_BE_Application.Services
                 await _getAllPropertyExpenseByPropertyIdUseCase.Execute(propertyId);
         }
 
-        public async Task CreatePropertyExpenseAsync(PropertyExpense propertyExpense)
+        public async Task CreatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpenseDto)
         {
-            await _createExpensesUseCase.Execute(propertyExpense);
+            var expense = _mapper.Map<PropertyExpense>(propertyExpenseDto);
+            await _createExpensesUseCase.Execute(expense);
         }
 
         public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId)
@@ -78,9 +84,10 @@ namespace NextGen_BM_BE_Application.Services
             await _createExpenseForPropertiesUseCase.Execute(propertyIds, expenseId);
         }
 
-        public async Task UpdatePropertyExpenseAsync(PropertyExpense propertyExpense)
+        public async Task UpdatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpenseDto)
         {
-            await _updateExpensesUseCase.Execute(propertyExpense);
+            var expense = _mapper.Map<PropertyExpense>(propertyExpenseDto);
+            await _updateExpensesUseCase.Execute(expense);
         }
 
         public async Task DeletePropertyExpenseAsync(int propertyExpenseId)

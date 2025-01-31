@@ -1,3 +1,4 @@
+using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
 using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
 using NextGen_BM_BE_Application.UseCases.Buildings.Get;
@@ -16,13 +17,15 @@ namespace NextGen_BM_BE_Application.Services
 
         private readonly UpdateBuildingUseCase _updateBuildingUseCase;
         private readonly DeleteBuildingUseCase _deleteBuildingUseCase;
+        private readonly IMapper _mapper;
 
         public BuildingService(
             GetBuildingByIdUseCase getBuildingByIdUseCase,
             GetAllBuildingsUseCase getAllBuildingsUseCase,
             CreateBuildingUseCase createBuildingUseCase,
             UpdateBuildingUseCase updateBuildingUseCase,
-            DeleteBuildingUseCase deleteBuildingUseCase
+            DeleteBuildingUseCase deleteBuildingUseCase,
+            IMapper mapper
         )
         {
             _getBuildingByIdUseCase = getBuildingByIdUseCase;
@@ -30,6 +33,7 @@ namespace NextGen_BM_BE_Application.Services
             _createBuildingUseCase = createBuildingUseCase;
             _updateBuildingUseCase = updateBuildingUseCase;
             _deleteBuildingUseCase = deleteBuildingUseCase;
+            _mapper = mapper;
         }
 
         public async Task<Building> GetBuildingByIdAsync(int buildingId)
@@ -42,13 +46,15 @@ namespace NextGen_BM_BE_Application.Services
             return (List<Building>)await _getAllBuildingsUseCase.Execute();
         }
 
-        public async Task CreateBuildingAsync(Building building)
+        public async Task CreateBuildingAsync(BuildingViewModel buildingDto)
         {
+            var building = _mapper.Map<Building>(buildingDto);
             await _createBuildingUseCase.Execute(building);
         }
 
-        public async Task UpdateBuildingAsync(Building building)
+        public async Task UpdateBuildingAsync(BuildingViewModel buildingDto)
         {
+            var building = _mapper.Map<Building>(buildingDto);
             await _updateBuildingUseCase.Execute(building);
         }
 

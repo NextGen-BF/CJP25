@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration["ConnectionString"]!;
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
-// builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();

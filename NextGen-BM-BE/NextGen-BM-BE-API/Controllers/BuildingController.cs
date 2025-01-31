@@ -29,7 +29,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        public async Task<IActionResult> CreateBuilding(Building building)
+        public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             await _buildingService.CreateBuildingAsync(building);
             return Ok();
@@ -37,7 +37,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateBuilding(Building building)
+        public async Task<IActionResult> UpdateBuilding(BuildingViewModel building)
         {
             await _buildingService.UpdateBuildingAsync(building);
             return Ok(building);
