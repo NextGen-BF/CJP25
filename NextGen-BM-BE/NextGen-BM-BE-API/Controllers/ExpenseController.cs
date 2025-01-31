@@ -1,59 +1,97 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
-namespace NextGen_BM_BE_API.Controllers{
-
-/// <summary>
-/// Controller for handling all API calls regarding expenses
-/// </summary>
-[ApiController]
-[Route("[controller]")]
-public class ExpenseController: ControllerBase {
-
-    public ExpenseController()
+namespace NextGen_BM_BE_API.Controllers
+{
+    /// <summary>
+    /// Controller for handling all API calls regarding expenses
+    /// </summary>
+    [ApiController]
+    [Route("[controller]")]
+    public class ExpenseController : ControllerBase
     {
-        
-    }
+        private readonly IExpensesService _expensesService;
 
-    [HttpGet]
-    [Route("user/{userId}")]
-    public async Task<IActionResult> GetExpenseByUserId(int userId){
-        return null;
-    }
+        public ExpenseController(IExpensesService expensesService)
+        {
+            _expensesService = expensesService;
+        }
 
-    [HttpGet]
-    [Route("property/{propertyId}")]
-    public async Task<IActionResult> GetExpenseByPropertyId(int propertyId){
-        return null;
-    }
+        [HttpGet]
+        [Route("{expenseId}")]
+        public async Task<IActionResult> GetExpenseById(int expenseId)
+        {
+            var expense = await _expensesService.GetPropertyExpenseByIdAsync(expenseId);
+            return Ok(expense);
+        }
 
-    [HttpGet]
-    [Route("building/{buildingId}")]
-    public async Task<IActionResult> GetExpenseByBuildingId(int buildingId){
-        return null;
-    }
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetExpenseByUserId(int userId)
+        {
+            var expensesByUserId = await _expensesService.GetPropertyExpenseByUserIdAsync(userId);
+            return Ok(expensesByUserId);
+        }
 
-    [HttpPost]
-    [Route("new")]
-    public async Task<IActionResult> CreateExpense(PropertyExpense propertyExpense ){
-        return null;
-    }
+        [HttpGet]
+        [Route("property/{propertyId}")]
+        public async Task<IActionResult> GetExpenseByPropertyId(int propertyId)
+        {
+            var expensesByPropertyId = await _expensesService.GetPropertyExpenseByPropertyIdAsync(
+                propertyId
+            );
+            return Ok(expensesByPropertyId);
+        }
 
-    [HttpPost]
-    [Route("link/property/{expenseId}")]
-    public async Task<IActionResult> LinkExpenseToProperties(List<int> propertyIds, int expenseId){
-        return null;
-    }
+        [HttpGet]
+        [Route("building/{buildingId}")]
+        public async Task<IActionResult> GetExpenseByBuildingId(int buildingId)
+        {
+            var expensesByBuildingId = await _expensesService.GetPropertyExpenseByBuildingIdAsync(
+                buildingId
+            );
+            return Ok(expensesByBuildingId);
+        }
 
-    [HttpPost]
-    [Route("update")]
-    public async Task<IActionResult> UpdateExpense(PropertyExpense propertyExpense){
-        return null;
+        [HttpPost]
+        [Route("new")]
+        public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
+        {
+            await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
+            return CreatedAtAction(
+                nameof(GetExpenseById),
+                new { id = propertyExpense.PropertyExpenseId },
+                propertyExpense
+            );
+        }
+
+        [HttpPost]
+        [Route("create/property")]
+        public async Task<IActionResult> CreateExpenseForProperties(
+            List<int> propertyIds,
+            int expenseId
+        )
+        {
+            await _expensesService.CreateExpenseForPropertiesAsync(propertyIds, expenseId);
+            return Ok(); // not sure what to return here
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateExpense(PropertyExpenseViewModel propertyExpense)
+        {
+            await _expensesService.UpdatePropertyExpenseAsync(propertyExpense);
+            return Ok(propertyExpense);
+        }
+
+        [HttpDelete]
+        [Route("delete/{expenseId}")]
+        public async Task<IActionResult> DeleteExpense(int expenseId)
+        {
+            await _expensesService.DeletePropertyExpenseAsync(expenseId);
+            return Ok();
+        }
     }
-    [HttpPost]
-    [Route("delete/{expenseId}")]
-    public async Task<IActionResult> DeleteExpense(int expenseId){
-        return null;
-    }
-}
 };
