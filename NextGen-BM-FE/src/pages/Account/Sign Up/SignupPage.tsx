@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import "./signup.scss";
 import { validateFormData } from "../../../utils/signupValidation";
-import { validationConstants } from "../../../constants/validationConstants";
+import { validationConstants } from "../../../constants/constants.ts";
 import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
 import { useSelector } from "react-redux";

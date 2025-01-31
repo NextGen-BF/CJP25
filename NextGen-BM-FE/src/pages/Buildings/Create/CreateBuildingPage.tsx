@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { Address, Building } from "../../../models/building";
 import { useAppDispatch } from "../../../redux/store";
 import { createBuilding } from "../../../redux/services/buildingService";
+import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss"
 
 const CreateBuildingPage: FC = () => {
@@ -43,7 +44,7 @@ const CreateBuildingPage: FC = () => {
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateBuildingSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(createBuilding(formData));
   }
@@ -51,8 +52,8 @@ const CreateBuildingPage: FC = () => {
 
   return (
     <div className="text-field-container">
-      <form className="create-building-form" onSubmit={(e) => submit(e)}>
-        <h1 className="create-building-header">Create a Building</h1>
+      <form className="create-building-form" onSubmit={(e) => handleCreateBuildingSubmission(e)}>
+        <h1 className="create-building-header">{createBuildingConstants.createHeader}</h1>
         <TextField
           name="alias"
           label="Building Alias"
@@ -163,7 +164,7 @@ const CreateBuildingPage: FC = () => {
           onChange={(e) => handleAddressChange(e)}
         />
         <Button fullWidth type="submit">
-          Create
+          {createBuildingConstants.create}
         </Button>
       </form>
     </div>
