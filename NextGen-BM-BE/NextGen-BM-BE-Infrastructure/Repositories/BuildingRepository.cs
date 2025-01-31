@@ -15,24 +15,45 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task CreateBuildingAsync(Building building)
         {
-            await _dbContext.Buildings.AddAsync(building);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Buildings.AddAsync(building);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(CreateBuildingAsync)} threw an error of: ", ex);
+            }
         }
 
         public async Task DeleteBuildingAsync(int buildingId)
         {
-            Building? buildingToDelete = await this.GetBuildingByIdAsync(buildingId);
-            if (buildingToDelete is not null)
+            try
             {
-                buildingToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dbContext.Buildings.Update(buildingToDelete);
-                await _dbContext.SaveChangesAsync();
+                Building? buildingToDelete = await this.GetBuildingByIdAsync(buildingId);
+                if (buildingToDelete is not null)
+                {
+                    buildingToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dbContext.Buildings.Update(buildingToDelete);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(DeleteBuildingAsync)} threw an error of: ", ex);
             }
         }
 
         public async Task<List<Building>> GetAllBuildingsAsync()
         {
-            return await _dbContext.Buildings.Where(b => b.DeletedDate == null).ToListAsync();
+            try
+            {
+                return await _dbContext.Buildings.Where(b => b.DeletedDate == null).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(GetAllBuildingsAsync)} threw an error of: ", ex);
+            }
         }
 
         public async Task<Building> GetBuildingByIdAsync(int buildingId)
@@ -48,14 +69,21 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("GetBuildingByIdAsync threw an error of: ", ex);
+                throw new Exception($"{nameof(GetBuildingByIdAsync)} threw an error of: ", ex);
             }
         }
 
         public async Task UpdateBuildingAsync(Building building)
         {
-            _dbContext.Buildings.Update(building);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Buildings.Update(building);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(UpdateBuildingAsync)} threw an error of: ", ex);
+            }
         }
     }
 };
