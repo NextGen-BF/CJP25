@@ -21,7 +21,7 @@ import PropertyResidentsPage from "./pages/Properties/PropertyResidentsPage";
 import SignupPage from "./pages/Account/Sign Up/SignupPage";
 import MyAccountPage from "./pages/Account/MyAccountPage";
 import AccountRecoveryPage from "./pages/Account/AccountRecoveryPage";
-import CreateBuildingPage from "./pages/Buildings/CreateBuildingPage";
+import CreateBuildingPage from "./pages/Buildings/Create/CreateBuildingPage";
 import BuildingsListPage from "./pages/Buildings/BuildingListPage";
 import BuildingPage from "./pages/Buildings/BuildingPage";
 

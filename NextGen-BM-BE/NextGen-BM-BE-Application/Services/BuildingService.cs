@@ -1,38 +1,44 @@
+using AutoMapper;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 
 namespace NextGen_BM_BE_Application.Services;
 
 public class BuildingService: IBuildingService
 {
-    private readonly IBuildingRepository buildingRepository;
-    public BuildingService(IBuildingRepository _buildingRepository)
+    private readonly IBuildingRepository _buildingRepository;
+    private readonly IMapper _mapper;
+    public BuildingService(IBuildingRepository buildingRepository, IMapper mapper)
     {
-        buildingRepository = _buildingRepository;
+        _mapper = mapper;
+        _buildingRepository = buildingRepository;
     }
 
-    public async Task CreateBuildingAsync(Building building){
-        await buildingRepository.CreateBuildingAsync(building);
+    public async Task CreateBuildingAsync(BuildingViewModel buildingDto){
+        var building = _mapper.Map<Building>(buildingDto);
+        await _buildingRepository.CreateBuildingAsync(building);
     }
 
     public async Task DeleteBuildingAsync(int buildingId)
     {
-        await buildingRepository.DeleteBuildingAsync(buildingId);
+        await _buildingRepository.DeleteBuildingAsync(buildingId);
     }
 
     public async Task<List<Building>> GetAllBuildingsAsync(){
-        return await buildingRepository.GetAllBuildingsAsync();
+        return await _buildingRepository.GetAllBuildingsAsync();
     }
 
     public async Task<Building> GetBuildingByIdAsync(int buildingId)
     {
-        return await buildingRepository.GetBuildingByIdAsync(buildingId);
+        return await _buildingRepository.GetBuildingByIdAsync(buildingId);
     }
 
-    public async Task UpdateBuildingAsync(Building building)
+    public async Task UpdateBuildingAsync(BuildingViewModel buildingDto)
     {
-        await buildingRepository.UpdateBuildingAsync(building);
+        var building = _mapper.Map<Building>(buildingDto);
+        await _buildingRepository.UpdateBuildingAsync(building);
     }
 }

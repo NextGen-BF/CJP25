@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -33,14 +33,14 @@ public class BuildingController: ControllerBase {
 
     [HttpPost]
     [Route("new")]
-    public async Task<IActionResult> CreateBuilding(Building building ){
+    public async Task<IActionResult> CreateBuilding(BuildingViewModel building ){
         await buildingService.CreateBuildingAsync(building);
         return Ok();
     }
 
     [HttpPost]
     [Route("update")]
-    public async Task<IActionResult> UpdateBuilding(Building building){
+    public async Task<IActionResult> UpdateBuilding(BuildingViewModel building){
         await buildingService.UpdateBuildingAsync(building);
         return Ok();
     }
