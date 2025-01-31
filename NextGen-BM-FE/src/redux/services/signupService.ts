@@ -26,7 +26,7 @@ export const signupCall = createAsyncThunk(
         if (axios.isAxiosError(err)) {
           return thunkAPI.rejectWithValue(err.response?.data)
         }
-        return err;
+        return thunkAPI.rejectWithValue(err);
       });
   },
 );
