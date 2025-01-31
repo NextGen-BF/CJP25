@@ -42,7 +42,7 @@ const SignupPage: FC = () => {
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmition = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     errors = validateFormData(formData);
     setpresentedErrors(errors);
@@ -54,7 +54,7 @@ const SignupPage: FC = () => {
 
   return (
     <div className="sign-up-container">
-      <form className="sign-up-form" onSubmit={(e) => submit(e)}>
+      <form className="sign-up-form" onSubmit={(e) => handleFormSubmition(e)}>
         <h2 className="sign-up-header">Sign Up</h2>
         <h4 className="sign-up-message" hidden={message.length === 0}>
           {message}
