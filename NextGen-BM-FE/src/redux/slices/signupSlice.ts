@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { signupCall } from "../services/signupService";
-import { AxiosResponse } from "axios";
 import { getMessageForSignupError } from "../../utils/signupResponseError";
 
 interface SignUpState {
@@ -16,16 +15,13 @@ const signupSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      signupCall.fulfilled,
-      (state, action: PayloadAction<AxiosResponse>) => {
-        if (action.payload.status === 200) {
-          state.requestResultMessage = "Successful";
-        } else {
-          state.requestResultMessage = getMessageForSignupError(action.payload);
-        }
-      },
-    );
+    builder
+      .addCase(signupCall.fulfilled, (state) => {
+        state.requestResultMessage = "Successful";
+      })
+      .addCase(signupCall.rejected, (state, action: PayloadAction<any>) => {
+        state.requestResultMessage = getMessageForSignupError(action.payload);
+      });
   },
 });
 
