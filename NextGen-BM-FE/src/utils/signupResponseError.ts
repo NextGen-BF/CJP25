@@ -1,13 +1,14 @@
 import { AxiosResponse } from "axios";
+import { signupResponseConstants } from "../constants/signupResponseConstants";
 
 export const getMessageForSignupError = (error: AxiosResponse): string => {
   try {
     const duplicateNameError = error.data.errors.DuplicateUserName;
     if (duplicateNameError !== undefined) {
-      return "This email is already in use.";
+      return signupResponseConstants.emailInUse;
     }
   } catch (error) {
-    return "We have encountered an error, please try again later.";
+    return signupResponseConstants.genericError;
   }
   return "";
 };
