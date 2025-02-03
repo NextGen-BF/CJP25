@@ -10,7 +10,6 @@ using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +24,35 @@ string connectionString = $"Server={builder.Configuration["Server"]};Database={b
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
+#region Dependency Injection
+builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
+builder.Services.AddSingleton<TokenGenerator>();
+#endregion
 
+#region Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder =>
+        {
+            builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(host => true)
+                .AllowCredentials();
+        }
+    );
+});
+#endregion
+
+#region Auth
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme =
     options.DefaultChallengeScheme =
@@ -53,29 +77,14 @@ builder.Services.AddAuthentication(options => {
             ),
         };
     });
-
-//Dependency Injection
-builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
-builder.Services.AddScoped<IRequestRepository, RequestRepository>();
-builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
-builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
-builder.Services.AddScoped<IBuildingService, BuildingService>();
-builder.Services.AddSingleton<TokenGenerator>();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        "CorsPolicy",
-        builder =>
-        {
-            builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed(host => true)
-                .AllowCredentials();
-        }
-    );
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Super", policy => policy.RequireRole("Super"));
+    options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
+    options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
