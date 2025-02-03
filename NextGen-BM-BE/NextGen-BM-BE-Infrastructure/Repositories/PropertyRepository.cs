@@ -81,7 +81,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
-            return await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).FirstOrDefaultAsync();
+            return await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).SingleOrDefaultAsync();
         }
 
         public async Task UpdatePropertyAsync(Property property)
