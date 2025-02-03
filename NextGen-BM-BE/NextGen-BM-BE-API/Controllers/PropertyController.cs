@@ -65,7 +65,7 @@ public class PropertyController: ControllerBase {
         await _propertyService.UpdatePropertyAsync(property);
         return Ok();
     }
-    [HttpPost]
+    [HttpDelete]
     [Route("delete/{propertyId}")]
     public async Task<IActionResult> DeleteProperty(int propertyId){
         await _propertyService.DeletePropertyAsync(propertyId);
