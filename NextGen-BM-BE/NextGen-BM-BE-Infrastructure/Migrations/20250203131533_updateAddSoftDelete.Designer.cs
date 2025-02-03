@@ -12,8 +12,8 @@ using NextGen_BM_BE_Infrastructure;
 namespace NextGen_BM_BE_Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250131092607_Identity")]
-    partial class Identity
+    [Migration("20250203131533_updateAddSoftDelete")]
+    partial class updateAddSoftDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,11 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -50,6 +55,10 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityRole");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -174,6 +183,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("District")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -190,9 +202,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StreetNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StreetNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("AddressId");
 
@@ -216,14 +227,17 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<DateOnly>("DateBuilt")
                         .HasColumnType("date");
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("FloorNum")
                         .HasColumnType("int");
 
                     b.Property<int>("NumOfElevators")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalBuildingSize")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalBuildingSize")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("BuildingId");
 
@@ -246,6 +260,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<DateOnly>("DateOpened")
                         .HasColumnType("date");
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -262,24 +279,28 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<DateOnly>("PaymentDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("RepeatPeriodId")
+                    b.Property<int?>("RepeatPeriodIdEnumsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupplierId")
+                    b.Property<int?>("SupplierIdEnumsId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("BuildingExpenseId");
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("BuildingExpense");
+                    b.HasIndex("RepeatPeriodIdEnumsId");
+
+                    b.HasIndex("SupplierIdEnumsId");
+
+                    b.ToTable("BuildingExpenses");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.Enums", b =>
@@ -289,6 +310,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnumsId"));
+
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -321,6 +345,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<bool>("EntranceIsExternal")
                         .HasColumnType("bit");
 
@@ -333,15 +360,17 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Size")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Size")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("SizeOfIdealParts")
-                        .HasColumnType("float");
+                    b.Property<decimal>("SizeOfIdealParts")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("PropertyId");
 
-                    b.ToTable("Properties");
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("Property");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyExpense", b =>
@@ -352,32 +381,38 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyExpenseId"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("EndDate")
+                    b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PropertyExpenseTemplateId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PropertyId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ResponsibleRoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RoleId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
                     b.HasKey("PropertyExpenseId");
 
-                    b.HasIndex("PropertyId");
+                    b.HasIndex("PropertyExpenseTemplateId");
 
-                    b.ToTable("PropertyExpenses");
+                    b.HasIndex("RoleId1");
+
+                    b.ToTable("PropertyExpense");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyPayments", b =>
@@ -388,16 +423,19 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyPaymentsId"));
 
-                    b.Property<double>("AmountOwed")
-                        .HasColumnType("float");
+                    b.Property<decimal>("AmountOwed")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateOnly>("DateOpened")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("PaymentMethod")
+                    b.Property<int?>("PaymentMethodId")
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentParentId")
@@ -409,12 +447,18 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("PropertyPaymentsId");
 
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("PropertyExpenseId");
+
                     b.HasIndex("PropertyId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("PropertyPayments");
                 });
@@ -427,6 +471,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyResidentsId"));
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<DateOnly>("EnterDate")
                         .HasColumnType("date");
 
@@ -438,7 +485,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("LeaveDate")
+                    b.Property<DateOnly?>("LeaveDate")
                         .HasColumnType("date");
 
                     b.Property<int>("PropertyId")
@@ -451,7 +498,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyResidents");
+                    b.ToTable("PropertyResident");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyUsers", b =>
@@ -462,24 +509,40 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyUsersId"));
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<DateOnly>("EffectiveDate")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("EndDate")
+                    b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<double>("PercentOfApartmentOwned")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PercentOfApartmentOwned")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoleId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PropertyUsersId");
 
                     b.HasIndex("PropertyId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("PropertyUsers");
                 });
@@ -491,6 +554,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyExpenseTemplateId"));
+
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("ExpenseTitle")
                         .IsRequired()
@@ -504,7 +570,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.HasKey("PropertyExpenseTemplateId");
 
-                    b.ToTable("PropertyExpenseTemplates");
+                    b.HasIndex("RepeatPeriodId");
+
+                    b.ToTable("PropertyExpenseTemplate");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", b =>
@@ -515,25 +583,40 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RepairRequestId"));
 
+                    b.Property<int>("BuildingId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly>("DateOpened")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DateSettled")
+                    b.Property<DateOnly?>("DateSettled")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
                     b.Property<string>("RequestDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestStatus")
+                    b.Property<int>("RequestStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("RepairRequestId");
 
-                    b.ToTable("RepairRequest");
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("RequestStatusId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("RepairRequests");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RequestNotes", b =>
@@ -550,6 +633,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<DateOnly?>("DeletedDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("NoteText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -560,14 +646,19 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("RequestId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("RequestNotesId");
 
                     b.HasIndex("RepairRequestId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("RequestNotes");
                 });
 
-            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.User.User", b =>
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -646,11 +737,17 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("EndDate")
+                    b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("Role")
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<string>("RoleId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
@@ -658,9 +755,25 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("UserBuildingsId");
 
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserId1");
+
                     b.ToTable("UserBuildings");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.Role", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -674,7 +787,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.User.User", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -683,7 +796,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.User.User", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -698,7 +811,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.User.User", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -707,7 +820,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.User.User", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -717,7 +830,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", b =>
                 {
                     b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Address", "BuildingAddress")
-                        .WithMany()
+                        .WithMany("Buildings")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -727,45 +840,154 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.BuildingAggregate.BuildingExpense", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
                         .WithMany("BuildingExpenses")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "RepeatPeriodId")
+                        .WithMany("RepeatPeriod")
+                        .HasForeignKey("RepeatPeriodIdEnumsId");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "SupplierId")
+                        .WithMany("Supplier")
+                        .HasForeignKey("SupplierIdEnumsId");
+
+                    b.Navigation("Building");
+
+                    b.Navigation("RepeatPeriodId");
+
+                    b.Navigation("SupplierId");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
+                        .WithMany("Properties")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyExpense", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", null)
-                        .WithMany("Expenses")
-                        .HasForeignKey("PropertyId");
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyExpenseTemplate", "PropertyExpenseTemplate")
+                        .WithMany()
+                        .HasForeignKey("PropertyExpenseTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId1");
+
+                    b.Navigation("PropertyExpenseTemplate");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyPayments", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyExpense", "PropertyExpense")
+                        .WithMany()
+                        .HasForeignKey("PropertyExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", "Property")
                         .WithMany("Payments")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Property");
+
+                    b.Navigation("PropertyExpense");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyResidents", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", null)
-                        .WithMany("ResidentsHistory")
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", "Property")
+                        .WithMany("PropertyResidents")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.PropertyUsers", b =>
                 {
-                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", null)
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", "Property")
                         .WithMany("Users")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Property");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyExpenseTemplate", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "RepeatPeriod")
+                        .WithMany()
+                        .HasForeignKey("RepeatPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RepeatPeriod");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
+                        .WithMany("RepairRequests")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "RequestStatus")
+                        .WithMany("RepairRequests")
+                        .HasForeignKey("RequestStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Building");
+
+                    b.Navigation("RequestStatus");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RequestNotes", b =>
@@ -773,20 +995,67 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.HasOne("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", null)
                         .WithMany("Notes")
                         .HasForeignKey("RepairRequestId");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.UserBuildings", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
+                        .WithMany("UserBuildings")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Building");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Address", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", b =>
                 {
                     b.Navigation("BuildingExpenses");
+
+                    b.Navigation("Properties");
+
+                    b.Navigation("RepairRequests");
+
+                    b.Navigation("UserBuildings");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.Enums", b =>
+                {
+                    b.Navigation("RepairRequests");
+
+                    b.Navigation("RepeatPeriod");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyAggregate.Property", b =>
                 {
-                    b.Navigation("Expenses");
-
                     b.Navigation("Payments");
 
-                    b.Navigation("ResidentsHistory");
+                    b.Navigation("PropertyResidents");
 
                     b.Navigation("Users");
                 });

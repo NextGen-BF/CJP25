@@ -1,5 +1,7 @@
-namespace NextGen_BM_BE_Domain.ViewModels{
-    public class PropertyExpenseViewModel{
+namespace NextGen_BM_BE_Domain.ViewModels
+{
+    public class PropertyExpenseViewModel
+    {
         public int PropertyExpenseId { get; set; }
         public int PropertyExpenseTemplateId { get; set; }
         public required string ResponsibleRole { get; set; }

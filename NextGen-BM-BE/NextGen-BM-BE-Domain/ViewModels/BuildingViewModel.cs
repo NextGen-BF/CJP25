@@ -1,6 +1,7 @@
-namespace NextGen_BM_BE_Domain.ViewModels{
-
-    public class BuildingViewModel{
+namespace NextGen_BM_BE_Domain.ViewModels
+{
+    public class BuildingViewModel
+    {
         public int BuildingId { get; set; }
         public required AddressViewModel BuildingAddress { get; set; }
         public string? Alias { get; set; }

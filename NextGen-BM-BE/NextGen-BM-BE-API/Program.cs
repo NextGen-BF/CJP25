@@ -3,25 +3,27 @@ using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_API;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
-using NextGen_BM_BE_Domain.Entities.User;
+using NextGen_BM_BE_Application.UseCases.Buildings.Create;
+using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
+using NextGen_BM_BE_Application.UseCases.Buildings.Get;
+using NextGen_BM_BE_Application.UseCases.Buildings.Update;
+using NextGen_BM_BE_Application.UseCases.Expenses.Create;
+using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
+using NextGen_BM_BE_Application.UseCases.Expenses.Get;
+using NextGen_BM_BE_Application.UseCases.Expenses.Update;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using NextGen_BM_BE_Application.UseCases.Buildings.Create;
-using NextGen_BM_BE_Application.UseCases.Buildings.Update;
-using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
-using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 //Setup in user secrets
 string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
@@ -55,11 +57,28 @@ builder.Services.AddAuthentication(options => {
             ),
         };
     });
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddAuthorization();
 
 
 //Dependency Injection
+builder.Services.AddScoped<GetBuildingByIdUseCase>();
+builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<CreateBuildingUseCase>();
+builder.Services.AddScoped<UpdateBuildingUseCase>();
+builder.Services.AddScoped<DeleteBuildingUseCase>();
+
+builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByBuildingIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByPropertyIdUseCase>();
+builder.Services.AddScoped<CreateExpensesUseCase>();
+builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
+builder.Services.AddScoped<UpdateExpensesUseCase>();
+builder.Services.AddScoped<DeleteExpensesUseCase>();
+
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
@@ -67,12 +86,7 @@ builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<TokenGenerator>();
 
-//Use Cases
-builder.Services.AddScoped<CreateBuildingUseCase>();
-builder.Services.AddScoped<UpdateBuildingUseCase>();
-builder.Services.AddScoped<DeleteBuildingUseCase>();
-builder.Services.AddScoped<GetAllBuildingsUseCase>();
-builder.Services.AddScoped<GetBuildingByIdUseCase>();
+builder.Services.AddScoped<IExpensesService, ExpensesService>();
 
 builder.Services.AddCors(options =>
 {
