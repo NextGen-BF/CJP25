@@ -12,6 +12,7 @@ public class PropertyPayments{
     public DateOnly DateOpened { get; set; }
     public DateOnly DueDate { get; set; }
     public int PropertyExpenseId { get; set; }
+    public PropertyExpense PropertyExpense { get; set; }
     public int StatusId { get; set; }
     public Enums Status  { get; set; }
     public int PaymentParentId { get; set; }
