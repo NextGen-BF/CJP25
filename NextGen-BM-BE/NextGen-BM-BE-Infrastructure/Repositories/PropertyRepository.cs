@@ -56,7 +56,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try 
             {
-                var properties=await _dataContext.Properties.Where(p=>p.BuildingId==buildingId).ToListAsync();
+                var properties=await _dataContext.Properties.Where(p=>p.BuildingId==buildingId).AsNoTracking().ToListAsync();
                 return properties;
             }
             catch (DbException exception)
@@ -70,7 +70,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try 
             {
-                return await _dataContext.Properties.Where(p=>p.Users.Any(u=>u.UserId==userId)).ToListAsync();
+                return await _dataContext.Properties.Where(p=>p.Users.Any(u=>u.UserId==userId)).AsNoTracking().ToListAsync();
             }
             catch (DbException exception)
             {
@@ -81,7 +81,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
-            return await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).SingleOrDefaultAsync();
+            return await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).AsNoTracking().SingleOrDefaultAsync();
         }
 
         public async Task UpdatePropertyAsync(Property property)
