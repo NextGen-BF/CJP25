@@ -3,54 +3,52 @@ using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 
-namespace NextGen_BM_BE_API.Controllers{
-
-/// <summary>
-/// Controller for handling all API calls regarding buildings
-/// </summary>
-[ApiController]
-[Route("[controller]")]
-public class BuildingController: ControllerBase {
-
-    private readonly IBuildingService buildingService;
-    public BuildingController(IBuildingService _buildingService)
+namespace NextGen_BM_BE_API.Controllers
+{
+    /// <summary>
+    /// Controller for handling all API calls regarding buildings
+    /// </summary>
+    [ApiController]
+    [Route("[controller]")]
+    public class BuildingController : ControllerBase
     {
-        buildingService = _buildingService;
-    }
+        private readonly IBuildingService _buildingService;
 
-    [HttpGet]
-    [Route("all")]
-    public async Task<IActionResult> GetAllBuildings(){
-        var result = await buildingService.GetAllBuildingsAsync();
-        return Ok(result);
-    }
+        public BuildingController(IBuildingService buildingService)
+        {
+            _buildingService = buildingService;
+        }
 
-    [HttpGet]
-    [Route("{buildingId}")]
-    public async Task<IActionResult> GetBuildingById(int buildingId){
-        var result = await buildingService.GetBuildingByIdAsync(buildingId);
-        return Ok(result);
-    }
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetAllBuildings()
+        {
+            var allbuildings = await _buildingService.GetAllBuildingsAsync();
+            return Ok(allbuildings);
+        }
 
-    [HttpPost]
-    [Route("new")]
-    public async Task<IActionResult> CreateBuilding(BuildingViewModel building ){
-        await buildingService.CreateBuildingAsync(building);
-        return Ok();
-    }
+        [HttpPost]
+        [Route("new")]
+        public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
+        {
+            await _buildingService.CreateBuildingAsync(building);
+            return Ok();
+        }
 
-    [HttpPost]
-    [Route("update")]
-    public async Task<IActionResult> UpdateBuilding(BuildingViewModel building){
-        await buildingService.UpdateBuildingAsync(building);
-        return Ok();
-    }
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateBuilding(BuildingViewModel building)
+        {
+            await _buildingService.UpdateBuildingAsync(building);
+            return Ok(building);
+        }
 
-    [HttpPost]
-    [Route("delete/{buildingId}")]
-    public async Task<IActionResult> DeleteBuilding(int buildingId){
-        await buildingService.DeleteBuildingAsync(buildingId);
-        return Ok();
+        [HttpDelete]
+        [Route("delete/{buildingId}")]
+        public async Task<IActionResult> DeleteBuilding(int buildingId)
+        {
+            await _buildingService.DeleteBuildingAsync(buildingId);
+            return Ok();
+        }
     }
-}
 }
