@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
@@ -5,14 +6,18 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
     public class PropertyExpense
     {
         public int PropertyExpenseId { get; set; }
+
+        [Required]
         public int PropertyExpenseTemplateId { get; set; }
+
+        [Required]
         public int RoleId { get; set; }
         public decimal Price { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public required string Description { get; set; }
         public DateOnly? DeletedDate { get; set; }
-        public required Role Role { get; set; }
-        public required PropertyExpenseTemplate PropertyExpenseTemplate { get; set; }
+        public Role? Role { get; set; }
+        public PropertyExpenseTemplate? PropertyExpenseTemplate { get; set; }
     }
 };

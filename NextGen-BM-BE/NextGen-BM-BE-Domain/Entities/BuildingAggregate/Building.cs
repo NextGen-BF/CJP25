@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
@@ -6,6 +7,8 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 public class Building
 {
     public int BuildingId { get; set; }
+
+    [Required]
     public int AddressId { get; set; }
     public string? Alias { get; set; }
     public int FloorNum { get; set; }
@@ -13,8 +16,9 @@ public class Building
     public DateOnly DateBuilt { get; set; }
     public int NumOfElevators { get; set; }
     public DateOnly? DeletedDate { get; set; }
-    public required Address BuildingAddress { get; set; }
-    public required ICollection<Property> Properties { get; set; }
+    public Address? BuildingAddress { get; set; }
+    public ICollection<Property>? Properties { get; set; }
     public ICollection<BuildingExpense>? BuildingExpenses { get; set; }
     public ICollection<RepairRequest>? RepairRequests { get; set; }
+    public ICollection<UserBuildings>? UserBuildings { get; set; }
 }

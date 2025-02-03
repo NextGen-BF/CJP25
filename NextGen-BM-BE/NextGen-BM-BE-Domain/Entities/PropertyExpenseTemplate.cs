@@ -7,5 +7,6 @@ namespace NextGen_BM_BE_Domain.Entities
         public bool PerResident { get; set; }
         public int RepeatPeriodId { get; set; }
         public DateOnly? DeletedDate { get; set; }
+        public Enum? RepeatPeriod { get; set; }
     }
 };
