@@ -8,7 +8,8 @@ const Navbar: FC = () => {
     <Drawer
     sx={{
       flexShrink: 0,
-      boxSizing:'border-box'
+      boxSizing:'border-box',
+      width:'30%'
     }}
     variant="permanent">
       <NavLink to="/">Home</NavLink>
@@ -24,7 +25,7 @@ const Navbar: FC = () => {
           <MenuItem>
             <NavLink to="/request">Request Details</NavLink>
           </MenuItem>
-        </MenuList>
+      </MenuList>
       <Button>Payments</Button>
       <MenuList>
         <MenuItem>
