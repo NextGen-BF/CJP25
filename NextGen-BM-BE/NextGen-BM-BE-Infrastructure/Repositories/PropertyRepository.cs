@@ -6,7 +6,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
     public class PropertyRepository : IPropertyRepository
     {
-        DataContext _dataContext;
+        private readonly DataContext _dataContext;
         public PropertyRepository(DataContext dataContext)
         {
             _dataContext=dataContext;

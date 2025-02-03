@@ -9,13 +9,13 @@ namespace NextGen_BM_BE_Application.Services{
 
     public class PropertyService:IPropertyService
     {
-        readonly GetPropertiesByIdUseCase _getPropertiesByIdUseCase;
-        readonly GetAllPropertiesUseCase _getAllPropertiesUseCase;
-        readonly GetPropertiesByBuildingIdUseCase _getPropertiesByBuildingIdUseCase;
-        readonly GetPropertiesByUserIdUseCase _getPropertiesByUserIdUseCase;
-        readonly CreatePropertyUseCase _createPropertyUseCase;
-        readonly DeletePropertyUseCase _deletePropertyUseCase;
-        readonly UpdatePropertyUseCase _updatePropertyUseCase;
+        private readonly GetPropertiesByIdUseCase _getPropertiesByIdUseCase;
+        private readonly GetAllPropertiesUseCase _getAllPropertiesUseCase;
+        private readonly GetPropertiesByBuildingIdUseCase _getPropertiesByBuildingIdUseCase;
+        private readonly GetPropertiesByUserIdUseCase _getPropertiesByUserIdUseCase;
+        private readonly CreatePropertyUseCase _createPropertyUseCase;
+        private readonly DeletePropertyUseCase _deletePropertyUseCase;
+        private readonly UpdatePropertyUseCase _updatePropertyUseCase;
 
         public PropertyService(GetPropertiesByIdUseCase getPropertiesByIdUseCase,
                                 GetAllPropertiesUseCase getAllPropertiesUseCase,

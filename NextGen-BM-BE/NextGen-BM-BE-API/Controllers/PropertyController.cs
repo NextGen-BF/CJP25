@@ -14,7 +14,7 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class PropertyController: ControllerBase {
 
-    readonly IPropertyService _propertyService;
+    private readonly IPropertyService _propertyService;
     public PropertyController(IPropertyService propertyService)
     {
         _propertyService=propertyService;
