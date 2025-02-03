@@ -1,16 +1,13 @@
 import { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary, Breadcrumbs, Button, Drawer, Menu, MenuItem, MenuList } from "@mui/material";
+import { navbarStyles } from "./NavbarStyles";
 
 
 const Navbar: FC = () => {
   return (
     <Drawer
-    sx={{
-      flexShrink: 0,
-      boxSizing:'border-box',
-      width:'30%'
-    }}
+    sx={navbarStyles.drawerStyles}
     variant="permanent">
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Log in</NavLink>
@@ -69,8 +66,6 @@ const Navbar: FC = () => {
           </MenuList>
         </AccordionDetails> 
       </Accordion>
-      
-      
       <Accordion>
         <AccordionSummary> 
           <Button>Building</Button>
@@ -95,7 +90,7 @@ const Navbar: FC = () => {
       <NavLink to="/signup">Sign up</NavLink>
       <NavLink to="/recover">Recover Account</NavLink>
       <Button>
-        <NavLink to="/account">My Account</NavLink>
+        <NavLink to="/account">Profile</NavLink>
       </Button>
       <Breadcrumbs>
       </Breadcrumbs>  
