@@ -56,7 +56,7 @@ public class PropertyController: ControllerBase {
     [Route("new")]
     public async Task<IActionResult> CreateProperty(Property property){
         await _propertyService.CreatePropertyAsync(property);
-        return CreatedAtAction(nameof(GetPropertyById), property);
+        return CreatedAtAction(nameof(GetPropertyById), new {propertyId=property.PropertyId}, property);
     }
 
     [HttpPut]
