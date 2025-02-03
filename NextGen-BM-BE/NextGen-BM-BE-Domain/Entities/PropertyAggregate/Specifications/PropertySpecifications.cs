@@ -9,7 +9,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate.Specifications
             Query
                 .Where(property => property.PropertyId == propertyID)
                 .Include(property => property.Users)
-                .Include(property => property.Expenses)
                 .Include(property => property.Payments)
                 .Include(property => property.ResidentsHistory);
         }
