@@ -59,7 +59,7 @@ public class PropertyController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateProperty(Property property){
         await _propertyService.UpdatePropertyAsync(property);
