@@ -39,12 +39,12 @@ public class UserController: ControllerBase {
         return null;
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateUser(/*User user*/){
         return null;
     }
-    [HttpPost]
+    [HttpDelete]
     [Route("delete/{userId}")]
     public async Task<IActionResult> DeleteUser(int userId){
         return null;

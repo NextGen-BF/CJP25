@@ -49,28 +49,28 @@ public class RequestController: ControllerBase {
         return null;
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("repair/update")]
     public Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
     {
         return null;
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("note/update")]
     public Task<IActionResult> UpdateRequestNotes(RepairRequest repairRequest)
     {
         return null;
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("repair/delete/{requestId}")]
     public Task<IActionResult> DeleteRepairRequest(int requestId)
     {
         return null;
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("note/delete/{requestNoteId}")]
     public Task<IActionResult> DeleteRequestNote(int requestNoteId)
     {

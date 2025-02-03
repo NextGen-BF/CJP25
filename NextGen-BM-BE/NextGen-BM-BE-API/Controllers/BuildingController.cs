@@ -38,14 +38,14 @@ public class BuildingController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateBuilding(BuildingViewModel building){
         await buildingService.UpdateBuildingAsync(building);
         return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("delete/{buildingId}")]
     public async Task<IActionResult> DeleteBuilding(int buildingId){
         await buildingService.DeleteBuildingAsync(buildingId);

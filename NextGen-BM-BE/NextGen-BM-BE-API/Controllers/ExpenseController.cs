@@ -45,12 +45,12 @@ public class ExpenseController: ControllerBase {
         return null;
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateExpense(PropertyExpense propertyExpense){
         return null;
     }
-    [HttpPost]
+    [HttpDelete]
     [Route("delete/{expenseId}")]
     public async Task<IActionResult> DeleteExpense(int expenseId){
         return null;
