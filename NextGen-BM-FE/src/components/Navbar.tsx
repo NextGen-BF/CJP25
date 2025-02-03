@@ -8,10 +8,10 @@ const Navbar: FC = () => {
   return (
     <Drawer
     sx={navbarStyles.drawerStyles}
-    variant="permanent">
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/login">Log in</NavLink>
-      
+    variant="permanent"
+    PaperProps={{
+      sx: navbarStyles.paperProps
+    }}>
       <Accordion>
         <AccordionSummary>
           <Button>Requests</Button>
@@ -38,6 +38,8 @@ const Navbar: FC = () => {
           <MenuList>
             <MenuItem>
               <NavLink to="/payment">Payment</NavLink>
+            </MenuItem>
+            <MenuItem>
               <NavLink to="/property/fees">property Fees</NavLink>
             </MenuItem>
           </MenuList>
