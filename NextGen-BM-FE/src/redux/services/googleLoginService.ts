@@ -11,7 +11,11 @@ export const loginWithGoogleCall = createAsyncThunk(
   "loginWithGoogle",
   async (payload: GoogleLoginCredentials, thunkAPI) => {
     return await axios
-      .post(`${apiURL}/Google/get-google-jwt`, payload)
+      .post(`${apiURL}/Google/get-google-jwt`, payload.credential, {
+        headers: {
+          "Content-Type": "application/json;UTF-8",
+        },
+      })
       .then(function (response) {
         return response.data;
       })
