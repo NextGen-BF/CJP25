@@ -14,17 +14,11 @@ namespace NextGen_BM_BE_Domain.Entities
         public int Value { get; set; }
         public DateOnly? DeletedDate { get; set; }
 
-        [InverseProperty("Supplier")]
-        public ICollection<BuildingExpense>? BuildingExpensesBySuppliert { get; set; }
+        [InverseProperty("SupplierId")]
+        public ICollection<BuildingExpense>? Supplier { get; set; }
 
-        [InverseProperty("RepeatPeriod")]
-        public ICollection<BuildingExpense>? BuildingExpensesByRepeatPeriod { get; set; }
-
-        [InverseProperty("Status")]
-        public ICollection<PropertyPayments>? PropertyPaymentsPerStatus { get; set; }
-
-        [InverseProperty("PaymentMethod")]
-        public ICollection<PropertyPayments>? PropertyPaymentsPerPaymentMethod { get; set; }
+        [InverseProperty("RepeatPeriodId")]
+        public ICollection<BuildingExpense>? RepeatPeriod { get; set; }
         public ICollection<RepairRequest>? RepairRequests { get; set; }
     }
 };

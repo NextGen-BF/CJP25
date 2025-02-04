@@ -27,12 +27,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 //Setup in user secrets
-string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True;";
+string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 // builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
@@ -109,6 +111,50 @@ builder.Services.AddAuthorization(options => {
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
     options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+});
+builder.Services.AddAuthorization();
+
+
+//Dependency Injection
+builder.Services.AddScoped<GetBuildingByIdUseCase>();
+builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<CreateBuildingUseCase>();
+builder.Services.AddScoped<UpdateBuildingUseCase>();
+builder.Services.AddScoped<DeleteBuildingUseCase>();
+
+builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByBuildingIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyExpenseByPropertyIdUseCase>();
+builder.Services.AddScoped<CreateExpensesUseCase>();
+builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
+builder.Services.AddScoped<UpdateExpensesUseCase>();
+builder.Services.AddScoped<DeleteExpensesUseCase>();
+
+builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
+builder.Services.AddSingleton<TokenGenerator>();
+
+builder.Services.AddScoped<IExpensesService, ExpensesService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder =>
+        {
+            builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(host => true)
+                .AllowCredentials();
+        }
+    );
 });
 #endregion
 
@@ -122,6 +168,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -11,7 +11,6 @@ namespace NextGen_BM_BE_Infrastructure
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options) { }
-
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<BuildingExpense> BuildingExpenses { get; set; }

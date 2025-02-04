@@ -45,13 +45,13 @@ public class PropertyController: ControllerBase {
         return null;
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateProperty(Property property){
         return null;
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("delete/{propertyId}")]
     public async Task<IActionResult> DeleteProperty(int propertyId){
         return null;

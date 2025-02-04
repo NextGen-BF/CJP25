@@ -80,12 +80,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                _dbContext.Buildings.Update(building);
+                _dbContext.Entry<Building>(building).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"{nameof(UpdateBuildingAsync)} threw an error of: ", ex);
+                throw new Exception($"Building with id of {building.BuildingId} was not found.");
             }
         }
     }

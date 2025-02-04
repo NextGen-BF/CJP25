@@ -11,25 +11,15 @@ namespace NextGen_BM_BE_Domain.Entities.BuildingAggregate
         public int BuildingId { get; set; }
         public required string Title { get; set; }
         public decimal TotalAmount { get; set; }
-
-        [Required]
-        public int SupplierId { get; set; }
+        public Enums? SupplierId { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DueDate { get; set; }
         public DateOnly PaymentDate { get; set; }
         public required string Description { get; set; }
         public bool IsTemplate { get; set; }
-
-        [Required]
-        public int RepeatPeriodId { get; set; }
+        public Enums? RepeatPeriodId { get; set; }
         public string? InvoiceUrl { get; set; }
         public DateOnly? DeletedDate { get; set; }
         public Building? Building { get; set; }
-
-        [ForeignKey("SupplierId ")]
-        public Enum? Supplier { get; set; }
-
-        [ForeignKey("RepeatPeriodId ")]
-        public Enum? RepeatPeriod { get; set; }
     }
 };
