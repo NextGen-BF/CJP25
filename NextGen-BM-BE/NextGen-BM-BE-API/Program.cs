@@ -29,38 +29,38 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Setup in user secrets
-//string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
+string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
 
-//builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 
-// builder.Services.AddAuthentication(options => {
-//     options.DefaultAuthenticateScheme =
-//     options.DefaultChallengeScheme =
-//     options.DefaultForbidScheme =
-//     options.DefaultScheme =
-//     options.DefaultSignInScheme = 
-//     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-// })
-//     .AddJwtBearer(x => {
-//         x.IncludeErrorDetails = true;
-//         x.RequireHttpsMetadata = false;
-//         x.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             //Setup in user secrets
-//             ValidateIssuer = true,
-//             ValidIssuer = builder.Configuration["JWT:Issuer"],
-//             ValidateAudience = true,
-//             ValidAudience = builder.Configuration["JWT:Audience"],
-//             ValidateIssuerSigningKey = true,
-//             IssuerSigningKey= new SymmetricSecurityKey(
-//                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
-//             ),
-//         };
-//     });
-//builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultForbidScheme =
+    options.DefaultScheme =
+    options.DefaultSignInScheme = 
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(x => {
+        x.IncludeErrorDetails = true;
+        x.RequireHttpsMetadata = false;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            //Setup in user secrets
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey= new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+            ),
+        };
+    });
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddAuthorization();
@@ -101,8 +101,6 @@ builder.Services.AddScoped<UpdatePropertyUseCase>();
 
 
 builder.Services.AddScoped<IPropertyService, PropertyService>();
-
-string connectionString=builder.Configuration["ConnectionString"];
 
 builder.Services.AddDbContext<DataContext>(options=>options.UseSqlServer(connectionString));
 
