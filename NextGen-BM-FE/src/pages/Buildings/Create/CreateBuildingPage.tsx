@@ -5,30 +5,9 @@ import { useAppDispatch } from "../../../redux/store";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Property } from "../../../models/property";
+import EditableTable from "../../../components/EditableTable";
 
 const CreateBuildingPage: FC = () => {
-  const [rows, setRows] = useState<Property[]>([{
-        propertyId: 0,
-        propertyNumber: 1,
-        buildingId: 1,
-        size: 1,
-        floor: 1,
-        sizeOfIdealParts: 1,
-        entranceIsExternal: false,
-        propertyExpenses: null,
-        payments: null,
-        residentHistory: null
-  }]);
-  const columns: GridColDef<(typeof rows)[number]>[] = [
-    {field: "id", headerName: "ID", width: 70},
-    { field: "propertyNumber", headerName: "Property Number", width: 150, type:'number', editable: true },
-    { field: "size", headerName: "Property Size", width: 150, editable: true, type: 'number'},
-    { field: "floor", headerName: "Property Floor", width: 150, editable: true, type:'number' },
-    { field: "sizeOfIdealParts", headerName: "Ideal Parts", width: 150, editable: true, type: 'number' },
-    {field: "entranceIsExternal", headerName: "External Entrance", width: 150,editable: true, type: 'boolean'},
-  ];
   const dispatch = useAppDispatch();
   const [address, setAddress] = useState<Address>({
     streetName: "",
@@ -48,7 +27,7 @@ const CreateBuildingPage: FC = () => {
     dateBuilt: new Date(),
     numOfElevators: 1,
     buildingExpenses: null,
-    buildingProperties: rows,
+    buildingProperties: null,
   });
 
   const handleAddressChange = (
@@ -63,15 +42,6 @@ const CreateBuildingPage: FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((previousData) => ({ ...previousData, [name]: value }));
-  };
-
-  const handlePropertyChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setRows((previousData) => ({ ...previousData, [name]: value }));
-    console.log(rows)
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
@@ -207,20 +177,14 @@ const CreateBuildingPage: FC = () => {
         </form>
       </div>
       <div className="property-table">
-        <TextField
-          name="propertyNumber"
-          label="Property Number"
-          type="text"
-          variant="outlined"
-          size="small"
-          fullWidth
-          onChange={(e) => handlePropertyChange(e)}
-        />
         <Box>
-          <DataGrid
+          <EditableTable />
+          {/* <DataGrid
             rows={rows}
             columns={columns}
             getRowId={(row) => row.propertyId}
+            editMode="row"
+            disableRowSelectionOnClick
             initialState={{
               pagination: {
                 paginationModel: {
@@ -230,7 +194,7 @@ const CreateBuildingPage: FC = () => {
             }}
             pageSizeOptions={[5]}
             checkboxSelection
-          />
+          /> */}
         </Box>
       </div>
     </div>
