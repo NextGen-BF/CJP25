@@ -14,7 +14,6 @@ namespace NextGen_BM_BE_Application.Services
         private readonly GetBuildingByIdUseCase _getBuildingByIdUseCase;
         private readonly GetAllBuildingsUseCase _getAllBuildingsUseCase;
         private readonly CreateBuildingUseCase _createBuildingUseCase;
-
         private readonly UpdateBuildingUseCase _updateBuildingUseCase;
         private readonly DeleteBuildingUseCase _deleteBuildingUseCase;
         private readonly IMapper _mapper;
@@ -41,9 +40,9 @@ namespace NextGen_BM_BE_Application.Services
             return await _getBuildingByIdUseCase.Execute(buildingId);
         }
 
-        public async Task<List<Building>> GetAllBuildingsAsync()
+        public async Task<IList<Building>> GetAllBuildingsAsync()
         {
-            return (List<Building>)await _getAllBuildingsUseCase.Execute();
+            return await _getAllBuildingsUseCase.Execute();
         }
 
         public async Task CreateBuildingAsync(BuildingViewModel buildingDto)

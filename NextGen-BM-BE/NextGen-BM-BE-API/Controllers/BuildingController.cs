@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -25,6 +24,13 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var allbuildings = await _buildingService.GetAllBuildingsAsync();
             return Ok(allbuildings);
+        }
+
+        [HttpGet]
+        [Route("{buildingId}")]
+        public async Task<IActionResult> GetBuildingById(int buildingId){
+            var building = await _buildingService.GetBuildingByIdAsync(buildingId);
+            return Ok(building);
         }
 
         [HttpPost]

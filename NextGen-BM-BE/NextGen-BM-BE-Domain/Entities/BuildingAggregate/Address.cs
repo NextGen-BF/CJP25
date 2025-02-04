@@ -4,7 +4,7 @@ public class Address
 {
     public int AddressId { get; set; }
     public required string StreetName { get; set; }
-    public required string StreetNumber { get; set; }
+    public required int StreetNumber { get; set; }
     public required string Entrance { get; set; }
     public required string District { get; set; }
     public required string City { get; set; }
