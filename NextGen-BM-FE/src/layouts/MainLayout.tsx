@@ -6,10 +6,12 @@ import { Header } from "../components/Header/Header.tsx";
 
 const MainLayout: FC = () => {
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <Header />
+    <Box sx={{ display: 'flex', flexDirection:'row', flexWrap: 'wrap'}}>
       <Navbar />
-      <Outlet />
+      <Box sx={{ display: 'flex', flexDirection:'column', flexWrap: 'wrap', width:'70%', margin:0}}>
+        <Header />
+        <Outlet />
+      </Box>
     </Box>
   );
 };
