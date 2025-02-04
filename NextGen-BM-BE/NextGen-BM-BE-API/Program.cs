@@ -55,6 +55,8 @@ builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<TokenGenerator>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 #endregion
 
 
@@ -78,6 +80,7 @@ builder.Services.AddAuthentication(options => {
             ValidateAudience = true,
             ValidAudience = builder.Configuration["JWT:Audience"],
             ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
             IssuerSigningKey= new SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
             ),
