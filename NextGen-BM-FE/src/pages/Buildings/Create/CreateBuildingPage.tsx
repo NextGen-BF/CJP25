@@ -1,12 +1,25 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { FC, useState } from "react";
 import { Address, Building } from "../../../models/building";
 import { useAppDispatch } from "../../../redux/store";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss"
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Property } from "../../../models/property";
+
+
 
 const CreateBuildingPage: FC = () => {
+  const [rows, setRows] = useState<Property[]>([]);
+  const columns: GridColDef<(typeof rows)[number]>[] = [
+    {field: 'propertyId', headerName: 'ID', width: 50},
+    {field: 'propertyNumber', headerName: 'Property Number', width: 150},
+    {field: 'size', headerName: 'Property Size', width: 150},
+    {field: 'floor', headerName: 'Property Floor', width: 150},
+    {field: 'sizeOfIdealParts', headerName: 'Ideal Parts', width: 150},
+    {field: 'entranceIsExternal', headerName: 'External Entrance', width: 150},
+  ]
   const dispatch = useAppDispatch();
   const [address, setAddress] = useState<Address>({
     streetName: "",
@@ -49,10 +62,10 @@ const CreateBuildingPage: FC = () => {
     dispatch(createBuilding(formData));
   }
 
-
   return (
+    <div>
     <div className="text-field-container">
-      <form className="create-building-form" onSubmit={(e) => handleCreateBuildingSubmission(e)}>
+    <form className="create-building-form" onSubmit={(e) => handleCreateBuildingSubmission(e)}>
         <h1 className="create-building-header">{createBuildingConstants.createHeader}</h1>
         <TextField
           name="alias"
@@ -167,7 +180,25 @@ const CreateBuildingPage: FC = () => {
           {createBuildingConstants.create}
         </Button>
       </form>
-    </div>
+      </div>
+      <div className="property-table">
+        <Box>
+          <DataGrid 
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            checkboxSelection
+            />
+        </Box>
+        </div>
+      </div>
   );
 };
 export default CreateBuildingPage;
