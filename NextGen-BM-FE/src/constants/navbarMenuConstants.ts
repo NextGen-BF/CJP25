@@ -1,4 +1,4 @@
-import { navSubMenuProps } from "../components/NavigationSubMenu";
+import { navSubMenuProps } from "../components/Navbar/NavigationSubMenu";
 
 export const navbarMenuProps:navSubMenuProps[]=[
     {
