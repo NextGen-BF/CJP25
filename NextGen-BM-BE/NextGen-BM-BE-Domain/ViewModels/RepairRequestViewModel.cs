@@ -1,5 +1,7 @@
-namespace NextGen_BM_BE_Domain.ViewModels{
-    public class RepairRequestViewModel{
+namespace NextGen_BM_BE_Domain.ViewModels
+{
+    public class RepairRequestViewModel
+    {
         public int RequestId { get; set; }
         public int UserId { get; set; }
         public required string RequestDescription { get; set; }

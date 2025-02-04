@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -24,5 +24,7 @@
     <ProjectReference Include="..\NextGen-BM-BE-Domain\NextGen-BM-BE-Domain.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj" />
+    <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
   </ItemGroup>
+
 </Project>
