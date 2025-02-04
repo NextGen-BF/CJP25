@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary, Breadcrumbs, Button, Drawer, Menu, MenuItem, MenuList } from "@mui/material";
 import { navbarStyles } from "./NavbarStyles.ts";
 import { navbarMenuProps } from "../../constants/navbarMenuConstants.ts";
@@ -18,13 +18,9 @@ const Navbar: FC = () => {
       sx: navbarStyles.paperProps
     }}>
       {drawerMenus}
-      <NavLink to="/signup">Sign up</NavLink>
-      <NavLink to="/recover">Recover Account</NavLink>
-      <Button>
+      <Button sx={{marginTop: "auto"}}>
         <NavLink to="/account">Profile</NavLink>
       </Button>
-      <Breadcrumbs>
-      </Breadcrumbs>  
     </Drawer>
   );
 };

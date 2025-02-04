@@ -3,12 +3,13 @@ import Navbar from "../components/Navbar/Navbar.tsx";
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Header } from "../components/Header/Header.tsx";
+import { mainLayoutStyles } from "./MainLayoutStyles.ts";
 
 const MainLayout: FC = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection:'row', flexWrap: 'wrap'}}>
+    <Box sx={mainLayoutStyles.mainContainerStyle}>
       <Navbar />
-      <Box sx={{ display: 'flex', flexDirection:'column', flexWrap: 'wrap', width:'70%', margin:0}}>
+      <Box sx={mainLayoutStyles.contentContainerStyle}>
         <Header />
         <Outlet />
       </Box>
