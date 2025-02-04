@@ -14,7 +14,7 @@ namespace NextGen_BM_BE_Application.Services{
             _jwtService = jwtService;
             _userManager = userManager;
         }
-        public async Task<string> Login(LoginModel loginModel)
+        public async Task<string> LoginAsync(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
             if (user == null && !await _userManager.CheckPasswordAsync(user, loginModel.Password))
@@ -23,7 +23,7 @@ namespace NextGen_BM_BE_Application.Services{
             return token;
         }
 
-        public async Task<IdentityResult> Register(RegisterModel registerModel)
+        public async Task<IdentityResult> RegisterAsync(RegisterModel registerModel)
         {
             var user = new User { UserName = registerModel.Email, Email = registerModel.Email };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
