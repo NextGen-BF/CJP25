@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace NextGen_BM_BE_Domain.Entities.User
+namespace NextGen_BM_BE_Domain.Entities
 {
-    public class User : IdentityUser { }
+    public class User : IdentityUser
+    {
+    }
 }

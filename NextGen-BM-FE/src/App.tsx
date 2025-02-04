@@ -18,10 +18,10 @@ import CreatePropertyPage from "./pages/Properties/CreatePropertyPage";
 import PropertyListPage from "./pages/Properties/PropertyListPage";
 import PropertyPage from "./pages/Properties/PropertyPage";
 import PropertyResidentsPage from "./pages/Properties/PropertyResidentsPage";
-import SignupPage from "./pages/Account/SignupPage";
+import SignupPage from "./pages/Account/Sign Up/SignupPage";
 import MyAccountPage from "./pages/Account/MyAccountPage";
 import AccountRecoveryPage from "./pages/Account/AccountRecoveryPage";
-import CreateBuildingPage from "./pages/Buildings/CreateBuildingPage";
+import CreateBuildingPage from "./pages/Buildings/Create/CreateBuildingPage";
 import BuildingsListPage from "./pages/Buildings/BuildingListPage";
 import BuildingPage from "./pages/Buildings/BuildingPage";
 

@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
-namespace NextGen_BM_BE_Infrastructure.Repositories{
-
+namespace NextGen_BM_BE_Infrastructure.Repositories
+{
     public class PropertyRepository : IPropertyRepository
     {
         private readonly DataContext _dataContext;
@@ -16,7 +16,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try
             {
-                await _dataContext.Properties.AddAsync(property);
+                await _dataContext.Property.AddAsync(property);
                 await _dataContext.SaveChangesAsync();
             }
             catch (DbException exception)
@@ -30,7 +30,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try
             {
-                await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).ExecuteDeleteAsync();
+                await _dataContext.Property.Where(p=>p.PropertyId==propertyId).ExecuteDeleteAsync();
             }
             catch (DbException exception)
             {
@@ -43,7 +43,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try 
             {
-                return await _dataContext.Properties.ToListAsync();
+                return await _dataContext.Property.ToListAsync();
             }
             catch (DbException exception)
             {
@@ -56,7 +56,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try 
             {
-                var properties=await _dataContext.Properties.Where(p=>p.BuildingId==buildingId).AsNoTracking().ToListAsync();
+                var properties=await _dataContext.Property.Where(p=>p.BuildingId==buildingId).AsNoTracking().ToListAsync();
                 return properties;
             }
             catch (DbException exception)
@@ -70,7 +70,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             try 
             {
-                return await _dataContext.Properties.Where(p=>p.Users.Any(u=>u.UserId==userId)).AsNoTracking().ToListAsync();
+                return await _dataContext.Property.Where(p=>p.Users.Any(u=>u.UserId==userId)).AsNoTracking().ToListAsync();
             }
             catch (DbException exception)
             {
@@ -81,14 +81,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
-            return await _dataContext.Properties.Where(p=>p.PropertyId==propertyId).AsNoTracking().SingleOrDefaultAsync();
+            try 
+            {
+                return await _dataContext.Property.Where(p=>p.PropertyId==propertyId).AsNoTracking().SingleOrDefaultAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this property");
+            }
         }
 
         public async Task UpdatePropertyAsync(Property property)
         {
             try 
             {
-                _dataContext.Properties.Update(property);
+                _dataContext.Property.Update(property);
                 await _dataContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException exception)
@@ -98,5 +106,4 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
             }
         }
     }
-
 }
