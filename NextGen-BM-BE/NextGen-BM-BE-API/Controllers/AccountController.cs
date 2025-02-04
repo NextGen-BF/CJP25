@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -24,7 +26,8 @@ namespace NextGen_BM_BE_API.Controllers{
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var token = _authService.Login(model);
+            var token = await _authService.Login(model);
+            if(token == null) return Unauthorized(new { message = "Invalid credentials" });
             return Ok(new { token });
         }
 }
