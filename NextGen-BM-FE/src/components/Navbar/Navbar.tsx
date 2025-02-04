@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary, Breadcrumbs, Button, Drawer, Menu, MenuItem, MenuList } from "@mui/material";
-import { navbarStyles } from "./NavbarStyles";
+import { navbarStyles } from "./NavbarStyles.ts";
 
 
 const Navbar: FC = () => {
