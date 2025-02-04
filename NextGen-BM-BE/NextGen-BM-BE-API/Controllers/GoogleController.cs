@@ -8,6 +8,7 @@ namespace NextGen_BM_BE_API.Controllers
     public class GoogleController : ControllerBase
     {
         [HttpPost("get-google-jwt")]
+        [RequireHttps]
         public async Task<IActionResult> GetGoogleJWT([FromBody] string credential)
         {
             GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(
