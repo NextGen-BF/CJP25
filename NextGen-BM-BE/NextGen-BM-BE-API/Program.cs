@@ -12,12 +12,15 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
 using NextGen_BM_BE_Domain.Entities;
+using NextGen_BM_BE_Application.UseCases.Properties.Create;
+using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using NextGen_BM_BE_Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +90,19 @@ builder.Services.AddScoped<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<TokenGenerator>();
 
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
+
+builder.Services.AddScoped<GetPropertiesByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
+builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
+builder.Services.AddScoped<UpdatePropertyUseCase>();
+
+
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+
+builder.Services.AddDbContext<DataContext>(options=>options.UseSqlServer(connectionString));
 
 builder.Services.AddCors(options =>
 {
