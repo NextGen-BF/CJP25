@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginCall } from "../services/loginService";
-import { AuthToken } from "../../models/user";
 
 interface LoginState {
     value: string
@@ -19,9 +18,9 @@ const loginSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<AuthToken>) => {
-            state.value = action.payload.accessToken;
-            localStorage.setItem("JWT-BM", action.payload.accessToken)
+        builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<{token: string}>) => {
+            state.value = action.payload.token;
+            localStorage.setItem("JWT-BM", action.payload.token)
         })
     }
 })
