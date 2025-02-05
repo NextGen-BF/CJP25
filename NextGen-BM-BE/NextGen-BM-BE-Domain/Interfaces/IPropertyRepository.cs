@@ -1,8 +1,8 @@
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 
-namespace NextGen_BM_BE_Domain.Interfaces{
-
-    public interface IPropertyRepository    
+namespace NextGen_BM_BE_Domain.Interfaces
+{
+    public interface IPropertyRepository
     {
         Task CreatePropertyAsync(Property property);
         Task<Property> GetPropertyByIdAsync(int propertyId);

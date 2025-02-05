@@ -64,7 +64,7 @@ public class RequestController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("repair/update")]
     public async Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
     {
@@ -72,7 +72,7 @@ public class RequestController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("note/update")]
     public async Task<IActionResult> UpdateRequestNotes(RequestNotes requestNotes)
     {
@@ -80,7 +80,7 @@ public class RequestController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("repair/delete/{requestId}")]
     public async Task<IActionResult> DeleteRepairRequest(int requestId)
     {
@@ -88,7 +88,7 @@ public class RequestController: ControllerBase {
         return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("note/delete/{requestNoteId}")]
     public async Task<IActionResult> DeleteRequestNote(int requestNoteId)
     {

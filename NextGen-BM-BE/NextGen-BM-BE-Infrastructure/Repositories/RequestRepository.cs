@@ -3,9 +3,8 @@ using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
-
-namespace NextGen_BM_BE_Infrastructure.Repositories{
-
+namespace NextGen_BM_BE_Infrastructure.Repositories
+{
     public class RequestRepository : IRequestRepository
     {
         readonly DataContext _dataContext;
@@ -27,22 +26,37 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
 
         public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
         {
-            throw new NotImplementedException();
+            await _dataContext.UserBuildings.AddAsync(userBuildings);
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task DeleteRepairRequestAsync(int requestId)
         {
-            await _dataContext.RepairRequests.Where(request=>request.RequestId==requestId).ExecuteDeleteAsync();
+            RepairRequest? repairRequestToDelete = await this.GetRepairRequestByIdAsync(requestId);
+            if (repairRequestToDelete is not null)
+            {
+                repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dataContext.RepairRequests.Update(repairRequestToDelete);
+                await _dataContext.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteRequestNotesAsync(int requestNotesId)
         {
-            await _dataContext.RequestNotes.Where(note=>note.RequestNotesId==requestNotesId).ExecuteDeleteAsync();
+            RequestNotes? requestNotesToDelete = await _dataContext.RequestNotes.FindAsync(
+                requestNotesId
+            );
+            if (requestNotesToDelete is not null)
+            {
+                requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                _dataContext.RequestNotes.Update(requestNotesToDelete);
+                await _dataContext.SaveChangesAsync();
+            }
         }
 
         public async Task<RepairRequest> GetRepairRequestByIdAsync(int requestId)
         {
-            return await _dataContext.RepairRequests.FindAsync(requestId);
+            throw new NotImplementedException();
         }
 
         public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
@@ -54,6 +68,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
         {
             throw new NotImplementedException();
         }
+
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
             _dataContext.RepairRequests.Update(repairRequest);
@@ -66,5 +81,4 @@ namespace NextGen_BM_BE_Infrastructure.Repositories{
             await _dataContext.SaveChangesAsync();
         }
     }
-
 }

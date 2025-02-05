@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,13 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>346e6da5-0d5a-4edd-8a31-b014199b62dc</UserSecretsId>
     <RootNamespace>NextGen_BM_BE_API</RootNamespace>
+    <UserSecretsId>cb9e68ac-149e-4cf4-b85c-01f119d5be51</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.12">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
@@ -23,4 +30,5 @@
     <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj" />
   </ItemGroup>
+
 </Project>

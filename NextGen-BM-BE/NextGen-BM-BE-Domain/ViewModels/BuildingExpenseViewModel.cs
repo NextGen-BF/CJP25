@@ -1,6 +1,7 @@
-namespace NextGen_BM_BE_Application.ViewModels{
-
-    public class BuildingExpenseViewModel{
+namespace NextGen_BM_BE_Domain.ViewModels
+{
+    public class BuildingExpenseViewModel
+    {
         public int BuildingExpenseId { get; set; }
         public required string Title { get; set; }
         public double TotalAmount { get; set; }
