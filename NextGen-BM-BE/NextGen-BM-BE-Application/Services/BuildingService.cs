@@ -35,14 +35,20 @@ namespace NextGen_BM_BE_Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Building> GetBuildingByIdAsync(int buildingId)
+        public async Task<BuildingViewModel> GetBuildingByIdAsync(int buildingId)
         {
-            return await _getBuildingByIdUseCase.Execute(buildingId);
+            var building =  await _getBuildingByIdUseCase.Execute(buildingId);
+            return _mapper.Map<BuildingViewModel>(building);
         }
 
-        public async Task<IList<Building>> GetAllBuildingsAsync()
+        public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync()
         {
-            return await _getAllBuildingsUseCase.Execute();
+            var buildings = await _getAllBuildingsUseCase.Execute();
+            List<BuildingViewModel> buildingsList = new();
+            foreach(var building in buildings){
+                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+            }
+            return buildingsList;
         }
 
         public async Task CreateBuildingAsync(BuildingViewModel buildingDto)

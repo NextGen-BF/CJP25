@@ -50,6 +50,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 return await _dbContext
                     .Buildings.Where(b => b.DeletedDate == null)
+                    .Include(b => b.BuildingAddress)
+                    .Include(b => b.BuildingExpenses)
+                    .Include(b => b.Properties)
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -63,11 +66,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                Building? foundBuilding = await _dbContext.Buildings.FindAsync(buildingId);
-                if (foundBuilding is null)
-                {
-                    throw new KeyNotFoundException("The building was not found.");
-                }
+                var foundBuilding = await _dbContext.Buildings.Where(b => b.BuildingId == buildingId && b.DeletedDate == null)
+                .Include(b => b.BuildingAddress)
+                .Include(b => b.BuildingExpenses)
+                .Include(b => b.Properties)
+                .AsNoTracking()
+                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("The building was not found.");
                 return foundBuilding;
             }
             catch (Exception ex)
