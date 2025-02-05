@@ -9,7 +9,6 @@ export const store =  configureStore({
         loginReducer: loginReducer,
         buildingReducer: buildingReducer,
         signupReducer: signupReducer,
-
     },
 })
 
