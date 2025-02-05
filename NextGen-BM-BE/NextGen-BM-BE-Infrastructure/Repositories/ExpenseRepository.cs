@@ -86,7 +86,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByBuildingIdAsync(
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByBuildingIdAsync(
             int buildingId
         )
         {
@@ -111,7 +111,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(GetPropertyExpenseByBuildingIdAsync)} threw an error of: ",
+                    $"{nameof(GetPropertyPaymentsByBuildingIdAsync)} threw an error of: ",
                     ex
                 );
             }
@@ -136,7 +136,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByPropertyIdAsync(
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(
             int propertyId
         )
         {
@@ -160,13 +160,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{GetPropertyExpenseByPropertyIdAsync} threw an error of: ",
+                    $"{GetPropertyPaymentsByPropertyIdAsync} threw an error of: ",
                     ex
                 );
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByUserIdAsync(int userId)
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(GetPropertyExpenseByUserIdAsync)} threw an error of: ",
+                    $"{nameof(GetPropertyPaymentsByUserIdAsync)} threw an error of: ",
                     ex
                 );
             }

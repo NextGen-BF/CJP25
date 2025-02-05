@@ -29,30 +29,30 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetExpenseByUserId(int userId)
+        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId)
         {
-            var expensesByUserId = await _expensesService.GetPropertyExpenseByUserIdAsync(userId);
-            return Ok(expensesByUserId);
+            var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
+                userId
+            );
+            return Ok(propertyPaymentsByUserId);
         }
 
         [HttpGet]
         [Route("property/{propertyId}")]
-        public async Task<IActionResult> GetExpenseByPropertyId(int propertyId)
+        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId)
         {
-            var expensesByPropertyId = await _expensesService.GetPropertyExpenseByPropertyIdAsync(
-                propertyId
-            );
-            return Ok(expensesByPropertyId);
+            var propertyPaymentsByPropertyId =
+                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId);
+            return Ok(propertyPaymentsByPropertyId);
         }
 
         [HttpGet]
         [Route("building/{buildingId}")]
-        public async Task<IActionResult> GetExpenseByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId)
         {
-            var expensesByBuildingId = await _expensesService.GetPropertyExpenseByBuildingIdAsync(
-                buildingId
-            );
-            return Ok(expensesByBuildingId);
+            var propertyPaymentsByBuildingId =
+                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId);
+            return Ok(propertyPaymentsByBuildingId);
         }
 
         [HttpPost]
