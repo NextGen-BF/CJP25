@@ -1,14 +1,17 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { FC, useState } from "react";
 import { Address, Building } from "../../../models/building";
-import { useAppDispatch } from "../../../redux/store";
+import { RootState, useAppDispatch } from "../../../redux/store";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss";
 import EditableTable from "../../../components/EditableTable";
+import { useSelector } from "react-redux";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
+  const buildingProperties = useSelector((state: RootState) => state.propertyReducer.value)
+
   const [address, setAddress] = useState<Address>({
     streetName: "",
     streetNumber: 0,
@@ -49,6 +52,8 @@ const CreateBuildingPage: FC = () => {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+    console.log(formData)
+    formData.buildingProperties = buildingProperties;
     dispatch(createBuilding(formData));
   };
 
@@ -177,25 +182,7 @@ const CreateBuildingPage: FC = () => {
         </form>
       </div>
       <div className="property-table">
-        <Box>
           <EditableTable />
-          {/* <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowId={(row) => row.propertyId}
-            editMode="row"
-            disableRowSelectionOnClick
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            checkboxSelection
-          /> */}
-        </Box>
       </div>
     </div>
   );

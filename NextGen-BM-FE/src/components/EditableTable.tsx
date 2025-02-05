@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -6,48 +6,97 @@ import {
   GridRowModel,
   GridRowModesModel,
   GridActionsCellItem,
+  GridToolbarContainer,
+  GridSlotProps,
 } from "@mui/x-data-grid";
-import { Check, X, Pencil } from "lucide-react";
+import { Check, X, Pencil, DeleteIcon } from "lucide-react";
+import { Button } from "@mui/material";
+import { useAppDispatch } from "../redux/store";
+import {
+  addProperty,
+  removeProperty,
+  updateProperty,
+} from "../redux/slices/propertySlice";
+import { Property } from "../models/property";
 
-interface Property {
-  id: number;
-  propertyNumber: number;
-  size: number;
-  floor: number;
-  sizeOfIdealParts: number;
-  entranceIsExternal: boolean;
+declare module "@mui/x-data-grid" {
+  interface ToolbarPropsOverrides {
+    setRows: Dispatch<SetStateAction<Property[]>>;
+    setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>;
+  }
 }
 
 const initialRows: Property[] = [
   {
-    id: 1,
+    propertyId: 1,
     propertyNumber: 101,
+    buildingId: 0,
     size: 120,
     floor: 3,
     sizeOfIdealParts: 50,
     entranceIsExternal: false,
+    payments: null,
+    residentHistory: null,
   },
   {
-    id: 2,
+    propertyId: 2,
     propertyNumber: 102,
+    buildingId: 0,
     size: 90,
     floor: 2,
     sizeOfIdealParts: 40,
     entranceIsExternal: true,
+    payments: null,
+    residentHistory: null,
   },
 ];
 
 export default function EditableTable() {
-  const [rows, setRows] = useState<Property[]>(initialRows);
+  const dispatch = useAppDispatch();
+  const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+
+  function EditToolbar(props: GridSlotProps["toolbar"]) {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = Math.floor(Math.random() * 100000 + 1);
+      let newRow: Property = {
+        propertyId: id,
+        propertyNumber: rows.length + 1,
+        buildingId: 0,
+        size: 0,
+        floor: 0,
+        sizeOfIdealParts: 0,
+        entranceIsExternal: true,
+        payments: null,
+        residentHistory: null,
+      };
+      setRows((oldRows) => [...oldRows, newRow]);
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+      dispatch(addProperty(newRow));
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = newRow as Property;
     setRows((prevRows) =>
       prevRows.map((row) =>
-        updatedRow.id === updatedRow.id ? updatedRow : row,
+        row.propertyId === updatedRow.propertyId ? updatedRow : row,
       ),
     );
+    dispatch(updateProperty(updatedRow));
     return newRow;
   };
 
@@ -64,6 +113,12 @@ export default function EditableTable() {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
+  };
+
+  const handleDeleteClick = (id: number) => () => {
+    let row = rows.filter((row) => row.propertyId !== id);
+    setRows(row);
+    dispatch(removeProperty(row[0]));
   };
 
   const columns: GridColDef[] = [
@@ -127,6 +182,12 @@ export default function EditableTable() {
                 label="Edit"
                 onClick={() => handleEditClick(id as number)}
               />,
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={handleDeleteClick(id as number)}
+                color="inherit"
+              />,
             ];
       },
     },
@@ -135,11 +196,17 @@ export default function EditableTable() {
   return (
     <DataGrid
       rows={rows}
+      getRowId={(row) => row.propertyId}
       columns={columns}
       editMode="row"
-      processRowUpdate={processRowUpdate}
       rowModesModel={rowModesModel}
       onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+      processRowUpdate={processRowUpdate}
+      pageSizeOptions={[10, 25, 50, 100]}
+      slots={{ toolbar: EditToolbar }}
+      slotProps={{
+        toolbar: { setRows, setRowModesModel },
+      }}
     />
   );
 }

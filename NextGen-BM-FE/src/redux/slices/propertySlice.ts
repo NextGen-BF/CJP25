@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Property } from "../../models/property";
 
 interface PropertyState{
@@ -14,30 +14,8 @@ const initialState: PropertyState = {
         floor: 1,
         sizeOfIdealParts: 0,
         entranceIsExternal: false,
-        propertyExpenses: [{
-            propertyExpenseId: 0,
-            propertyExpenseTemplateId: 0,
-            responsibleRoleId: 0,
-            price:0,
-            startDate: new Date(Date.now()),
-            endDate: new Date(Date.now()),
-            Description: "",
-        }],
-        payments: [{
-            paymentId: 0,
-            amountOwed: 0,
-            dateOpened: new Date(Date.now()),
-            dueDate: new Date(Date.now()),
-            status: "",
-            paymentMethod: "",
-        }],
-        residentHistory: [{
-            firstName: "",
-            lastName: "",
-            residentTypeId: 0,
-            enterDate: new Date(Date.now()),
-            leaveDate: new Date(Date.now()),
-        }]
+        payments: null,
+        residentHistory: null
     }]
 }
 
@@ -45,16 +23,20 @@ const propertySlice = createSlice({
     name: "Property",
     initialState,
     reducers: {
-        addProperty: (state, action) => {
-            state.value.push(action.payload)
+        addProperty: (state, action: PayloadAction<Property>) => {
+            state.value = [...state.value, action.payload]
         },
-        removeProperty: (state, action) => {
-            const index = state.value.findIndex(action.payload);
-            state.value.splice(index, 1);
+        removeProperty: (state, action: PayloadAction<Property>) => {
+            state.value = state.value.filter(property => property.propertyId != action.payload.propertyId)
+        },
+        updateProperty: (state, action: PayloadAction<Property>) => {
+            state.value = [...state.value]
+            state.value = state.value.filter(property => property.propertyId != action.payload.propertyId)
+            state.value = [...state.value, action.payload]
         }
     },
 })
 
-export const { addProperty, removeProperty} = propertySlice.actions;
+export const { addProperty, removeProperty, updateProperty} = propertySlice.actions;
 
 export default propertySlice.reducer;
