@@ -14,7 +14,7 @@ export interface Building {
 
 export interface Address {
     streetName: string,
-    streetNumber: string,
+    streetNumber: number,
     entrance: string,
     district: string,
     city: string,

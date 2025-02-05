@@ -11,7 +11,7 @@ const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
   const [address, setAddress] = useState<Address>({
     streetName: "",
-    streetNumber: "",
+    streetNumber: 0,
     entrance: "",
     district: "",
     city: "",
@@ -35,7 +35,7 @@ const CreateBuildingPage: FC = () => {
   ) => {
     const { name, value } = e.target;
     setAddress((previousData) => ({ ...previousData, [name]: value }));
-    setFormData((previousData) => ({ ...previousData, address: address }));
+    setFormData((previousData) => ({ ...previousData, buildingAddress: address }));
   };
 
   const handleChange = (

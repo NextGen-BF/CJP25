@@ -57,7 +57,6 @@ export default function EditableTable() {
 
   const handleSaveClick = (id: number) => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    console.log(rows);
   };
 
   const handleCancelClick = (id: number) => {
