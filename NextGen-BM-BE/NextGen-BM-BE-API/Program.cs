@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NextGen_BM_BE_API;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -55,7 +54,6 @@ builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
-builder.Services.AddSingleton<TokenGenerator>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -81,6 +79,16 @@ builder.Services.AddAuthentication(options => {
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(x => {
+        x.Events = new JwtBearerEvents {
+            OnAuthenticationFailed = context => {
+                if(context.Exception.GetType() == typeof (SecurityTokenExpiredException)){
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
+                }
+                return Task.CompletedTask;
+            }
+        };
         x.IncludeErrorDetails = true;
         x.RequireHttpsMetadata = false;
         x.TokenValidationParameters = new TokenValidationParameters
@@ -92,6 +100,7 @@ builder.Services.AddAuthentication(options => {
             ValidAudience = builder.Configuration["JWT:Audience"],
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
             IssuerSigningKey= new SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
             ),
