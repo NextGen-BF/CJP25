@@ -1,7 +1,4 @@
-namespace NextGen_BM_BE_Domain.Interfaces{
-
-    public interface IUserRepository    
-    {
-        
-    }
+namespace NextGen_BM_BE_Domain.Interfaces
+{
+    public interface IUserRepository { }
 }

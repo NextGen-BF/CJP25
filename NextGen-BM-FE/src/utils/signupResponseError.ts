@@ -1,4 +1,4 @@
-import { signupResponseConstants } from "../constants/signupResponseConstants";
+import { signupResponseConstants } from "../constants/constants";
 
 export const getMessageForSignupError = (error: any): string => {
   try {
