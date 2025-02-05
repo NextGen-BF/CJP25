@@ -16,7 +16,7 @@ namespace NextGen_BM_BE_API{
 
             var tokenDescriptor = new SecurityTokenDescriptor{
                 Subject=new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(60),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 Issuer = "http://localhost:5204",
                 Audience = "http://localhost:5204",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

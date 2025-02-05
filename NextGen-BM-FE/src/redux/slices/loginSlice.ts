@@ -3,36 +3,29 @@ import { loginCall } from "../services/loginService";
 import { AuthToken } from "../../models/user";
 
 interface LoginState {
-    value: AuthToken
+    value: string
 }
 
 const initialState: LoginState = {
-    value: {
-        tokenType: "",
-        accessToken: "",
-        expiresIn: 0,
-        refreshToken: "",
-    }
+    value: localStorage.getItem("JWT-BM") ?? ""
 };
 
 const loginSlice = createSlice({
     name: "Login",
     initialState,
     reducers: {
-        login: (state, action) => {
-            state.value.accessToken = action.payload
-        },
-        logout: (state) => {
-            state.value.accessToken = ""
+        logout: () => {
+            localStorage.removeItem("JWT-BM")
         }
     },
     extraReducers: (builder) => {
         builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<AuthToken>) => {
-            state.value = action.payload;
+            state.value = action.payload.accessToken;
+            localStorage.setItem("JWT-BM", action.payload.accessToken)
         })
     }
 })
 
-export const { login, logout } = loginSlice.actions;
+export const { logout } = loginSlice.actions;
 
 export default loginSlice.reducer;

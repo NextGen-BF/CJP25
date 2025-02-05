@@ -5,10 +5,10 @@ using NextGen_BM_BE_Domain.ViewModels;
 namespace NextGen_BM_BE_API.Controllers{
 
     [ApiController]
-    [Route("[controller]/auth")]
-    public class AccountController : ControllerBase{
+    [Route("[controller]")]
+    public class AuthController : ControllerBase{
         private readonly IAuthService _authService;
-        public AccountController(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
