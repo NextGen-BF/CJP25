@@ -21,6 +21,10 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(
                     dest => dest.BuildingExpenses,
                     opt => opt.MapFrom(src => src.BuildingExpenses)
+                )
+                .ForMember(
+                    dest => dest.Properties,
+                    opt => opt.MapFrom(src => src.BuildingProperties)
                 );
 
             CreateMap<Building, BuildingViewModel>()
@@ -32,7 +36,8 @@ namespace NextGen_BM_BE_Application.Mapper
                     dest => dest.BuildingExpenses,
                     opt => opt.MapFrom(src => src.BuildingExpenses)
                 )
-                .ForMember(dest => dest.BuildingProperties, opt => opt.Ignore());
+                .ForMember(dest => dest.BuildingProperties,
+                opt => opt.MapFrom(src => src.Properties));
 
             CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
