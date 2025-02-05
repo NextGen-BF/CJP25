@@ -13,8 +13,9 @@ const loginSlice = createSlice({
     name: "Login",
     initialState,
     reducers: {
-        logout: () => {
+        logout: (state) => {
             localStorage.removeItem("JWT-BM")
+            state.value = ""
         }
     },
     extraReducers: (builder) => {
