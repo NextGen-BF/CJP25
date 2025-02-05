@@ -86,7 +86,16 @@ builder.Services.AddAuthentication(options => {
                     context.Response.ContentType = "application/json";
                     return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
                 }
-                return Task.CompletedTask;
+                else if (context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return context.Response.WriteAsync("{\"message\": \"Invalid token signature. Possible tampering detected.\"}");
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return context.Response.WriteAsync("{\"message\": \"Invalid token.\"}");
+                }
             }
         };
         x.IncludeErrorDetails = true;
