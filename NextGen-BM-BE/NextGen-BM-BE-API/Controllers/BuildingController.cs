@@ -28,7 +28,8 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        public async Task<IActionResult> GetBuildingById(int buildingId){
+        public async Task<IActionResult> GetBuildingById(int buildingId)
+        {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
             return Ok(building);
         }

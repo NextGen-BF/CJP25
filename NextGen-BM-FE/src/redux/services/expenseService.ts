@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
-import { Building } from "../../models/building";
+import { PropertyExpense } from "../../models/property";
 
-export const createBuilding = createAsyncThunk(
-  "building/new",
-  async (data: Building, thunkAPI) => {
+export const createPropertyExpense = createAsyncThunk(
+  "expense/new",
+  async (data: PropertyExpense, thunkAPI) => {
     return await axios
-      .post(`${apiURL}/building/new`, data)
+      .post(`${apiURL}/expense/new`, data)
       .then(function (response) {
         return {
           data: response.data,

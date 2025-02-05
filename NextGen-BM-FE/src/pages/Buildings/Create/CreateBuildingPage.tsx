@@ -34,7 +34,7 @@ const CreateBuildingPage: FC = () => {
   ) => {
     const { name, value } = e.target;
     setAddress((previousData) => ({ ...previousData, [name]: value }));
-    setFormData((previousData)=> ({ ...previousData, address: address }));
+    setFormData((previousData)=> ({ ...previousData, buildingAddress: address }));
   };
 
   const handleChange = (
@@ -46,6 +46,7 @@ const CreateBuildingPage: FC = () => {
 
   const handleCreateBuildingSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(formData);
     dispatch(createBuilding(formData));
   }
 
@@ -103,7 +104,7 @@ const CreateBuildingPage: FC = () => {
         <TextField
           name="streetNumber"
           label="Street Number"
-          type="text"
+          type="number"
           variant="outlined"
           size="small"
           fullWidth
