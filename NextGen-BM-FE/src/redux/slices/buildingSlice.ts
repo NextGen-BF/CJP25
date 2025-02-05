@@ -11,7 +11,7 @@ const initialState: BuildingsState = {
     buildingId: 0,
     buildingAddress: {
       streetName: "",
-      streetNumber: "",
+      streetNumber: 0,
       entrance: "",
       district: "",
       city: "",
