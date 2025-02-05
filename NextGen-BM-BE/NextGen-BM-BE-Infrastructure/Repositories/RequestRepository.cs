@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 {
     public class RequestRepository : IRequestRepository
     {
-        readonly DataContext _dataContext;
+        private readonly DataContext _dataContext;
         public RequestRepository(DataContext dataContext)
         {
             _dataContext=dataContext;
@@ -32,7 +32,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task DeleteRepairRequestAsync(int requestId)
         {
-            RepairRequest? repairRequestToDelete = await this.GetRepairRequestByIdAsync(requestId);
+            RepairRequest? repairRequestToDelete = await GetRepairRequestByIdAsync(requestId);
             if (repairRequestToDelete is not null)
             {
                 repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
@@ -56,7 +56,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<RepairRequest> GetRepairRequestByIdAsync(int requestId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.RepairRequests.Where(request=>request.RepairRequestId==requestId).AsNoTracking().SingleOrDefaultAsync();
         }
 
         public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
@@ -66,7 +66,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.UserBuildingsId==buildingId).AsNoTracking().SingleOrDefaultAsync();
         }
 
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)

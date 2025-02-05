@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>346e6da5-0d5a-4edd-8a31-b014199b62dc</UserSecretsId>
     <RootNamespace>NextGen_BM_BE_API</RootNamespace>
-    <UserSecretsId>cb9e68ac-149e-4cf4-b85c-01f119d5be51</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
