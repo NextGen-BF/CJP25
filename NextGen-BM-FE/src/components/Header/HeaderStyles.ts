@@ -1,5 +1,4 @@
-import { SxProps } from "@mui/material";
-import { navbarStyles } from "../Navbar/NavbarStyles";
+import { SxProps, useTheme } from "@mui/material";
 
 export const headerStyles:{[key:string]:SxProps}={
     appBarStyles:{
@@ -11,5 +10,8 @@ export const headerStyles:{[key:string]:SxProps}={
         justifyContent: 'space-between',
         textAlign: 'center',
         height: '3rem',
+        boxSizing: 'border-box',
+        padding: '1em',
+        zIndex:1400
     }
 };

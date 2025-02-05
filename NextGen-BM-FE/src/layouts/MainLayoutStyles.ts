@@ -11,6 +11,6 @@ export const mainLayoutStyles:{[key:string]:SxProps}={
         display: 'flex',
         flexDirection:'column',
         flexWrap: 'wrap',
-        width:"80%"
+        width:"100%"
     }
 };

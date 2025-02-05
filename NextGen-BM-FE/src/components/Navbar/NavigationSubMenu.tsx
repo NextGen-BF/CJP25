@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, MenuList } from "@mui/material";
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
+import "./navbar.scss";
 
 export interface navSubMenuProps{
     groupTitle: string,
@@ -13,7 +14,7 @@ export interface navSubMenuProps{
 export const NavigationSubMenu: FC<navSubMenuProps> = (props)=>{
     const links=props.groupLinks.map(groupLink=>
         <MenuItem>
-              <NavLink to={groupLink.link}>{groupLink.title}</NavLink>
+          <NavLink className={'submenu-link'} to={groupLink.link}>{groupLink.title}</NavLink>
         </MenuItem>
     );
     return (
