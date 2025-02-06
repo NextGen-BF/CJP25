@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
@@ -25,7 +26,7 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("repair/{requestId}")]
-    public async Task<IActionResult> GetRepairRequestByIdAsync(int requestId)
+    public async Task<IActionResult> GetRepairRequestById(int requestId)
     {
         var result = await _requestService.GetRepairRequestByIdAsync(requestId);
         if (result==null) return BadRequest();
@@ -34,7 +35,7 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
-    public async Task<IActionResult> GetUserBuildingRequestsAsync(int buildingId)
+    public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
     {
         var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
         if (result==null) return BadRequest();
@@ -46,15 +47,15 @@ public class RequestController: ControllerBase {
     public async Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
     {
         await _requestService.CreateRepairRequestAsync(repairRequest);
-        return Ok();
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequest.RepairRequestId}, repairRequest);
     }
 
     [HttpPost]
     [Route("user/building/new")]
     public async Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
     {
-        await _requestService.CreateUserBuildingRequestAsync();
-        return Ok();
+        await _requestService.CreateUserBuildingRequestAsync(userBuildings);
+        return CreatedAtAction(nameof(GetUserBuildingRequests), new {buildingId=userBuildings.BuildingId}, userBuildings);
     }
     [HttpPost]
     [Route("note/new")]

@@ -50,9 +50,9 @@ public class RequestService : IRequestService
         await _createRequestNoteUseCase.Execute(requestNotes);
     }
 
-    public Task CreateUserBuildingRequestAsync()
+    public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
     {
-        throw new NotImplementedException();
+        await _createUserBuildingRequestUseCase.Execute(userBuildings);
     }
 
     public async Task DeleteRepairRequestAsync(int requestId)

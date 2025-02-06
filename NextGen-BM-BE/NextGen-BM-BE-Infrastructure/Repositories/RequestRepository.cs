@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
@@ -14,71 +15,151 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         } 
         public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
         {
-            await _dataContext.RepairRequests.AddAsync(repairRequest);
-            await _dataContext.SaveChangesAsync();
+            try
+            {
+                await _dataContext.RepairRequests.AddAsync(repairRequest);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
-            await _dataContext.RequestNotes.AddAsync(requestNotes);
-            await _dataContext.SaveChangesAsync();
+            try
+            {   
+                await _dataContext.RequestNotes.AddAsync(requestNotes);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
         {
-            await _dataContext.UserBuildings.AddAsync(userBuildings);
-            await _dataContext.SaveChangesAsync();
+            try
+            {
+                await _dataContext.UserBuildings.AddAsync(userBuildings);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task DeleteRepairRequestAsync(int requestId)
         {
-            RepairRequest? repairRequestToDelete = await GetRepairRequestByIdAsync(requestId);
-            if (repairRequestToDelete is not null)
+            try
             {
-                repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dataContext.RepairRequests.Update(repairRequestToDelete);
-                await _dataContext.SaveChangesAsync();
+                RepairRequest? repairRequestToDelete = await GetRepairRequestByIdAsync(requestId);
+                if (repairRequestToDelete is not null)
+                {
+                    repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dataContext.RepairRequests.Update(repairRequestToDelete);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
             }
         }
 
         public async Task DeleteRequestNotesAsync(int requestNotesId)
         {
-            RequestNotes? requestNotesToDelete = await _dataContext.RequestNotes.FindAsync(
-                requestNotesId
-            );
-            if (requestNotesToDelete is not null)
+            try
             {
-                requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dataContext.RequestNotes.Update(requestNotesToDelete);
-                await _dataContext.SaveChangesAsync();
+                RequestNotes? requestNotesToDelete = await _dataContext.RequestNotes.FindAsync(
+                requestNotesId
+                );
+                if (requestNotesToDelete is not null)
+                {
+                    requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dataContext.RequestNotes.Update(requestNotesToDelete);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
             }
         }
 
         public async Task<RepairRequest> GetRepairRequestByIdAsync(int requestId)
         {
-            return await _dataContext.RepairRequests.Where(request=>request.RepairRequestId==requestId).AsNoTracking().SingleOrDefaultAsync();
+            try
+            {
+                return await _dataContext.RepairRequests.Where(request=>request.RepairRequestId==requestId).AsNoTracking().SingleOrDefaultAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
         {
-            return await _dataContext.RepairRequests.Where(request=>request.BuildingId==buildingId).ToListAsync();
+            try
+            {
+                return await _dataContext.RepairRequests.Where(request=>request.BuildingId==buildingId).ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
         {
-            return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.BuildingId==buildingId).AsNoTracking().ToListAsync();
+            try
+            {
+                return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.BuildingId==buildingId).AsNoTracking().ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
-            _dataContext.RepairRequests.Update(repairRequest);
-            await _dataContext.SaveChangesAsync();
+            try
+            {
+                _dataContext.RepairRequests.Update(repairRequest);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task UpdateRequestNotesAsync(RequestNotes requestNotes)
         {
-            _dataContext.RequestNotes.Update(requestNotes);
-            await _dataContext.SaveChangesAsync();
+            try
+            {
+                _dataContext.RequestNotes.Update(requestNotes);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
     }
 }

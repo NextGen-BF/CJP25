@@ -8,7 +8,7 @@ namespace NextGen_BM_BE_Domain.Services{
     {
         Task CreateRepairRequestAsync(RepairRequest repairRequest);
         Task CreateRequestNoteAsync(RequestNotes requestNotes);
-        Task CreateUserBuildingRequestAsync();
+        Task CreateUserBuildingRequestAsync(UserBuildings userBuildings);
         Task DeleteRepairRequestNoteAsync(int requestNoteId);
         Task DeleteRepairRequestAsync(int requestId);
         Task<IList<RepairRequest>> GetAllRepairRequestsByBuildingIdAsync(int buildingId);
