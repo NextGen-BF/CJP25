@@ -13,7 +13,7 @@ namespace NextGen_BM_BE_Domain.Services{
         Task DeleteRepairRequestAsync(int requestId);
         Task<IList<RepairRequest>> GetAllRepairRequestsByBuildingIdAsync(int buildingId);
         Task<RepairRequest> GetRepairRequestByIdAsync(int requestId);
-        Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId);
+        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId);
         Task UpdateRepairRequestAsync(RepairRequest repairRequest);
         Task UpdateRequestNoteAsync(RequestNotes requestNote);
         }

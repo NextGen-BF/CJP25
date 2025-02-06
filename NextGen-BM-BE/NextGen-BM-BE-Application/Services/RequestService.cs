@@ -26,7 +26,8 @@ public class RequestService : IRequestService
                             GetAllRepairRequestsByBuildingIdUseCase getAllRepairRequestsByBuildingIdUseCase,
                             GetRequestByIdUseCase getRequestByIdUseCase,
                             UpdateRepairRequestUseCase updateRepairRequestUseCase,
-                            UpdateRequestNoteUseCase updateRequestNoteUseCase)
+                            UpdateRequestNoteUseCase updateRequestNoteUseCase,
+                            GetUserBuildingRequests getUserBuildingRequests)
     {
         _createRepairRequestUseCase=createRepairRequestUseCase;
         _createRequestNoteUseCase=createRequestNoteUseCase;
@@ -37,6 +38,7 @@ public class RequestService : IRequestService
         _getRequestByIdUseCase=getRequestByIdUseCase;
         _updateRepairRequestUseCase=updateRepairRequestUseCase;
         _updateRequestNoteUseCase=updateRequestNoteUseCase;
+        _getUserBuildingRequests=getUserBuildingRequests;
     }
     public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
     {
@@ -73,7 +75,7 @@ public class RequestService : IRequestService
         return await _getRequestByIdUseCase.Execute(requestId);
     }
 
-    public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
+    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
     {
         return await _getUserBuildingRequests.Execute(buildingId);
     }

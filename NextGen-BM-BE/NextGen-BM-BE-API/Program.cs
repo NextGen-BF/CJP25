@@ -119,6 +119,7 @@ builder.Services.AddScoped<DeleteRepairRequestNoteUseCase>();
 builder.Services.AddScoped<DeleteRepairRequestUseCase>();
 builder.Services.AddScoped<GetAllRepairRequestsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetRequestByIdUseCase>();
+builder.Services.AddScoped<GetUserBuildingRequests>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<UpdateRequestNoteUseCase>();
 

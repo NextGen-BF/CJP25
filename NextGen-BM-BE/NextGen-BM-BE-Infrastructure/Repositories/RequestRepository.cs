@@ -64,9 +64,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             return await _dataContext.RepairRequests.Where(request=>request.BuildingId==buildingId).ToListAsync();
         }
 
-        public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
         {
-            return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.UserBuildingsId==buildingId).AsNoTracking().SingleOrDefaultAsync();
+            return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.BuildingId==buildingId).AsNoTracking().ToListAsync();
         }
 
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
