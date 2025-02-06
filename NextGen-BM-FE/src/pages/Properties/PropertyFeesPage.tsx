@@ -1,6 +1,165 @@
-import { FC } from "react";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { FC, useState } from "react";
+import "./propertyFeesPage.scss";
+import { PropertyExpense } from "../../models/property";
+import Paper from "@mui/material/Paper";
 
 const PropertyFeesPage: FC = () => {
-  return <h1>Apartment Fees Page</h1>;
+  const formatDate = (date: Date): string => {
+    return date.toISOString().split("T")[0];
+  };
+
+  const propertyExpensesMockData: PropertyExpense[] = [
+    {
+      propertyExpenseId: 1,
+      propertyExpenseTemplateId: 1,
+      responsibleRoleId: 2,
+      price: 222.4,
+      startDate: new Date("2024-12-20"),
+      endDate: new Date("2025-01-11"),
+      Description: "electricity bill",
+    },
+    {
+      propertyExpenseId: 2,
+      propertyExpenseTemplateId: 1,
+      responsibleRoleId: 1,
+      price: 52.55,
+      startDate: new Date("2025-01-29"),
+      endDate: new Date("2025-03-01"),
+      Description: "water bill",
+    },
+    {
+      propertyExpenseId: 3,
+      propertyExpenseTemplateId: 1,
+      responsibleRoleId: 1,
+      price: 22.0,
+      startDate: new Date("2025-01-02"),
+      endDate: new Date("2025-03-12"),
+      Description: "monthly rent",
+    },
+  ];
+
+  const [propertyExpenses, setPropertyExpenses] = useState<PropertyExpense[]>(
+    propertyExpensesMockData,
+  );
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const handleSearch = () => {
+    if (searchInput !== "") {
+      const filteredPropertyExpenses = propertyExpenses.filter(
+        (propertyExpense) => {
+          if (
+            propertyExpense.Description.toLowerCase().includes(
+              searchInput.toLowerCase(),
+            )
+          ) {
+            return propertyExpense;
+          }
+        },
+      );
+      setPropertyExpenses(filteredPropertyExpenses);
+    } else {
+      setPropertyExpenses(propertyExpensesMockData);
+      return;
+    }
+  };
+
+  return (
+    <>
+      <h1>Apartment Fees Page</h1>
+      <div className="button-container">
+        <Button variant="contained" sx={{ width: "10%" }}>
+          Browse
+        </Button>
+        <Button variant="contained" sx={{ width: "10%" }}>
+          Create
+        </Button>
+      </div>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#f0f0f0",
+          padding: "1rem",
+          marginBottom: "3rem",
+          borderRadius: "1rem",
+          width: "50%",
+        }}
+      >
+        <Typography
+          variant="body1"
+          sx={{
+            flexGrow: 1, // This takes up available space, pushing the search input to the right
+            textAlign: "center", // Centers the "Filter" text within its space
+            whiteSpace: "nowrap",
+          }}
+        >
+          Filter
+        </Typography>
+        <TextField
+          name="search"
+          label="Search"
+          type="text"
+          variant="outlined"
+          size="small"
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon onClick={handleSearch} />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table sx={{  width: '100%' }} size="small" aria-label="a dense table">
+          <TableHead sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
+            <TableRow>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Start Date</TableCell>
+              <TableCell align="center">End Date</TableCell>
+              <TableCell align="center">Price</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {propertyExpenses.map((propertyExpense) => (
+              <TableRow key={propertyExpense.propertyExpenseId}>
+                <TableCell align="center">
+                  {propertyExpense.Description}
+                </TableCell>
+                <TableCell align="center">
+                  {formatDate(propertyExpense.startDate)}
+                </TableCell>
+                <TableCell align="center">
+                  {formatDate(propertyExpense.endDate)}
+                </TableCell>
+                <TableCell align="center">{propertyExpense.price}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
 };
 export default PropertyFeesPage;
