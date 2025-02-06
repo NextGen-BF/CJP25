@@ -2,6 +2,7 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Entities.RequestAggregate.Specifications;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
@@ -99,7 +100,14 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext.RepairRequests.Where(request=>request.RepairRequestId==requestId).AsNoTracking().SingleOrDefaultAsync();
+                var spec=new RequestNotesSpecification(requestId);
+                spec.Evaluate(_dataContext.RepairRequests);
+                return await _dataContext.RepairRequests
+                    .Where(request=>request.RepairRequestId==requestId&&request.DeletedDate==null)
+                    .Include(request=>request.Notes)
+                    .Include(request=>request.RequestStatus)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync();
             }
             catch (DbException exception)
             {
@@ -112,7 +120,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext.RepairRequests.Where(request=>request.BuildingId==buildingId).ToListAsync();
+                return await _dataContext.RepairRequests
+                    .Where(request=>request.BuildingId==buildingId&&request.DeletedDate==null)
+                    .Include(request=>request.Notes)
+                    .Include(request=>request.RequestStatus)
+                    .ToListAsync();
             }
             catch (DbException exception)
             {
@@ -125,7 +137,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext.UserBuildings.Where(userBuilding=>userBuilding.BuildingId==buildingId).AsNoTracking().ToListAsync();
+                return await _dataContext.UserBuildings
+                    .Where(userBuilding=>userBuilding.BuildingId==buildingId&&userBuilding.DeletedDate==null)
+                    .Include(userBuildings=>userBuildings.Role)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (DbException exception)
             {

@@ -6,7 +6,6 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public int UserId { get; set; }
         public int BuildingId { get; set; }
         public required string RequestDescription { get; set; }
-        public int StatusId { get; set; }
         public required RequestStatusViewModel Status { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DateSettled { get; set; }
