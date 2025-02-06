@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Services;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -44,10 +45,10 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("repair/new")]
-    public async Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestDto)
     {
-        await _requestService.CreateRepairRequestAsync(repairRequest);
-        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequest.RepairRequestId}, repairRequest);
+        await _requestService.CreateRepairRequestAsync(repairRequestDto);
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestDto.RequestId}, repairRequestDto);
     }
 
     [HttpPost]
@@ -59,25 +60,25 @@ public class RequestController: ControllerBase {
     }
     [HttpPost]
     [Route("note/new")]
-    public async Task<IActionResult> CreateRepairRequestNote(RequestNotes requestNotes)
+    public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesDto)
     {
-        await _requestService.CreateRequestNoteAsync(requestNotes);
+        await _requestService.CreateRequestNoteAsync(requestNotesDto);
         return Ok();
     }
 
     [HttpPut]
     [Route("repair/update")]
-    public async Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestDto)
     {
-        await _requestService.UpdateRepairRequestAsync(repairRequest);
+        await _requestService.UpdateRepairRequestAsync(repairRequestDto);
         return Ok();
     }
 
     [HttpPut]
     [Route("note/update")]
-    public async Task<IActionResult> UpdateRequestNotes(RequestNotes requestNotes)
+    public async Task<IActionResult> UpdateRequestNotes(RequestNotesViewModel requestNotesDto)
     {
-        await _requestService.UpdateRequestNoteAsync(requestNotes);
+        await _requestService.UpdateRequestNoteAsync(requestNotesDto);
         return Ok();
     }
 

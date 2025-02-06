@@ -23,7 +23,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't create this request");
             }
         }
 
@@ -37,7 +37,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't create this note");
             }
         }
 
@@ -51,7 +51,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't create this request");
             }
         }
 
@@ -70,7 +70,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't delete this request");
             }
         }
 
@@ -91,7 +91,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't delete this note");
             }
         }
 
@@ -104,7 +104,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't retrieve data for this request");
             }
         }
 
@@ -117,7 +117,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't retrieve data for this building's requests");
             }
         }
 
@@ -130,7 +130,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't retrieve data for this building's requests");
             }
         }
 
@@ -144,7 +144,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't update this request");
             }
         }
 
@@ -158,7 +158,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this user's properties");
+                throw new Exception("Couldn't update this note");
             }
         }
     }
