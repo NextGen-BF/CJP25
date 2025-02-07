@@ -63,7 +63,8 @@ public class RequestController: ControllerBase {
     public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesViewModel)
     {
         await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
-        return Ok();
+        //TODO: when notes gain more priority and/if fe needs to make an api call to get notes seperately, pass that method
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=requestNotesViewModel.RequestId}, requestNotesViewModel);
     }
 
     [HttpPut]
