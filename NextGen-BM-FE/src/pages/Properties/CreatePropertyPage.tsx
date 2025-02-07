@@ -4,9 +4,15 @@ import { Property } from "../../models/property";
 import { useAppDispatch } from "../../redux/store";
 import { createProperty } from "../../redux/services/propertyService";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, MenuItem, Select } from "@mui/material";
+import { Building } from "../../models/building";
+import { Search } from "@mui/icons-material";
 
 const CreatePropertyPage: FC = () => {
+  const buildings:Building[]=[]
+  const buildingList=buildings.map(building=>
+    <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
+  );
   const dispatch = useAppDispatch();
   const {control, handleSubmit} = useForm<Property>();
   const onSubmit: SubmitHandler<Property> = (data) => {console.log(data); dispatch(createProperty(data))};
@@ -82,6 +88,21 @@ const CreatePropertyPage: FC = () => {
             size="small"
             fullWidth
             />
+          )}
+        />
+        <Controller
+          name="buildingId"
+          control={control}
+          render={({ field }) => (
+            <Select
+            {...field}
+            label="Building"
+            size="small"
+            fullWidth
+            >
+              <Search></Search>
+              {buildingList}
+            </Select>
           )}
         />
         <Button type="submit">
