@@ -45,10 +45,10 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("repair/new")]
-    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModelrequestNotesViewModel)
+    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
-        await _requestService.CreateRepairRequestAsync(repairRequestViewModelrequestNotesViewModel);
-        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestViewModelrequestNotesViewModel.RequestId}, repairRequestViewModelrequestNotesViewModel);
+        await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestViewModel.RequestId}, repairRequestViewModel);
     }
 
     [HttpPost]
@@ -68,9 +68,9 @@ public class RequestController: ControllerBase {
 
     [HttpPut]
     [Route("repair/update")]
-    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModelrequestNotesViewModel)
+    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
-        await _requestService.UpdateRepairRequestAsync(repairRequestViewModelrequestNotesViewModel);
+        await _requestService.UpdateRepairRequestAsync(repairRequestViewModel);
         return Ok();
     }
 

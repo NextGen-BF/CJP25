@@ -51,9 +51,9 @@ public class RequestService : IRequestService
         await _createRepairRequestUseCase.Execute(repairRequest);
     }
 
-    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModelrepairRequestViewModel)
+    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
     {
-        var requestNotes = _mapper.Map<RequestNotes>(requestNotesViewModelrepairRequestViewModel);
+        var requestNotes = _mapper.Map<RequestNotes>(requestNotesViewModel);
         await _createRequestNoteUseCase.Execute(requestNotes);
     }
 
@@ -95,9 +95,9 @@ public class RequestService : IRequestService
         await _updateRepairRequestUseCase.Execute(repairRequest);
     }
 
-    public async Task UpdateRequestNoteAsync(RequestNotesViewModel requestNoteViewModelrepairRequestViewModel)
+    public async Task UpdateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
     {
-        var requestNote = _mapper.Map<RequestNotes>(requestNoteViewModelrepairRequestViewModel);
+        var requestNote = _mapper.Map<RequestNotes>(requestNotesViewModel);
         await _updateRequestNoteUseCase.Execute(requestNote);
     }
 }
