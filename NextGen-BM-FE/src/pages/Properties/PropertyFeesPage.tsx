@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   InputAdornment,
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import { FC, useState } from "react";
 import "./propertyFeesPage.scss";
 import { PropertyExpense } from "../../models/property";
 import Paper from "@mui/material/Paper";
+import { NavLink } from "react-router-dom";
 
 const PropertyFeesPage: FC = () => {
   const formatDate = (date: Date): string => {
@@ -26,7 +28,7 @@ const PropertyFeesPage: FC = () => {
     {
       propertyExpenseId: 1,
       propertyExpenseTemplateId: 1,
-      responsibleRoleId: 2,
+      responsibleRole: "owner",
       price: 222.4,
       startDate: new Date("2024-12-20"),
       endDate: new Date("2025-01-11"),
@@ -35,7 +37,7 @@ const PropertyFeesPage: FC = () => {
     {
       propertyExpenseId: 2,
       propertyExpenseTemplateId: 1,
-      responsibleRoleId: 1,
+      responsibleRole: "tenant",
       price: 52.55,
       startDate: new Date("2025-01-29"),
       endDate: new Date("2025-03-01"),
@@ -44,7 +46,7 @@ const PropertyFeesPage: FC = () => {
     {
       propertyExpenseId: 3,
       propertyExpenseTemplateId: 1,
-      responsibleRoleId: 1,
+      responsibleRole: "tenant",
       price: 22.0,
       startDate: new Date("2025-01-02"),
       endDate: new Date("2025-03-12"),
@@ -84,7 +86,12 @@ const PropertyFeesPage: FC = () => {
         <Button variant="contained" sx={{ width: "10%" }}>
           Browse
         </Button>
-        <Button variant="contained" sx={{ width: "10%" }}>
+        <Button
+          component={NavLink}
+          to="/create/propertyexpense"
+          variant="contained"
+          sx={{ width: "10%", textDecoration: "none", color: "white" }}
+        >
           Create
         </Button>
       </div>
@@ -123,7 +130,9 @@ const PropertyFeesPage: FC = () => {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon onClick={handleSearch} />
+                  <IconButton>
+                    <SearchIcon onClick={handleSearch} />
+                  </IconButton>
                 </InputAdornment>
               ),
             },
@@ -132,18 +141,19 @@ const PropertyFeesPage: FC = () => {
       </Box>
 
       <TableContainer component={Paper}>
-        <Table sx={{  width: '100%' }} size="small" aria-label="a dense table">
+        <Table sx={{ width: "100%" }} size="small" aria-label="a dense table">
           <TableHead sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
             <TableRow>
               <TableCell align="center">Description</TableCell>
               <TableCell align="center">Start Date</TableCell>
               <TableCell align="center">End Date</TableCell>
               <TableCell align="center">Price</TableCell>
+              <TableCell align="center">Role</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {propertyExpenses.map((propertyExpense) => (
-              <TableRow key={propertyExpense.propertyExpenseId}>
+              <TableRow hover key={propertyExpense.propertyExpenseId}>
                 <TableCell align="center">
                   {propertyExpense.Description}
                 </TableCell>
@@ -154,6 +164,9 @@ const PropertyFeesPage: FC = () => {
                   {formatDate(propertyExpense.endDate)}
                 </TableCell>
                 <TableCell align="center">{propertyExpense.price}</TableCell>
+                <TableCell align="center">
+                  {propertyExpense.responsibleRole}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

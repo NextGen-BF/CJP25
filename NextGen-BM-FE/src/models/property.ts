@@ -31,7 +31,7 @@ export interface PropertyPayments{
 export interface PropertyExpense{
     propertyExpenseId: number;
     propertyExpenseTemplateId: number;
-    responsibleRoleId: number;
+    responsibleRole: string;
     price:number;
     startDate: Date;
     endDate: Date;
