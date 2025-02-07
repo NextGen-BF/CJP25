@@ -100,8 +100,6 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                var spec=new RequestNotesSpecification(requestId);
-                spec.Evaluate(_dataContext.RepairRequests);
                 return await _dataContext.RepairRequests
                     .Where(request=>request.RepairRequestId==requestId&&request.DeletedDate==null)
                     .Include(request=>request.Notes)

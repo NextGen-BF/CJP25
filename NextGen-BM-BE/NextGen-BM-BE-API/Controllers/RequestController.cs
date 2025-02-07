@@ -11,7 +11,7 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class RequestController: ControllerBase {
 
-    IRequestService _requestService;
+    private readonly IRequestService _requestService;
     public RequestController(IRequestService requestService)
     {
         _requestService=requestService;
@@ -45,10 +45,10 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("repair/new")]
-    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestDto)
+    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModelrequestNotesViewModel)
     {
-        await _requestService.CreateRepairRequestAsync(repairRequestDto);
-        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestDto.RequestId}, repairRequestDto);
+        await _requestService.CreateRepairRequestAsync(repairRequestViewModelrequestNotesViewModel);
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestViewModelrequestNotesViewModel.RequestId}, repairRequestViewModelrequestNotesViewModel);
     }
 
     [HttpPost]
@@ -60,25 +60,25 @@ public class RequestController: ControllerBase {
     }
     [HttpPost]
     [Route("note/new")]
-    public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesDto)
+    public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesViewModel)
     {
-        await _requestService.CreateRequestNoteAsync(requestNotesDto);
+        await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
         return Ok();
     }
 
     [HttpPut]
     [Route("repair/update")]
-    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestDto)
+    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModelrequestNotesViewModel)
     {
-        await _requestService.UpdateRepairRequestAsync(repairRequestDto);
+        await _requestService.UpdateRepairRequestAsync(repairRequestViewModelrequestNotesViewModel);
         return Ok();
     }
 
     [HttpPut]
     [Route("note/update")]
-    public async Task<IActionResult> UpdateRequestNotes(RequestNotesViewModel requestNotesDto)
+    public async Task<IActionResult> UpdateRequestNotes(RequestNotesViewModel requestNotesViewModel)
     {
-        await _requestService.UpdateRequestNoteAsync(requestNotesDto);
+        await _requestService.UpdateRequestNoteAsync(requestNotesViewModel);
         return Ok();
     }
 

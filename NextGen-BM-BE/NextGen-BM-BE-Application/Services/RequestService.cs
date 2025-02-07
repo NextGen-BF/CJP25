@@ -45,15 +45,15 @@ public class RequestService : IRequestService
         _getUserBuildingRequests=getUserBuildingRequests;
         _mapper=mapper;
     }
-    public async Task CreateRepairRequestAsync(RepairRequestViewModel repairRequestDto)
+    public async Task CreateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
     {
-        var repairRequest = _mapper.Map<RepairRequest>(repairRequestDto);
+        var repairRequest = _mapper.Map<RepairRequest>(repairRequestViewModel);
         await _createRepairRequestUseCase.Execute(repairRequest);
     }
 
-    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesDto)
+    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModelrepairRequestViewModel)
     {
-        var requestNotes = _mapper.Map<RequestNotes>(requestNotesDto);
+        var requestNotes = _mapper.Map<RequestNotes>(requestNotesViewModelrepairRequestViewModel);
         await _createRequestNoteUseCase.Execute(requestNotes);
     }
 
@@ -89,15 +89,15 @@ public class RequestService : IRequestService
         return await _getUserBuildingRequests.Execute(buildingId);
     }
 
-    public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestDto)
+    public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
     {
-        var repairRequest = _mapper.Map<RepairRequest>(repairRequestDto);
+        var repairRequest = _mapper.Map<RepairRequest>(repairRequestViewModel);
         await _updateRepairRequestUseCase.Execute(repairRequest);
     }
 
-    public async Task UpdateRequestNoteAsync(RequestNotesViewModel requestNoteDto)
+    public async Task UpdateRequestNoteAsync(RequestNotesViewModel requestNoteViewModelrepairRequestViewModel)
     {
-        var requestNote = _mapper.Map<RequestNotes>(requestNoteDto);
+        var requestNote = _mapper.Map<RequestNotes>(requestNoteViewModelrepairRequestViewModel);
         await _updateRequestNoteUseCase.Execute(requestNote);
     }
 }
