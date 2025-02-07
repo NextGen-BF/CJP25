@@ -4,7 +4,9 @@ import { apiURL } from "../../api/shared";
 import { Building } from "../../models/building";
 
 export const createBuilding=createAsyncThunk("building/new", async(building: Building)=> {
-    return await axios.post(`${apiURL}/building/new`, building)
+    return await axios.post(`${apiURL}/building/new`, building, {headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
+    }})
     .then(function(response){
         return response.data;
     }).catch((err: Error | AxiosError) => {
