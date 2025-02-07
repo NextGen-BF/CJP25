@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
   const {control, handleSubmit} = useForm<Property>();
-  const onSubmit: SubmitHandler<Property> = (data) => dispatch(createProperty(data));
+  const onSubmit: SubmitHandler<Property> = (data) => {console.log(data); dispatch(createProperty(data))};
 
   return (
     <div>
@@ -24,6 +24,61 @@ const CreatePropertyPage: FC = () => {
             label="Property Number"
             type="number"
             variant="outlined"
+            size="small"
+            fullWidth
+            />
+          )}
+        />
+        <Controller
+          name="floor"
+          control={control}
+          render={({ field }) => (
+            <TextField
+            {...field}
+            label="Floor"
+            type="number"
+            variant="outlined"
+            size="small"
+            fullWidth
+            />
+          )}
+        />
+        <Controller
+          name="size"
+          control={control}
+          render={({ field }) => (
+            <TextField
+            {...field}
+            label="Size"
+            type="number"
+            variant="outlined"
+            size="small"
+            fullWidth
+            />
+          )}
+        />
+        <Controller
+          name="sizeOfIdealParts"
+          control={control}
+          render={({ field }) => (
+            <TextField
+            {...field}
+            label="Size of ideal parts"
+            type="number"
+            variant="outlined"
+            size="small"
+            fullWidth
+            />
+          )}
+        />
+        <Controller
+          name="entranceIsExternal"
+          control={control}
+          render={({ field }) => (
+            <TextField
+            {...field}
+            label="External entrance"
+            type="checkbox"
             size="small"
             fullWidth
             />
