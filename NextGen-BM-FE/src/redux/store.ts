@@ -5,7 +5,7 @@ import signupReducer from "./slices/signupSlice";
 import { useDispatch } from "react-redux";
 import propertyReducer from "./slices/propertySlice"
 
-export const store =  configureStore({
+export const store = configureStore({
     reducer: {
         loginReducer: loginReducer,
         buildingReducer: buildingReducer,

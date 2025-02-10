@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
@@ -6,71 +7,103 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 {
     public class PropertyRepository : IPropertyRepository
     {
-        private readonly DataContext _dbContext;
-
-        public PropertyRepository(DataContext dbContext)
+        private readonly DataContext _dataContext;
+        public PropertyRepository(DataContext dataContext)
         {
-            _dbContext = dbContext;
+            _dataContext=dataContext;
         }
-
         public async Task CreatePropertyAsync(Property property)
         {
-            await _dbContext.Property.AddAsync(property);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dataContext.Property.AddAsync(property);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve datafor this property");
+            }
         }
 
         public async Task DeletePropertyAsync(int propertyId)
         {
-            Property? propertyToDelete = await this.GetPropertyByIdAsync(propertyId);
-            if (propertyToDelete is not null)
+            try
             {
-                propertyToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dbContext.Property.Update(propertyToDelete);
-                await _dbContext.SaveChangesAsync();
+                await _dataContext.Property.Where(p=>p.PropertyId==propertyId).ExecuteDeleteAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't delete this property");
             }
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            return await _dbContext
-                .Property.Where(p => p.DeletedDate == null)
-                .AsNoTracking()
-                .ToListAsync();
+            try 
+            {
+                return await _dataContext.Property.ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for the properties");
+            }
         }
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)
         {
-            return await _dbContext.Property.Where(p => p.BuildingId == buildingId).ToListAsync();
+            try 
+            {
+                var properties=await _dataContext.Property.Where(p=>p.BuildingId==buildingId).AsNoTracking().ToListAsync();
+                return properties;
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve datafor this building's properties");
+            }
         }
 
         public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
-            return await _dbContext
-                .Property.Where(p => p.Users.Any(u => u.UserId == userId))
-                .ToListAsync();
+            try 
+            {
+                return await _dataContext.Property.Where(p=>p.Users.Any(u=>u.UserId==userId)).AsNoTracking().ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this user's properties");
+            }
         }
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
-            try
+            try 
             {
-                Property? foundProperty = await _dbContext.Property.FindAsync(propertyId);
-                if (foundProperty is null)
-                {
-                    throw new KeyNotFoundException("The property was not found.");
-                }
-                return foundProperty;
+                return await _dataContext.Property.Where(p=>p.PropertyId==propertyId).AsNoTracking().SingleOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch (DbException exception)
             {
-                throw new Exception("GetPropertyByIdAsync threw an error of: ", ex);
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this property");
             }
         }
 
         public async Task UpdatePropertyAsync(Property property)
         {
-            _dbContext.Property.Update(property);
-            await _dbContext.SaveChangesAsync();
+            try 
+            {
+                _dataContext.Property.Update(property);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Property couldn't be updated with the new data");
+            }
         }
     }
 }

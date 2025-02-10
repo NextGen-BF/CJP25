@@ -18,6 +18,7 @@ import {
   updateProperty,
 } from "../redux/slices/propertySlice";
 import { Property } from "../models/property";
+import { editableTableConstants } from "../constants/constants";
 
 declare module "@mui/x-data-grid" {
   interface ToolbarPropsOverrides {
@@ -26,30 +27,7 @@ declare module "@mui/x-data-grid" {
   }
 }
 
-const initialRows: Property[] = [
-  {
-    propertyId: 1,
-    propertyNumber: 101,
-    buildingId: 0,
-    size: 120,
-    floor: 3,
-    sizeOfIdealParts: 50,
-    entranceIsExternal: false,
-    payments: null,
-    residentHistory: null,
-  },
-  {
-    propertyId: 2,
-    propertyNumber: 102,
-    buildingId: 0,
-    size: 90,
-    floor: 2,
-    sizeOfIdealParts: 40,
-    entranceIsExternal: true,
-    payments: null,
-    residentHistory: null,
-  },
-];
+const initialRows: Property[] = [];
 
 export default function EditableTable() {
   const dispatch = useAppDispatch();
@@ -83,7 +61,7 @@ export default function EditableTable() {
     return (
       <GridToolbarContainer>
         <Button color="primary" onClick={handleClick}>
-          Add record
+          {editableTableConstants.addRecond}
         </Button>
       </GridToolbarContainer>
     );
@@ -165,30 +143,30 @@ export default function EditableTable() {
         const isEditing = rowModesModel[id]?.mode === GridRowModes.Edit;
         return isEditing
           ? [
-              <GridActionsCellItem
-                icon={<Check size={18} />}
-                label="Save"
-                onClick={() => handleSaveClick(id as number)}
-              />,
-              <GridActionsCellItem
-                icon={<X size={18} />}
-                label="Cancel"
-                onClick={() => handleCancelClick(id as number)}
-              />,
-            ]
+            <GridActionsCellItem
+              icon={<Check size={18} />}
+              label="Save"
+              onClick={() => handleSaveClick(id as number)}
+            />,
+            <GridActionsCellItem
+              icon={<X size={18} />}
+              label="Cancel"
+              onClick={() => handleCancelClick(id as number)}
+            />,
+          ]
           : [
-              <GridActionsCellItem
-                icon={<Pencil size={18} />}
-                label="Edit"
-                onClick={() => handleEditClick(id as number)}
-              />,
-              <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Delete"
-                onClick={handleDeleteClick(id as number)}
-                color="inherit"
-              />,
-            ];
+            <GridActionsCellItem
+              icon={<Pencil size={18} />}
+              label="Edit"
+              onClick={() => handleEditClick(id as number)}
+            />,
+            <GridActionsCellItem
+              icon={<DeleteIcon />}
+              label="Delete"
+              onClick={handleDeleteClick(id as number)}
+              color="inherit"
+            />,
+          ];
       },
     },
   ];

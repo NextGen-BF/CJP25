@@ -13,6 +13,7 @@ const CreateBuildingPage: FC = () => {
   const buildingProperties = useSelector((state: RootState) => state.propertyReducer.value)
 
   const [address, setAddress] = useState<Address>({
+    addressId: 0,
     streetName: "",
     streetNumber: 0,
     entrance: "",
@@ -182,7 +183,7 @@ const CreateBuildingPage: FC = () => {
         </form>
       </div>
       <div className="property-table">
-          <EditableTable />
+        <EditableTable />
       </div>
     </div>
   );
