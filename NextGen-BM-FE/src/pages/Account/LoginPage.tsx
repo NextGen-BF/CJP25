@@ -25,7 +25,7 @@ const LoginPage: FC = () => {
   const navigate = useNavigate();
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
 
-  if(userToken.accessToken){
+  if(userToken){
     navigate("/");
   }
 
