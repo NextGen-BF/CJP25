@@ -36,7 +36,6 @@ const CreatePropertyExpense: FC = () => {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
-    console.log(formData);
     dispatch(createPropertyExpense(formData));
   };
 
