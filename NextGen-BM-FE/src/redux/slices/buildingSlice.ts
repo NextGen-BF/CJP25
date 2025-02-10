@@ -10,8 +10,9 @@ const initialState: BuildingsState = {
   value: [{
     buildingId: 0,
     buildingAddress: {
+      addressId: 0,
       streetName: "",
-      streetNumber: "",
+      streetNumber: 0,
       entrance: "",
       district: "",
       city: "",

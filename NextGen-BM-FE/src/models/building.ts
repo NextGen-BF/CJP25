@@ -13,7 +13,7 @@ export interface Building {
 }
 
 export interface Address {
-    addressId: 0,
+    addressId: number,
     streetName: string,
     streetNumber: number,
     entrance: string,
