@@ -9,8 +9,9 @@ import "./createBuilding.scss"
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
   const [address, setAddress] = useState<Address>({
+    addressId: 0,
     streetName: "",
-    streetNumber: "",
+    streetNumber: 0,
     entrance: "",
     district: "",
     city: "",

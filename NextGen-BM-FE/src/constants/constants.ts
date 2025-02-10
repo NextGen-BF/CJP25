@@ -28,3 +28,7 @@ export const createBuildingConstants = {
 export const createPropertyExpenseconstants = {
   create: "Create Property Epense"
 }
+
+export const logOut = {
+  logout: "Log out"
+}
