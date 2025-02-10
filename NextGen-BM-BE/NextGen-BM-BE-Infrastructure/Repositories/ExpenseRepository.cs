@@ -22,6 +22,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 List<Property> properties = await _dbContext
                     .Property.Where(p => propertyIds.Contains(p.PropertyId))
+                    .Include(p => p.Payments)
                     .ToListAsync();
                 if (properties.Any())
                 {
@@ -96,6 +97,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 List<Property> propertiesByBuildingId = await _dbContext
                     .Property.Where(p => p.BuildingId == buildingId)
+                    .Include(p => p.Payments)
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -142,7 +144,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                Property? property = await _dbContext.Property.FindAsync(propertyId);
+                Property? property = await _dbContext
+                    .Property.Include(p => p.Payments)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.PropertyId == propertyId);
+
                 if (property is null)
                 {
                     throw new KeyNotFoundException("The property was not found.");
@@ -177,6 +183,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 {
                     List<Property> userProperties = await _dbContext
                         .Property.Where(p => p.PropertyId == user.PropertyId)
+                        .Include(p => p.Payments)
                         .AsNoTracking()
                         .ToListAsync();
 
