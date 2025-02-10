@@ -38,9 +38,8 @@ export default function EditableTable() {
     const { setRows, setRowModesModel } = props;
 
     const handleClick = () => {
-      const id = Math.floor(Math.random() * 100000 + 1);
       let newRow: Property = {
-        propertyId: id,
+        propertyId: 0,
         propertyNumber: rows.length + 1,
         buildingId: 0,
         size: 0,
@@ -53,7 +52,7 @@ export default function EditableTable() {
       setRows((oldRows) => [...oldRows, newRow]);
       setRowModesModel((oldModel) => ({
         ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+        [rows.length + 1]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
       }));
       dispatch(addProperty(newRow));
     };
@@ -71,7 +70,7 @@ export default function EditableTable() {
     const updatedRow = newRow as Property;
     setRows((prevRows) =>
       prevRows.map((row) =>
-        row.propertyId === updatedRow.propertyId ? updatedRow : row,
+        row.propertyNumber === updatedRow.propertyNumber ? updatedRow : row,
       ),
     );
     dispatch(updateProperty(updatedRow));
@@ -94,7 +93,7 @@ export default function EditableTable() {
   };
 
   const handleDeleteClick = (id: number) => () => {
-    let row = rows.filter((row) => row.propertyId !== id);
+    let row = rows.filter((row) => row.propertyNumber !== id);
     setRows(row);
     dispatch(removeProperty(row[0]));
   };
@@ -108,7 +107,7 @@ export default function EditableTable() {
     },
     {
       field: "size",
-      headerName: "Size",
+      headerName: "Size (in m2)",
       width: 120,
       editable: true,
       type: "number",
@@ -122,7 +121,7 @@ export default function EditableTable() {
     },
     {
       field: "sizeOfIdealParts",
-      headerName: "Size of Ideal Parts",
+      headerName: "Ideal Parts (in %)",
       width: 180,
       editable: true,
       type: "number",
@@ -172,19 +171,21 @@ export default function EditableTable() {
   ];
 
   return (
-    <DataGrid
-      rows={rows}
-      getRowId={(row) => row.propertyId}
-      columns={columns}
-      editMode="row"
-      rowModesModel={rowModesModel}
-      onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
-      processRowUpdate={processRowUpdate}
-      pageSizeOptions={[10, 25, 50, 100]}
-      slots={{ toolbar: EditToolbar }}
-      slotProps={{
-        toolbar: { setRows, setRowModesModel },
-      }}
-    />
+    <div>
+      <DataGrid
+        rows={rows}
+        getRowId={(row) => row.propertyNumber}
+        columns={columns}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+        processRowUpdate={processRowUpdate}
+        pageSizeOptions={[10, 25, 50, 100]}
+        slots={{ toolbar: EditToolbar }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
+      />
+    </div>
   );
 }

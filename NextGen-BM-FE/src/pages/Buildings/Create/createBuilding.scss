@@ -1,26 +1,26 @@
-.create-building-header{
+.create-building-header {
     margin-top: 2;
 }
 
-.text-field-container{
+.text-field-container {
     width: 40rem;
     background-color: white;
     padding: 32px;
     border-radius: 4px;
-    border-color: rgba(189,189,189, 0.4);
+    border-color: rgba(189, 189, 189, 0.4);
     margin: 5rem auth;
 }
 
-.create-building-form{
+.create-building-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem 0;
 }
 
-.property-table{
+.property-table {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 1rem 0;
 }

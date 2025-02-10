@@ -46,7 +46,9 @@ const CreateBuildingPage: FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((previousData) => ({ ...previousData, [name]: value }));
+    if (value.includes("-"))
+      //TODO: Add Validation for negative numbers
+      setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
   const handleCreateBuildingSubmission = (
