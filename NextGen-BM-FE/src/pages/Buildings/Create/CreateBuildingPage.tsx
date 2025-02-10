@@ -47,7 +47,6 @@ const CreateBuildingPage: FC = () => {
 
   const handleCreateBuildingSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formData);
     dispatch(createBuilding(formData));
   }
 
