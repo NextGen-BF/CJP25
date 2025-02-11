@@ -1,6 +1,8 @@
 using System.Runtime.InteropServices;
 using AutoMapper;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
+using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.Mapper
@@ -44,6 +46,52 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<BuildingExpense, BuildingExpenseViewModel>();
             CreateMap<BuildingExpenseViewModel, BuildingExpense>();
+
+            //Request models
+            CreateMap<RepairRequest, RepairRequestViewModel>()
+                .ForMember(
+                    dest => dest.Status,
+                    opt => opt.MapFrom(src => src.RequestStatus)
+                ).ForMember(
+                    dest => dest.Notes,
+                    opt => opt.MapFrom(src => src.Notes)
+                ).ForMember(
+                    dest => dest.RequestId,
+                    opt => opt.MapFrom(src => src.RepairRequestId)
+                );
+            CreateMap<RepairRequestViewModel, RepairRequest>()
+                .ForMember(
+                    dest => dest.RequestStatusId,
+                    opt => opt.MapFrom(src => src.Status.StatusId)
+                ).ForMember(
+                    dest => dest.Notes,
+                    opt => opt.MapFrom(src => src.Notes)
+                ).ForMember(
+                    dest => dest.RepairRequestId,
+                    opt => opt.MapFrom(src => src.RequestId)
+                );
+
+            CreateMap<RequestNotes, RequestNotesViewModel>()
+                    .ForMember(
+                    dest => dest.NoteId,
+                    opt => opt.MapFrom(src => src.RequestNotesId)
+                );
+            CreateMap<RequestNotesViewModel, RequestNotes>()
+                .ForMember(
+                    dest => dest.RequestNotesId,
+                    opt => opt.MapFrom(src => src.NoteId)
+                );
+
+            CreateMap<Enums, RequestStatusViewModel>()
+                .ForMember(
+                    dest=>dest.StatusId,
+                    opt=>opt.MapFrom(src=>src.EnumsId)
+                );
+            CreateMap<RequestStatusViewModel, Enums>()
+                .ForMember(
+                    dest=>dest.EnumsId,
+                    opt=>opt.MapFrom(src=>src.StatusId)
+                );
         }
     }
 }

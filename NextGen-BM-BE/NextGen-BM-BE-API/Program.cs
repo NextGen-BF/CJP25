@@ -9,11 +9,16 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
+using NextGen_BM_BE_Application.UseCases.Requests.Create;
+using NextGen_BM_BE_Application.UseCases.Requests.Delete;
+using NextGen_BM_BE_Application.UseCases.Requests.Get;
+using NextGen_BM_BE_Application.UseCases.Requests.Update;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +32,7 @@ builder.Services.AddControllers();
 
 //Setup in user secrets
 string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
+Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
@@ -49,11 +55,25 @@ builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();
 
+builder.Services.AddScoped<CreateRepairRequestUseCase>();
+builder.Services.AddScoped<CreateRequestNotesUseCase>();
+builder.Services.AddScoped<CreateUserBuildingRequestUseCase>();
+builder.Services.AddScoped<DeleteRepairRequestNoteUseCase>();
+builder.Services.AddScoped<DeleteRepairRequestUseCase>();
+builder.Services.AddScoped<GetAllRepairRequestsByBuildingIdUseCase>();
+builder.Services.AddScoped<GetRequestByIdUseCase>();
+builder.Services.AddScoped<GetUserBuildingRequests>();
+builder.Services.AddScoped<UpdateRepairRequestUseCase>();
+builder.Services.AddScoped<UpdateRequestNoteUseCase>();
+builder.Services.AddScoped<UpdateRepairRequestUseCase>();
+
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBuildingService, BuildingService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -65,7 +85,6 @@ builder.Services.AddScoped<DeletePropertyUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
-builder.Services.AddScoped<IPropertyService, PropertyService>();
 #endregion
 
 
