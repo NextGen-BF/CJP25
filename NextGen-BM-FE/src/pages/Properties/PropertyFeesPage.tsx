@@ -15,8 +15,9 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { FC, useState } from "react";
 import "./propertyFeesPage.scss";
-import { PropertyExpense } from "../../models/property";
+import { PropertyExpense, PropertyPayments } from "../../models/property";
 import Paper from "@mui/material/Paper";
+import { DataGrid } from "@mui/x-data-grid";
 import { NavLink } from "react-router-dom";
 
 const PropertyFeesPage: FC = () => {
@@ -24,6 +25,66 @@ const PropertyFeesPage: FC = () => {
     return date.toISOString().split("T")[0];
   };
 
+  const propertyPaymentsMockData: PropertyPayments[] = [
+    {
+      paymentId: 1,
+      amountOwed: 234.55,
+      dateOpened: new Date("2024-12-20"),
+      dueDate: new Date("2025-01-11"),
+      status: "paid",
+      paymentMethod: "master card",
+    },
+    {
+      paymentId: 2,
+      amountOwed: 120.9,
+      dateOpened: new Date("2025-01-20"),
+      dueDate: new Date("2025-03-11"),
+      status: "not paid",
+      paymentMethod: "master card",
+    },
+    {
+      paymentId: 3,
+      amountOwed: 70.9,
+      dateOpened: new Date("2025-01-29"),
+      dueDate: new Date("2025-03-01"),
+      status: "not paid",
+      paymentMethod: "visa card",
+    },
+  ];
+
+  const columns = [
+    {
+      field: "amountOwed",
+      headerName: "Amount",
+      flex: 1,
+    },
+    {
+      field: "dateOpened",
+      headerName: "Date Opened",
+      flex: 1,
+      valueFormatter: (value: Date) => {
+        return value ? formatDate(value) : "";
+      },
+    },
+    {
+      field: "dueDate",
+      headerName: "Due Date",
+      flex: 1,
+      valueFormatter: (value: Date) => {
+        return value ? formatDate(value) : "";
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+    },
+    {
+      field: "paymentMethod",
+      headerName: "Payment Method",
+      flex: 1,
+    },
+  ];
   const propertyExpensesMockData: PropertyExpense[] = [
     {
       propertyExpenseId: 1,
@@ -57,6 +118,11 @@ const PropertyFeesPage: FC = () => {
   const [propertyExpenses, setPropertyExpenses] = useState<PropertyExpense[]>(
     propertyExpensesMockData,
   );
+
+  const [propertyPayments, setPropertyPayments] = useState<PropertyPayments[]>(
+    propertyPaymentsMockData,
+  );
+
   const [searchInput, setSearchInput] = useState<string>("");
 
   const handleSearch = () => {
@@ -82,10 +148,14 @@ const PropertyFeesPage: FC = () => {
   return (
     <>
       <h1>Apartment Fees Page</h1>
+
+      <DataGrid
+        rows={propertyPayments}
+        columns={columns}
+        getRowId={(row) => row.paymentId}
+      />
+
       <div className="button-container">
-        <Button variant="contained" sx={{ width: "10%" }}>
-          Browse
-        </Button>
         <Button
           component={NavLink}
           to="/create/propertyexpense"
