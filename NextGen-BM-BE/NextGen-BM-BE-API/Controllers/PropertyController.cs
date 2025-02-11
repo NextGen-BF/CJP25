@@ -4,6 +4,7 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -54,16 +55,16 @@ public class PropertyController: ControllerBase {
 
     [HttpPost]
     [Route("new")]
-    public async Task<IActionResult> CreateProperty(Property property){
-        await _propertyService.CreatePropertyAsync(property);
-        return CreatedAtAction(nameof(GetPropertyById), new {propertyId=property.PropertyId}, property);
+    public async Task<IActionResult> CreateProperty(PropertyViewModel propertyViewModel){
+        await _propertyService.CreatePropertyAsync(propertyViewModel);
+        return CreatedAtAction(nameof(GetPropertyById), new {propertyId=propertyViewModel.PropertyId}, propertyViewModel);
     }
 
     [HttpPut]
     [HttpPut]
     [Route("update")]
-    public async Task<IActionResult> UpdateProperty(Property property){
-        await _propertyService.UpdatePropertyAsync(property);
+    public async Task<IActionResult> UpdateProperty(PropertyViewModel propertyViewModel){
+        await _propertyService.UpdatePropertyAsync(propertyViewModel);
         return Ok();
     }
     [HttpDelete]

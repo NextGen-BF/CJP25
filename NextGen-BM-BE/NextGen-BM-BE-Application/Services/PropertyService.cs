@@ -1,9 +1,11 @@
+using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.Services{
 
@@ -16,6 +18,7 @@ namespace NextGen_BM_BE_Application.Services{
         private readonly CreatePropertyUseCase _createPropertyUseCase;
         private readonly DeletePropertyUseCase _deletePropertyUseCase;
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
+        private readonly IMapper _mapper;
 
         public PropertyService(GetPropertiesByIdUseCase getPropertiesByIdUseCase,
                                 GetAllPropertiesUseCase getAllPropertiesUseCase,
@@ -23,7 +26,8 @@ namespace NextGen_BM_BE_Application.Services{
                                 GetPropertiesByUserIdUseCase getPropertiesByUserIdUseCase,
                                 CreatePropertyUseCase createPropertyUseCase,
                                 DeletePropertyUseCase deletePropertyUseCase,
-                                UpdatePropertyUseCase updatePropertyUseCase)
+                                UpdatePropertyUseCase updatePropertyUseCase,
+                                IMapper mapper)
         {
             _getPropertiesByIdUseCase=getPropertiesByIdUseCase;
             _getAllPropertiesUseCase=getAllPropertiesUseCase;
@@ -32,10 +36,12 @@ namespace NextGen_BM_BE_Application.Services{
             _createPropertyUseCase=createPropertyUseCase;
             _deletePropertyUseCase=deletePropertyUseCase;
             _updatePropertyUseCase=updatePropertyUseCase;
+            _mapper=mapper;
         }
 
-        public async Task CreatePropertyAsync(Property property)
+        public async Task CreatePropertyAsync(PropertyViewModel propertyViewModel)
         {
+            var property = _mapper.Map<Property>(propertyViewModel);
             await _createPropertyUseCase.Execute(property);
         }
         public async Task DeletePropertyAsync(int propertyId)
@@ -48,23 +54,27 @@ namespace NextGen_BM_BE_Application.Services{
             return await _getAllPropertiesUseCase.Execute();
         }
 
-        public async Task UpdatePropertyAsync(Property property)
+        public async Task UpdatePropertyAsync(PropertyViewModel propertyViewModel)
         {
+            var property = _mapper.Map<Property>(propertyViewModel);
             await _updatePropertyUseCase.Execute(property);
         }
-        public async Task<Property> GetPropertyByIdAsync(int propertyId)
+        public async Task<PropertyViewModel> GetPropertyByIdAsync(int propertyId)
         {
-            return await _getPropertiesByIdUseCase.Execute(propertyId);
+            var property=await _getPropertiesByIdUseCase.Execute(propertyId);
+            return _mapper.Map<PropertyViewModel>(property);
         }
 
-        public async Task<IList<Property>> GetPropertyByUserIdAsync(int userId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId)
         {
-            return await _getPropertiesByUserIdUseCase.Execute(userId);
+             var properties=await _getPropertiesByUserIdUseCase.Execute(userId);
+             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 
-        public async Task<IList<Property>> GetPropertyByBuildingIdAsync(int buildingId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId)
         {
-            return await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
+            var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
+            return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
     }
 }
