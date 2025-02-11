@@ -24,7 +24,7 @@ export const getAllBuildings=createAsyncThunk("building/all", async()=> {
         return response.data;
     }).catch((err: Error | AxiosError) => {
         if(axios.isAxiosError(err))
-            return err.response
-        return err;
+            return Promise.reject(err.response);
+        return Promise.reject(err);
     })
 })

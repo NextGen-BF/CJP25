@@ -12,13 +12,13 @@ import { useSelector } from "react-redux";
 
 const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
+  const {control, handleSubmit} = useForm<Property>();
+  const onSubmit: SubmitHandler<Property> = (data) => {console.log(data); dispatch(createProperty(data))};
+  
   const buildings:Building[]=useSelector((state: RootState) => state.buildingReducer.value);
   const buildingList=buildings?buildings.map(building=>
     <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
   ):[];
-  
-  const {control, handleSubmit} = useForm<Property>();
-  const onSubmit: SubmitHandler<Property> = (data) => {console.log(data); dispatch(createProperty(data))};
 
   return (
     <div>
@@ -30,6 +30,7 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <TextField
             {...field}
+            required={true}
             label="Property Number"
             type="number"
             variant="outlined"
@@ -44,6 +45,7 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <TextField
             {...field}
+            required={true}
             label="Floor"
             type="number"
             variant="outlined"
@@ -72,6 +74,7 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <TextField
             {...field}
+            required={true}
             label="Size of ideal parts"
             type="number"
             variant="outlined"
@@ -86,6 +89,7 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <TextField
             {...field}
+            required={true}
             label="External entrance"
             type="checkbox"
             size="small"
@@ -102,9 +106,8 @@ const CreatePropertyPage: FC = () => {
             label="Building"
             size="small"
             fullWidth
-            onClick={()=>dispatch(getAllBuildings())}
+            onOpen={()=>dispatch(getAllBuildings())}
             >
-              <Search></Search>
               {buildingList}
             </Select>
           )}

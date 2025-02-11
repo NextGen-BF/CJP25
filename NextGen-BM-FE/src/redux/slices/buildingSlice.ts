@@ -37,7 +37,7 @@ const buildingSlice = createSlice({
         state.value.push(action.payload);
     })
     builder.addCase(getAllBuildings.fulfilled, (state, action: PayloadAction<Building[]>) => {
-      state.value=action.type==='Building[]'?action.payload:[];
+      state.value=action.payload;
   })
   },
 });
