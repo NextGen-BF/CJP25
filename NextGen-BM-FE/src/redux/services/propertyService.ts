@@ -15,8 +15,8 @@ export const createProperty = createAsyncThunk('/property/new', async(property:P
         )
         .catch((err: Error | AxiosError) => {
             if(axios.isAxiosError(err))
-                return err.response;
-            return err;
+                return Promise.reject(err.response);
+            return Promise.reject(err);
         })
     }
 );

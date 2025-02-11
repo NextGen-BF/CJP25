@@ -89,7 +89,6 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <TextField
             {...field}
-            required={true}
             label="External entrance"
             type="checkbox"
             size="small"
@@ -103,6 +102,7 @@ const CreatePropertyPage: FC = () => {
           render={({ field }) => (
             <Select
             {...field}
+            required={true}
             label="Building"
             size="small"
             fullWidth
