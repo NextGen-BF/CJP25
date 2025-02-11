@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
-using NextGen_BM_BE_API;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -25,54 +23,23 @@ using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using NextGen_BM_BE_Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 //Setup in user secrets
 string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
 Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
-
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme = 
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(x => {
-        x.IncludeErrorDetails = true;
-        x.RequireHttpsMetadata = false;
-        x.TokenValidationParameters = new TokenValidationParameters
-        {
-            //Setup in user secrets
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["JWT:Audience"],
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey= new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
-            ),
-        };
-    });
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-
-builder.Services.AddAuthorization();
-
-
-//Dependency Injection
+#region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
 builder.Services.AddScoped<GetAllBuildingsUseCase>();
 builder.Services.AddScoped<CreateBuildingUseCase>();
@@ -88,30 +55,6 @@ builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();
 
-builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
-builder.Services.AddScoped<IRequestRepository, RequestRepository>();
-builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
-builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
-builder.Services.AddScoped<IBuildingService, BuildingService>();
-builder.Services.AddSingleton<TokenGenerator>();
-
-builder.Services.AddScoped<IExpensesService, ExpensesService>();
-
-builder.Services.AddScoped<GetPropertiesByIdUseCase>();
-builder.Services.AddScoped<GetAllPropertiesUseCase>();
-builder.Services.AddScoped<CreatePropertyUseCase>();
-builder.Services.AddScoped<DeletePropertyUseCase>();
-builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
-builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
-builder.Services.AddScoped<UpdatePropertyUseCase>();
-
-
-builder.Services.AddScoped<IPropertyService, PropertyService>();
-
-builder.Services.AddDbContext<DataContext>(options=>options.UseSqlServer(connectionString));
-
-builder.Services.AddScoped<IRequestService, RequestService>();
-
 builder.Services.AddScoped<CreateRepairRequestUseCase>();
 builder.Services.AddScoped<CreateRequestNotesUseCase>();
 builder.Services.AddScoped<CreateUserBuildingRequestUseCase>();
@@ -122,10 +65,84 @@ builder.Services.AddScoped<GetRequestByIdUseCase>();
 builder.Services.AddScoped<GetUserBuildingRequests>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<UpdateRequestNoteUseCase>();
-
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 
+builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IExpensesService, ExpensesService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddScoped<GetPropertiesByIdUseCase>();
+builder.Services.AddScoped<GetAllPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
+builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
+builder.Services.AddScoped<UpdatePropertyUseCase>();
+#endregion
+
+
+#region Auth
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultForbidScheme =
+    options.DefaultScheme =
+    options.DefaultSignInScheme = 
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(x => {
+        x.Events = new JwtBearerEvents {
+            OnAuthenticationFailed = context => {
+                if(context.Exception.GetType() == typeof (SecurityTokenExpiredException)){
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
+                }
+                else if (context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return context.Response.WriteAsync("{\"message\": \"Invalid token signature. Possible tampering detected.\"}");
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return context.Response.WriteAsync("{\"message\": \"Invalid token.\"}");
+                }
+            }
+        };
+        x.IncludeErrorDetails = true;
+        x.RequireHttpsMetadata = false;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            //Setup in user secrets
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey= new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+            ),
+        };
+    });
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Super", policy => policy.RequireRole("Super"));
+    options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
+    options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
+});
+#endregion
+
+#region Cors
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -140,6 +157,8 @@ builder.Services.AddCors(options =>
         }
     );
 });
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -157,11 +176,5 @@ app.UseCors("CorsPolicy");
 
 app.MapControllers();
 app.MapGroup("/account").MapIdentityApi<User>();
-
-app.MapPost("/token/login",(LoginRequest request, TokenGenerator tokenGenerator)=> {
-    return new {
-        accessToken =tokenGenerator.GenerateToken(request.Email)
-    };
-});
 
 app.Run();
