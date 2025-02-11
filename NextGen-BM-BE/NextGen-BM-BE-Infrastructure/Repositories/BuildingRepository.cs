@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
@@ -77,6 +78,21 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception($"{nameof(GetBuildingByIdAsync)} threw an error of: ", ex);
+            }
+        }
+
+        public async Task<List<Building>> GetBuildingsByUserIdAsync(Guid userId)
+        {
+            try
+            {
+                var buildings = await _dbContext.UserBuildings.Where(ub => ub.User.Id == userId.ToString() && ub.DeletedDate == null)
+                    .Select(ub => ub.Building)
+                    .ToListAsync();
+                return buildings;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error when trying {nameof(GetBuildingsByUserIdAsync)}. Error was: " + ex.Message, ex);
             }
         }
 

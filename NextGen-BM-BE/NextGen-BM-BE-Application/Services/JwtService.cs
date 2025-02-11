@@ -18,9 +18,8 @@ namespace NextGen_BM_BE_Application.Services{
         public string GenerateJwtToken(User user){
             var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -28,7 +27,7 @@ namespace NextGen_BM_BE_Application.Services{
             issuer: _configuration["JWT:Issuer"],
             audience: _configuration["JWT:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(20),
+            expires: DateTime.Now.AddMonths(20),
             signingCredentials: creds);
         return new JwtSecurityTokenHandler().WriteToken(token);
         }

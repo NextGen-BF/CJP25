@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Building } from "../../models/building";
-import { createBuilding } from "../services/buildingService";
+import { createBuilding, getAllBuildings } from "../services/buildingService";
 
 interface BuildingsState {
   value: Building[];
@@ -17,6 +17,9 @@ const buildingSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createBuilding.fulfilled, (state, action: PayloadAction<Building>) => {
       state.value.push(action.payload);
+    }),
+    builder.addCase(getAllBuildings.fulfilled, (state, action: PayloadAction<Building[]>) => {
+      state.value = action.payload;
     })
   },
 });

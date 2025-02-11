@@ -35,6 +35,15 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(building);
         }
 
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetBuildingsByUserId(string userId)
+        {
+
+            var buildings = await _buildingService.GetBuildingsByUserIdAsync(new Guid(userId));
+            return Ok(buildings);
+        }
+
         [HttpPost]
         [Route("new")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)

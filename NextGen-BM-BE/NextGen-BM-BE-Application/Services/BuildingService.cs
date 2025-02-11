@@ -16,9 +16,11 @@ namespace NextGen_BM_BE_Application.Services
         private readonly CreateBuildingUseCase _createBuildingUseCase;
         private readonly UpdateBuildingUseCase _updateBuildingUseCase;
         private readonly DeleteBuildingUseCase _deleteBuildingUseCase;
+        private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
         private readonly IMapper _mapper;
 
         public BuildingService(
+            GetBuildingsByUserIdUseCase getBuildingsByUserIdUseCase,
             GetBuildingByIdUseCase getBuildingByIdUseCase,
             GetAllBuildingsUseCase getAllBuildingsUseCase,
             CreateBuildingUseCase createBuildingUseCase,
@@ -27,6 +29,7 @@ namespace NextGen_BM_BE_Application.Services
             IMapper mapper
         )
         {
+            _getBuildingsByUserIdUseCase = getBuildingsByUserIdUseCase;
             _getBuildingByIdUseCase = getBuildingByIdUseCase;
             _getAllBuildingsUseCase = getAllBuildingsUseCase;
             _createBuildingUseCase = createBuildingUseCase;
@@ -46,6 +49,17 @@ namespace NextGen_BM_BE_Application.Services
             var buildings = await _getAllBuildingsUseCase.Execute();
             List<BuildingViewModel> buildingsList = new();
             foreach(var building in buildings){
+                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+            }
+            return buildingsList;
+        }
+
+        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(Guid userId)
+        {
+            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
+            List<BuildingViewModel> buildingsList = new();
+            foreach (var building in buildings)
+            {
                 buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
             }
             return buildingsList;
