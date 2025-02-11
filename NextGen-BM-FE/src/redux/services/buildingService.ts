@@ -15,3 +15,16 @@ export const createBuilding=createAsyncThunk("building/new", async(building: Bui
         return err;
     })
 })
+
+export const getAllBuildings=createAsyncThunk("building/all", async()=> {
+    return await axios.get(`${apiURL}/building/all`, {headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
+    }})
+    .then(function(response){
+        return response.data;
+    }).catch((err: Error | AxiosError) => {
+        if(axios.isAxiosError(err))
+            return err.response
+        return err;
+    })
+})

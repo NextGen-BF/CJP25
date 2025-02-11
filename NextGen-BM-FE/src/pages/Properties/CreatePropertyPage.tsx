@@ -1,19 +1,22 @@
 import { FC } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Property } from "../../models/property";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { createProperty } from "../../redux/services/propertyService";
 import TextField from "@mui/material/TextField";
 import { Button, MenuItem, Select } from "@mui/material";
 import { Building } from "../../models/building";
 import { Search } from "@mui/icons-material";
+import { getAllBuildings } from "../../redux/services/buildingService";
+import { useSelector } from "react-redux";
 
 const CreatePropertyPage: FC = () => {
-  const buildings:Building[]=[]
-  const buildingList=buildings.map(building=>
-    <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
-  );
   const dispatch = useAppDispatch();
+  const buildings:Building[]=useSelector((state: RootState) => state.buildingReducer.value);
+  const buildingList=buildings?buildings.map(building=>
+    <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
+  ):[];
+  
   const {control, handleSubmit} = useForm<Property>();
   const onSubmit: SubmitHandler<Property> = (data) => {console.log(data); dispatch(createProperty(data))};
 
@@ -99,6 +102,7 @@ const CreatePropertyPage: FC = () => {
             label="Building"
             size="small"
             fullWidth
+            onClick={()=>dispatch(getAllBuildings())}
             >
               <Search></Search>
               {buildingList}
