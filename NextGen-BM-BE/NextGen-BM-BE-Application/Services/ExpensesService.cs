@@ -55,26 +55,52 @@ namespace NextGen_BM_BE_Application.Services
             return await _getPropertyExpenseByIdUseCase.Execute(propertyExpenseId);
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
+        public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByUserIdAsync(
+            int userId
+        )
         {
-            return (List<PropertyPayments>)
-                await _getAllPropertyPaymentsByUserIdUseCase.Execute(userId);
+            var propertyPaymentsByUserId = await _getAllPropertyPaymentsByUserIdUseCase.Execute(
+                userId
+            );
+            List<PropertyPaymentsViewModel> propertyPaymentsList = new();
+
+            foreach (var propertyPayment in propertyPaymentsByUserId)
+            {
+                propertyPaymentsList.Add(_mapper.Map<PropertyPaymentsViewModel>(propertyPayment));
+            }
+            return propertyPaymentsList;
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByBuildingIdAsync(
+        public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByBuildingIdAsync(
             int buildingId
         )
         {
-            return (List<PropertyPayments>)
+            var propertyPaymentsByBuildingId =
                 await _getAllPropertyPaymentsByBuildingIdUseCase.Execute(buildingId);
+
+            List<PropertyPaymentsViewModel> propertyPaymentsList = new();
+
+            foreach (var propertyPayment in propertyPaymentsByBuildingId)
+            {
+                propertyPaymentsList.Add(_mapper.Map<PropertyPaymentsViewModel>(propertyPayment));
+            }
+            return propertyPaymentsList;
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(
+        public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByPropertyIdAsync(
             int propertyId
         )
         {
-            return (List<PropertyPayments>)
+            var propertyPaymentsByPropertyId =
                 await _getAllPropertyPaymentsByPropertyIdUseCase.Execute(propertyId);
+
+            List<PropertyPaymentsViewModel> propertyPaymentsList = new();
+
+            foreach (var propertyPayment in propertyPaymentsByPropertyId)
+            {
+                propertyPaymentsList.Add(_mapper.Map<PropertyPaymentsViewModel>(propertyPayment));
+            }
+            return propertyPaymentsList;
         }
 
         public async Task CreatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpenseDto)
