@@ -24,3 +24,7 @@ export const createBuildingConstants = {
   create: "Create Building",
   createHeader: "Create a Building"
 }
+
+export const logOut = {
+  logout: "Log out"
+}

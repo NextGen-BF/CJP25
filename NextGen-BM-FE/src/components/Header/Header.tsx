@@ -8,11 +8,12 @@ import { pageTitles } from "../../constants/pageTitlesConstant.ts";
 import { toggleDrawer } from "../../redux/slices/navigationSlice.ts";
 import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from '@mui/icons-material/Menu';
+import { logout } from "../../redux/slices/loginSlice.ts";
 
 export const Header: FC = () => {
-    const userToken = store.getState().loginReducer.value;
-    const location=useLocation().pathname;
-    const drawerOpen=useSelector((state:RootState)=>state.navigationReducer.open);
+    const userToken = useSelector((state:RootState)=>state.loginReducer.value);
+    const location = useLocation().pathname;
+    const drawerOpen = useSelector((state:RootState)=>state.navigationReducer.open);
     const dispatch=useAppDispatch();
     const toggle = ()=> dispatch(toggleDrawer());
     return (
@@ -23,7 +24,7 @@ export const Header: FC = () => {
             </div>
             <span className={'header-link'}>{pageTitles[location]}</span>
             {/* todo: put logout here */}
-            {userToken.accessToken?"":<NavLink className={'header-link'} to="/login">Log in</NavLink>}
+            {userToken?<NavLink className={'header-link'} onClick={() => dispatch(logout())} to="/login">Log Out</NavLink>:<NavLink className={'header-link'} to="/login">Log in</NavLink>}
         </AppBar>
     );
 };
