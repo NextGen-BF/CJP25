@@ -49,9 +49,10 @@ namespace NextGen_BM_BE_Application.Services{
             await _deletePropertyUseCase.Execute(propertyId);
         }
 
-        public async Task<IList<Property>> GetAllPropertiesAsync()
+        public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync()
         {
-            return await _getAllPropertiesUseCase.Execute();
+            var properties = await _getAllPropertiesUseCase.Execute();
+            return _mapper.Map<IList<PropertyViewModel>>(properties); 
         }
 
         public async Task UpdatePropertyAsync(PropertyViewModel propertyViewModel)
