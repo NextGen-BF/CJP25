@@ -36,7 +36,7 @@ const App: FC = () => {
         <Route path="/request" element={<RequestPage />} />
         <Route path="/create/property" element={<CreatePropertyPage />} />
         <Route path="/properties" element={<PropertyListPage />} />
-        <Route path="/property" element={<PropertyPage />} />
+        <Route path="/property/:id?" element={<PropertyPage />} />
         <Route path="/property/residents" element={<PropertyResidentsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/account" element={<MyAccountPage />} />
