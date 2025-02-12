@@ -13,7 +13,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task CreateExpenseForPropertiesAsync(
+        public async Task CreatePropertyPaymentsForPropertiesAsync(
             List<int> propertyIds,
             int propertyPaymentsId
         )
@@ -42,7 +42,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(CreateExpenseForPropertiesAsync)} threw an error of: ",
+                    $"{nameof(CreatePropertyPaymentsForPropertiesAsync)} threw an error of: ",
                     ex
                 );
             }

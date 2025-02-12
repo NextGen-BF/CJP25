@@ -20,7 +20,7 @@ namespace NextGen_BM_BE_Application.Services
 
         private readonly CreateExpensesUseCase _createExpensesUseCase;
 
-        private readonly CreateExpenseForPropertiesUseCase _createExpenseForPropertiesUseCase;
+        private readonly CreatePropertyPaymentsForPropertiesUseCase _createPropertyPaymentsForPropertiesUseCase;
 
         private readonly UpdateExpensesUseCase _updateExpensesUseCase;
 
@@ -33,7 +33,7 @@ namespace NextGen_BM_BE_Application.Services
             GetAllPropertyPaymentsByBuildingIdUseCase getAllPropertyPaymentsByBuildingIdUseCase,
             GetAllPropertyPaymentsByPropertyIdUseCase getAllPropertyPaymentsByPropertyIdUseCase,
             CreateExpensesUseCase createExpensesUseCase,
-            CreateExpenseForPropertiesUseCase createExpenseForPropertiesUseCase,
+            CreatePropertyPaymentsForPropertiesUseCase createPropertyPaymentsForPropertiesUseCase,
             UpdateExpensesUseCase updateExpensesUseCase,
             DeleteExpensesUseCase deleteExpensesUseCase,
             IMapper mapper
@@ -44,7 +44,7 @@ namespace NextGen_BM_BE_Application.Services
             _getAllPropertyPaymentsByBuildingIdUseCase = getAllPropertyPaymentsByBuildingIdUseCase;
             _getAllPropertyPaymentsByPropertyIdUseCase = getAllPropertyPaymentsByPropertyIdUseCase;
             _createExpensesUseCase = createExpensesUseCase;
-            _createExpenseForPropertiesUseCase = createExpenseForPropertiesUseCase;
+            _createPropertyPaymentsForPropertiesUseCase = createPropertyPaymentsForPropertiesUseCase;
             _updateExpensesUseCase = updateExpensesUseCase;
             _deleteExpensesUseCase = deleteExpensesUseCase;
             _mapper = mapper;
@@ -109,9 +109,12 @@ namespace NextGen_BM_BE_Application.Services
             await _createExpensesUseCase.Execute(expense);
         }
 
-        public async Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId)
+        public async Task CreatePropertyPaymentsForPropertiesAsync(
+            List<int> propertyIds,
+            int expenseId
+        )
         {
-            await _createExpenseForPropertiesUseCase.Execute(propertyIds, expenseId);
+            await _createPropertyPaymentsForPropertiesUseCase.Execute(propertyIds, expenseId);
         }
 
         public async Task UpdatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpenseDto)

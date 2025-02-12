@@ -10,7 +10,7 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
         Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByBuildingIdAsync(int buildingId);
         Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByPropertyIdAsync(int propertyId);
         Task CreatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);
-        Task CreateExpenseForPropertiesAsync(List<int> propertyIds, int expenseId);
+        Task CreatePropertyPaymentsForPropertiesAsync(List<int> propertyIds, int expenseId);
         Task UpdatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);
         Task DeletePropertyExpenseAsync(int propertyExpenseId);
     }

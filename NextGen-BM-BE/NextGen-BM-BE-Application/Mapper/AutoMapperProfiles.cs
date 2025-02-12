@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using AutoMapper;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
+using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.Mapper
@@ -36,14 +37,23 @@ namespace NextGen_BM_BE_Application.Mapper
                     dest => dest.BuildingExpenses,
                     opt => opt.MapFrom(src => src.BuildingExpenses)
                 )
-                .ForMember(dest => dest.BuildingProperties,
-                opt => opt.MapFrom(src => src.Properties));
+                .ForMember(
+                    dest => dest.BuildingProperties,
+                    opt => opt.MapFrom(src => src.Properties)
+                );
 
             CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
 
             CreateMap<BuildingExpense, BuildingExpenseViewModel>();
             CreateMap<BuildingExpenseViewModel, BuildingExpense>();
+
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Title))
+                .ForMember(
+                    dest => dest.PaymentMethod,
+                    opt => opt.MapFrom(src => src.PaymentMethod.Title)
+                );
         }
     }
 }

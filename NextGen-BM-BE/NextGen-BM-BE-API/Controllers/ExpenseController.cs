@@ -69,12 +69,12 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("create/property")]
-        public async Task<IActionResult> CreateExpenseForProperties(
+        public async Task<IActionResult> CreatePropertyPaymentsForProperties(
             List<int> propertyIds,
             int expenseId
         )
         {
-            await _expensesService.CreateExpenseForPropertiesAsync(propertyIds, expenseId);
+            await _expensesService.CreatePropertyPaymentsForPropertiesAsync(propertyIds, expenseId);
             return Ok(); // not sure what to return here
         }
 
