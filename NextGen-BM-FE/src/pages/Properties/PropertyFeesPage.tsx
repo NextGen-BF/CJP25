@@ -158,7 +158,7 @@ const PropertyFeesPage: FC = () => {
       <div className="button-container">
         <Button
           component={NavLink}
-          to="/create/propertyexpense"
+          to="/create/propertypayments"
           variant="contained"
           sx={{ width: "10%", textDecoration: "none", color: "white" }}
         >
