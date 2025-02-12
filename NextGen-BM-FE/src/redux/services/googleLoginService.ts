@@ -13,7 +13,8 @@ export const loginWithGoogleCall = createAsyncThunk(
     return await axios
       .post(`${apiURL}/Google/get-google-jwt`, payload.credential, {
         headers: {
-          "Content-Type": "application/json;UTF-8",
+          "Accept": "application.json",
+          "Content-Type": "application/json;charset=utf-8",
         },
       })
       .then(function (response) {
