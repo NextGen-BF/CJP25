@@ -1,6 +1,9 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Services;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -8,73 +11,92 @@ namespace NextGen_BM_BE_API.Controllers{
 [Route("[controller]")]
 public class RequestController: ControllerBase {
 
+    private readonly IRequestService _requestService;
+    public RequestController(IRequestService requestService)
+    {
+        _requestService=requestService;
+    }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
-    public Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
+    public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
     {
-        return null;
+        var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("repair/{requestId}")]
-    public Task<IActionResult> GetRepairRequestById(int requestId)
+    public async Task<IActionResult> GetRepairRequestById(int requestId)
     {
-        return null;
+        var result = await _requestService.GetRepairRequestByIdAsync(requestId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
-    public Task<IActionResult> GetUserBuildingRequests(int buildingId)
+    public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
     {
-        return null;
+        var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
+        if (result==null) return BadRequest();
+        return Ok(result);
     }
 
     [HttpPost]
     [Route("repair/new")]
-    public Task<IActionResult> CreateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
-        return null;
+        await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
+        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestViewModel.RequestId}, repairRequestViewModel);
     }
 
     [HttpPost]
     [Route("user/building/new")]
-    public Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
+    public async Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
     {
-        return null;
+        await _requestService.CreateUserBuildingRequestAsync(userBuildings);
+        return CreatedAtAction(nameof(GetUserBuildingRequests), new {buildingId=userBuildings.BuildingId}, userBuildings);
     }
     [HttpPost]
     [Route("note/new")]
-    public Task<IActionResult> CreateRepairRequestNote(RequestNotes requestNotes)
+    public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesViewModel)
     {
-        return null;
+        await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
+        //TODO: when notes gain more priority and/if fe needs to make an api call to get notes seperately, pass that method
+        return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("repair/update")]
-    public Task<IActionResult> UpdateRepairRequest(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
-        return null;
+        await _requestService.UpdateRepairRequestAsync(repairRequestViewModel);
+        return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("note/update")]
-    public Task<IActionResult> UpdateRequestNotes(RepairRequest repairRequest)
+    public async Task<IActionResult> UpdateRequestNotes(RequestNotesViewModel requestNotesViewModel)
     {
-        return null;
+        await _requestService.UpdateRequestNoteAsync(requestNotesViewModel);
+        return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("repair/delete/{requestId}")]
-    public Task<IActionResult> DeleteRepairRequest(int requestId)
+    public async Task<IActionResult> DeleteRepairRequest(int requestId)
     {
-        return null;
+        await _requestService.DeleteRepairRequestAsync(requestId);
+        return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("note/delete/{requestNoteId}")]
-    public Task<IActionResult> DeleteRequestNote(int requestNoteId)
+    public async Task<IActionResult> DeleteRequestNote(int requestNoteId)
     {
-        return null;
+        await _requestService.DeleteRepairRequestAsync(requestNoteId);
+        return Ok();
     }
 }
 };

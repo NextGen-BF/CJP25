@@ -14,3 +14,17 @@ export const validationConstants = {
   regexPasswordRequirements:
     "^(?=.*[A-Z])(?=.*[!@#$&*.,:;-=()])(?=.*[0-9])(?=.*[a-z]).{6,}$",
 };
+
+export const signupResponseConstants = {
+  emailInUse: "This email is already in use.",
+  genericError: "We have encountered an error, please try again later.",
+};
+
+export const createBuildingConstants = {
+  create: "Create Building",
+  createHeader: "Create a Building"
+}
+
+export const logOut = {
+  logout: "Log out"
+}

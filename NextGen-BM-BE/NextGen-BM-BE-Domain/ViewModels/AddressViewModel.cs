@@ -1,7 +1,10 @@
-namespace NextGen_BM_BE_Application.ViewModels{
-
-    public class AddressViewModel{
-        public required string StreetNumber { get; set; }
+namespace NextGen_BM_BE_Domain.ViewModels
+{
+    public class AddressViewModel
+    {
+        public int AddressId { get; set; }
+        public required string StreetName { get; set; }
+        public required int StreetNumber { get; set; }
         public string? Entrance { get; set; }
         public required string District { get; set; }
         public required string City { get; set; }

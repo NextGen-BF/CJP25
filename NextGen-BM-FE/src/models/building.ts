@@ -2,19 +2,21 @@ import { Property } from "./property"
 
 export interface Building {
     buildingId :number,
-    address: Address,
+    buildingAddress: Address,
     alias: string | null,
     floorNum: number,
     totalBuildingSize: number,
     dateBuilt: Date,
     numOfElevators: number,
     buildingExpenses: BuildingExpense[] | null;
-    properties: Property[] | null;
+    buildingProperties: Property[] | null;
 }
 
-interface Address {
-    streetNumber: string,
-    entance: string,
+export interface Address {
+    addressId: 0,
+    streetName: string,
+    streetNumber: number,
+    entrance: string,
     district: string,
     city: string,
     postalCode: string,

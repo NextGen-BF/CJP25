@@ -1,4 +1,4 @@
-import { validationConstants } from "../constants/validationConstants";
+import { validationConstants } from "../constants/constants";
 import { FormData } from "../pages/Account/Sign Up/SignupPage";
 
 interface ValidationError {
