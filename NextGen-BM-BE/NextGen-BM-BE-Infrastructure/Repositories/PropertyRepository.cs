@@ -51,10 +51,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 return await _dataContext.Property
                     .Where(property => property.DeletedDate == null)
-                    .Include(property => property.Users)
-                    .Include(property => property.Payments)
-                    .Include(property => property.PropertyResidents)
-                    .AsNoTracking()
+                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
+                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
+                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
                     .ToListAsync();
             }
             catch (DbException exception)
@@ -70,9 +69,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 var properties = await _dataContext.Property
                     .Where(property=>property.BuildingId==buildingId&&property.DeletedDate == null)
-                    .Include(property => property.Users)
-                    .Include(property => property.Payments)
-                    .Include(property => property.PropertyResidents)
+                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
+                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
+                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
                     .AsNoTracking()
                     .ToListAsync();
                 return properties;
@@ -89,10 +88,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try 
             {
                 return await _dataContext.Property
-                    .Include(property => property.Users)
+                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
                     .Where(property=>property.Users.Any(u=>u.UserId==userId)&&property.DeletedDate == null)
-                    .Include(property => property.Payments)
-                    .Include(property => property.PropertyResidents)
+                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
+                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -109,9 +108,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 return await _dataContext.Property
                     .Where(property=>property.PropertyId==propertyId&&property.DeletedDate == null)
-                    .Include(property => property.Users)
-                    .Include(property => property.Payments)
-                    .Include(property => property.PropertyResidents).AsNoTracking().SingleOrDefaultAsync();
+                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
+                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
+                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
+                    .AsNoTracking().SingleOrDefaultAsync();
             }
             catch (DbException exception)
             {
