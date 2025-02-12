@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
-using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;

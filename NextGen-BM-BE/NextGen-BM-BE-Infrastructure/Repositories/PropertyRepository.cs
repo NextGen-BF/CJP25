@@ -107,7 +107,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try 
             {
-                return await _dataContext.Property.Where(p=>p.PropertyId==propertyId).AsNoTracking().SingleOrDefaultAsync();
+                return await _dataContext.Property
+                    .Where(property=>property.PropertyId==propertyId&&property.DeletedDate == null)
+                    .Include(property => property.Users)
+                    .Include(property => property.Payments)
+                    .Include(property => property.PropertyResidents).AsNoTracking().SingleOrDefaultAsync();
             }
             catch (DbException exception)
             {
