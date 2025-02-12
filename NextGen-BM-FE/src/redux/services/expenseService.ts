@@ -4,7 +4,7 @@ import { apiURL } from "../../api/shared";
 
 export const getPropertyPaymentsByPropertyId = createAsyncThunk(
   "expense/getPropertyPaymentsByPropertyId",
-  async (propertyId) => {
+  async (propertyId: number) => {
     return await axios
       .get(`${apiURL}/expense/property/${propertyId}`, {
         headers: {
@@ -23,7 +23,7 @@ export const getPropertyPaymentsByPropertyId = createAsyncThunk(
 
 export const getPropertyPaymentsByBuildingId = createAsyncThunk(
     "expense/getPropertyPaymentsByBuildingId",
-    async (buildingId) => {
+    async (buildingId: number) => {
       return await axios
         .get(`${apiURL}/expense/building/${buildingId}`, {
           headers: {
@@ -42,7 +42,7 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
 
   export const getPropertyPaymentsByUserId = createAsyncThunk(
     "expense/getPropertyPaymentsByUserId",
-    async (userId) => {
+    async (userId: number) => {
       return await axios
         .get(`${apiURL}/expense/user/${userId}`, {
           headers: {

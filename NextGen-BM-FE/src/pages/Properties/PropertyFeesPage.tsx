@@ -7,13 +7,16 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import "./propertyFeesPage.scss";
 import { PropertyPayments } from "../../models/property";
 import { DataGrid } from "@mui/x-data-grid";
 import { NavLink } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import { getPropertyPaymentsByBuildingId } from "../../redux/services/expenseService";
 
 const PropertyFeesPage: FC = () => {
+  const dispatch = useAppDispatch();
   const formatDate = (date: Date): string => {
     return date.toISOString().split("T")[0];
   };
@@ -78,10 +81,25 @@ const PropertyFeesPage: FC = () => {
       flex: 1,
     },
   ];
+
+  const [propertyPayments, setPropertyPayments] = useState<PropertyPayments[]>([]);
+
+  useEffect(() => {
+    const fetchPropertyPayments = async () => {
+      try {
+        const result = await dispatch(
+          getPropertyPaymentsByBuildingId(2), // example of a building id
+        ).unwrap();
+
+        setPropertyPayments(result); 
+      } catch (error) {
+        console.error("Failed to fetch property payments:", error);
+      }
+    };
+    
+    fetchPropertyPayments(); 
   
-  const [propertyPayments, setPropertyPayments] = useState<PropertyPayments[]>(
-    propertyPaymentsMockData,
-  );
+  }, [dispatch]); 
 
   const [searchInput, setSearchInput] = useState<string>("");
 
@@ -90,9 +108,9 @@ const PropertyFeesPage: FC = () => {
       const filteredPropertyPayments = propertyPayments.filter(
         (propertyPayment) => {
           if (
-            propertyPayment.paymentMethod.toLowerCase().includes(
-              searchInput.toLowerCase(),
-            )
+            propertyPayment.paymentMethod
+              .toLowerCase()
+              .includes(searchInput.toLowerCase())
           ) {
             return propertyPayment;
           }
