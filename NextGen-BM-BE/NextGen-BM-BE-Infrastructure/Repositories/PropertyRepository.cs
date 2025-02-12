@@ -133,5 +133,24 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 throw new Exception("Property couldn't be updated with the new data");
             }
         }
+
+        public async Task DeletePropertyResidentAsync(int propertyResidentId)
+        {
+            try
+            {
+                var propertyResidentToDelete = await _dataContext.PropertyResident.FindAsync(propertyResidentId);
+                if (propertyResidentToDelete!=null)
+                {
+                    propertyResidentToDelete.DeletedDate=DateOnly.FromDateTime(DateTime.Now);
+                    _dataContext.PropertyResident.Update(propertyResidentToDelete);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't delete this property");
+            }
+        }
     }
 }

@@ -73,6 +73,11 @@ public class PropertyController: ControllerBase {
         await _propertyService.DeletePropertyAsync(propertyId);
         return Ok();
     }
-
+    [HttpDelete]
+    [Route("resident/delete/{propertyResidentId}")]
+    public async Task<IActionResult> DeletePropertyResident(int propertyResidentId){
+        await _propertyService.DeletePropertyResidentAsync(propertyResidentId);
+        return Ok();
+    }
 }
 };

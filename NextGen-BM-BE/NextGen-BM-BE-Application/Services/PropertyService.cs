@@ -18,6 +18,7 @@ namespace NextGen_BM_BE_Application.Services{
         private readonly CreatePropertyUseCase _createPropertyUseCase;
         private readonly DeletePropertyUseCase _deletePropertyUseCase;
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
+        private readonly DeletePropertyResidentUseCase _deletePropertyResidentUseCase;
         private readonly IMapper _mapper;
 
         public PropertyService(GetPropertiesByIdUseCase getPropertiesByIdUseCase,
@@ -27,6 +28,7 @@ namespace NextGen_BM_BE_Application.Services{
                                 CreatePropertyUseCase createPropertyUseCase,
                                 DeletePropertyUseCase deletePropertyUseCase,
                                 UpdatePropertyUseCase updatePropertyUseCase,
+                                DeletePropertyResidentUseCase deletePropertyResidentUseCase,
                                 IMapper mapper)
         {
             _getPropertiesByIdUseCase=getPropertiesByIdUseCase;
@@ -36,6 +38,7 @@ namespace NextGen_BM_BE_Application.Services{
             _createPropertyUseCase=createPropertyUseCase;
             _deletePropertyUseCase=deletePropertyUseCase;
             _updatePropertyUseCase=updatePropertyUseCase;
+            _deletePropertyResidentUseCase=deletePropertyResidentUseCase;
             _mapper=mapper;
         }
 
@@ -76,6 +79,11 @@ namespace NextGen_BM_BE_Application.Services{
         {
             var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
             return _mapper.Map<IList<PropertyViewModel>>(properties);
+        }
+
+        public async Task DeletePropertyResidentAsync(int propertyResidentId)
+        {
+            await _deletePropertyResidentUseCase.Execute(propertyResidentId);
         }
     }
 }
