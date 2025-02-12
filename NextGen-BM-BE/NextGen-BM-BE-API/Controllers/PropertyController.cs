@@ -5,6 +5,7 @@ using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NextGen_BM_BE_API.Controllers{
 
@@ -13,6 +14,7 @@ namespace NextGen_BM_BE_API.Controllers{
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class PropertyController: ControllerBase {
 
     private readonly IPropertyService _propertyService;
@@ -60,7 +62,6 @@ public class PropertyController: ControllerBase {
         return CreatedAtAction(nameof(GetPropertyById), new {propertyId=propertyViewModel.PropertyId}, propertyViewModel);
     }
 
-    [HttpPut]
     [HttpPut]
     [Route("update")]
     public async Task<IActionResult> UpdateProperty(PropertyViewModel propertyViewModel){
