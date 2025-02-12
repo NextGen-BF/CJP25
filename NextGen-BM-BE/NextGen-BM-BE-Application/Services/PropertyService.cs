@@ -1,13 +1,13 @@
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
-using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
+using NextGen_BM_BE_Application.UseCases.Properties.Delete;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 
-namespace NextGen_BM_BE_Application.Services{
-
-    public class PropertyService:IPropertyService
+namespace NextGen_BM_BE_Application.Services
+{
+    public class PropertyService : IPropertyService
     {
         private readonly GetPropertiesByIdUseCase _getPropertiesByIdUseCase;
         private readonly GetAllPropertiesUseCase _getAllPropertiesUseCase;
@@ -17,27 +17,30 @@ namespace NextGen_BM_BE_Application.Services{
         private readonly DeletePropertyUseCase _deletePropertyUseCase;
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
 
-        public PropertyService(GetPropertiesByIdUseCase getPropertiesByIdUseCase,
-                                GetAllPropertiesUseCase getAllPropertiesUseCase,
-                                GetPropertiesByBuildingIdUseCase getPropertiesByBuildingIdUseCase,
-                                GetPropertiesByUserIdUseCase getPropertiesByUserIdUseCase,
-                                CreatePropertyUseCase createPropertyUseCase,
-                                DeletePropertyUseCase deletePropertyUseCase,
-                                UpdatePropertyUseCase updatePropertyUseCase)
+        public PropertyService(
+            GetPropertiesByIdUseCase getPropertiesByIdUseCase,
+            GetAllPropertiesUseCase getAllPropertiesUseCase,
+            GetPropertiesByBuildingIdUseCase getPropertiesByBuildingIdUseCase,
+            GetPropertiesByUserIdUseCase getPropertiesByUserIdUseCase,
+            CreatePropertyUseCase createPropertyUseCase,
+            DeletePropertyUseCase deletePropertyUseCase,
+            UpdatePropertyUseCase updatePropertyUseCase
+        )
         {
-            _getPropertiesByIdUseCase=getPropertiesByIdUseCase;
-            _getAllPropertiesUseCase=getAllPropertiesUseCase;
-            _getPropertiesByBuildingIdUseCase=getPropertiesByBuildingIdUseCase;
-            _getPropertiesByUserIdUseCase=getPropertiesByUserIdUseCase;
-            _createPropertyUseCase=createPropertyUseCase;
-            _deletePropertyUseCase=deletePropertyUseCase;
-            _updatePropertyUseCase=updatePropertyUseCase;
+            _getPropertiesByIdUseCase = getPropertiesByIdUseCase;
+            _getAllPropertiesUseCase = getAllPropertiesUseCase;
+            _getPropertiesByBuildingIdUseCase = getPropertiesByBuildingIdUseCase;
+            _getPropertiesByUserIdUseCase = getPropertiesByUserIdUseCase;
+            _createPropertyUseCase = createPropertyUseCase;
+            _deletePropertyUseCase = deletePropertyUseCase;
+            _updatePropertyUseCase = updatePropertyUseCase;
         }
 
         public async Task CreatePropertyAsync(Property property)
         {
             await _createPropertyUseCase.Execute(property);
         }
+
         public async Task DeletePropertyAsync(int propertyId)
         {
             await _deletePropertyUseCase.Execute(propertyId);
@@ -52,6 +55,7 @@ namespace NextGen_BM_BE_Application.Services{
         {
             await _updatePropertyUseCase.Execute(property);
         }
+
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
             return await _getPropertiesByIdUseCase.Execute(propertyId);
