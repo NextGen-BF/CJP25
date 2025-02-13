@@ -7,13 +7,14 @@ interface loginCredential {
     password: string,
 }
 
-export const loginCall = createAsyncThunk("auth/login", async (credentials: loginCredential) => {
+export const loginCall = createAsyncThunk("auth/login", async (credentials: loginCredential, thunkAPI) => {
     return await axios.post(`${apiURL}/auth/login`, credentials
-).then(function (response) {
+    ).then(function (response) {
         return response.data
     }).catch((err: Error | AxiosError) => {
-        if (axios.isAxiosError(err))
-            return err.response
-        return err;
-    })
+        if (axios.isAxiosError(err)) {
+            return thunkAPI.rejectWithValue(err.response?.data)
+        }
+        return thunkAPI.rejectWithValue(err);
+    });
 })

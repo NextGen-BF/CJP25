@@ -18,9 +18,8 @@ namespace NextGen_BM_BE_Application.Services{
         public string GenerateJwtToken(User user){
             var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Building } from "../../models/building";
-import { createBuilding } from "../services/buildingService";
+import { createBuilding, deleteUserBuildingLink, getBuildingsByUserId } from "../services/buildingService";
 
 interface BuildingsState {
   value: Building[];
@@ -17,7 +17,13 @@ const buildingSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createBuilding.fulfilled, (state, action: PayloadAction<Building>) => {
       state.value.push(action.payload);
-    })
+    }),
+      builder.addCase(getBuildingsByUserId.fulfilled, (state, action: PayloadAction<Building[]>) => {
+        state.value = action.payload;
+      }),
+      builder.addCase(deleteUserBuildingLink.fulfilled, (state, action: PayloadAction<number>) => {
+        state.value = state.value.filter(buildings => buildings.buildingId !== action.payload);
+      })
   },
 });
 
