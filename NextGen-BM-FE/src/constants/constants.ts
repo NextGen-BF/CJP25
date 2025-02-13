@@ -26,7 +26,8 @@ export const createBuildingConstants = {
 }
 
 export const createPropertyExpenseconstants = {
-  create: "Create Property Epense"
+  create: "Create Property Epense",
+  addRecond: "Add a property"
 }
 
 export const logOut = {

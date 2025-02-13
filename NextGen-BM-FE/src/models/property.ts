@@ -6,12 +6,12 @@ export interface Property{
     floor: number;
     sizeOfIdealParts: number;
     entranceIsExternal: boolean;
-    propertyExpenses: PropertyExpense[] | null;
     payments: PropertyPayments[] | null;
     residentHistory: ResidentHistory[] | null;
 }
 
 export interface ResidentHistory{
+    propertyResidentsId: number;
     firstName: string;
     lastName: string;
     residentTypeId: number;
@@ -30,7 +30,7 @@ export interface PropertyPayments{
 
 export interface PropertyExpense{
     propertyExpenseId: number;
-    propertyExpenseTemplateId: number;  // should come from PropertyExpenseTemplate but it doesn't exist now
+    propertyExpenseTemplateId: number;
     responsibleRole: string;
     price:number;
     startDate: Date;

@@ -1,7 +1,7 @@
 import { Property } from "./property"
 
 export interface Building {
-    buildingId :number,
+    buildingId: number,
     buildingAddress: Address,
     alias: string | null,
     floorNum: number,
@@ -20,10 +20,10 @@ export interface Address {
     district: string,
     city: string,
     postalCode: string,
-    Country: string,
+    country: string,
 }
 
-export interface BuildingExpense{
+export interface BuildingExpense {
     buildingExpenseId: number,
     title: string,
     totalAmount: number,

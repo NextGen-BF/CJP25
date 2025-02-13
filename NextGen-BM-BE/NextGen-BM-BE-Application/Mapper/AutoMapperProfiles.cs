@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using AutoMapper;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
@@ -44,11 +43,42 @@ namespace NextGen_BM_BE_Application.Mapper
                     opt => opt.MapFrom(src => src.Properties)
                 );
 
-            CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
+            CreateMap<Address, AddressViewModel>();
 
-            CreateMap<BuildingExpense, BuildingExpenseViewModel>();
+            CreateMap<PropertyViewModel, Property>();
+            CreateMap<Property, PropertyViewModel>();
+
+            CreateMap<PropertyExpenseViewModel, PropertyExpense>();
+            CreateMap<PropertyExpense, PropertyExpenseViewModel>();
+
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>();
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>();
+
             CreateMap<BuildingExpenseViewModel, BuildingExpense>();
+            CreateMap<BuildingExpense, BuildingExpenseViewModel>();
+
+            //Property models
+            CreateMap<Property, PropertyViewModel>()
+                .ForMember(dest => dest.PropertyPayments, opt => opt.MapFrom(src => src.Payments))
+                .ForMember(
+                    dest => dest.ResidentHistory,
+                    opt => opt.MapFrom(src => src.PropertyResidents)
+                );
+            CreateMap<PropertyViewModel, Property>()
+                .ForMember(dest => dest.Payments, opt => opt.MapFrom(src => src.PropertyPayments))
+                .ForMember(
+                    dest => dest.PropertyResidents,
+                    opt => opt.MapFrom(src => src.ResidentHistory)
+                );
+
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
+                .ForMember(dest => dest.DateDue, opt => opt.MapFrom(src => src.DueDate));
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>()
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DateDue));
+
+            CreateMap<PropertyResidents, ResidentHistoryViewModel>();
+            CreateMap<ResidentHistoryViewModel, PropertyResidents>();
 
             CreateMap<PropertyExpense, PropertyExpenseViewModel>();
             CreateMap<PropertyExpenseViewModel, PropertyExpense>();
