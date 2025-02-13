@@ -82,6 +82,7 @@ builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
 builder.Services.AddScoped<CreatePropertyUseCase>();
 builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
@@ -97,6 +98,11 @@ builder.Services.AddAuthentication(options => {
     options.DefaultSignInScheme = 
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
+    })
     .AddJwtBearer(x => {
         x.Events = new JwtBearerEvents {
             OnAuthenticationFailed = context => {
