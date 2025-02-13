@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store";
 import { Property } from "../../models/property";
 import { getProperty } from "../../redux/services/propertyService";
-import { Box, Button, Card, MenuItem } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, MenuItem, Stack } from "@mui/material";
 
 const PropertyPage: FC = () => {
   const propertyId=parseInt(useParams().id??"");
@@ -24,7 +24,11 @@ const PropertyPage: FC = () => {
     getProperty(propertyId).then(setProperty)
   }, []);
   const residentHistoryList=property.residentHistory?.map(resident=>
-    <MenuItem>{resident.enterDate.toString()}</MenuItem>
+    <Stack direction={"row"} justifyContent={"space-between"}>
+      <MenuItem>Name: {resident.firstName} {resident.lastName}</MenuItem>
+      <MenuItem>Enter Date: {resident.enterDate.toString()}</MenuItem>
+      <MenuItem>Leave Date: {resident.leaveDate.toString()}</MenuItem>
+    </Stack>
   );
   return (
   <div>
@@ -36,7 +40,14 @@ const PropertyPage: FC = () => {
         <MenuItem>Size: {property.size}</MenuItem>
         <MenuItem>Size of ideal parts: {property.sizeOfIdealParts}%</MenuItem>
         <MenuItem>External Entrance: {property.entranceIsExternal?"Yes":"No"}</MenuItem>
-        {residentHistoryList}
+        <Accordion>
+          <AccordionSummary>
+            Resident History
+          </AccordionSummary>
+          <AccordionDetails>
+            {residentHistoryList}
+          </AccordionDetails>
+        </Accordion>
       </Box>
       <Button>
         Edit
