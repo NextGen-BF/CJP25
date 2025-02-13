@@ -6,23 +6,15 @@ import { deleteProperty, getProperty } from "../../redux/services/propertyServic
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, MenuItem, Stack } from "@mui/material";
 
 const PropertyPage: FC = () => {
-  const propertyId=parseInt(useParams().id??"");
   const dispatch=useAppDispatch();
-  const [property, setProperty]=useState<Property>({
-    propertyId: 0,
-    propertyNumber: 0,
-    buildingId: 0,
-    size: 0,
-    floor: 0,
-    sizeOfIdealParts: 0,
-    entranceIsExternal: false,
-    propertyExpenses: null,
-    payments: null,
-    residentHistory: null
-  });
+  const propertyId=parseInt(useParams().id??"");
+  const [property, setProperty]=useState<Property|null>(null);
   useEffect(() => {
-    getProperty(propertyId).then(setProperty)
+    getProperty(propertyId).then(setProperty).catch(()=>setProperty(null))
   }, []);
+  if (property==null) return (
+    <h1>No Property Found!</h1>
+  );
   const residentHistoryList=property.residentHistory?.map(resident=>
     <Stack direction={"row"} justifyContent={"space-between"}>
       <MenuItem>Name: {resident.firstName} {resident.lastName}</MenuItem>
