@@ -12,10 +12,12 @@ import "./propertyFeesPage.scss";
 import { PropertyPayments } from "../../models/property";
 import { DataGrid } from "@mui/x-data-grid";
 import { NavLink } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { getPropertyPaymentsByUserId } from "../../redux/services/expenseService";
+import { useSelector } from "react-redux";
 
 const PropertyFeesPage: FC = () => {
+  const userId = useSelector((state: RootState) => state.loginReducer.value.userId)
   const dispatch = useAppDispatch();
   const formatDate = (date: Date): string => {
     return date.toISOString().split("T")[0];
@@ -63,7 +65,7 @@ const PropertyFeesPage: FC = () => {
     const fetchPropertyPayments = async () => {
       try {
         const result = await dispatch(
-          getPropertyPaymentsByUserId(2), // example of a user id
+          getPropertyPaymentsByUserId(Number(userId)), // userId is type string but the function expects it to be int
         ).unwrap();
 
         setPropertyPayments(result);

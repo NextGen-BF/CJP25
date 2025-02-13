@@ -4,7 +4,7 @@ import { apiURL } from "../../api/shared";
 
 export const getPropertyPaymentsByPropertyId = createAsyncThunk(
   "expense/getPropertyPaymentsByPropertyId",
-  async (propertyId: number) => {
+  async (propertyId: number, thunkAPI) => {
     return await axios
       .get(`${apiURL}/expense/property/${propertyId}`, {
         headers: {
@@ -15,15 +15,17 @@ export const getPropertyPaymentsByPropertyId = createAsyncThunk(
         return response.data;
       })
       .catch((err: Error | AxiosError) => {
-        if (axios.isAxiosError(err)) return err.response;
-        return err;
+        if (axios.isAxiosError(err)) {
+          return thunkAPI.rejectWithValue(err.response?.data)
+        }
+        return thunkAPI.rejectWithValue(err);
       });
   },
 );
 
 export const getPropertyPaymentsByBuildingId = createAsyncThunk(
     "expense/getPropertyPaymentsByBuildingId",
-    async (buildingId: number) => {
+    async (buildingId: number, thunkAPI) => {
       return await axios
         .get(`${apiURL}/expense/building/${buildingId}`, {
           headers: {
@@ -34,15 +36,17 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
           return response.data;
         })
         .catch((err: Error | AxiosError) => {
-          if (axios.isAxiosError(err)) return err.response;
-          return err;
+          if (axios.isAxiosError(err)) {
+            return thunkAPI.rejectWithValue(err.response?.data)
+          }
+          return thunkAPI.rejectWithValue(err);
         });
     },
   );
 
   export const getPropertyPaymentsByUserId = createAsyncThunk(
     "expense/getPropertyPaymentsByUserId",
-    async (userId: number) => {
+    async (userId: number, thunkAPI) => {
       return await axios
         .get(`${apiURL}/expense/user/${userId}`, {
           headers: {
@@ -53,8 +57,10 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
           return response.data;
         })
         .catch((err: Error | AxiosError) => {
-          if (axios.isAxiosError(err)) return err.response;
-          return err;
+          if (axios.isAxiosError(err)) {
+            return thunkAPI.rejectWithValue(err.response?.data)
+          }
+          return thunkAPI.rejectWithValue(err);
         });
     },
   );
