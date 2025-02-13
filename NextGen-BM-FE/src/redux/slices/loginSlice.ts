@@ -9,9 +9,14 @@ interface LoginState {
     }
 }
 
+function getToken() {
+    const token = localStorage.getItem("JWT-BM")
+    return token ?? "";
+}
+
 const initialState: LoginState = {
     value: {
-        token: localStorage.getItem("JWT-BM") ?? "",
+        token: getToken(),
         userId: ""
     }
 };
@@ -30,9 +35,13 @@ const loginSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<{ token: string }>) => {
-            const user = jwtDecode(action.payload.token)
+            let token = action.payload.token;
+            if (action.payload.token.length < 1) {
+                token = getToken();
+            }
+            const user = jwtDecode(token)
             state.value = {
-                token: action.payload.token,
+                token: token,
                 userId: user.sub ?? ""
             }
             console.log(state.value.userId)

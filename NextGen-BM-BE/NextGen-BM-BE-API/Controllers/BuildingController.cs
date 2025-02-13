@@ -10,7 +10,7 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingService _buildingService;
@@ -49,6 +49,14 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             await _buildingService.CreateBuildingAsync(building);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("delete/user/{userId}")]
+        public async Task<IActionResult> DeleteUserBuildingLink(string userId, [FromBody] int buildingId)
+        {
+            await _buildingService.DeleteUserBuildingLinkAsync(new Guid(userId), buildingId);
             return Ok();
         }
 

@@ -16,6 +16,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly CreateBuildingUseCase _createBuildingUseCase;
         private readonly UpdateBuildingUseCase _updateBuildingUseCase;
         private readonly DeleteBuildingUseCase _deleteBuildingUseCase;
+        private readonly DeleteUserBuildingLinkUseCase _deleteUserBuildingLinkUseCase;
         private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
         private readonly IMapper _mapper;
 
@@ -26,6 +27,7 @@ namespace NextGen_BM_BE_Application.Services
             CreateBuildingUseCase createBuildingUseCase,
             UpdateBuildingUseCase updateBuildingUseCase,
             DeleteBuildingUseCase deleteBuildingUseCase,
+            DeleteUserBuildingLinkUseCase deleteUserBuildingLinkUseCase,
             IMapper mapper
         )
         {
@@ -35,6 +37,7 @@ namespace NextGen_BM_BE_Application.Services
             _createBuildingUseCase = createBuildingUseCase;
             _updateBuildingUseCase = updateBuildingUseCase;
             _deleteBuildingUseCase = deleteBuildingUseCase;
+            _deleteUserBuildingLinkUseCase = deleteUserBuildingLinkUseCase;
             _mapper = mapper;
         }
 
@@ -80,6 +83,11 @@ namespace NextGen_BM_BE_Application.Services
         public async Task DeleteBuildingAsync(int buildingId)
         {
             await _deleteBuildingUseCase.Execute(buildingId);
+        }
+
+        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        {
+            await _deleteUserBuildingLinkUseCase.Execute(userId, buildingId);
         }
     }
 }

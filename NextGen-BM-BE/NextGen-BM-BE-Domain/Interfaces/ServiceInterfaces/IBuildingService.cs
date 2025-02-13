@@ -11,5 +11,6 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
         Task CreateBuildingAsync(BuildingViewModel building);
         Task UpdateBuildingAsync(BuildingViewModel building);
         Task DeleteBuildingAsync(int buildingId);
+        Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId);
     }
 }

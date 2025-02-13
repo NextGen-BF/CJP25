@@ -10,5 +10,6 @@ namespace NextGen_BM_BE_Domain.Interfaces
         Task CreateBuildingAsync(Building building);
         Task UpdateBuildingAsync(Building building);
         Task DeleteBuildingAsync(int buildingId);
+        Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId);
     }
 }

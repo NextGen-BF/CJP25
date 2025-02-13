@@ -86,7 +86,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 var buildings = await _dbContext.UserBuildings.Where(ub => ub.User.Id == userId.ToString() && ub.DeletedDate == null)
+                    .Include(b => b.Building.BuildingExpenses)
+                    .Include(b => b.Building.Properties)
+                    .Include(b => b.Building.BuildingAddress)
                     .Select(ub => ub.Building)
+                    .AsNoTracking()
                     .ToListAsync();
                 return buildings;
             }
@@ -94,6 +98,27 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 throw new Exception($"Error when trying {nameof(GetBuildingsByUserIdAsync)}. Error was: " + ex.Message, ex);
             }
+        }
+
+        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        {
+            try
+            {
+            var userBuilding = await _dbContext.UserBuildings.Where(ub => ub.User.Id == userId.ToString() && ub.BuildingId == buildingId && ub.DeletedDate == null).FirstOrDefaultAsync();
+                if(userBuilding is not null)
+                {
+                    userBuilding.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dbContext.UserBuildings.Update(userBuilding);
+                    await _dbContext.SaveChangesAsync();
+                    return;
+                }
+                throw new KeyNotFoundException("The user building link was not found.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error trying to delete userBuildings. Error was "+ ex.Message, ex);
+            }
+
         }
 
         public async Task UpdateBuildingAsync(Building building)

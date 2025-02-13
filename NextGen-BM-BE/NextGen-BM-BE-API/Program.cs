@@ -40,6 +40,7 @@ builder.Services.AddScoped<GetBuildingsByUserIdUseCase>();
 builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
+builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
