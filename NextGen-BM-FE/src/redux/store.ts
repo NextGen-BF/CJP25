@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "./slices/loginSlice";
 import buildingReducer from "./slices/buildingSlice"
 import signupReducer from "./slices/signupSlice";
+import googleLoginSlice from "./slices/googleLoginSlice";
 import { useDispatch } from "react-redux";
 import reducer from "./slices/loginSlice";
 import  navigationReducer  from "./slices/navigationSlice";
@@ -11,6 +12,7 @@ export const store =  configureStore({
         loginReducer: loginReducer,
         buildingReducer: buildingReducer,
         signupReducer: signupReducer,
+		googleLoginSlice: googleLoginSlice,
         navigationReducer: navigationReducer
 
     },
