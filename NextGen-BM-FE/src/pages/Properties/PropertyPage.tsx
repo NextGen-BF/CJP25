@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store";
 import { Property } from "../../models/property";
 import { deleteProperty, getProperty } from "../../redux/services/propertyService";
@@ -35,6 +35,7 @@ const PropertyPage: FC = () => {
     <h1>Property Dashboard</h1>
     <Card>
       <Box>
+        <Button component={NavLink} to={`/building/${property.buildingId}`}>Building</Button>
         <MenuItem>Number: {property.propertyNumber}</MenuItem>
         <MenuItem>Floor: {property.floor}</MenuItem>
         <MenuItem>Size: {property.size} sq. m</MenuItem>
@@ -48,6 +49,7 @@ const PropertyPage: FC = () => {
             {residentHistoryList}
           </AccordionDetails>
         </Accordion>
+        <Button component={NavLink} to="/property/fees">Fees</Button>
       </Box>
       <Button>
         Edit

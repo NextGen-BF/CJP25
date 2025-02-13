@@ -43,7 +43,7 @@ const App: FC = () => {
         <Route path="/recover" element={<AccountRecoveryPage />} />
         <Route path="/create/building" element={<CreateBuildingPage />} />
         <Route path="/buildings" element={<BuildingsListPage />} />
-        <Route path="/building" element={<BuildingPage />} />
+        <Route path="/building/:id?" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
         <Route path="/property/fees" element={<PropertyFeesPage />} />
         <Route path="/payment" element={<PaymentPage />} />
