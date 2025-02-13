@@ -20,7 +20,7 @@ const CreateBuildingPage: FC = () => {
     district: "",
     city: "",
     postalCode: "",
-    Country: "",
+    country: "",
   });
   const [formData, setFormData] = useState<Building>({
     buildingId: 0,
@@ -55,7 +55,6 @@ const CreateBuildingPage: FC = () => {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
-    console.log(formData)
     formData.buildingProperties = buildingProperties;
     dispatch(createBuilding(formData));
   };

@@ -10,9 +10,9 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 
         [Required]
         public int BuildingId { get; set; }
-        public double Size { get; set; }
+        public decimal Size { get; set; }
         public int Floor { get; set; }
-        public double SizeOfIdealParts { get; set; }
+        public decimal SizeOfIdealParts { get; set; }
         public int PropertyTypeId { get; set; }
         public bool EntranceIsExternal { get; set; }
         public DateOnly? DeletedDate { get; set; }

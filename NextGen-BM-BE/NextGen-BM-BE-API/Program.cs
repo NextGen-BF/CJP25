@@ -42,9 +42,11 @@ builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataCo
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
 builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<GetBuildingsByUserIdUseCase>();
 builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
+builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
