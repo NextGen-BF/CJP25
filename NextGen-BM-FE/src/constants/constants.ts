@@ -33,3 +33,7 @@ export const createPropertyExpenseconstants = {
 export const logOut = {
   logout: "Log out"
 }
+
+export const editableTableConstants = {
+  addRecord: "Add a property"
+}
