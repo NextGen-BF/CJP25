@@ -44,7 +44,6 @@ const loginSlice = createSlice({
                 token: token,
                 userId: user.sub ?? ""
             }
-            console.log(state.value.userId)
             localStorage.setItem("JWT-BM", action.payload.token)
         })
     }

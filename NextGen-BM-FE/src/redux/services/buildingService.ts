@@ -41,7 +41,6 @@ interface UserBuildingDeleteData {
 }
 
 export const deleteUserBuildingLink = createAsyncThunk("building/delete/user/id", async (data: UserBuildingDeleteData, thunkAPI) => {
-    console.log(data)
     return await axios.post(`${apiURL}/building/delete/user/${data.userId}`, JSON.stringify(data.buildingId), {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,

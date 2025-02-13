@@ -22,7 +22,6 @@ const buildingSlice = createSlice({
         state.value = action.payload;
       }),
       builder.addCase(deleteUserBuildingLink.fulfilled, (state, action: PayloadAction<number>) => {
-        console.log(action.payload)
         state.value = state.value.filter(buildings => buildings.buildingId !== action.payload);
       })
   },

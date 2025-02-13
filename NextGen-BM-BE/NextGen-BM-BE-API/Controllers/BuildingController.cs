@@ -10,7 +10,7 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingService _buildingService;
