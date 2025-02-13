@@ -42,9 +42,11 @@ builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataCo
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
 builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<GetBuildingsByUserIdUseCase>();
 builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
+builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
@@ -82,6 +84,7 @@ builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
 builder.Services.AddScoped<CreatePropertyUseCase>();
 builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
@@ -97,6 +100,11 @@ builder.Services.AddAuthentication(options => {
     options.DefaultSignInScheme = 
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
+    })
     .AddJwtBearer(x => {
         x.Events = new JwtBearerEvents {
             OnAuthenticationFailed = context => {

@@ -1,31 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Building } from "../../models/building";
-import { createBuilding } from "../services/buildingService";
+import { createBuilding, deleteUserBuildingLink, getBuildingsByUserId } from "../services/buildingService";
 
 interface BuildingsState {
   value: Building[];
 }
 
 const initialState: BuildingsState = {
-  value: [{
-    buildingId: 0,
-    buildingAddress: {
-      streetName: "",
-      streetNumber: "",
-      entrance: "",
-      district: "",
-      city: "",
-      postalCode: "",
-      Country: "",
-    },
-    alias: null,
-    floorNum: 0,
-    totalBuildingSize: 0,
-    dateBuilt: new Date(Date.now()),
-    numOfElevators: 0,
-    buildingExpenses: null,
-    buildingProperties: null,
-  }],
+  value: [],
 };
 
 const buildingSlice = createSlice({
@@ -34,8 +16,14 @@ const buildingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createBuilding.fulfilled, (state, action: PayloadAction<Building>) => {
-        state.value.push(action.payload);
-    })
+      state.value.push(action.payload);
+    }),
+      builder.addCase(getBuildingsByUserId.fulfilled, (state, action: PayloadAction<Building[]>) => {
+        state.value = action.payload;
+      }),
+      builder.addCase(deleteUserBuildingLink.fulfilled, (state, action: PayloadAction<number>) => {
+        state.value = state.value.filter(buildings => buildings.buildingId !== action.payload);
+      })
   },
 });
 

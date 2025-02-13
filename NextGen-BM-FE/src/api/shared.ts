@@ -1,5 +1,10 @@
 export const apiURL = import.meta.env.VITE_API_BASE_URL;
 
+
+export async function getToken(){
+  const token = localStorage.getItem("JWT-BM")
+  return token;
+}
 //Generic request to avoid duplication
 export async function request<T>(url: string, options: RequestInit): Promise<T> {
     options.headers = {
