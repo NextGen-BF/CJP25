@@ -16,22 +16,28 @@ namespace NextGen_BM_BE_Application.Services
         private readonly CreateBuildingUseCase _createBuildingUseCase;
         private readonly UpdateBuildingUseCase _updateBuildingUseCase;
         private readonly DeleteBuildingUseCase _deleteBuildingUseCase;
+        private readonly DeleteUserBuildingLinkUseCase _deleteUserBuildingLinkUseCase;
+        private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
         private readonly IMapper _mapper;
 
         public BuildingService(
+            GetBuildingsByUserIdUseCase getBuildingsByUserIdUseCase,
             GetBuildingByIdUseCase getBuildingByIdUseCase,
             GetAllBuildingsUseCase getAllBuildingsUseCase,
             CreateBuildingUseCase createBuildingUseCase,
             UpdateBuildingUseCase updateBuildingUseCase,
             DeleteBuildingUseCase deleteBuildingUseCase,
+            DeleteUserBuildingLinkUseCase deleteUserBuildingLinkUseCase,
             IMapper mapper
         )
         {
+            _getBuildingsByUserIdUseCase = getBuildingsByUserIdUseCase;
             _getBuildingByIdUseCase = getBuildingByIdUseCase;
             _getAllBuildingsUseCase = getAllBuildingsUseCase;
             _createBuildingUseCase = createBuildingUseCase;
             _updateBuildingUseCase = updateBuildingUseCase;
             _deleteBuildingUseCase = deleteBuildingUseCase;
+            _deleteUserBuildingLinkUseCase = deleteUserBuildingLinkUseCase;
             _mapper = mapper;
         }
 
@@ -46,6 +52,17 @@ namespace NextGen_BM_BE_Application.Services
             var buildings = await _getAllBuildingsUseCase.Execute();
             List<BuildingViewModel> buildingsList = new();
             foreach(var building in buildings){
+                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+            }
+            return buildingsList;
+        }
+
+        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(Guid userId)
+        {
+            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
+            List<BuildingViewModel> buildingsList = new();
+            foreach (var building in buildings)
+            {
                 buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
             }
             return buildingsList;
@@ -66,6 +83,11 @@ namespace NextGen_BM_BE_Application.Services
         public async Task DeleteBuildingAsync(int buildingId)
         {
             await _deleteBuildingUseCase.Execute(buildingId);
+        }
+
+        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        {
+            await _deleteUserBuildingLinkUseCase.Execute(userId, buildingId);
         }
     }
 }

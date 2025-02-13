@@ -25,6 +25,10 @@ export const createBuildingConstants = {
   createHeader: "Create a Building"
 }
 
+export const editableTableConstants = {
+  addRecond: "Add a property"
+}
+
 export const logOut = {
   logout: "Log out"
 }

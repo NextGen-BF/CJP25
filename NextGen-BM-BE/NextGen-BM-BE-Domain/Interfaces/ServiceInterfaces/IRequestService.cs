@@ -1,19 +1,22 @@
+
+
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.ViewModels;
 
-namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
-{
+namespace NextGen_BM_BE_Domain.Services{
     public interface IRequestService
     {
-        Task<RepairRequest> GetRepairRequestByIdAsync(int requestID);
-        Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingID);
-        Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingID);
-        Task CreateRepairRequestAsync(RepairRequest repairRequest);
+        Task CreateRepairRequestAsync(RepairRequestViewModel repairRequest);
+        Task CreateRequestNoteAsync(RequestNotesViewModel requestNotes);
         Task CreateUserBuildingRequestAsync(UserBuildings userBuildings);
-        Task CreateRepairRequestNotesAsync(RequestNotes requestNotes);
-        Task UpdateRepairRequestAsync(RepairRequest repairRequest);
-        Task UpdateRequestNotesAsync(RequestNotes requestNotes);
+        Task DeleteRepairRequestNoteAsync(int requestNoteId);
         Task DeleteRepairRequestAsync(int requestId);
-        Task DeleteRequestNotesAsync(int requestNotesID);
-    }
+        Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(int buildingId);
+        Task<RepairRequestViewModel> GetRepairRequestByIdAsync(int requestId);
+        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId);
+        Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequest);
+        Task UpdateRequestNoteAsync(RequestNotesViewModel requestNote);
+        }
+
 }
