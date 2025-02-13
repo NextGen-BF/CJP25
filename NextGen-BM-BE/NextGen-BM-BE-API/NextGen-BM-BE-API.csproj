@@ -4,11 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>346e6da5-0d5a-4edd-8a31-b014199b62dc</UserSecretsId>
     <RootNamespace>NextGen_BM_BE_API</RootNamespace>
-    <UserSecretsId>cb9e68ac-149e-4cf4-b85c-01f119d5be51</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.69.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
@@ -28,7 +30,6 @@
     <ProjectReference Include="..\NextGen-BM-BE-Domain\NextGen-BM-BE-Domain.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
     <ProjectReference Include="..\NextGen-BM-BE-Infrastructure\NextGen-BM-BE-Infrastructure.csproj" />
-    <ProjectReference Include="..\NextGen-BM-BE-Application\NextGen-BM-BE-Application.csproj" />
   </ItemGroup>
 
 </Project>

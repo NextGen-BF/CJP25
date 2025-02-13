@@ -1,57 +1,98 @@
+using System.Data.Common;
+using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Entities.RequestAggregate.Specifications;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
 {
     public class RequestRepository : IRequestRepository
     {
-        private readonly DataContext _dbContext;
-
-        public RequestRepository(DataContext dbContext)
+        private readonly DataContext _dataContext;
+        public RequestRepository(DataContext dataContext)
         {
-            _dbContext = dbContext;
-        }
-
+            _dataContext=dataContext;
+        } 
         public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
         {
-            await _dbContext.RepairRequests.AddAsync(repairRequest);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dataContext.RepairRequests.AddAsync(repairRequest);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't create this request");
+            }
         }
 
         public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
-            await _dbContext.RequestNotes.AddAsync(requestNotes);
-            await _dbContext.SaveChangesAsync();
+            try
+            {   
+                await _dataContext.RequestNotes.AddAsync(requestNotes);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't create this note");
+            }
         }
 
         public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
         {
-            await _dbContext.UserBuildings.AddAsync(userBuildings);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dataContext.UserBuildings.AddAsync(userBuildings);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't create this request");
+            }
         }
 
         public async Task DeleteRepairRequestAsync(int requestId)
         {
-            RepairRequest? repairRequestToDelete = await this.GetRepairRequestByIdAsync(requestId);
-            if (repairRequestToDelete is not null)
+            try
             {
-                repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dbContext.RepairRequests.Update(repairRequestToDelete);
-                await _dbContext.SaveChangesAsync();
+                RepairRequest? repairRequestToDelete = await GetRepairRequestByIdAsync(requestId);
+                if (repairRequestToDelete is not null)
+                {
+                    repairRequestToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dataContext.RepairRequests.Update(repairRequestToDelete);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't delete this request");
             }
         }
 
         public async Task DeleteRequestNotesAsync(int requestNotesId)
         {
-            RequestNotes? requestNotesToDelete = await _dbContext.RequestNotes.FindAsync(
-                requestNotesId
-            );
-            if (requestNotesToDelete is not null)
+            try
             {
-                requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
-                _dbContext.RequestNotes.Update(requestNotesToDelete);
-                await _dbContext.SaveChangesAsync();
+                RequestNotes? requestNotesToDelete = await _dataContext.RequestNotes.FindAsync(
+                requestNotesId
+                );
+                if (requestNotesToDelete is not null)
+                {
+                    requestNotesToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
+                    _dataContext.RequestNotes.Update(requestNotesToDelete);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't delete this note");
             }
         }
 
@@ -59,55 +100,80 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                RepairRequest? foundRepairRequest = await _dbContext.RepairRequests.FindAsync(
-                    requestId
-                );
-                if (foundRepairRequest is null)
-                {
-                    throw new KeyNotFoundException("The repair request was not found.");
-                }
-                return foundRepairRequest;
+                return await _dataContext.RepairRequests
+                    .Where(request=>request.RepairRequestId==requestId&&request.DeletedDate==null)
+                    .Include(request=>request.Notes)
+                    .Include(request=>request.RequestStatus)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch (DbException exception)
             {
-                throw new Exception("GetRepairRequestByIdAsync threw an error of: ", ex);
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this request");
             }
         }
 
         public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _dataContext.RepairRequests
+                    .Where(request=>request.BuildingId==buildingId&&request.DeletedDate==null)
+                    .Include(request=>request.Notes)
+                    .Include(request=>request.RequestStatus)
+                    .ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this building's requests");
+            }
         }
 
-        public async Task<UserBuildings> GetUserBuildingRequestsAsync(int buildingId)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
         {
             try
             {
-                UserBuildings? foundUserBuildings = await _dbContext.UserBuildings.FindAsync(
-                    buildingId
-                );
-                if (foundUserBuildings is null)
-                {
-                    throw new KeyNotFoundException("The building was not found.");
-                }
-                return foundUserBuildings;
+                return await _dataContext.UserBuildings
+                    .Where(userBuilding=>userBuilding.BuildingId==buildingId&&userBuilding.DeletedDate==null)
+                    .Include(userBuildings=>userBuildings.Role)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
-            catch (Exception ex)
+            catch (DbException exception)
             {
-                throw new Exception("GetUserBuildingRequestsAsync threw an error of: ", ex);
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve data for this building's requests");
             }
         }
 
         public async Task UpdateRepairRequestAsync(RepairRequest repairRequest)
         {
-            _dbContext.RepairRequests.Update(repairRequest);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dataContext.RepairRequests.Update(repairRequest);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't update this request");
+            }
         }
 
         public async Task UpdateRequestNotesAsync(RequestNotes requestNotes)
         {
-            _dbContext.RequestNotes.Update(requestNotes);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dataContext.RequestNotes.Update(requestNotes);
+                await _dataContext.SaveChangesAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't update this note");
+            }
         }
     }
 }
