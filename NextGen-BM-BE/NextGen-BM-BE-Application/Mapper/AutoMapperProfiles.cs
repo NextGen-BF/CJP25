@@ -42,11 +42,20 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.BuildingProperties,
                 opt => opt.MapFrom(src => src.Properties));
 
-            CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
+            CreateMap<Address, AddressViewModel>();
 
-            CreateMap<BuildingExpense, BuildingExpenseViewModel>();
+            CreateMap<PropertyViewModel, Property>();
+            CreateMap<Property, PropertyViewModel>();
+
+            CreateMap<PropertyExpenseViewModel, PropertyExpense>();
+            CreateMap<PropertyExpense, PropertyExpenseViewModel>();
+
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>();
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>();
+
             CreateMap<BuildingExpenseViewModel, BuildingExpense>();
+            CreateMap<BuildingExpense, BuildingExpenseViewModel>();
 
             //Property models
             CreateMap<Property, PropertyViewModel>()
@@ -119,13 +128,13 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<Enums, RequestStatusViewModel>()
                 .ForMember(
-                    dest=>dest.StatusId,
-                    opt=>opt.MapFrom(src=>src.EnumsId)
+                    dest => dest.StatusId,
+                    opt => opt.MapFrom(src => src.EnumsId)
                 );
             CreateMap<RequestStatusViewModel, Enums>()
                 .ForMember(
-                    dest=>dest.EnumsId,
-                    opt=>opt.MapFrom(src=>src.StatusId)
+                    dest => dest.EnumsId,
+                    opt => opt.MapFrom(src => src.StatusId)
                 );
         }
     }
