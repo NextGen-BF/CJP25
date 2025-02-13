@@ -8,5 +8,6 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public DateOnly DateDue { get; set; }
         public required string Status { get; set; }
         public required string PaymentMethod { get; set; }
+        public int? PaymentParentId { get; set; }
     }
 }
