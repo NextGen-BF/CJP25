@@ -52,6 +52,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
+                if (propertyExpense.PropertyExpenseTemplateId == 0)
+                {
+                    propertyExpense.PropertyExpenseTemplateId = _dbContext
+                        .PropertyExpenseTemplate.First()
+                        .PropertyExpenseTemplateId;
+                }
                 await _dbContext.PropertyExpense.AddAsync(propertyExpense);
                 await _dbContext.SaveChangesAsync();
             }

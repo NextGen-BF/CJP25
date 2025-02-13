@@ -60,7 +60,7 @@ export default function EditableTable() {
     return (
       <GridToolbarContainer>
         <Button color="primary" onClick={handleClick}>
-          {editableTableConstants.addRecond}
+          {editableTableConstants.addRecord}
         </Button>
       </GridToolbarContainer>
     );
