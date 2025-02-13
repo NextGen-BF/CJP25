@@ -82,6 +82,7 @@ builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
 builder.Services.AddScoped<CreatePropertyUseCase>();
 builder.Services.AddScoped<DeletePropertyUseCase>();
+builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();

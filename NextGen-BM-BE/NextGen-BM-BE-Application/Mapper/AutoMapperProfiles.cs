@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using AutoMapper;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
+using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -46,6 +47,40 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<BuildingExpense, BuildingExpenseViewModel>();
             CreateMap<BuildingExpenseViewModel, BuildingExpense>();
+
+            //Property models
+            CreateMap<Property, PropertyViewModel>()
+                .ForMember(
+                    dest => dest.PropertyPayments,
+                    opt => opt.MapFrom(src => src.Payments)
+                )
+                .ForMember(
+                    dest => dest.ResidentHistory,
+                    opt => opt.MapFrom(src => src.PropertyResidents)
+                );
+            CreateMap<PropertyViewModel, Property>()
+                .ForMember(
+                    dest => dest.Payments,
+                    opt => opt.MapFrom(src => src.PropertyPayments)
+                )
+                .ForMember(
+                    dest => dest.PropertyResidents,
+                    opt => opt.MapFrom(src => src.ResidentHistory)
+                );
+
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
+                .ForMember(
+                    dest => dest.DateDue,
+                    opt => opt.MapFrom(src => src.DueDate)
+                );
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>()
+                .ForMember(
+                    dest => dest.DueDate,
+                    opt => opt.MapFrom(src => src.DateDue)
+                );
+
+            CreateMap<PropertyResidents, ResidentHistoryViewModel>();
+            CreateMap<ResidentHistoryViewModel, PropertyResidents>();
 
             //Request models
             CreateMap<RepairRequest, RepairRequestViewModel>()
