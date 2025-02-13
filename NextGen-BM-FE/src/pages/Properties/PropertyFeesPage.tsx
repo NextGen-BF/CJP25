@@ -13,40 +13,13 @@ import { PropertyPayments } from "../../models/property";
 import { DataGrid } from "@mui/x-data-grid";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store";
-import { getPropertyPaymentsByBuildingId } from "../../redux/services/expenseService";
+import { getPropertyPaymentsByUserId } from "../../redux/services/expenseService";
 
 const PropertyFeesPage: FC = () => {
   const dispatch = useAppDispatch();
   const formatDate = (date: Date): string => {
     return date.toISOString().split("T")[0];
   };
-
-  const propertyPaymentsMockData: PropertyPayments[] = [
-    {
-      paymentId: 1,
-      amountOwed: 234.55,
-      dateOpened: new Date("2024-12-20"),
-      dueDate: new Date("2025-01-11"),
-      status: "paid",
-      paymentMethod: "master card",
-    },
-    {
-      paymentId: 2,
-      amountOwed: 120.9,
-      dateOpened: new Date("2025-01-20"),
-      dueDate: new Date("2025-03-11"),
-      status: "not paid",
-      paymentMethod: "master card",
-    },
-    {
-      paymentId: 3,
-      amountOwed: 70.9,
-      dateOpened: new Date("2025-01-29"),
-      dueDate: new Date("2025-03-01"),
-      status: "not paid",
-      paymentMethod: "visa card",
-    },
-  ];
 
   const columns = [
     {
@@ -82,43 +55,39 @@ const PropertyFeesPage: FC = () => {
     },
   ];
 
-  const [propertyPayments, setPropertyPayments] = useState<PropertyPayments[]>([]);
+  const [propertyPayments, setPropertyPayments] = useState<PropertyPayments[]>(
+    [],
+  );
 
   useEffect(() => {
     const fetchPropertyPayments = async () => {
       try {
         const result = await dispatch(
-          getPropertyPaymentsByBuildingId(2), // example of a building id
+          getPropertyPaymentsByUserId(2), // example of a user id
         ).unwrap();
 
-        setPropertyPayments(result); 
+        setPropertyPayments(result);
       } catch (error) {
         console.error("Failed to fetch property payments:", error);
       }
     };
-    
-    fetchPropertyPayments(); 
-  
-  }, [dispatch]); 
+
+    fetchPropertyPayments();
+  }, [dispatch]);
 
   const [searchInput, setSearchInput] = useState<string>("");
 
   const handleSearch = () => {
     if (searchInput !== "") {
       const filteredPropertyPayments = propertyPayments.filter(
-        (propertyPayment) => {
-          if (
-            propertyPayment.paymentMethod
-              .toLowerCase()
-              .includes(searchInput.toLowerCase())
-          ) {
-            return propertyPayment;
-          }
-        },
+        (propertyPayment) =>
+          propertyPayment.paymentMethod
+            .toLowerCase()
+            .includes(searchInput.toLowerCase()),
       );
       setPropertyPayments(filteredPropertyPayments);
     } else {
-      setPropertyPayments(propertyPaymentsMockData);
+      setPropertyPayments(propertyPayments);
       return;
     }
   };
