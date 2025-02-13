@@ -27,7 +27,7 @@ namespace NextGen_BM_BE_Application.Services{
             issuer: _configuration["JWT:Issuer"],
             audience: _configuration["JWT:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMonths(20),
+            expires: DateTime.Now.AddMinutes(20),
             signingCredentials: creds);
         return new JwtSecurityTokenHandler().WriteToken(token);
         }

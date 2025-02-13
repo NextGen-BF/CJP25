@@ -52,7 +52,7 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("delete/user/{userId}")]
         public async Task<IActionResult> DeleteUserBuildingLink(string userId, [FromBody] int buildingId)
         {
