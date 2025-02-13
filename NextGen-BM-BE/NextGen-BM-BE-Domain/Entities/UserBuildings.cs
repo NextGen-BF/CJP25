@@ -13,7 +13,7 @@ namespace NextGen_BM_BE_Domain.Entities
         public DateOnly? EndDate { get; set; }
         public DateOnly? DeletedDate { get; set; }
         public Building? Building { get; set; }
-        public User? User { get; set; }
+        public required User User { get; set; }
         public Role? Role { get; set; }
     }
 };

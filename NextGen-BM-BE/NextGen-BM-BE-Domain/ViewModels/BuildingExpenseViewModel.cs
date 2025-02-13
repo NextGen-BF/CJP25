@@ -4,7 +4,7 @@ namespace NextGen_BM_BE_Domain.ViewModels
     {
         public int BuildingExpenseId { get; set; }
         public required string Title { get; set; }
-        public double TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
         public required string SupplierName { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DueDate { get; set; }
