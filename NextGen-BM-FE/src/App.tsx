@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import LoginPage from "./pages/Account/LoginPage";
+import LoginPage from "./pages/Account/Log In/LoginPage";
 import HomePage from "./pages/HomePage";
 import { FC } from "react";
 import CreateRequestPage from "./pages/Requests/CreateRequestPage";
