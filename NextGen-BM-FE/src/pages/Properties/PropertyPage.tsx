@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store";
 import { Property } from "../../models/property";
-import { getProperty } from "../../redux/services/propertyService";
+import { deleteProperty, getProperty } from "../../redux/services/propertyService";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, MenuItem, Stack } from "@mui/material";
 
 const PropertyPage: FC = () => {
@@ -37,7 +37,7 @@ const PropertyPage: FC = () => {
       <Box>
         <MenuItem>Number: {property.propertyNumber}</MenuItem>
         <MenuItem>Floor: {property.floor}</MenuItem>
-        <MenuItem>Size: {property.size}</MenuItem>
+        <MenuItem>Size: {property.size} sq. m</MenuItem>
         <MenuItem>Size of ideal parts: {property.sizeOfIdealParts}%</MenuItem>
         <MenuItem>External Entrance: {property.entranceIsExternal?"Yes":"No"}</MenuItem>
         <Accordion>
@@ -52,7 +52,7 @@ const PropertyPage: FC = () => {
       <Button>
         Edit
       </Button>
-      <Button>
+      <Button onClick={()=>dispatch(deleteProperty(propertyId))}>
         Delete
       </Button>
     </Card>
