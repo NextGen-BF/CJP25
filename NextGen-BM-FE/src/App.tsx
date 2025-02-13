@@ -24,6 +24,7 @@ import AccountRecoveryPage from "./pages/Account/AccountRecoveryPage";
 import CreateBuildingPage from "./pages/Buildings/Create/CreateBuildingPage";
 import BuildingsListPage from "./pages/Buildings/BuildingListPage";
 import BuildingPage from "./pages/Buildings/BuildingPage";
+import CreatePropertyExpensePage from "./pages/Properties/CreatePropertyExpensePage";
 
 const App: FC = () => {
   const router = createBrowserRouter(
@@ -46,6 +47,7 @@ const App: FC = () => {
         <Route path="/building" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
         <Route path="/property/fees" element={<PropertyFeesPage />} />
+        <Route path="/create/propertyexpense" element={<CreatePropertyExpensePage />}/>
         <Route path="/payment" element={<PaymentPage />} />
       </Route>,
     ),

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -10,6 +11,7 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ExpenseController : ControllerBase
     {
         private readonly IExpensesService _expensesService;
@@ -60,11 +62,7 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
-            return CreatedAtAction(
-                nameof(GetExpenseById),
-                new { id = propertyExpense.PropertyExpenseId },
-                propertyExpense
-            );
+            return Ok();
         }
 
         [HttpPost]

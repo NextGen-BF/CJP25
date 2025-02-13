@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -9,20 +11,18 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
+using NextGen_BM_BE_Application.UseCases.Properties.Create;
+using NextGen_BM_BE_Application.UseCases.Properties.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Update;
 using NextGen_BM_BE_Domain.Entities;
-using NextGen_BM_BE_Application.UseCases.Properties.Create;
-using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,17 +113,21 @@ builder.Services.AddAuthentication(options => {
                     context.Response.ContentType = "application/json";
                     return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
                 }
-                else if (context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException))
+                else if (
+                    context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException)
+                )
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return context.Response.WriteAsync("{\"message\": \"Invalid token signature. Possible tampering detected.\"}");
+                    return context.Response.WriteAsync(
+                        "{\"message\": \"Invalid token signature. Possible tampering detected.\"}"
+                    );
                 }
                 else
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return context.Response.WriteAsync("{\"message\": \"Invalid token.\"}");
                 }
-            }
+            },
         };
         x.IncludeErrorDetails = true;
         x.RequireHttpsMetadata = false;
@@ -137,12 +141,13 @@ builder.Services.AddAuthentication(options => {
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey= new SymmetricSecurityKey(
+            IssuerSigningKey = new SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
             ),
         };
     });
-builder.Services.AddAuthorization(options => {
+builder.Services.AddAuthorization(options =>
+{
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
     options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
