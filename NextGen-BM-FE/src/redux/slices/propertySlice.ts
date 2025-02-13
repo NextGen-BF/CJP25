@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Property } from "../../models/property";
+import { getProperty } from "../services/propertyService";
 
 interface PropertyState {
-    value: Property[]
+    value: Property[],
+    current: number
 }
 
 const initialState: PropertyState = {
@@ -16,7 +18,8 @@ const initialState: PropertyState = {
         entranceIsExternal: false,
         payments: null,
         residentHistory: null
-    }]
+    }],
+    current: 0
 }
 
 const propertySlice = createSlice({
@@ -31,10 +34,18 @@ const propertySlice = createSlice({
         },
         updateProperty: (state, action: PayloadAction<Property>) => {
             state.value = [...state.value]
-            state.value = state.value.filter(property => property.propertyNumber != action.payload.propertyNumber)
+            state.value = state.value.filter(property => property.propertyId != action.payload.propertyId)
             state.value = [...state.value, action.payload]
         }
     },
+    extraReducers: (builder)=> {
+        builder.addCase(getProperty.fulfilled, (state, action: PayloadAction<Property>) => {
+                state.value = [...state.value]
+                state.value = state.value.filter(property => property.propertyId != action.payload.propertyId)
+                state.value = [...state.value, action.payload]
+                state.current = action.payload.propertyId
+              })
+    }
 })
 
 export const { addProperty, removeProperty, updateProperty } = propertySlice.actions;

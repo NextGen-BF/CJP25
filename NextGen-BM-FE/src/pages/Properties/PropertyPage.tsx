@@ -1,22 +1,24 @@
 import { FC, useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { Property } from "../../models/property";
 import { deleteProperty, deletePropertyResident, getProperty, updateProperty } from "../../redux/services/propertyService";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, MenuItem, Stack, TextField } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import { useSelector } from "react-redux";
 
 const PropertyPage: FC = () => {
   const dispatch=useAppDispatch();
   const propertyId=parseInt(useParams().id??"");
-  const [property, setProperty]=useState<Property|null>(null);
+  const property=useSelector((state: RootState) => state.propertyReducer.value.find(p=>p.propertyId===state.propertyReducer.current));
   const [editToggle, setEditToggle]=useState<boolean>(false);
   useEffect(() => {
-    getProperty(propertyId).then(setProperty).catch(()=>setProperty(null))
+    dispatch(getProperty(propertyId));
   }, []);
   const { control, handleSubmit } = useForm<Property>();
   const onSubmit:SubmitHandler<Property> = (newData)=>{
-    console.log(newData);
+    console.log(property);
+    setEditToggle(false);
     newData.propertyId=property?.propertyId??0;
     newData.buildingId=property?.buildingId??0;
     dispatch(updateProperty(newData));
