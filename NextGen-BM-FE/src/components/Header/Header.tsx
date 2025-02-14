@@ -24,7 +24,7 @@ export const Header: FC = () => {
             </div>
             <span className={'header-link'}>{pageTitles[location]}</span>
             {/* todo: put logout here */}
-            {userToken?<NavLink className={'header-link'} onClick={() => dispatch(logout())} to="/login">Log Out</NavLink>:<NavLink className={'header-link'} to="/login">Log in</NavLink>}
+            {userToken.token?<NavLink className={'header-link'} onClick={() => dispatch(logout())} to="/login">Log Out</NavLink>:<NavLink className={'header-link'} to="/login">Log in</NavLink>}
         </AppBar>
     );
 };
