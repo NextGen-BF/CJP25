@@ -11,10 +11,12 @@ const PropertyPage: FC = () => {
   const dispatch=useAppDispatch();
   const propertyId=parseInt(useParams().id??"");
   const property=useSelector((state: RootState) => state.propertyReducer.value.find(p=>p.propertyId===state.propertyReducer.current));
+  
   const [editToggle, setEditToggle]=useState<boolean>(false);
   useEffect(() => {
     dispatch(getProperty(propertyId));
   }, []);
+  
   const { control, handleSubmit } = useForm<Property>({
     values:property
   });
