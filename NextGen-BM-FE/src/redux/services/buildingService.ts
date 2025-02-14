@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
 import { Building } from "../../models/building";
 
-export const createBuilding = createAsyncThunk("building/new", async (building: Building) => {
+export const createBuilding = createAsyncThunk("building/new", async (building: Building, thunkAPI) => {
     return await axios.post(`${apiURL}/building/new`, building, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
@@ -12,10 +12,11 @@ export const createBuilding = createAsyncThunk("building/new", async (building: 
         .then(function (response) {
             return response.data;
         }).catch((err: Error | AxiosError) => {
-            if (axios.isAxiosError(err))
-                return err.response;
-            return err;
-        })
+            if (axios.isAxiosError(err)) {
+                return thunkAPI.rejectWithValue(err.response?.data)
+            }
+            return thunkAPI.rejectWithValue(err);
+        });
 })
 
 export const getBuildingsByUserId = createAsyncThunk("building/user/id", async (userId: string, thunkAPI) => {

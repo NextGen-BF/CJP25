@@ -6,17 +6,7 @@ interface PropertyState {
 }
 
 const initialState: PropertyState = {
-    value: [{
-        propertyId: 0,
-        propertyNumber: 0,
-        buildingId: 0,
-        size: 0,
-        floor: 1,
-        sizeOfIdealParts: 0,
-        entranceIsExternal: false,
-        payments: null,
-        residentHistory: null
-    }]
+    value: []
 }
 
 const propertySlice = createSlice({
