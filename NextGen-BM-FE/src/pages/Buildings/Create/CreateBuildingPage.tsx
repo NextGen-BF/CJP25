@@ -4,6 +4,7 @@ import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss";
+import "../../../style/shared.scss"
 import EditableTable from "../../../components/EditableTable";
 import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form"

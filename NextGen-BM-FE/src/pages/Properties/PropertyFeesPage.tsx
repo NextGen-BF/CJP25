@@ -122,8 +122,8 @@ const PropertyFeesPage: FC = () => {
         <Typography
           variant="body1"
           sx={{
-            flexGrow: 1, // This takes up available space, pushing the search input to the right
-            textAlign: "center", // Centers the "Filter" text within its space
+            flexGrow: 1,
+            textAlign: "center",
             whiteSpace: "nowrap",
           }}
         >
