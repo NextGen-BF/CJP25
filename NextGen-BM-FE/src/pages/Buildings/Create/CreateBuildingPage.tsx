@@ -169,7 +169,7 @@ const CreateBuildingPage: FC = () => {
             onChange={(e) => handleAddressChange(e)}
           />
           <TextField
-            name="Country"
+            name="country"
             label="Country"
             type="text"
             variant="outlined"
