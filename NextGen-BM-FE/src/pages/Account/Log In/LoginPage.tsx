@@ -54,6 +54,10 @@ const LoginPage: FC = () => {
     dispatch(loginWithGoogleCall(credentials));
   };
 
+  if (userToken.token) {
+    navigate("/")
+  }
+
   const pressentLoginError = (error: string) => {
     setError(error);
   };
@@ -66,9 +70,9 @@ const LoginPage: FC = () => {
       }),
     );
 
-    if (userToken.accessToken) {
+    if (userToken.token) {
       //TODO: Fix bug where it doesn't register on first click
-      navigate("/");
+      navigate("/login");
     }
   };
 
