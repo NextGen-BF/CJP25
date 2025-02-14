@@ -25,15 +25,19 @@ export const createBuildingConstants = {
   createHeader: "Create a Building"
 }
 
-export const createPropertyExpenseconstants = {
-  create: "Create Property Epense",
-  addRecond: "Add a property"
-}
-
 export const logOut = {
   logout: "Log out"
 }
 
 export const editableTableConstants = {
   addRecord: "Add a property"
+}
+
+export const createPropertyExpenseConstants = {
+  title: "Create Property Expense",
+  role: "Role",
+  role_owner: "Owner",
+  role_tenant: "Tenant",
+  create: "Create Property Epense",
+  addRecond: "Add a property"
 }

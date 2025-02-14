@@ -1,105 +1,111 @@
-import { FC, useState } from "react";
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { FC } from "react";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import "./createPropertyExpense.scss";
 import "../Buildings/Create/createBuilding.scss";
 import { PropertyExpense } from "../../models/property";
 import { useAppDispatch } from "../../redux/store";
-import { createPropertyExpenseconstants } from "../../constants/constants";
+import { createPropertyExpenseConstants } from "../../constants/constants";
 import { createPropertyExpense } from "../../redux/services/expenseService";
+import { SubmitHandler, useForm } from "react-hook-form";
+import "../../style/shared.scss";
 
 const CreatePropertyExpense: FC = () => {
   const dispatch = useAppDispatch();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PropertyExpense>();
 
-  const [formData, setFormData] = useState<PropertyExpense>({
-    propertyExpenseId: 0,
-    propertyExpenseTemplateId: 0,
-    responsibleRole: "",
-    price: 0.0,
-    startDate: new Date(),
-    endDate: new Date(),
-    Description: "",
-  });
-
-  const handleRoleChange = (e: SelectChangeEvent<string>) => {
-    const { value } = e.target;
-    setFormData((previousData) => ({ ...previousData, responsibleRole: value }));
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((previousData) => ({ ...previousData, [name]: value }));
-  };
-
-  const handleCreatePropertyExpenseSubmission = (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-    dispatch(createPropertyExpense(formData));
-  };
+  const onSubmit: SubmitHandler<PropertyExpense> = async (data) => {
+    await dispatch(createPropertyExpense(data))
+  }
 
   return (
     <>
-      <h1>Create Property Expense</h1>
+      <h1>{createPropertyExpenseConstants.title}</h1>
       <div className="text-field-container">
         <form
           className="create-propertyExpense-form"
-          onSubmit={(e) => handleCreatePropertyExpenseSubmission(e)}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <FormControl fullWidth required>
-            <InputLabel id="role-label">Role</InputLabel>
+            <InputLabel id="role-label">{createPropertyExpenseConstants.role}</InputLabel>
             <Select
               labelId="role-label"
               id="role-select"
-              value={formData.responsibleRole}
-              onChange={(e) => handleRoleChange(e)}
               label="Category"
+              {...register("responsibleRole", {
+                required: "Responsible role is required!"
+              })}
             >
-              <MenuItem value="owner">Owner</MenuItem>
-              <MenuItem value="tenant">Tenant</MenuItem>
+              <MenuItem value="owner">{createPropertyExpenseConstants.role_owner}</MenuItem>
+              <MenuItem value="tenant">{createPropertyExpenseConstants.role_tenant}</MenuItem>
             </Select>
+            {errors.responsibleRole && (
+              <div className="error-message">{errors.responsibleRole.message}</div>
+            )}
           </FormControl>
           <TextField
-            name="Description"
+            {...register("Description", {
+              required: "Description is required"
+            })}
             label="Description"
             type="text"
             variant="outlined"
             size="medium"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.Description && (
+            <div className="error-message">{errors.Description.message}</div>
+          )}
           <TextField
-            name="startDate"
+            {...register("startDate", {
+              required: "Start date is required"
+            })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="Start Date"
             type="date"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.startDate && (
+            <div className="error-message">{errors.startDate.message}</div>
+          )}
           <TextField
-            name="endDate"
+            {...register("endDate", {
+              required: "End Date is required",
+              validate: (value) => {
+                if (value.getMonth == new Date(Date.now()).getMonth && value.getFullYear() == new Date(Date.now()).getFullYear())
+                  return "End date cannot be in the current month!"
+              }
+            })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="End Date"
             type="date"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.endDate && (
+            <div className="error-message">{errors.endDate.message}</div>
+          )}
           <TextField
-            name="price"
+            {...register("price", {
+              required: "Price is required!",
+              validate: (value) => {
+                if (value < 0)
+                  return "Price cannot be negative!"
+              }
+            })}
             label="Price"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
-          <Button fullWidth type="submit">
-            {createPropertyExpenseconstants.create}
+          {errors.price && (
+            <div className="error-message">{errors.price.message}</div>
+          )}
+          <Button fullWidth type="submit" disabled={isSubmitting}>
+            {createPropertyExpenseConstants.create}
           </Button>
         </form>
       </div>
