@@ -25,6 +25,15 @@ export const createBuildingConstants = {
   createHeader: "Create a Building"
 }
 
+export const createPropertyExpenseconstants = {
+  create: "Create Property Epense",
+  addRecond: "Add a property"
+}
+
 export const logOut = {
   logout: "Log out"
+}
+
+export const editableTableConstants = {
+  addRecord: "Add a property"
 }

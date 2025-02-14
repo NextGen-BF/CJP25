@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 {
@@ -12,6 +11,7 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 
         [Required]
         public int RoleId { get; set; }
+        public required string ResponsibleRole { get; set; }
         public decimal Price { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly? EndDate { get; set; }

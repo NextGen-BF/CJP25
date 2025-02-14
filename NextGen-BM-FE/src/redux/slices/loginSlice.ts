@@ -1,12 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginCall } from "../services/loginService";
+import { jwtDecode } from "jwt-decode"
 
 interface LoginState {
-    value: string
+    value: {
+        token: string,
+        userId: string,
+    }
+}
+
+function getToken() {
+    const token = localStorage.getItem("JWT-BM")
+    return token ?? "";
 }
 
 const initialState: LoginState = {
-    value: localStorage.getItem("JWT-BM") ?? ""
+    value: {
+        token: getToken(),
+        userId: ""
+    }
 };
 
 const loginSlice = createSlice({
@@ -15,12 +27,23 @@ const loginSlice = createSlice({
     reducers: {
         logout: (state) => {
             localStorage.removeItem("JWT-BM")
-            state.value = ""
+            state.value = {
+                token: "",
+                userId: ""
+            }
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<{token: string}>) => {
-            state.value = action.payload.token;
+        builder.addCase(loginCall.fulfilled, (state, action: PayloadAction<{ token: string }>) => {
+            let token = action.payload.token;
+            if (action.payload.token.length < 1) {
+                token = getToken();
+            }
+            const user = jwtDecode(token)
+            state.value = {
+                token: token,
+                userId: user.sub ?? ""
+            }
             localStorage.setItem("JWT-BM", action.payload.token)
         })
     }
@@ -29,3 +52,4 @@ const loginSlice = createSlice({
 export const { logout } = loginSlice.actions;
 
 export default loginSlice.reducer;
+

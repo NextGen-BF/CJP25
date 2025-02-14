@@ -30,9 +30,19 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        public async Task<IActionResult> GetBuildingById(int buildingId){
+        public async Task<IActionResult> GetBuildingById(int buildingId)
+        {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
             return Ok(building);
+        }
+
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetBuildingsByUserId(string userId)
+        {
+
+            var buildings = await _buildingService.GetBuildingsByUserIdAsync(new Guid(userId));
+            return Ok(buildings);
         }
 
         [HttpPost]
@@ -40,6 +50,14 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             await _buildingService.CreateBuildingAsync(building);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("delete/user/{userId}")]
+        public async Task<IActionResult> DeleteUserBuildingLink(string userId, [FromBody] int buildingId)
+        {
+            await _buildingService.DeleteUserBuildingLinkAsync(new Guid(userId), buildingId);
             return Ok();
         }
 

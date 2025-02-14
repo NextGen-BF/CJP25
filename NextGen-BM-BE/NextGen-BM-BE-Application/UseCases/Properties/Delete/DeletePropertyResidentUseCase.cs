@@ -1,0 +1,15 @@
+using NextGen_BM_BE_Domain.Interfaces;
+
+namespace NextGen_BM_BE_Application.UseCases.Properties.Delete
+{
+
+    public sealed class DeletePropertyResidentUseCase(IPropertyRepository _propertyRepository)
+    {
+        private readonly IPropertyRepository propertyRepository = _propertyRepository;
+
+        public async Task Execute(int PropertyResidentId)
+        {
+            await propertyRepository.DeletePropertyResidentAsync(PropertyResidentId);
+        }
+    }
+}
