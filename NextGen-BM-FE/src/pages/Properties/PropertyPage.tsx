@@ -15,9 +15,10 @@ const PropertyPage: FC = () => {
   useEffect(() => {
     dispatch(getProperty(propertyId));
   }, []);
-  const { control, handleSubmit } = useForm<Property>();
+  const { control, handleSubmit } = useForm<Property>({
+    values:property
+  });
   const onSubmit:SubmitHandler<Property> = (newData)=>{
-    console.log(property);
     setEditToggle(false);
     newData.propertyId=property?.propertyId??0;
     newData.buildingId=property?.buildingId??0;

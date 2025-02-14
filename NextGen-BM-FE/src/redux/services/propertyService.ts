@@ -61,7 +61,8 @@ export const updateProperty = createAsyncThunk("property/update", async(property
         })
         .then(
             function(response){
-                return response.data;
+                //returns request data because response doesn't return updated now
+                return property;
             }
         )
         .catch((err: Error | AxiosError) => {
