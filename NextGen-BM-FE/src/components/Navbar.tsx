@@ -27,6 +27,9 @@ const Navbar: FC = () => {
           <NavLink to="/property/fees">property Fees</NavLink>
         </li>
         <li>
+          <NavLink to="/create/propertyexpense">Create Property Expense</NavLink>
+        </li>
+        <li>
           <NavLink to="/payment">Payment</NavLink>
         </li>
         <li>

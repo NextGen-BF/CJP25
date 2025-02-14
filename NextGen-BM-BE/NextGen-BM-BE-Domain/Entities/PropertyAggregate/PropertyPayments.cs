@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
     {
         public int PropertyPaymentsId { get; set; }
         [Required]
-        public required int PropertyId { get; set; }
+        public int PropertyId { get; set; }
         public decimal AmountOwed { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DueDate { get; set; }
@@ -15,7 +15,7 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public int PropertyExpenseId { get; set; }
         public int? StatusId { get; set; }
         public Enums? Status { get; set; }
-        public int PaymentParentId { get; set; }
+        public int? PaymentParentId { get; set; }
         public int? PaymentMethodId { get; set; }
         public Enums? PaymentMethod { get; set; }
         public DateOnly? DeletedDate { get; set; }

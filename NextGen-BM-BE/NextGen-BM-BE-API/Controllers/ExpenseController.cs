@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -10,6 +11,7 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ExpenseController : ControllerBase
     {
         private readonly IExpensesService _expensesService;
@@ -29,30 +31,30 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetExpenseByUserId(int userId)
+        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId)
         {
-            var expensesByUserId = await _expensesService.GetPropertyExpenseByUserIdAsync(userId);
-            return Ok(expensesByUserId);
+            var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
+                userId
+            );
+            return Ok(propertyPaymentsByUserId);
         }
 
         [HttpGet]
         [Route("property/{propertyId}")]
-        public async Task<IActionResult> GetExpenseByPropertyId(int propertyId)
+        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId)
         {
-            var expensesByPropertyId = await _expensesService.GetPropertyExpenseByPropertyIdAsync(
-                propertyId
-            );
-            return Ok(expensesByPropertyId);
+            var propertyPaymentsByPropertyId =
+                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId);
+            return Ok(propertyPaymentsByPropertyId);
         }
 
         [HttpGet]
         [Route("building/{buildingId}")]
-        public async Task<IActionResult> GetExpenseByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId)
         {
-            var expensesByBuildingId = await _expensesService.GetPropertyExpenseByBuildingIdAsync(
-                buildingId
-            );
-            return Ok(expensesByBuildingId);
+            var propertyPaymentsByBuildingId =
+                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId);
+            return Ok(propertyPaymentsByBuildingId);
         }
 
         [HttpPost]
@@ -60,21 +62,17 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
-            return CreatedAtAction(
-                nameof(GetExpenseById),
-                new { id = propertyExpense.PropertyExpenseId },
-                propertyExpense
-            );
+            return Ok();
         }
 
         [HttpPost]
         [Route("create/property")]
-        public async Task<IActionResult> CreateExpenseForProperties(
+        public async Task<IActionResult> CreatePropertyPaymentsForProperties(
             List<int> propertyIds,
             int expenseId
         )
         {
-            await _expensesService.CreateExpenseForPropertiesAsync(propertyIds, expenseId);
+            await _expensesService.CreatePropertyPaymentsForPropertiesAsync(propertyIds, expenseId);
             return Ok(); // not sure what to return here
         }
 
