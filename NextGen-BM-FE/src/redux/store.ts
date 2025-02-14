@@ -4,6 +4,7 @@ import buildingReducer from "./slices/buildingSlice"
 import signupReducer from "./slices/signupSlice";
 import googleLoginSlice from "./slices/googleLoginSlice";
 import { useDispatch } from "react-redux";
+import  navigationReducer  from "./slices/navigationSlice";
 import propertyReducer from "./slices/propertySlice"
 
 export const store = configureStore({
@@ -13,6 +14,8 @@ export const store = configureStore({
         signupReducer: signupReducer,
         propertyReducer: propertyReducer,
         googleLoginSlice: googleLoginSlice,
+        navigationReducer: navigationReducer
+
     },
 })
 
