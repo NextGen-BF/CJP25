@@ -22,8 +22,6 @@ const PropertyPage: FC = () => {
   });
   const onSubmit:SubmitHandler<Property> = (newData)=>{
     setEditToggle(false);
-    newData.propertyId=property?.propertyId??0;
-    newData.buildingId=property?.buildingId??0;
     dispatch(updateProperty(newData));
   }
   if (property==null) return (

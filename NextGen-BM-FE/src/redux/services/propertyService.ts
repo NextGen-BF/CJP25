@@ -72,3 +72,20 @@ export const updateProperty = createAsyncThunk("property/update", async(property
         })
     }
 );
+export const getProperties = createAsyncThunk("properties", async(_, thunkAPI)=>{
+    return await axios.get(`${apiURL}/property/all`, {
+        headers: 
+            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
+        })
+        .then(
+            function(response){
+                return response.data;
+            }
+        )
+        .catch((err: Error | AxiosError) => {
+            if(axios.isAxiosError(err))
+                return thunkAPI.rejectWithValue(err.response);
+            return thunkAPI.rejectWithValue(err);
+        })
+    }
+);
