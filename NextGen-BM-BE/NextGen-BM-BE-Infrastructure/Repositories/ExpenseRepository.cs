@@ -13,7 +13,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task CreateExpenseForPropertiesAsync(
+        public async Task CreatePropertyPaymentsForPropertiesAsync(
             List<int> propertyIds,
             int propertyPaymentsId
         )
@@ -22,6 +22,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 List<Property> properties = await _dbContext
                     .Property.Where(p => propertyIds.Contains(p.PropertyId))
+                    .Include(p => p.Payments)
                     .ToListAsync();
                 if (properties.Any())
                 {
@@ -41,7 +42,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(CreateExpenseForPropertiesAsync)} threw an error of: ",
+                    $"{nameof(CreatePropertyPaymentsForPropertiesAsync)} threw an error of: ",
                     ex
                 );
             }
@@ -92,7 +93,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByBuildingIdAsync(
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByBuildingIdAsync(
             int buildingId
         )
         {
@@ -102,6 +103,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 List<Property> propertiesByBuildingId = await _dbContext
                     .Property.Where(p => p.BuildingId == buildingId)
+                    .Include(p => p.Payments)
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -117,7 +119,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(GetPropertyExpenseByBuildingIdAsync)} threw an error of: ",
+                    $"{nameof(GetPropertyPaymentsByBuildingIdAsync)} threw an error of: ",
                     ex
                 );
             }
@@ -142,13 +144,17 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByPropertyIdAsync(
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(
             int propertyId
         )
         {
             try
             {
-                Property? property = await _dbContext.Property.FindAsync(propertyId);
+                Property? property = await _dbContext
+                    .Property.Include(p => p.Payments)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.PropertyId == propertyId);
+
                 if (property is null)
                 {
                     throw new KeyNotFoundException("The property was not found.");
@@ -166,13 +172,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{GetPropertyExpenseByPropertyIdAsync} threw an error of: ",
+                    $"{GetPropertyPaymentsByPropertyIdAsync} threw an error of: ",
                     ex
                 );
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyExpenseByUserIdAsync(int userId)
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
         {
             try
             {
@@ -183,6 +189,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 {
                     List<Property> userProperties = await _dbContext
                         .Property.Where(p => p.PropertyId == user.PropertyId)
+                        .Include(p => p.Payments)
                         .AsNoTracking()
                         .ToListAsync();
 
@@ -199,7 +206,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"{nameof(GetPropertyExpenseByUserIdAsync)} threw an error of: ",
+                    $"{nameof(GetPropertyPaymentsByUserIdAsync)} threw an error of: ",
                     ex
                 );
             }

@@ -31,7 +31,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 //Setup in user secrets
-string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
+string connectionString =
+    $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
 Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
@@ -49,11 +50,11 @@ builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByBuildingIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByPropertyIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByBuildingIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByPropertyIdUseCase>();
 builder.Services.AddScoped<CreateExpensesUseCase>();
-builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyPaymentsForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();
 
@@ -92,23 +93,30 @@ builder.Services.AddScoped<UpdatePropertyUseCase>();
 
 
 #region Auth
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme = 
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder
+    .Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            options.DefaultChallengeScheme =
+            options.DefaultForbidScheme =
+            options.DefaultScheme =
+            options.DefaultSignInScheme =
+            options.DefaultSignOutScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
     })
-    .AddJwtBearer(x => {
-        x.Events = new JwtBearerEvents {
-            OnAuthenticationFailed = context => {
-                if(context.Exception.GetType() == typeof (SecurityTokenExpiredException)){
+    .AddJwtBearer(x =>
+    {
+        x.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.ContentType = "application/json";
                     return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
