@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -9,20 +11,18 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
+using NextGen_BM_BE_Application.UseCases.Properties.Create;
+using NextGen_BM_BE_Application.UseCases.Properties.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Update;
 using NextGen_BM_BE_Domain.Entities;
-using NextGen_BM_BE_Application.UseCases.Properties.Create;
-using NextGen_BM_BE_Application.UseCases.Propertys.Delete;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +31,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 //Setup in user secrets
-string connectionString = $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
+string connectionString =
+    $"Server={builder.Configuration["Server"]};Database={builder.Configuration["Database"]};User Id={builder.Configuration["UserId"]};Password={builder.Configuration["Password"]}; Trusted_Connection=True; TrustServerCertificate=True; integrated security=false;";
 Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
@@ -42,16 +43,18 @@ builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataCo
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
 builder.Services.AddScoped<GetAllBuildingsUseCase>();
+builder.Services.AddScoped<GetBuildingsByUserIdUseCase>();
 builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
+builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByUserIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByBuildingIdUseCase>();
-builder.Services.AddScoped<GetAllPropertyExpenseByPropertyIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByBuildingIdUseCase>();
+builder.Services.AddScoped<GetAllPropertyPaymentsByPropertyIdUseCase>();
 builder.Services.AddScoped<CreateExpensesUseCase>();
-builder.Services.AddScoped<CreateExpenseForPropertiesUseCase>();
+builder.Services.AddScoped<CreatePropertyPaymentsForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();
 
@@ -90,38 +93,49 @@ builder.Services.AddScoped<UpdatePropertyUseCase>();
 
 
 #region Auth
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme = 
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder
+    .Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            options.DefaultChallengeScheme =
+            options.DefaultForbidScheme =
+            options.DefaultScheme =
+            options.DefaultSignInScheme =
+            options.DefaultSignOutScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
     })
-    .AddJwtBearer(x => {
-        x.Events = new JwtBearerEvents {
-            OnAuthenticationFailed = context => {
-                if(context.Exception.GetType() == typeof (SecurityTokenExpiredException)){
+    .AddJwtBearer(x =>
+    {
+        x.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.ContentType = "application/json";
                     return context.Response.WriteAsync("{\"message\": \"Token has expired.\"}");
                 }
-                else if (context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException))
+                else if (
+                    context.Exception.GetType() == typeof(SecurityTokenInvalidSignatureException)
+                )
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return context.Response.WriteAsync("{\"message\": \"Invalid token signature. Possible tampering detected.\"}");
+                    return context.Response.WriteAsync(
+                        "{\"message\": \"Invalid token signature. Possible tampering detected.\"}"
+                    );
                 }
                 else
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return context.Response.WriteAsync("{\"message\": \"Invalid token.\"}");
                 }
-            }
+            },
         };
         x.IncludeErrorDetails = true;
         x.RequireHttpsMetadata = false;
@@ -135,12 +149,13 @@ builder.Services.AddAuthentication(options => {
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey= new SymmetricSecurityKey(
+            IssuerSigningKey = new SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
             ),
         };
     });
-builder.Services.AddAuthorization(options => {
+builder.Services.AddAuthorization(options =>
+{
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
     options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
