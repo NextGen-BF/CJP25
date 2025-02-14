@@ -57,7 +57,7 @@ const CreateBuildingPage: FC = () => {
             {...register("floorNum", {
               required: "Number of building floors is required",
               validate: (value) => {
-                if (value.toString().includes("-")) {
+                if (value < 0) {
                   return "Number of floors cannot be negative!"
                 }
                 if (value == 0) {
@@ -78,7 +78,7 @@ const CreateBuildingPage: FC = () => {
             {...register("totalBuildingSize", {
               required: "Total Building Size is required",
               validate: (value) => {
-                if (value.toString().includes("-")) {
+                if (value < 0) {
                   return "Building size cannot be negative!"
                 }
               }
@@ -110,7 +110,7 @@ const CreateBuildingPage: FC = () => {
             {...register("numOfElevators", {
               required: "Number of Elevators is required!",
               validate: (value) => {
-                if (value.toString().includes("-")) {
+                if (value < 0) {
                   return "Number of elevators cannot be negative!"
                 }
               }
@@ -141,7 +141,7 @@ const CreateBuildingPage: FC = () => {
             {...register("buildingAddress.streetNumber", {
               required: "Street Number is required!",
               validate: (value) => {
-                if (value.toString().includes("-")) {
+                if (value < 0) {
                   return "Street number cannot be negative!"
                 }
               }

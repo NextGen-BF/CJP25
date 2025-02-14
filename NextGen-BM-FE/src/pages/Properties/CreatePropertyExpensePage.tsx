@@ -91,7 +91,7 @@ const CreatePropertyExpense: FC = () => {
             {...register("price", {
               required: "Price is required!",
               validate: (value) => {
-                if (value.toString().includes("-"))
+                if (value < 0)
                   return "Price cannot be negative!"
               }
             })}
