@@ -143,8 +143,8 @@ const PropertyFeesPage: FC = () => {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <IconButton>
-                    <SearchIcon onClick={handleSearch} />
+                  <IconButton onClick={handleSearch}>
+                    <SearchIcon />
                   </IconButton>
                 </InputAdornment>
               ),
