@@ -8,6 +8,7 @@ import { createPropertyExpenseConstants } from "../../constants/constants";
 import { createPropertyExpense } from "../../redux/services/expenseService";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "../../style/shared.scss";
+import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
 
 const CreatePropertyExpense: FC = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ const CreatePropertyExpense: FC = () => {
               id="role-select"
               label="Category"
               {...register("responsibleRole", {
-                required: "Responsible role is required!"
+                required: requiredErrors.responsibleRole,
               })}
             >
               <MenuItem value="owner">{createPropertyExpenseConstants.role_owner}</MenuItem>
@@ -44,7 +45,7 @@ const CreatePropertyExpense: FC = () => {
           </FormControl>
           <TextField
             {...register("Description", {
-              required: "Description is required"
+              required: requiredErrors.description,
             })}
             label="Description"
             type="text"
@@ -57,7 +58,7 @@ const CreatePropertyExpense: FC = () => {
           )}
           <TextField
             {...register("startDate", {
-              required: "Start date is required"
+              required: requiredErrors.startDate,
             })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="Start Date"
@@ -71,10 +72,10 @@ const CreatePropertyExpense: FC = () => {
           )}
           <TextField
             {...register("endDate", {
-              required: "End Date is required",
+              required: requiredErrors.endDate,
               validate: (value) => {
                 if (value.getMonth == new Date(Date.now()).getMonth && value.getFullYear() == new Date(Date.now()).getFullYear())
-                  return "End date cannot be in the current month!"
+                  return valueErrors.endDateCurrentMonth
               }
             })}
             slotProps={{ inputLabel: { shrink: true } }}
@@ -89,10 +90,10 @@ const CreatePropertyExpense: FC = () => {
           )}
           <TextField
             {...register("price", {
-              required: "Price is required!",
+              required: requiredErrors.price,
               validate: (value) => {
                 if (value < 0)
-                  return "Price cannot be negative!"
+                  return valueErrors.priceNegative
               }
             })}
             label="Price"

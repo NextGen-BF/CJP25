@@ -9,6 +9,7 @@ import EditableTable from "../../../components/EditableTable";
 import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form"
 import { createBuilding } from "../../../redux/services/buildingService";
+import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -38,10 +39,10 @@ const CreateBuildingPage: FC = () => {
           </h1>
           <TextField
             {...register("alias", {
-              required: "Alias is required",
+              required: requiredErrors.alias,
               minLength: {
                 value: 3,
-                message: "Alias must be at least 3 characters long"
+                message: valueErrors.aliasMinCharacter,
               }
             })}
             label="Building Alias"
@@ -55,13 +56,13 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("floorNum", {
-              required: "Number of building floors is required",
+              required: requiredErrors.floorNum,
               validate: (value) => {
                 if (value < 0) {
-                  return "Number of floors cannot be negative!"
+                  return valueErrors.floorNumNegative
                 }
                 if (value == 0) {
-                  return "Building cannot have 0 floors!"
+                  return valueErrors.floorNumZero
                 }
               }
             })}
@@ -76,10 +77,10 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("totalBuildingSize", {
-              required: "Total Building Size is required",
+              required: requiredErrors.totalBuildingSize,
               validate: (value) => {
                 if (value < 0) {
-                  return "Building size cannot be negative!"
+                  return valueErrors.buildingSizeNegative
                 }
               }
             })}
@@ -94,7 +95,7 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("dateBuilt", {
-              required: "Date built is required",
+              required: requiredErrors.dateBuilt,
             })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="Date Built"
@@ -108,10 +109,10 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("numOfElevators", {
-              required: "Number of Elevators is required!",
+              required: requiredErrors.numOfElevators,
               validate: (value) => {
                 if (value < 0) {
-                  return "Number of elevators cannot be negative!"
+                  return valueErrors.numOfElevatorsNegative
                 }
               }
             })}
@@ -126,7 +127,7 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("buildingAddress.streetName", {
-              required: "Street Name is required!",
+              required: requiredErrors.streetName
             })}
             label="Street Name"
             type="text"
@@ -139,10 +140,10 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("buildingAddress.streetNumber", {
-              required: "Street Number is required!",
+              required: requiredErrors.streetNumber,
               validate: (value) => {
                 if (value < 0) {
-                  return "Street number cannot be negative!"
+                  return valueErrors.streetNumberNegative
                 }
               }
             })}
@@ -157,7 +158,7 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("buildingAddress.district", {
-              required: "District is required!",
+              required: requiredErrors.district
             })}
             label="District"
             type="text"
@@ -178,7 +179,7 @@ const CreateBuildingPage: FC = () => {
           />
           <TextField
             {...register("buildingAddress.city", {
-              required: "City is required!"
+              required: requiredErrors.city
             })}
             label="City"
             type="text"
@@ -191,7 +192,7 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("buildingAddress.postalCode", {
-              required: "Postal Code is required!",
+              required: requiredErrors.postalCode,
             })}
             label="Postal Code"
             type="text"
@@ -204,7 +205,7 @@ const CreateBuildingPage: FC = () => {
           )}
           <TextField
             {...register("buildingAddress.country", {
-              required: "Country is required!",
+              required: requiredErrors.country,
             })}
             label="Country"
             type="text"
