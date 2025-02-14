@@ -27,6 +27,10 @@ export const navbarMenuProps:navSubMenuProps[]=[
         {
             link: "/property/fees",
             title: "Property Fees"
+        },
+        {
+            link: "/create/propertyexpense",
+            title: "Create Property Expense"   
         }]
     },
     {
