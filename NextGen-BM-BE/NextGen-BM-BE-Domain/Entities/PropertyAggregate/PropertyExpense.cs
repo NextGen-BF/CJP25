@@ -8,9 +8,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 
         [Required]
         public int PropertyExpenseTemplateId { get; set; }
-
-        [Required]
-        public int RoleId { get; set; }
         public required string ResponsibleRole { get; set; }
         public decimal Price { get; set; }
         public DateOnly StartDate { get; set; }
