@@ -1,183 +1,221 @@
 import { Button, TextField } from "@mui/material";
-import { FC, useState } from "react";
-import { Address, Building } from "../../../models/building";
+import { FC } from "react";
+import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
-import { createBuilding } from "../../../redux/services/buildingService";
 import { createBuildingConstants } from "../../../constants/constants";
 import "./createBuilding.scss";
+import "../../../style/shared.scss"
 import EditableTable from "../../../components/EditableTable";
 import { useSelector } from "react-redux";
+import { SubmitHandler, useForm } from "react-hook-form"
+import { createBuilding } from "../../../redux/services/buildingService";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
   const buildingProperties = useSelector((state: RootState) => state.propertyReducer.value)
 
-  const [address, setAddress] = useState<Address>({
-    addressId: 0,
-    streetName: "",
-    streetNumber: 0,
-    entrance: "",
-    district: "",
-    city: "",
-    postalCode: "",
-    country: "",
-  });
-  const [formData, setFormData] = useState<Building>({
-    buildingId: 0,
-    buildingAddress: address,
-    alias: "",
-    floorNum: 1,
-    totalBuildingSize: 10.0,
-    dateBuilt: new Date(),
-    numOfElevators: 1,
-    buildingExpenses: null,
-    buildingProperties: null,
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Building>({
+    defaultValues: {
+      dateBuilt: new Date(Date.now())
+    }
   });
 
-  const handleAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setAddress((previousData) => ({ ...previousData, [name]: value }));
-    setFormData((previousData) => ({ ...previousData, buildingAddress: address }));
-  };
+  const onSubmit: SubmitHandler<Building> = async (data) => {
+    data.buildingProperties = buildingProperties;
+    await dispatch(createBuilding(data));
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    //TODO: Add Validation for negative numbers
-    setFormData((previousData) => ({ ...previousData, [name]: value }));
-  };
-
-  const handleCreateBuildingSubmission = (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-    formData.buildingProperties = buildingProperties;
-    dispatch(createBuilding(formData));
-  };
+  }
 
   return (
     <div>
       <div className="text-field-container">
         <form
           className="create-building-form"
-          onSubmit={(e) => handleCreateBuildingSubmission(e)}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <h1 className="create-building-header">
             {createBuildingConstants.createHeader}
           </h1>
           <TextField
-            name="alias"
+            {...register("alias", {
+              required: "Alias is required",
+              minLength: {
+                value: 3,
+                message: "Alias must be at least 3 characters long"
+              }
+            })}
             label="Building Alias"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.alias && (
+            <div className="error-message">{errors.alias.message}</div>
+          )}
           <TextField
-            name="floorNum"
-            label="Amount of Building Floors"
+            {...register("floorNum", {
+              required: "Number of building floors is required",
+              validate: (value) => {
+                if (value < 0) {
+                  return "Number of floors cannot be negative!"
+                }
+                if (value == 0) {
+                  return "Building cannot have 0 floors!"
+                }
+              }
+            })}
+            label="Number of Building Floors"
             type="number"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.floorNum && (
+            <div className="error-message">{errors.floorNum.message}</div>
+          )}
           <TextField
-            name="totalBuildingSize"
+            {...register("totalBuildingSize", {
+              required: "Total Building Size is required",
+              validate: (value) => {
+                if (value < 0) {
+                  return "Building size cannot be negative!"
+                }
+              }
+            })}
             label="Building Size"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.totalBuildingSize && (
+            <div className="error-message">{errors.totalBuildingSize.message}</div>
+          )}
           <TextField
-            name="dateBuilt"
+            {...register("dateBuilt", {
+              required: "Date built is required",
+            })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="Date Built"
             type="date"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.dateBuilt && (
+            <div className="error-message">{errors.dateBuilt.message}</div>
+          )}
           <TextField
-            name="numOfElevators"
+            {...register("numOfElevators", {
+              required: "Number of Elevators is required!",
+              validate: (value) => {
+                if (value < 0) {
+                  return "Number of elevators cannot be negative!"
+                }
+              }
+            })}
             label="Amount of Elevators"
             type="number"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleChange(e)}
           />
+          {errors.numOfElevators && (
+            <div className="error-message">{errors.numOfElevators.message}</div>
+          )}
           <TextField
-            name="streetNumber"
-            label="Street Number"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-            onChange={(e) => handleAddressChange(e)}
-          />
-          <TextField
-            name="streetName"
+            {...register("buildingAddress.streetName", {
+              required: "Street Name is required!",
+            })}
             label="Street Name"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
+          {errors.buildingAddress?.streetName && (
+            <div className="error-message">{errors.buildingAddress.streetName.message}</div>
+          )}
           <TextField
-            name="district"
+            {...register("buildingAddress.streetNumber", {
+              required: "Street Number is required!",
+              validate: (value) => {
+                if (value < 0) {
+                  return "Street number cannot be negative!"
+                }
+              }
+            })}
+            label="Street Number"
+            type="text"
+            variant="outlined"
+            size="small"
+            fullWidth
+          />
+          {errors.buildingAddress?.streetNumber && (
+            <div className="error-message">{errors.buildingAddress.streetNumber.message}</div>
+          )}
+          <TextField
+            {...register("buildingAddress.district", {
+              required: "District is required!",
+            })}
             label="District"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
+          {errors.buildingAddress?.district && (
+            <div className="error-message">{errors.buildingAddress.district.message}</div>
+          )}
           <TextField
-            name="entrance"
+            {...register("buildingAddress.entrance")}
             label="Entrance"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
           <TextField
-            name="city"
+            {...register("buildingAddress.city", {
+              required: "City is required!"
+            })}
             label="City"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
+          {errors.buildingAddress?.city && (
+            <div className="error-message">{errors.buildingAddress?.city.message}</div>
+          )}
           <TextField
-            name="postalCode"
+            {...register("buildingAddress.postalCode", {
+              required: "Postal Code is required!",
+            })}
             label="Postal Code"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
+          {errors.buildingAddress?.postalCode && (
+            <div className="error-message">{errors.buildingAddress.postalCode.message}</div>
+          )}
           <TextField
-            name="country"
+            {...register("buildingAddress.country", {
+              required: "Country is required!",
+            })}
             label="Country"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
-            onChange={(e) => handleAddressChange(e)}
           />
-          <Button fullWidth type="submit">
+          {errors.buildingAddress?.country && (
+            <div className="error-message">{errors.buildingAddress.country.message}</div>
+          )}
+          <Button fullWidth type="submit" disabled={isSubmitting}>
             {createBuildingConstants.create}
           </Button>
         </form>

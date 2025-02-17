@@ -58,3 +58,16 @@ export const deleteUserBuildingLink = createAsyncThunk("building/delete/user/id"
             return thunkAPI.rejectWithValue(err);
         });
 }) 
+
+export const getAllBuildings=createAsyncThunk("building/all", async()=> {
+    return await axios.get(`${apiURL}/building/all`, {headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
+    }})
+    .then(function(response){
+        return response.data;
+    }).catch((err: Error | AxiosError) => {
+        if(axios.isAxiosError(err))
+            return Promise.reject(err.response);
+        return Promise.reject(err);
+    })
+})
