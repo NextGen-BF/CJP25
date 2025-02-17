@@ -2,7 +2,7 @@ import { PropertyExpense } from "../models/property.ts"
 import { BuildingExpense } from "../models/building.ts";
 import { request, apiURL } from "./shared.ts"
 
-export async function GetExpenseByUserId(id: number): Promise<PropertyExpense[]> {
+export async function GetExpenseByUserId(id: string): Promise<PropertyExpense[]> {
     return await request<PropertyExpense[]>(`${apiURL}/expense/user/${id}`, {
         method: "GET",
     });

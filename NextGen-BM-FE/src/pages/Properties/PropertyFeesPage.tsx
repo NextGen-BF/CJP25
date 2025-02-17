@@ -65,7 +65,7 @@ const PropertyFeesPage: FC = () => {
     const fetchPropertyPayments = async () => {
       try {
         const result = await dispatch(
-          getPropertyPaymentsByUserId(Number(userId)), // userId is type string but the function expects it to be int
+          getPropertyPaymentsByUserId(userId), 
         ).unwrap();
 
         setPropertyPayments(result);
