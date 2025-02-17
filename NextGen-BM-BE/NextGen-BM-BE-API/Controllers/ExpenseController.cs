@@ -31,10 +31,10 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId)
+        public async Task<IActionResult> GetPropertyPaymentsByUserId(string userId)
         {
             var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
-                userId
+                new Guid(userId)
             );
             return Ok(propertyPaymentsByUserId);
         }

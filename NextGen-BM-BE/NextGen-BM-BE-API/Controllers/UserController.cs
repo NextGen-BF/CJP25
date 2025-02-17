@@ -23,7 +23,7 @@ public class UserController: ControllerBase {
 
     [HttpGet]
     [Route("{userId}")]
-    public async Task<IActionResult> GetUserById(int userId){
+    public async Task<IActionResult> GetUserById(string userId){
         return null;
     }
 
@@ -46,7 +46,7 @@ public class UserController: ControllerBase {
     }
     [HttpDelete]
     [Route("delete/{userId}")]
-    public async Task<IActionResult> DeleteUser(int userId){
+    public async Task<IActionResult> DeleteUser(string userId){
         return null;
     }
 }
