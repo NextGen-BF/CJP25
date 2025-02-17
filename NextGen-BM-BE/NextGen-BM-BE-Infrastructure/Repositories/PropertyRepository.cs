@@ -8,10 +8,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
     public class PropertyRepository : IPropertyRepository
     {
         private readonly DataContext _dataContext;
+
         public PropertyRepository(DataContext dataContext)
         {
-            _dataContext=dataContext;
+            _dataContext = dataContext;
         }
+
         public async Task CreatePropertyAsync(Property property)
         {
             try
@@ -31,9 +33,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 var propertyToDelete = await GetPropertyByIdAsync(propertyId);
-                if (propertyToDelete!=null)
+                if (propertyToDelete != null)
                 {
-                    propertyToDelete.DeletedDate=DateOnly.FromDateTime(DateTime.Now);
+                    propertyToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
                     _dataContext.Property.Update(propertyToDelete);
                     await _dataContext.SaveChangesAsync();
                 }
@@ -47,13 +49,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            try 
+            try
             {
-                return await _dataContext.Property
-                    .Where(property => property.DeletedDate == null)
-                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
-                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
-                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
+                return await _dataContext
+                    .Property.Where(property => property.DeletedDate == null)
+                    .Include(property => property.Users.Where(u => u.DeletedDate == null))
+                    .Include(property => property.Payments.Where(p => p.DeletedDate == null))
+                    .Include(property =>
+                        property.PropertyResidents.Where(r => r.DeletedDate == null)
+                    )
                     .ToListAsync();
             }
             catch (DbException exception)
@@ -65,13 +69,17 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<List<Property>> GetPropertiesByBuildingIdAsync(int buildingId)
         {
-            try 
+            try
             {
-                var properties = await _dataContext.Property
-                    .Where(property=>property.BuildingId==buildingId&&property.DeletedDate == null)
-                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
-                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
-                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
+                var properties = await _dataContext
+                    .Property.Where(property =>
+                        property.BuildingId == buildingId && property.DeletedDate == null
+                    )
+                    .Include(property => property.Users.Where(u => u.DeletedDate == null))
+                    .Include(property => property.Payments.Where(p => p.DeletedDate == null))
+                    .Include(property =>
+                        property.PropertyResidents.Where(r => r.DeletedDate == null)
+                    )
                     .AsNoTracking()
                     .ToListAsync();
                 return properties;
@@ -83,15 +91,20 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
+        public async Task<List<Property>> GetPropertiesByUserIdAsync(Guid userId)
         {
-            try 
+            try
             {
-                return await _dataContext.Property
-                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
-                    .Where(property=>property.Users.Any(u=>u.UserId==userId)&&property.DeletedDate == null)
-                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
-                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
+                return await _dataContext
+                    .Property.Include(property => property.Users.Where(u => u.DeletedDate == null))
+                    .Where(property =>
+                        property.Users.Any(u => u.User.Id == userId.ToString())
+                        && property.DeletedDate == null
+                    )
+                    .Include(property => property.Payments.Where(p => p.DeletedDate == null))
+                    .Include(property =>
+                        property.PropertyResidents.Where(r => r.DeletedDate == null)
+                    )
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -104,14 +117,19 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task<Property> GetPropertyByIdAsync(int propertyId)
         {
-            try 
+            try
             {
-                return await _dataContext.Property
-                    .Where(property=>property.PropertyId==propertyId&&property.DeletedDate == null)
-                    .Include(property => property.Users.Where(u=>u.DeletedDate==null))
-                    .Include(property => property.Payments.Where(p=>p.DeletedDate==null))
-                    .Include(property => property.PropertyResidents.Where(r=>r.DeletedDate==null))
-                    .AsNoTracking().SingleOrDefaultAsync();
+                return await _dataContext
+                    .Property.Where(property =>
+                        property.PropertyId == propertyId && property.DeletedDate == null
+                    )
+                    .Include(property => property.Users.Where(u => u.DeletedDate == null))
+                    .Include(property => property.Payments.Where(p => p.DeletedDate == null))
+                    .Include(property =>
+                        property.PropertyResidents.Where(r => r.DeletedDate == null)
+                    )
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync();
             }
             catch (DbException exception)
             {
@@ -122,7 +140,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
         public async Task UpdatePropertyAsync(Property property)
         {
-            try 
+            try
             {
                 _dataContext.Property.Update(property);
                 await _dataContext.SaveChangesAsync();
@@ -138,10 +156,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                var propertyResidentToDelete = await _dataContext.PropertyResident.FindAsync(propertyResidentId);
-                if (propertyResidentToDelete!=null)
+                var propertyResidentToDelete = await _dataContext.PropertyResident.FindAsync(
+                    propertyResidentId
+                );
+                if (propertyResidentToDelete != null)
                 {
-                    propertyResidentToDelete.DeletedDate=DateOnly.FromDateTime(DateTime.Now);
+                    propertyResidentToDelete.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
                     _dataContext.PropertyResident.Update(propertyResidentToDelete);
                     await _dataContext.SaveChangesAsync();
                 }

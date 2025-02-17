@@ -56,7 +56,7 @@ namespace NextGen_BM_BE_Application.Services
         }
 
         public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByUserIdAsync(
-            int userId
+            Guid userId
         )
         {
             var propertyPaymentsByUserId = await _getAllPropertyPaymentsByUserIdUseCase.Execute(

@@ -178,11 +178,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(Guid userId)
         {
             try
             {
-                PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId);
+                PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId.ToString());
                 List<PropertyPayments> propertyPaymentsByUserId = new List<PropertyPayments>();
 
                 if (user is not null)
