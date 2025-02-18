@@ -73,7 +73,7 @@ const LoginPage: FC = () => {
         </Typography>
         <div>
           <Button onClick={() => GoogleAuthProvider()} fullWidth>
-            Login with Google
+            {LoginConstants.googleLogin}
           </Button>
         </div>
         <Divider className="text-field">or</Divider>

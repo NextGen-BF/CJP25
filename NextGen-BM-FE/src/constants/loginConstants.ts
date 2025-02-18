@@ -15,6 +15,7 @@ export const LoginConstants = {
     "There was an in the login proccess, please try again later.",
   googleNoCredentialsError: "Could not receive credentails from Google.",
   subtitleText: "Welcome, please sign in to continue.",
+  googleLogin: "Sign in with Google",
   signIn: "Sign in",
   emailRequired: "Email field is required!",
   emailInvalid: "Email field is invalid",
