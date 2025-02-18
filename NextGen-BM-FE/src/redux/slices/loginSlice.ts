@@ -9,24 +9,17 @@ interface LoginState {
   };
 }
 
-function getToken() {
-  const token = localStorage.getItem("JWT-BM");
-  return token ?? "";
-}
-
-function getUserId(token: string) {
+function getLoginState() {
+  const token = localStorage.getItem("JWT-BM") ?? "";
   if (token.length > 0) {
     const user = jwtDecode(token);
-    return user.sub ?? "";
+    return { token: token, userId: user.sub ?? "" };
   }
-  return "";
+  return { token: "", userId: "" };
 }
 
 const initialState: LoginState = {
-  value: {
-    token: getToken(),
-    userId: getUserId(getToken()),
-  },
+  value: getLoginState(),
 };
 
 const loginSlice = createSlice({
@@ -47,7 +40,7 @@ const loginSlice = createSlice({
       (state, action: PayloadAction<{ token: string }>) => {
         let token = action.payload.token;
         if (action.payload.token.length < 1) {
-          token = getToken();
+          token = getLoginState().token;
         }
         const user = jwtDecode(token);
         state.value = {
