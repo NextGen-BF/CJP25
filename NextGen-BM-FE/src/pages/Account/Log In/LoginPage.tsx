@@ -49,7 +49,6 @@ const LoginPage: FC = () => {
       const token = dispatch(
         getJWTTokenFromTokenResponse(codeResponse),
       ).unwrap();
-      console.log(token);
     },
     flow: "auth-code",
   });

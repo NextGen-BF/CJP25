@@ -33,8 +33,6 @@ export const loginWithGoogleCall = createAsyncThunk(
 export const getJWTTokenFromTokenResponse = createAsyncThunk(
   "getGoogleJWTFromCodeResponse",
   async (payload: CodeResponse, thunkAPI) => {
-    console.log(payload.code);
-    console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
     return await axios
       .post(
         `https://oauth2.googleapis.com/token`,
@@ -52,12 +50,10 @@ export const getJWTTokenFromTokenResponse = createAsyncThunk(
         },
       )
       .then(function (response) {
-        console.log(response.data);
         return response.data;
       })
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
-          console.log(err.response?.data);
           return thunkAPI.rejectWithValue(err.response?.data);
         }
         return thunkAPI.rejectWithValue(err);
