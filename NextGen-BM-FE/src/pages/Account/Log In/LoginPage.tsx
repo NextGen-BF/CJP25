@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   Avatar,
   Button,
@@ -20,17 +20,12 @@ import { LoginModel } from "../../../models/user.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginCall } from "../../../redux/services/loginService.ts";
 import { validationConstants } from "../../../constants/constants.ts";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import {
-  getJWTTokenFromTokenResponse,
-  GoogleLoginCredentials,
-  loginWithGoogleCall,
-} from "../../../redux/services/googleLoginService.ts";
+import { useGoogleLogin } from "@react-oauth/google";
+import { getJWTTokenFromTokenResponse } from "../../../redux/services/googleLoginService.ts";
 
 const LoginPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [error, setGoogleError] = useState("");
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
   const {
     register,
@@ -47,27 +42,6 @@ const LoginPage: FC = () => {
         message: LoginConstants.wrongCredentials,
       });
     }
-  };
-
-  const onSuccesfullGoogleSignIn = (credentials: GoogleLoginCredentials) => {
-    if (credentials.credential === undefined) {
-      pressentLoginError(LoginConstants.googleNoCredentialsError);
-      return;
-    }
-    dispatch(loginWithGoogleCall(credentials));
-  };
-
-  const pressentLoginError = (error: string) => {
-    setGoogleError(error);
-  };
-
-  const logInWithCredentials = (email: string, password: string) => {
-    dispatch(
-      loginCall({
-        email: email,
-        password: password,
-      }),
-    );
   };
 
   const GoogleAuthProvider = useGoogleLogin({

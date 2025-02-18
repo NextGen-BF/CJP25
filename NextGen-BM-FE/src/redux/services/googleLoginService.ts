@@ -1,14 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
-import { CodeResponse, TokenResponse } from "@react-oauth/google";
-// import { OAuth2Client } from "google-auth-library";
-
-// const oAuth2Client = new OAuth2Client(
-//   import.meta.env.VITE_GOOGLE_CLIENT_ID,
-//   import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
-//   "postmessage",
-// );
+import { CodeResponse } from "@react-oauth/google";
 
 export interface GoogleLoginCredentials {
   credential?: string;
@@ -48,7 +41,7 @@ export const getJWTTokenFromTokenResponse = createAsyncThunk(
         {
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
-          redirect_uri: "http://localhost:5173/",
+          redirect_uri: "postmessage",
           grant_type: "authorization_code",
           code: payload.code,
         },
