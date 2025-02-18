@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { SignInPage } from "@toolpad/core/SignInPage";
 import { Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +37,12 @@ const LoginPage: FC = () => {
   const [error, setError] = useState("");
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
 
+  useEffect(() => {
+    if (userToken.token.length > 0) {
+      navigate("/");
+    }
+  }, [userToken]);
+
   const Subtitle = () => {
     const hasError = error.length !== 0;
     return (
@@ -54,10 +60,6 @@ const LoginPage: FC = () => {
     dispatch(loginWithGoogleCall(credentials));
   };
 
-  if (userToken.token) {
-    navigate("/")
-  }
-
   const pressentLoginError = (error: string) => {
     setError(error);
   };
@@ -69,11 +71,6 @@ const LoginPage: FC = () => {
         password: password,
       }),
     );
-
-    if (userToken.token) {
-      //TODO: Fix bug where it doesn't register on first click
-      navigate("/login");
-    }
   };
 
   const signIn = async (formData: FormData) => {
