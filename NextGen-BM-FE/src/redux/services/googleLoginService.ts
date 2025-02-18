@@ -3,16 +3,11 @@ import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
 import { CodeResponse } from "@react-oauth/google";
 
-export interface GoogleLoginCredentials {
-  credential?: string;
-  clientId?: string;
-}
-
 export const loginWithGoogleCall = createAsyncThunk(
   "loginWithGoogle",
-  async (payload: GoogleLoginCredentials, thunkAPI) => {
+  async (payload: string, thunkAPI) => {
     return await axios
-      .post(`${apiURL}/Google/get-google-jwt`, payload.credential, {
+      .post(`${apiURL}/Google/get-google-jwt`, payload, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json;charset=utf-8",

@@ -25,3 +25,12 @@ export interface LoginModel {
   email: string;
   password: string;
 }
+
+export interface GoogleLoginModel {
+  access_token: string;
+  expires_is: number;
+  id_token: string;
+  refresh_token: string;
+  scope: string;
+  token_type: string;
+}

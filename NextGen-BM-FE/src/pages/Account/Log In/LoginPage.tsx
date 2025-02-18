@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -16,17 +16,22 @@ import "../../../style/shared.scss";
 import { LoginConstants } from "../../../constants/loginConstants.ts";
 import "./login.scss";
 import { LockIcon } from "lucide-react";
-import { LoginModel } from "../../../models/user.ts";
+import { GoogleLoginModel, LoginModel } from "../../../models/user.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginCall } from "../../../redux/services/loginService.ts";
 import { validationConstants } from "../../../constants/constants.ts";
 import { useGoogleLogin } from "@react-oauth/google";
-import { getJWTTokenFromTokenResponse } from "../../../redux/services/googleLoginService.ts";
+import {
+  getJWTTokenFromTokenResponse,
+  loginWithGoogleCall,
+} from "../../../redux/services/googleLoginService.ts";
 
 const LoginPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
+  const [googleLoginTokens, setGoogleLoginTokens] =
+    useState<GoogleLoginModel>();
   const {
     register,
     handleSubmit,
@@ -44,11 +49,18 @@ const LoginPage: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (googleLoginTokens?.access_token)
+      dispatch(loginWithGoogleCall(googleLoginTokens.id_token));
+    console.log(googleLoginTokens);
+  }, [googleLoginTokens]);
+
   const GoogleAuthProvider = useGoogleLogin({
-    onSuccess: (codeResponse) => {
-      const token = dispatch(
+    onSuccess: async (codeResponse) => {
+      const token = await dispatch(
         getJWTTokenFromTokenResponse(codeResponse),
       ).unwrap();
+      setGoogleLoginTokens(token);
     },
     flow: "auth-code",
   });
