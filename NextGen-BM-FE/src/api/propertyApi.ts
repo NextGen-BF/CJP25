@@ -20,7 +20,7 @@ export async function GetPropertyByBuildingId(id: number): Promise<Property> {
     });
 }
 
-export async function GetPropertyByUserId(id: string): Promise<Property> {
+export async function GetPropertyByUserId(id: number): Promise<Property> {
     return await request<Property>(`${apiURL}/property/user/${id}`, {
         method: "GET",
     });

@@ -46,7 +46,7 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
 
   export const getPropertyPaymentsByUserId = createAsyncThunk(
     "expense/getPropertyPaymentsByUserId",
-    async (userId: string, thunkAPI) => {
+    async (userId: number, thunkAPI) => {
       return await axios
         .get(`${apiURL}/expense/user/${userId}`, {
           headers: {

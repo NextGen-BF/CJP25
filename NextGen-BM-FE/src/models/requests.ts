@@ -1,6 +1,6 @@
 export interface RepairRequest{
     requestId: number;
-    userId: string;
+    userId: number;
     requestDescription: string;
     status: string;
     dateOpened: Date;
@@ -17,7 +17,7 @@ export interface RequestNotes{
 
 export interface UserBuildingRequests{
     userBuildingsId: number;
-    userId: string;
+    userId: number;
     buildingId: number;
     approved: boolean;
     role: string;
