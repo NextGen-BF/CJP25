@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode"
 interface LoginState {
     value: {
         token: string,
-        userId: string,
+        userId: number,
     }
 }
 
@@ -17,7 +17,7 @@ function getToken() {
 const initialState: LoginState = {
     value: {
         token: getToken(),
-        userId: ""
+        userId: 0
     }
 };
 
@@ -29,7 +29,7 @@ const loginSlice = createSlice({
             localStorage.removeItem("JWT-BM")
             state.value = {
                 token: "",
-                userId: ""
+                userId: 0
             }
         }
     },
@@ -40,9 +40,10 @@ const loginSlice = createSlice({
                 token = getToken();
             }
             const user = jwtDecode(token)
+            const userIdToNum = parseInt(user.sub ?? "0")
             state.value = {
                 token: token,
-                userId: user.sub ?? ""
+                userId: userIdToNum
             }
             localStorage.setItem("JWT-BM", action.payload.token)
         })

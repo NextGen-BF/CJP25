@@ -182,7 +182,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId);
+                PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId.ToString());
                 List<PropertyPayments> propertyPaymentsByUserId = new List<PropertyPayments>();
 
                 if (user is not null)
