@@ -1,0 +1,27 @@
+.anchored-container {
+    width: 85%;
+    margin: auto;
+    bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.container{    
+    width: 85%;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-field{
+    width: 30%;
+    display: flex;
+}

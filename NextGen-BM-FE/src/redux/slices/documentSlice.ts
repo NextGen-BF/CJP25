@@ -1,0 +1,28 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface DocumentState {
+  value: File[];
+}
+
+const initialState: DocumentState = {
+  value: [],
+};
+
+const documentSlice = createSlice({
+  name: "Document",
+  initialState,
+  reducers: {
+    addDocument: (state, action: PayloadAction<File>) => {
+      console.log(action.payload);
+      state.value = [...state.value, action.payload];
+    },
+    removeDocument: (state, action: PayloadAction<File>) => {
+      state.value = state.value.filter(
+        (file) => file.stream() != action.payload.stream(),
+      );
+    },
+  },
+});
+
+export const { addDocument, removeDocument } = documentSlice.actions;
+export default documentSlice.reducer;
