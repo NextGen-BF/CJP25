@@ -50,6 +50,7 @@ builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
+builder.Services.AddScoped<GetUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
@@ -159,7 +160,7 @@ builder
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("Super", policy => policy.RequireRole("Super"));
+    options.AddPolicy("Super", policy => policy.AddRequirements(new BuildingManagerRequirement()));
     options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
