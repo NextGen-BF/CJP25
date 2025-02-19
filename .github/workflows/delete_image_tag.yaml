@@ -1,6 +1,7 @@
 name: 'Delete Container Image Tag'
 
 on:
+  push: # Adding temporary trigger for testing, remove later
   workflow_dispatch:
     inputs:
       image_tag:
