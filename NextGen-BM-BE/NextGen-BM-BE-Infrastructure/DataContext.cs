@@ -7,10 +7,11 @@ using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 
 namespace NextGen_BM_BE_Infrastructure
 {
-    public class DataContext : IdentityDbContext<User>
+    public class DataContext : IdentityDbContext<User, Role, int>
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options) { }
+
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<BuildingExpense> BuildingExpenses { get; set; }
