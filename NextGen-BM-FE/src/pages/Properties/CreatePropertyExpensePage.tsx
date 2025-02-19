@@ -1,5 +1,12 @@
 import { FC } from "react";
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import "./createPropertyExpense.scss";
 import "../Buildings/Create/createBuilding.scss";
 import { PropertyExpense } from "../../models/property";
@@ -12,11 +19,15 @@ import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
 
 const CreatePropertyExpense: FC = () => {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PropertyExpense>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<PropertyExpense>();
 
   const onSubmit: SubmitHandler<PropertyExpense> = async (data) => {
-    await dispatch(createPropertyExpense(data))
-  }
+    await dispatch(createPropertyExpense(data));
+  };
 
   return (
     <>
@@ -27,7 +38,9 @@ const CreatePropertyExpense: FC = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormControl fullWidth required>
-            <InputLabel id="role-label">{createPropertyExpenseConstants.role}</InputLabel>
+            <InputLabel id="role-label">
+              {createPropertyExpenseConstants.role}
+            </InputLabel>
             <Select
               labelId="role-label"
               id="role-select"
@@ -36,11 +49,17 @@ const CreatePropertyExpense: FC = () => {
                 required: requiredErrors.responsibleRole,
               })}
             >
-              <MenuItem value="owner">{createPropertyExpenseConstants.role_owner}</MenuItem>
-              <MenuItem value="tenant">{createPropertyExpenseConstants.role_tenant}</MenuItem>
+              <MenuItem value="owner">
+                {createPropertyExpenseConstants.role_owner}
+              </MenuItem>
+              <MenuItem value="tenant">
+                {createPropertyExpenseConstants.role_tenant}
+              </MenuItem>
             </Select>
             {errors.responsibleRole && (
-              <div className="error-message">{errors.responsibleRole.message}</div>
+              <div className="error-message">
+                {errors.responsibleRole.message}
+              </div>
             )}
           </FormControl>
           <TextField
@@ -74,9 +93,12 @@ const CreatePropertyExpense: FC = () => {
             {...register("endDate", {
               required: requiredErrors.endDate,
               validate: (value) => {
-                if (value.getMonth == new Date(Date.now()).getMonth && value.getFullYear() == new Date(Date.now()).getFullYear())
-                  return valueErrors.endDateCurrentMonth
-              }
+                if (
+                  value.getMonth == new Date(Date.now()).getMonth &&
+                  value.getFullYear() == new Date(Date.now()).getFullYear()
+                )
+                  return valueErrors.endDateCurrentMonth;
+              },
             })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="End Date"
@@ -91,10 +113,8 @@ const CreatePropertyExpense: FC = () => {
           <TextField
             {...register("price", {
               required: requiredErrors.price,
-              validate: (value) => {
-                if (value < 0)
-                  return valueErrors.priceNegative
-              }
+              validate: (value) =>
+                value <= 0 ? valueErrors.priceNegative : true,
             })}
             label="Price"
             type="text"
