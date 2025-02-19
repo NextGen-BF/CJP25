@@ -22,16 +22,16 @@ export const signupResponseConstants = {
 
 export const createBuildingConstants = {
   create: "Create Building",
-  createHeader: "Create a Building"
-}
+  createHeader: "Create a Building",
+};
 
 export const logOut = {
-  logout: "Log out"
-}
+  logout: "Log out",
+};
 
 export const editableTableConstants = {
-  addRecord: "Add a property"
-}
+  addRecord: "Add a property",
+};
 
 export const createPropertyExpenseConstants = {
   title: "Create Property Expense",
@@ -39,5 +39,11 @@ export const createPropertyExpenseConstants = {
   role_owner: "Owner",
   role_tenant: "Tenant",
   create: "Create Property Epense",
-  addRecond: "Add a property"
-}
+  addRecond: "Add a property",
+};
+
+export const fileTypeConstants = {
+  supportedFileTypes: "Accepted format: image and pdf files",
+  fileName: "File name:",
+  submit: "Submit request",
+};

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
 import { addDocument } from "../redux/slices/documentSlice";
 import "./scss/fileUploadButton.scss";
+import { fileTypeConstants } from "../constants/constants";
 
 const FileUploadButton: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,22 +17,12 @@ const FileUploadButton: FC = () => {
   return (
     <div>
       <input
+        accept="image/*, .pdf"
         type="file"
         disabled={documents.value.length > 5}
         onChange={handleFileChange}
       ></input>
-      {documents.value.map((file) => (
-        <div>
-          <img
-            src={URL.createObjectURL(file)}
-            className="image"
-            width="300px"
-          ></img>
-          <p>File name: {file.name}</p>
-          <p>Size: {(file.size / 1048576).toPrecision(3)} Mb</p>
-          <p>Type: {file.type}</p>
-        </div>
-      ))}
+      <p>{fileTypeConstants.supportedFileTypes}</p>
     </div>
   );
 };

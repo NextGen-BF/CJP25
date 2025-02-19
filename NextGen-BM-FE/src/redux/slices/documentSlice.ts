@@ -18,7 +18,7 @@ const documentSlice = createSlice({
     },
     removeDocument: (state, action: PayloadAction<File>) => {
       state.value = state.value.filter(
-        (file) => file.stream() != action.payload.stream(),
+        (file) => file.name != action.payload.name,
       );
     },
   },

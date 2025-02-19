@@ -1,13 +1,17 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { createRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Building } from "../../models/building";
-import { Button, MenuItem, TextField } from "@mui/material";
+import { Button, Divider, MenuItem, TextField } from "@mui/material";
 import "./createRequestPage.scss";
 import FileUploadButton from "../../components/FileUploadButton";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../redux/store";
+import { removeDocument } from "../../redux/slices/documentSlice";
+import { fileTypeConstants } from "../../constants/constants";
 
 const CreateRequestPage: FC = () => {
-  const [buildings, setBuilding] = useState<Building[]>([]);
+  const documents = useSelector((state: RootState) => state.documentReducer);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -77,11 +81,32 @@ const CreateRequestPage: FC = () => {
             />
           </div>
         )}
+        {documents.value.map((file) => (
+          <>
+            <div className="container">
+              {file.type.includes("image") && (
+                <img
+                  src={URL.createObjectURL(file)}
+                  className="image"
+                  width="300px"
+                />
+              )}
+              {file.type.includes("pdf") && (
+                <object data={URL.createObjectURL(file)} />
+              )}
+              <p>
+                {fileTypeConstants.fileName} {file.name}
+              </p>
+              <Button onClick={() => dispatch(removeDocument(file))}>X</Button>
+            </div>
+            <Divider />
+          </>
+        ))}
         <div className="container"></div>
         <div className="anchored-container">
           <FileUploadButton />
           <Button type="submit" className="button" disabled={isSubmitting}>
-            Submit request
+            {fileTypeConstants.submit}
           </Button>
         </div>
       </form>
