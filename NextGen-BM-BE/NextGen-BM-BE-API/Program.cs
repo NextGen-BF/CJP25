@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NextGen_BM_BE_Application.AuthHandlers;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -161,6 +163,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
+builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
 #endregion
 
 #region Cors
