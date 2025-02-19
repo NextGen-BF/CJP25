@@ -53,7 +53,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ env.SERVICE }}
           tags: |
-            type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/') }}
+            type=semver,pattern={{version}},value=${{ env.VERSION }}
           labels: |
             org.opencontainers.image.title=CJP ${{ env.SERVICE }}
             org.opencontainers.image.description=CJP ${{ env.SERVICE }} Service
