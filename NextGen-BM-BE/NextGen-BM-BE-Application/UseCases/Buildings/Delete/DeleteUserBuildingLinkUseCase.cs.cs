@@ -11,7 +11,7 @@ namespace NextGen_BM_BE_Application.UseCases.Buildings.Delete
     {
         private readonly IBuildingRepository _buildingRepository = buildingRepository;
 
-        public async Task Execute(Guid userId, int buildingId)
+        public async Task Execute(int userId, int buildingId)
         {
             await _buildingRepository.DeleteUserBuildingLinkAsync(userId, buildingId);
         }

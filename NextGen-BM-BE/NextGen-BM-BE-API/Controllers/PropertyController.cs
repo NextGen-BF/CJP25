@@ -45,9 +45,9 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertiesByUserId(string userId)
+        public async Task<IActionResult> GetPropertiesByUserId(int userId)
         {
-            var result = await _propertyService.GetPropertyByUserIdAsync(new Guid(userId));
+            var result = await _propertyService.GetPropertyByUserIdAsync(userId);
             if (result == null)
                 return BadRequest();
             return Ok(result);

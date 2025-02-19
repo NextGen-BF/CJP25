@@ -73,7 +73,7 @@ namespace NextGen_BM_BE_Application.Services
             return _mapper.Map<PropertyViewModel>(property);
         }
 
-        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(Guid userId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId)
         {
             var properties = await _getPropertiesByUserIdUseCase.Execute(userId);
             return _mapper.Map<IList<PropertyViewModel>>(properties);

@@ -84,14 +84,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetBuildingsByUserIdAsync(Guid userId)
+        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId)
         {
             try
             {
                 var buildings = await _dbContext
-                    .UserBuildings.Where(ub =>
-                        ub.User.Id == userId.ToString() && ub.DeletedDate == null
-                    )
+                    .UserBuildings.Where(ub => ub.User.Id == userId && ub.DeletedDate == null)
                     .Include(b => b.Building.BuildingExpenses)
                     .Include(b => b.Building.Properties)
                     .Include(b => b.Building.BuildingAddress)
@@ -110,13 +108,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        public async Task DeleteUserBuildingLinkAsync(int userId, int buildingId)
         {
             try
             {
                 var userBuilding = await _dbContext
                     .UserBuildings.Where(ub =>
-                        ub.User.Id == userId.ToString()
+                        ub.User.Id == userId
                         && ub.BuildingId == buildingId
                         && ub.DeletedDate == null
                     )
