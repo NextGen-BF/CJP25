@@ -178,7 +178,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(Guid userId)
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
         {
             try
             {

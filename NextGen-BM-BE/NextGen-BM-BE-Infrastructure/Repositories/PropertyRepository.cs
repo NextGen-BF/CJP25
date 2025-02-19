@@ -91,15 +91,14 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Property>> GetPropertiesByUserIdAsync(Guid userId)
+        public async Task<List<Property>> GetPropertiesByUserIdAsync(int userId)
         {
             try
             {
                 return await _dataContext
                     .Property.Include(property => property.Users.Where(u => u.DeletedDate == null))
                     .Where(property =>
-                        property.Users.Any(u => u.User.Id == userId.ToString())
-                        && property.DeletedDate == null
+                        property.Users.Any(u => u.User.Id == userId) && property.DeletedDate == null
                     )
                     .Include(property => property.Payments.Where(p => p.DeletedDate == null))
                     .Include(property =>
