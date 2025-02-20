@@ -41,5 +41,13 @@ export const createPropertyExpenseConstants = {
   role_owner: "Owner",
   role_tenant: "Tenant",
   create: "Create Property Epense",
-  addRecond: "Add a property"
-}
+  addRecond: "Add a property",
+};
+
+export const fileTypeConstants = {
+  supportedFileTypes: "Accepted format: image and pdf files",
+  fileName: "File name:",
+  submit: "Submit request",
+  selectFile: "Attach a file",
+  fileSizeError: "Maximum file size is 10Mb!",
+};

@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { createRequest } from "../../models/requests";
+import { createRequest, RepairRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Divider, MenuItem, TextField } from "@mui/material";
 import "./createRequestPage.scss";
@@ -12,6 +12,7 @@ import {
   getAllBuildings,
   getBuildingsByUserId,
 } from "../../redux/services/buildingService";
+import { transformRequest } from "../../utils/requestConverter";
 
 const CreateRequestPage: FC = () => {
   const documents = useSelector((state: RootState) => state.documentReducer);
@@ -25,7 +26,10 @@ const CreateRequestPage: FC = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<createRequest>({
-    defaultValues: {},
+    defaultValues: {
+      userId: userId,
+      startDate: new Date(Date.now()),
+    },
   });
   const selectedRequestType = watch("requestType");
   const requestTypes = ["Building Property Link", "Repair"];
@@ -35,14 +39,23 @@ const CreateRequestPage: FC = () => {
 
   useEffect(() => {
     if (selectedRequestType === "Repair") {
-      //Doesn't work for now because userId fix is in different branch
       dispatch(getBuildingsByUserId(userId));
     } else {
       dispatch(getAllBuildings());
     }
   }, [selectedRequestType]);
 
-  const onSubmit: SubmitHandler<createRequest> = async (data) => {};
+  const onSubmit: SubmitHandler<createRequest> = async (data) => {
+    if (data.requestType == "Repair") {
+      const repairRequest = transformRequest(data);
+      console.log(repairRequest);
+    } else {
+      const buildingRequest = transformRequest(data);
+      console.log(buildingRequest);
+    }
+    console.log(data);
+    console.log(data.startDate);
+  };
 
   return (
     <div>
@@ -51,7 +64,7 @@ const CreateRequestPage: FC = () => {
           <TextField
             label="Request Title"
             {...register("requestTitle", {
-              required: true,
+              required: "Request Title is required!",
             })}
             className="form-field"
           />
@@ -85,22 +98,34 @@ const CreateRequestPage: FC = () => {
             </>
           )}
         </div>
+        <div>
+          {errors.requestTitle && (
+            <p className="error-message">{errors.requestType?.message}</p>
+          )}
+        </div>
         {selectedRequestType == "Repair" && (
-          <div className="container">
-            <TextField
-              {...register("description", {
-                validate: (value) =>
-                  selectedRequestType == "Repair" && value == ""
-                    ? "Description field is required!"
-                    : true,
-              })}
-              multiline
-              minRows={3}
-              className="form-field"
-              label="Description"
-            />
-          </div>
+          <>
+            <div className="container">
+              <TextField
+                {...register("description", {
+                  validate: (value) =>
+                    selectedRequestType == "Repair" && value == ""
+                      ? "Description field is required!"
+                      : true,
+                })}
+                multiline
+                minRows={3}
+                className="form-field"
+                label="Description"
+              />
+            </div>
+          </>
         )}
+        <div className="container">
+          {errors.description && (
+            <span className="error-message">{errors.description.message}</span>
+          )}
+        </div>
         {documents.value.map((file) => (
           <>
             {file.type && (
