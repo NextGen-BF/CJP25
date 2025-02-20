@@ -7,6 +7,7 @@ import { validationConstants } from "../../../constants/constants.ts";
 import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../redux/store.ts";
 
 export interface FormData {
@@ -20,6 +21,8 @@ export interface FormData {
 
 const SignupPage: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -49,6 +52,7 @@ const SignupPage: FC = () => {
     errors.delete("");
     if (errors.size === 0) {
       dispatch(signupCall({ ...formData }));
+      navigate("/login");
     }
   };
 

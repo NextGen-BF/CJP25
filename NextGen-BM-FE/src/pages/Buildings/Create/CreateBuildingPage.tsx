@@ -81,7 +81,7 @@ const CreateBuildingPage: FC = () => {
                 value <= 0 ? valueErrors.buildingSizeNegative : true,
             })}
             label="Building Size"
-            type="number"
+            type="number" // this doesn't allow to put a decimal number in the field - only integers 
             variant="outlined"
             size="small"
             fullWidth
