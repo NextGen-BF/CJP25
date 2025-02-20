@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
+import { setSnackbar } from "../../../redux/slices/snackbarSlice";
+import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +31,24 @@ const CreateBuildingPage: FC = () => {
 
   const onSubmit: SubmitHandler<Building> = async (data) => {
     data.buildingProperties = buildingProperties;
-    await dispatch(createBuilding(data));
+    try {
+      await dispatch(createBuilding(data)).unwrap();
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "success",
+          snackbarMessage: SucessSnackbarConstants.createBuildingSuccess,
+        }),
+      );
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.createBuildingError,
+        }),
+      );
+    }
   };
 
   return (
@@ -81,7 +100,7 @@ const CreateBuildingPage: FC = () => {
                 value <= 0 ? valueErrors.buildingSizeNegative : true,
             })}
             label="Building Size"
-            type="number" // this doesn't allow to put a decimal number in the field - only integers 
+            type="number" // this doesn't allow to put a decimal number in the field - only integers
             variant="outlined"
             size="small"
             fullWidth

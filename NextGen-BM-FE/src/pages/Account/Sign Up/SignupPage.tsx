@@ -9,6 +9,8 @@ import { signupCall } from "../../../redux/services/signupService";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../redux/store.ts";
+import { setSnackbar } from "../../../redux/slices/snackbarSlice.ts";
+import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 
 export interface FormData {
   firstName: string;
@@ -22,7 +24,7 @@ export interface FormData {
 const SignupPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -45,14 +47,35 @@ const SignupPage: FC = () => {
     setFormData((previousData) => ({ ...previousData, [name]: value }));
   };
 
-  const handleFormSubmition = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmition = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     errors = validateFormData(formData);
     setpresentedErrors(errors);
     errors.delete("");
     if (errors.size === 0) {
-      dispatch(signupCall({ ...formData }));
-      navigate("/login");
+      try {
+        await dispatch(signupCall({ ...formData })).unwrap();
+        dispatch(
+          setSnackbar({
+            snackbarOpen: true,
+            snackbarType: "success",
+            snackbarMessage: SucessSnackbarConstants.signUpSuccess,
+          }),
+        );
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } catch (error) {
+        dispatch(
+          setSnackbar({
+            snackbarOpen: true,
+            snackbarType: "error",
+            snackbarMessage: ErrorSnackbarConstants.signUpError,
+          }),
+        );
+      }
     }
   };
 

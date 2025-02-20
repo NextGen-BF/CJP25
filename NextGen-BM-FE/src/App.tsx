@@ -26,6 +26,7 @@ import BuildingsListPage from "./pages/Buildings/BuildingListPage";
 import BuildingPage from "./pages/Buildings/BuildingPage";
 import CreatePropertyPaymentsPage from "./pages/Properties/CreatePropertyPaymentsPage";
 import CreatePropertyExpensePage from "./pages/Properties/CreatePropertyExpensePage";
+import Snackbar from "./pages/Snackbar";
 
 const App: FC = () => {
   const router = createBrowserRouter(
@@ -48,13 +49,24 @@ const App: FC = () => {
         <Route path="/building" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
         <Route path="/property/fees" element={<PropertyFeesPage />} />
-        <Route path="/create/propertypayments" element={<CreatePropertyPaymentsPage />}/>
-        <Route path="/create/propertyexpense" element={<CreatePropertyExpensePage />}/>
+        <Route
+          path="/create/propertypayments"
+          element={<CreatePropertyPaymentsPage />}
+        />
+        <Route
+          path="/create/propertyexpense"
+          element={<CreatePropertyExpensePage />}
+        />
         <Route path="/payment" element={<PaymentPage />} />
       </Route>,
     ),
   );
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Snackbar />
+      <RouterProvider router={router} />;
+    </>
+  );
 };
 
 export default App;
