@@ -65,7 +65,7 @@ const LoginPage: FC = () => {
     flow: "auth-code",
   });
 
-  if (userToken.token) {
+  if (userToken.isLoggedIn) {
     navigate("/");
   }
 
