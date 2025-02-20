@@ -23,10 +23,12 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
         {
             if (context.Resource is HttpContext httpContext)
             {
-                var buildingId = httpContext?.GetRouteValue("buildingId")?.ToString();
-                var userId= _userManager.GetUserId(context.User);
-                var userBuilding = await _getUserBuildingLinkUseCase.Execute(int.Parse(userId), int.Parse(buildingId));
-                if (userBuilding.Role?.Name=="Super")
+                int buildingId, userId=0;
+                if (int.TryParse(httpContext?.GetRouteValue("buildingId")?.ToString(), out buildingId)
+                    ||int.TryParse(_userManager.GetUserId(context.User), out userId))
+                    context.Fail();
+                var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
+                if (userBuilding?.Role?.Name=="Super")
                     context.Succeed(requirement);
                 context.Fail();
             }
