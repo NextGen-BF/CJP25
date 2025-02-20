@@ -166,6 +166,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
 builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
 #endregion
 
 #region Cors

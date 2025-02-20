@@ -1,18 +1,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Principal;
 using NextGen_BM_BE_Domain.Entities;
-using Microsoft.AspNetCore.Mvc.Filters;
+using System.Text.Json;
+using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.AuthHandlers{
-    public class BuildingAccessHandler : AuthorizationHandler<BuildingManagerRequirement>
+    public class BuildingUpdateHandler : AuthorizationHandler<BuildingManagerRequirement>
     {
         private readonly GetUserBuildingLinkUseCase _getUserBuildingLinkUseCase;
         private readonly UserManager<User> _userManager;
-        public BuildingAccessHandler(GetUserBuildingLinkUseCase getUserBuildingLinkUseCase,
+        public BuildingUpdateHandler(GetUserBuildingLinkUseCase getUserBuildingLinkUseCase,
                                     UserManager<User> userManager)
         {
             _getUserBuildingLinkUseCase = getUserBuildingLinkUseCase;
@@ -23,10 +22,13 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
         {
             if (context.Resource is HttpContext httpContext)
             {
-                int buildingId, userId=0;
-                if (int.TryParse(httpContext?.GetRouteValue("buildingId")?.ToString(), out buildingId)
-                    ||int.TryParse(_userManager.GetUserId(context.User), out userId))
-                    context.Fail();
+                var building = await JsonSerializer.DeserializeAsync<BuildingViewModel>(httpContext.Request.Body, 
+                                                                                        new JsonSerializerOptions{
+                                                                                            PropertyNameCaseInsensitive = true
+                                                                                            });
+                int buildingId=building.BuildingId, userId;
+                if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
+                    return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
                 if (userBuilding?.Role?.Name=="Super")
                     context.Succeed(requirement);
