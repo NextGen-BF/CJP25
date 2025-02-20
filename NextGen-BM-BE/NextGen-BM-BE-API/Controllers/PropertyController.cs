@@ -13,7 +13,6 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
@@ -25,6 +24,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetAllProperties()
         {
             var result = await _propertyService.GetAllPropertiesAsync();

@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
@@ -18,6 +19,7 @@ public class RequestController: ControllerBase {
     }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
+    [Authorize(Policy = "SuperForBuilding")]
     public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
     {
         var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
@@ -36,6 +38,7 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
+    [Authorize(Policy = "SuperForBuilding")]
     public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
     {
         var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
