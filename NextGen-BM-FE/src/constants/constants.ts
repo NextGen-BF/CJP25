@@ -47,4 +47,5 @@ export const fileTypeConstants = {
   fileName: "File name:",
   submit: "Submit request",
   selectFile: "Attach a file",
+  fileSizeError: "Maximum file size is 10Mb!",
 };

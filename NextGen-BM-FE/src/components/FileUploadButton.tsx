@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
 import { addDocument } from "../redux/slices/documentSlice";
@@ -10,9 +10,13 @@ const FileUploadButton: FC = () => {
   const ref = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const documents = useSelector((state: RootState) => state.documentReducer);
+  const [error, setError] = useState("");
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
-      dispatch(addDocument(e.target.files[0]));
+      if (e.target.files[0].size < 10000000) {
+        dispatch(addDocument(e.target.files[0]));
+        setError("");
+      } else setError(fileTypeConstants.fileSizeError);
     }
   }
   useEffect(() => {
@@ -35,7 +39,11 @@ const FileUploadButton: FC = () => {
       />
       <Button onClick={triggerFileInput}>{fileTypeConstants.selectFile}</Button>
       <span>{fileTypeConstants.supportedFileTypes}</span>
-      <p></p>
+      {error.length > 0 && (
+        <div>
+          <p className="error-message">{error}</p>
+        </div>
+      )}
     </div>
   );
 };
