@@ -1,3 +1,5 @@
+import PropertyListPage from "../pages/Properties/PropertyListPage"
+
 export const propertyCardButtonConstants = {
     buildingButton: "Building Page",
     feesButton: "Fees Page",
@@ -23,4 +25,9 @@ export const propertyLabelConstants = {
     entranceIsExternal: "External Entrance:",
     externalEntanceTrue: "Yes",
     externalEntanceFalse: "No"
+}
+export const propertyPagesTitles = {
+    propertyDashboard: "Property Dashboard",
+    badRequest: "Can't access this property",
+    propertyListDashboard: "Apartments List Page"
 }

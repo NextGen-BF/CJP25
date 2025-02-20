@@ -44,7 +44,7 @@ export const deleteProperty = createAsyncThunk("property/delete", async(property
         })
         .then(
             function(response){
-                return response.data;
+                return propertyId;
             }
         )
         .catch((err: Error | AxiosError) => {

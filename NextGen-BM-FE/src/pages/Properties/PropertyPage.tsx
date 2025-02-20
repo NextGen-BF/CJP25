@@ -6,7 +6,7 @@ import { deleteProperty, deletePropertyResident, getProperty, updateProperty } f
 import { Accordion, AccordionDetails, AccordionSummary, Button, Card, MenuItem, Stack, TextField } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { useSelector } from "react-redux";
-import { propertyCardButtonConstants, propertyLabelConstants, residentListConstants } from "../../constants/propertyPageConstants";
+import { propertyCardButtonConstants, propertyLabelConstants, propertyPagesTitles, residentListConstants } from "../../constants/propertyPageConstants";
 
 const PropertyPage: FC = () => {
   const dispatch=useAppDispatch();
@@ -26,7 +26,7 @@ const PropertyPage: FC = () => {
     dispatch(updateProperty(newData));
   }
   if (property==null) return (
-    <h1>Can't access this property</h1>
+    <h1>{propertyPagesTitles.badRequest}</h1>
   );
   const residentHistoryList=property.residentHistory?.map(resident=>
     <Stack direction={"row"} justifyContent={"space-between"}>
@@ -38,7 +38,7 @@ const PropertyPage: FC = () => {
   );
   return (
   <div>
-    <h1>Property Dashboard</h1>
+    <h1>{propertyPagesTitles.propertyDashboard}</h1>
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button component={NavLink} to={`/building/${property.buildingId}`}>{propertyCardButtonConstants.buildingButton}</Button>

@@ -4,7 +4,7 @@ import { deleteProperty, getProperties } from "../../redux/services/propertyServ
 import { useSelector } from "react-redux";
 import { Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { propertyCardButtonConstants, propertyLabelConstants } from "../../constants/propertyPageConstants";
+import { propertyCardButtonConstants, propertyLabelConstants, propertyPagesTitles } from "../../constants/propertyPageConstants";
 
 const PropertyListPage: FC = () => {
   const dispatch=useAppDispatch();
@@ -25,14 +25,14 @@ const PropertyListPage: FC = () => {
       </AccordionSummary>
       <AccordionDetails>
         <Button component={NavLink} to={`/property/${property.propertyId}`}>{propertyCardButtonConstants.propertyButton}</Button>
-        <Button component={NavLink} to={`/building/${property.buildingId}`}>{propertyCardButtonConstants.deleteButton}</Button>
-        <Button onClick={()=>dispatch(deleteProperty(property.propertyId))}>{propertyCardButtonConstants.buildingButton}</Button>
+        <Button component={NavLink} to={`/building/${property.buildingId}`}>{propertyCardButtonConstants.buildingButton}</Button>
+        <Button onClick={()=>dispatch(deleteProperty(property.propertyId))}>{propertyCardButtonConstants.deleteButton}</Button>
       </AccordionDetails>
     </Accordion>
   );
   return (
     <>
-      <h1>Apartments List Page</h1>
+      <h1>{propertyPagesTitles.propertyListDashboard}</h1>
       {propertiesList}
       <Button variant="contained" component={NavLink} to="/create/property">{propertyCardButtonConstants.addButton}</Button>
     </>
