@@ -3,9 +3,10 @@ import { NavLink, useParams } from "react-router-dom";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { Property } from "../../models/property";
 import { deleteProperty, deletePropertyResident, getProperty, updateProperty } from "../../redux/services/propertyService";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, MenuItem, Stack, TextField } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, MenuItem, Stack, TextField } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { useSelector } from "react-redux";
+import { propertyCardButtonConstants, propertyLabelConstants, residentListConstants } from "../../constants/propertyPageConstants";
 
 const PropertyPage: FC = () => {
   const dispatch=useAppDispatch();
@@ -29,10 +30,10 @@ const PropertyPage: FC = () => {
   );
   const residentHistoryList=property.residentHistory?.map(resident=>
     <Stack direction={"row"} justifyContent={"space-between"}>
-      <MenuItem>Name: {resident.firstName} {resident.lastName}</MenuItem>
-      <MenuItem>Enter Date: {resident.enterDate.toString()}</MenuItem>
-      <MenuItem>Leave Date: {resident.leaveDate.toString()}</MenuItem>
-      <Button variant="contained" onClick={()=>dispatch(deletePropertyResident(resident.propertyResidentsId))}>Delete</Button>
+      <MenuItem>{`${residentListConstants.name} ${resident.firstName} ${resident.lastName}`}</MenuItem>
+      <MenuItem>{`${residentListConstants.enterDate} ${resident.enterDate.toString()}`}</MenuItem>
+      <MenuItem>{`${residentListConstants.leaveDate} ${resident.leaveDate.toString()}`}</MenuItem>
+      <Button variant="contained" onClick={()=>dispatch(deletePropertyResident(resident.propertyResidentsId))}>{propertyCardButtonConstants.deleteButton}</Button>
     </Stack>
   );
   return (
@@ -40,8 +41,8 @@ const PropertyPage: FC = () => {
     <h1>Property Dashboard</h1>
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Button component={NavLink} to={`/building/${property.buildingId}`}>Building Page</Button>
-        <MenuItem>Number:{!editToggle?property.propertyNumber:
+        <Button component={NavLink} to={`/building/${property.buildingId}`}>{propertyCardButtonConstants.buildingButton}</Button>
+        <MenuItem>{`${propertyLabelConstants.propertyNumber} `}{!editToggle?property.propertyNumber:
           <Controller
           name="propertyNumber"
           control={control}
@@ -54,7 +55,7 @@ const PropertyPage: FC = () => {
               size="small"/>)}
           />}
         </MenuItem>
-        <MenuItem>Floor: {!editToggle?property.floor:
+        <MenuItem>{`${propertyLabelConstants.floor} `}{!editToggle?property.floor:
           <Controller
           name="floor"
           control={control}
@@ -67,7 +68,7 @@ const PropertyPage: FC = () => {
               size="small"/>)}
           />}
         </MenuItem>
-        <MenuItem>Size: {!editToggle?property.size:
+        <MenuItem>{`${propertyLabelConstants.size} `}{!editToggle?property.size:
           <Controller
           name="size"
           control={control}
@@ -79,8 +80,8 @@ const PropertyPage: FC = () => {
               variant="standard"
               size="small"/>)}
           />}
-        sq. m</MenuItem>
-        <MenuItem>Size of ideal parts: {!editToggle?property.sizeOfIdealParts:
+        {` ${propertyLabelConstants.sizeUnit}`}</MenuItem>
+        <MenuItem>{`${propertyLabelConstants.sizeOfIdealParts} `}{!editToggle?property.sizeOfIdealParts:
           <Controller
           name="sizeOfIdealParts"
           control={control}
@@ -92,8 +93,10 @@ const PropertyPage: FC = () => {
               variant="standard"
               size="small"/>)}
           />}
-        %</MenuItem>
-        <MenuItem>External Entrance: {!editToggle?(property.entranceIsExternal?"Yes":"No"):
+        {`${propertyLabelConstants.sizeOfIdealPartsUnit}`}</MenuItem>
+        <MenuItem>{`${propertyLabelConstants.entranceIsExternal} `}{!editToggle?(property.entranceIsExternal?
+                                                                                propertyLabelConstants.externalEntanceTrue
+                                                                                :propertyLabelConstants.externalEntanceFalse):
           <Controller
           name="entranceIsExternal"
           control={control}
@@ -106,22 +109,22 @@ const PropertyPage: FC = () => {
               size="small"/>)}
           />}
         </MenuItem>
-        {editToggle?<Button type="submit">Save changes</Button>:""}
+        {editToggle?<Button type="submit">{propertyCardButtonConstants.saveButton}</Button>:""}
         <Accordion>
           <AccordionSummary>
-            Resident History
+            {residentListConstants.title}
           </AccordionSummary>
           <AccordionDetails>
             {residentHistoryList}
           </AccordionDetails>
         </Accordion>
-        <Button component={NavLink} to="/property/fees">Fees</Button>
+        <Button component={NavLink} to="/property/fees">{propertyCardButtonConstants.feesButton}</Button>
       </form>
       <Button variant="contained" onClick={()=>setEditToggle(!editToggle)}>
-        Edit
+        {propertyCardButtonConstants.toggleButton}
       </Button>
       <Button variant="contained" onClick={()=>dispatch(deleteProperty(propertyId))}>
-        Delete
+      {propertyCardButtonConstants.deleteButton}
       </Button>
     </Card>
   </div>

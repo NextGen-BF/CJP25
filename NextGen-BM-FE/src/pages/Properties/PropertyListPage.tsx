@@ -4,6 +4,7 @@ import { deleteProperty, getProperties } from "../../redux/services/propertyServ
 import { useSelector } from "react-redux";
 import { Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { propertyCardButtonConstants, propertyLabelConstants } from "../../constants/propertyPageConstants";
 
 const PropertyListPage: FC = () => {
   const dispatch=useAppDispatch();
@@ -16,16 +17,16 @@ const PropertyListPage: FC = () => {
     <Accordion>
       <AccordionSummary>
         <Stack direction={"row"} justifyContent={"space-between"}>
-          <MenuItem>Number {property.propertyNumber}, Floor {property.floor}</MenuItem>
-          <MenuItem>Size: {property.size} sq. m</MenuItem>
-          <MenuItem>Ideal Parts: {property.sizeOfIdealParts}%</MenuItem>
-          <MenuItem>External entrance: {property.entranceIsExternal?"Yes":"No"}</MenuItem>
+          <MenuItem>{`${propertyLabelConstants.propertyNumber} ${property.propertyNumber}, ${propertyLabelConstants.floor} ${property.floor}`}</MenuItem>
+          <MenuItem>{`${propertyLabelConstants.floor} ${property.size} ${propertyLabelConstants.sizeUnit}`}</MenuItem>
+          <MenuItem>{`${propertyLabelConstants.sizeOfIdealParts} ${property.sizeOfIdealParts}${propertyLabelConstants.sizeOfIdealPartsUnit}`}</MenuItem>
+          <MenuItem>{`${propertyLabelConstants.entranceIsExternal} ${property.entranceIsExternal?propertyLabelConstants.externalEntanceTrue:propertyLabelConstants.externalEntanceFalse}`}</MenuItem>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-        <Button component={NavLink} to={`/property/${property.propertyId}`}>Property Page</Button>
-        <Button component={NavLink} to={`/building/${property.buildingId}`}>Building Page</Button>
-        <Button onClick={()=>dispatch(deleteProperty(property.propertyId))}>Delete</Button>
+        <Button component={NavLink} to={`/property/${property.propertyId}`}>{propertyCardButtonConstants.propertyButton}</Button>
+        <Button component={NavLink} to={`/building/${property.buildingId}`}>{propertyCardButtonConstants.deleteButton}</Button>
+        <Button onClick={()=>dispatch(deleteProperty(property.propertyId))}>{propertyCardButtonConstants.buildingButton}</Button>
       </AccordionDetails>
     </Accordion>
   );
@@ -33,7 +34,7 @@ const PropertyListPage: FC = () => {
     <>
       <h1>Apartments List Page</h1>
       {propertiesList}
-      <Button variant="contained" component={NavLink} to="/create/property">Add New</Button>
+      <Button variant="contained" component={NavLink} to="/create/property">{propertyCardButtonConstants.addButton}</Button>
     </>
   );
 };
