@@ -6,6 +6,7 @@ interface LoginState {
   value: {
     token: string;
     userId: string;
+    isLoggedIn: boolean;
   };
 }
 
@@ -13,9 +14,9 @@ function getLoginState() {
   const token = localStorage.getItem("JWT-BM") ?? "";
   if (token.length > 0) {
     const user = jwtDecode(token);
-    return { token: token, userId: user.sub ?? "" };
+    return { token: token, userId: user.sub ?? "", isLoggedIn: true };
   }
-  return { token: "", userId: "" };
+  return { token: "", userId: "", isLoggedIn: false };
 }
 
 const initialState: LoginState = {
@@ -31,6 +32,7 @@ const loginSlice = createSlice({
       state.value = {
         token: "",
         userId: "",
+        isLoggedIn: false,
       };
     },
   },
@@ -46,6 +48,7 @@ const loginSlice = createSlice({
         state.value = {
           token: token,
           userId: user.sub ?? "",
+          isLoggedIn: true,
         };
         localStorage.setItem("JWT-BM", action.payload.token);
       },

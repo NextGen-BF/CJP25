@@ -26,7 +26,7 @@ export const Header: FC = () => {
         </NavLink>
       </div>
       <span className={"header-link"}>{pageTitles[location]}</span>
-      {userToken.token.length > 0 ? (
+      {userToken.isLoggedIn ? (
         <NavLink
           className={"header-link"}
           onClick={() => dispatch(logout())}

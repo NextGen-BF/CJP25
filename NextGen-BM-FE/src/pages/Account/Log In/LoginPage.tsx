@@ -38,9 +38,7 @@ const LoginPage: FC = () => {
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
 
   useEffect(() => {
-    if (userToken.token.length > 0) {
-      navigate("/");
-    }
+    userToken.isLoggedIn ?? navigate("/");
   }, [userToken]);
 
   const Subtitle = () => {
