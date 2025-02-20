@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { deleteProperty, deletePropertyResident, getProperties } from "../../redux/services/propertyService";
+import { deleteProperty, getProperties } from "../../redux/services/propertyService";
 import { useSelector } from "react-redux";
 import { Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createBuildingConstants } from "../../../constants/constants";
@@ -10,9 +10,14 @@ import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
+import { resetProperties } from "../../../redux/slices/propertySlice";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+        dispatch(resetProperties());
+      }, []);
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
   );
