@@ -48,6 +48,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             await _buildingService.CreateBuildingAsync(building);
@@ -56,6 +57,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/user/{userId}")]
+        [Authorize(Policy = "SuperForBuilding")]
         public async Task<IActionResult> DeleteUserBuildingLink(
             int userId,
             [FromBody] int buildingId
@@ -67,7 +69,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Policy = "Super")]
+        [Authorize(Policy = "SuperForBuilding")]
         public async Task<IActionResult> UpdateBuilding(BuildingViewModel building)
         {
             await _buildingService.UpdateBuildingAsync(building);
@@ -76,7 +78,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{buildingId}")]
-        [Authorize(Policy = "Super")]
+        [Authorize(Policy = "SuperForBuilding")]
         public async Task<IActionResult> DeleteBuilding(int buildingId)
         {
             await _buildingService.DeleteBuildingAsync(buildingId);

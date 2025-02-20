@@ -161,7 +161,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                         && ub.DeletedDate == null
                         && ub.Approved
                     )
-                    .Include(ub => ub.User)
+                    .Include(ub => ub.Role)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
             }
