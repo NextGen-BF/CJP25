@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 interface LoginState {
   value: {
     token: string;
-    userId: string;
+    userId: number;
     isLoggedIn: boolean;
   };
 }
@@ -14,9 +14,9 @@ function getLoginState() {
   const token = localStorage.getItem("JWT-BM") ?? "";
   if (token.length > 0) {
     const user = jwtDecode(token);
-    return { token: token, userId: user.sub ?? "", isLoggedIn: true };
+    return { token: token, userId: user.sub ?? 0, isLoggedIn: true };
   }
-  return { token: "", userId: "", isLoggedIn: false };
+  return { token: "", userId: 0, isLoggedIn: false };
 }
 
 const initialState: LoginState = {
@@ -31,7 +31,7 @@ const loginSlice = createSlice({
       localStorage.removeItem("JWT-BM");
       state.value = {
         token: "",
-        userId: "",
+        userId: 0,
         isLoggedIn: false,
       };
     },
@@ -47,7 +47,7 @@ const loginSlice = createSlice({
         const user = jwtDecode(token);
         state.value = {
           token: token,
-          userId: user.sub ?? "",
+          userId: user.sub ?? 0,
           isLoggedIn: true,
         };
         localStorage.setItem("JWT-BM", action.payload.token);
