@@ -14,7 +14,11 @@ function getLoginState() {
   const token = localStorage.getItem("JWT-BM") ?? "";
   if (token.length > 0) {
     const user = jwtDecode(token);
-    return { token: token, userId: user.sub ?? 0, isLoggedIn: true };
+    return {
+      token: token,
+      userId: parseInt(user.sub ?? "0"),
+      isLoggedIn: true,
+    };
   }
   return { token: "", userId: 0, isLoggedIn: false };
 }
@@ -44,12 +48,14 @@ const loginSlice = createSlice({
         if (action.payload.token.length < 1) {
           token = getLoginState().token;
         }
+        console.log(action.payload);
         const user = jwtDecode(token);
         state.value = {
           token: token,
-          userId: user.sub ?? 0,
+          userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
         };
+        console.log(state.value);
         localStorage.setItem("JWT-BM", action.payload.token);
       },
     );
