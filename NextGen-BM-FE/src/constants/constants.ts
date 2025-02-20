@@ -1,18 +1,20 @@
 export const validationConstants = {
   firstNameField: "firstName",
   lastNameField: "lastName",
-  passwordField: "password",
+  passwordField: "Password",
+  emailField: "Email",
   confirmPasswordField: "confirmPassword",
   nameEmpty: "Names must not be empty",
   nameContainsNumbers: "Names must not contain numbes",
   passwordEmpty: "Please enter a password",
   passwordWhiteSpaces: "Password cannot contain white spaces",
   passwordRequirements:
-    "Password requires at least 6 characters, one uppercase, one lower case letter, a number and a special character",
+    "Password requires at least 8 characters, one uppercase, one lower case letter, a number and a special character",
   confirmPasswordDoesNotMatch: "Passwords do not match",
   regexNoNumbers: "[0-9]",
   regexPasswordRequirements:
-    "^(?=.*[A-Z])(?=.*[!@#$&*.,:;-=()])(?=.*[0-9])(?=.*[a-z]).{6,}$",
+    /^(?=.*[A-Z])(?=.*[!@#$&*.,:;-=()])(?=.*[0-9])(?=.*[a-z]).{8,}$/i,
+  regexEmailRequirements: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
 };
 
 export const signupResponseConstants = {
@@ -22,16 +24,16 @@ export const signupResponseConstants = {
 
 export const createBuildingConstants = {
   create: "Create Building",
-  createHeader: "Create a Building"
-}
+  createHeader: "Create a Building",
+};
 
 export const logOut = {
-  logout: "Log out"
-}
+  logout: "Log out",
+};
 
 export const editableTableConstants = {
-  addRecord: "Add a property"
-}
+  addRecord: "Add a property",
+};
 
 export const createPropertyExpenseConstants = {
   title: "Create Property Expense",
@@ -39,5 +41,5 @@ export const createPropertyExpenseConstants = {
   role_owner: "Owner",
   role_tenant: "Tenant",
   create: "Create Property Epense",
-  addRecond: "Add a property"
-}
+  addRecond: "Add a property",
+};
