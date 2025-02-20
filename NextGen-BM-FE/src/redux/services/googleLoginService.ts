@@ -30,7 +30,7 @@ export const getJWTTokenFromTokenResponse = createAsyncThunk(
   async (payload: CodeResponse, thunkAPI) => {
     return await axios
       .post(
-        `https://oauth2.googleapis.com/token`,
+        `${import.meta.env.VITE_GOOGLE_API_URL}/token`,
         {
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
