@@ -21,15 +21,20 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 List<Property> properties = await _dbContext
-                    .Property.Where(p => propertyIds.Contains(p.PropertyId))
-                    .Include(p => p.Payments)
+                    .Property.Where(p =>
+                        propertyIds.Contains(p.PropertyId) && p.DeletedDate == null
+                    )
+                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
                     .ToListAsync();
                 if (properties.Any())
                 {
                     foreach (Property property in properties)
                     {
-                        PropertyPayments? propertyPayments =
-                            await _dbContext.PropertyPayments.FindAsync(propertyPaymentsId);
+                        PropertyPayments? propertyPayments = await _dbContext
+                            .PropertyPayments.Where(p =>
+                                p.PropertyPaymentsId == propertyPaymentsId && p.DeletedDate == null
+                            )
+                            .FirstOrDefaultAsync();
 
                         if (property.Payments is not null && propertyPayments is not null)
                         {
@@ -102,8 +107,8 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 List<PropertyPayments> propertyPaymentsByBuildingId = new List<PropertyPayments>();
 
                 List<Property> propertiesByBuildingId = await _dbContext
-                    .Property.Where(p => p.BuildingId == buildingId)
-                    .Include(p => p.Payments)
+                    .Property.Where(p => p.BuildingId == buildingId && p.DeletedDate == null)
+                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -129,9 +134,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                PropertyExpense? foundPropertyExpense = await _dbContext.PropertyExpense.FindAsync(
-                    propertyExpenseId
-                );
+                PropertyExpense? foundPropertyExpense = await _dbContext
+                    .PropertyExpense.AsNoTracking()
+                    .Where(p => p.PropertyExpenseId == propertyExpenseId && p.DeletedDate == null)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
                 if (foundPropertyExpense is null)
                 {
                     throw new KeyNotFoundException("The property expense was not found.");
@@ -151,9 +158,10 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 Property? property = await _dbContext
-                    .Property.Include(p => p.Payments)
+                    .Property.Where(p => p.PropertyId == propertyId && p.DeletedDate == null)
+                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(p => p.PropertyId == propertyId);
+                    .FirstOrDefaultAsync();
 
                 if (property is null)
                 {
@@ -182,14 +190,19 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                PropertyUsers? user = await _dbContext.PropertyUsers.FindAsync(userId);
+                PropertyUsers? user = await _dbContext
+                    .PropertyUsers.Where(p => p.PropertyUsersId == userId && p.DeletedDate == null)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
                 List<PropertyPayments> propertyPaymentsByUserId = new List<PropertyPayments>();
 
                 if (user is not null)
                 {
                     List<Property> userProperties = await _dbContext
-                        .Property.Where(p => p.PropertyId == user.PropertyId)
-                        .Include(p => p.Payments)
+                        .Property.Where(p =>
+                            p.PropertyId == user.PropertyId && p.DeletedDate == null
+                        )
+                        .Include(p => p.Payments.Where(p => p.DeletedDate == null))
                         .AsNoTracking()
                         .ToListAsync();
 

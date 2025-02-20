@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NextGen_BM_BE_Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class updateAddSoftDelete : Migration
+    public partial class IntitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,8 +35,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -50,7 +50,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -119,7 +120,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -140,7 +141,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -162,7 +163,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,8 +180,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,7 +204,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -313,21 +314,20 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 {
                     RepairRequestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     BuildingId = table.Column<int>(type: "int", nullable: false),
                     RequestDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestStatusId = table.Column<int>(type: "int", nullable: false),
                     DateOpened = table.Column<DateOnly>(type: "date", nullable: false),
                     DateSettled = table.Column<DateOnly>(type: "date", nullable: true),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepairRequests", x => x.RepairRequestId);
                     table.ForeignKey(
-                        name: "FK_RepairRequests_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_RepairRequests_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -350,29 +350,28 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 {
                     UserBuildingsId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     BuildingId = table.Column<int>(type: "int", nullable: false),
                     Approved = table.Column<bool>(type: "bit", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RoleId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserBuildings", x => x.UserBuildingsId);
                     table.ForeignKey(
-                        name: "FK_UserBuildings_AspNetRoles_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_UserBuildings_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserBuildings_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserBuildings_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserBuildings_Buildings_BuildingId",
                         column: x => x.BuildingId,
@@ -388,20 +387,20 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     PropertyExpenseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PropertyExpenseTemplateId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ResponsibleRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    RoleId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PropertyExpense", x => x.PropertyExpenseId);
                     table.ForeignKey(
-                        name: "FK_PropertyExpense_AspNetRoles_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_PropertyExpense_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -444,26 +443,24 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     PropertyUsersId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PropertyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     EffectiveDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     PercentOfApartmentOwned = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RoleId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PropertyUsers", x => x.PropertyUsersId);
                     table.ForeignKey(
-                        name: "FK_PropertyUsers_AspNetRoles_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_PropertyUsers_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PropertyUsers_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_PropertyUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -485,7 +482,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     CreateDate = table.Column<DateOnly>(type: "date", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     RepairRequestId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -515,7 +512,7 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     DueDate = table.Column<DateOnly>(type: "date", nullable: false),
                     PropertyExpenseId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: true),
-                    PaymentParentId = table.Column<int>(type: "int", nullable: false),
+                    PaymentParentId = table.Column<int>(type: "int", nullable: true),
                     PaymentMethodId = table.Column<int>(type: "int", nullable: true),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true)
                 },
@@ -616,9 +613,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 column: "PropertyExpenseTemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyExpense_RoleId1",
+                name: "IX_PropertyExpense_RoleId",
                 table: "PropertyExpense",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PropertyExpenseTemplate_RepeatPeriodId",
@@ -656,14 +653,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 column: "PropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyUsers_RoleId1",
+                name: "IX_PropertyUsers_RoleId",
                 table: "PropertyUsers",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyUsers_UserId1",
+                name: "IX_PropertyUsers_UserId",
                 table: "PropertyUsers",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepairRequests_BuildingId",
@@ -676,9 +673,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 column: "RequestStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairRequests_UserId1",
+                name: "IX_RepairRequests_UserId",
                 table: "RepairRequests",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RequestNotes_RepairRequestId",
@@ -696,14 +693,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 column: "BuildingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBuildings_RoleId1",
+                name: "IX_UserBuildings_RoleId",
                 table: "UserBuildings",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBuildings_UserId1",
+                name: "IX_UserBuildings_UserId",
                 table: "UserBuildings",
-                column: "UserId1");
+                column: "UserId");
         }
 
         /// <inheritdoc />

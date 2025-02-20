@@ -57,7 +57,7 @@ namespace NextGen_BM_BE_Application.Services
             return buildingsList;
         }
 
-        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(Guid userId)
+        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId)
         {
             var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
             List<BuildingViewModel> buildingsList = new();
@@ -85,7 +85,7 @@ namespace NextGen_BM_BE_Application.Services
             await _deleteBuildingUseCase.Execute(buildingId);
         }
 
-        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        public async Task DeleteUserBuildingLinkAsync(int userId, int buildingId)
         {
             await _deleteUserBuildingLinkUseCase.Execute(userId, buildingId);
         }

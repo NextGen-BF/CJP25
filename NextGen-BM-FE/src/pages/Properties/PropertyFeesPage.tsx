@@ -1,12 +1,6 @@
 import {
-  Box,
   Button,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import { FC, useEffect, useState } from "react";
 import "./propertyFeesPage.scss";
 import { PropertyPayments } from "../../models/property";
@@ -65,7 +59,7 @@ const PropertyFeesPage: FC = () => {
     const fetchPropertyPayments = async () => {
       try {
         const result = await dispatch(
-          getPropertyPaymentsByUserId(Number(userId)), // userId is type string but the function expects it to be int
+          getPropertyPaymentsByUserId(userId), 
         ).unwrap();
 
         setPropertyPayments(result);
@@ -77,22 +71,6 @@ const PropertyFeesPage: FC = () => {
     fetchPropertyPayments();
   }, [dispatch]);
 
-  const [searchInput, setSearchInput] = useState<string>("");
-
-  const handleSearch = () => {
-    if (searchInput !== "") {
-      const filteredPropertyPayments = propertyPayments.filter(
-        (propertyPayment) =>
-          propertyPayment.paymentMethod
-            .toLowerCase()
-            .includes(searchInput.toLowerCase()),
-      );
-      setPropertyPayments(filteredPropertyPayments);
-    } else {
-      setPropertyPayments(propertyPayments);
-      return;
-    }
-  };
 
   return (
     <>
@@ -108,50 +86,6 @@ const PropertyFeesPage: FC = () => {
           Create
         </Button>
       </div>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: "#f0f0f0",
-          padding: "1rem",
-          marginBottom: "3rem",
-          borderRadius: "1rem",
-          width: "50%",
-        }}
-      >
-        <Typography
-          variant="body1"
-          sx={{
-            flexGrow: 1,
-            textAlign: "center",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Filter
-        </Typography>
-        <TextField
-          name="search"
-          label="Search"
-          type="text"
-          variant="outlined"
-          size="small"
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton onClick={handleSearch}>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-      </Box>
 
       <DataGrid
         rows={propertyPayments}
