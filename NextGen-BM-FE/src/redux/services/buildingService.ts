@@ -19,7 +19,7 @@ export const createBuilding = createAsyncThunk("building/new", async (building: 
         });
 })
 
-export const getBuildingsByUserId = createAsyncThunk("building/user/id", async (userId: string, thunkAPI) => {
+export const getBuildingsByUserId = createAsyncThunk("building/user/id", async (userId: number, thunkAPI) => {
     return await axios.get(`${apiURL}/building/user/${userId}`, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
@@ -37,7 +37,7 @@ export const getBuildingsByUserId = createAsyncThunk("building/user/id", async (
 })
 
 interface UserBuildingDeleteData {
-    userId: string,
+    userId: number,
     buildingId: number
 }
 

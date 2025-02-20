@@ -1,0 +1,7 @@
+NextGen-BM-FE/node_modules
+NextGen-BM-FE/npm-debug.log
+Dockerfile
+.dockerignore
+.git
+.gitignore
+NextGen-BM-FE/.env
