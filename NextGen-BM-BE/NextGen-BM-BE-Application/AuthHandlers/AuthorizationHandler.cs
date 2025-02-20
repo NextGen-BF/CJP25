@@ -21,9 +21,9 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, BuildingManagerRequirement requirement)
         {
-            if (context.Resource is AuthorizationFilterContext authContext)
+            if (context.Resource is HttpContext httpContext)
             {
-                var buildingId = authContext.HttpContext?.Items["buildingId"]?.ToString();
+                var buildingId = httpContext?.GetRouteValue("buildingId")?.ToString();
                 var userId= _userManager.GetUserId(context.User);
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(int.Parse(userId), int.Parse(buildingId));
                 if (userBuilding.Role?.Name=="Super")
