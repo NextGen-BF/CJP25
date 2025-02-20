@@ -13,6 +13,7 @@ interface UserSignupData {
 export const signupCall = createAsyncThunk(
   "account/register",
   async (data: UserSignupData, thunkAPI) => {
+    console.log(data);
     return axios
       .post(`${apiURL}/account/register`, data)
       .then(function (response) {
@@ -24,7 +25,7 @@ export const signupCall = createAsyncThunk(
       })
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
-          return thunkAPI.rejectWithValue(err.response?.data)
+          return thunkAPI.rejectWithValue(err.response?.data);
         }
         return thunkAPI.rejectWithValue(err);
       });
