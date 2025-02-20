@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { createRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Divider, MenuItem, TextField } from "@mui/material";
@@ -8,10 +8,17 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { removeDocument } from "../../redux/slices/documentSlice";
 import { fileTypeConstants } from "../../constants/constants";
+import {
+  getAllBuildings,
+  getBuildingsByUserId,
+} from "../../redux/services/buildingService";
 
 const CreateRequestPage: FC = () => {
   const documents = useSelector((state: RootState) => state.documentReducer);
   const dispatch = useAppDispatch();
+  const userId = useSelector(
+    (state: RootState) => state.loginReducer.value.userId,
+  );
   const {
     register,
     handleSubmit,
@@ -20,13 +27,22 @@ const CreateRequestPage: FC = () => {
   } = useForm<createRequest>({
     defaultValues: {},
   });
-
-  const onSubmit: SubmitHandler<createRequest> = async (data) => {
-    console.log(selectedRequestType);
-    console.log(data);
-  };
   const selectedRequestType = watch("requestType");
   const requestTypes = ["Building Property Link", "Repair"];
+  const buildings = useSelector(
+    (state: RootState) => state.buildingReducer.value,
+  );
+
+  useEffect(() => {
+    if (selectedRequestType === "Repair") {
+      //Doesn't work for now because userId fix is in different branch
+      dispatch(getBuildingsByUserId(userId));
+    } else {
+      dispatch(getAllBuildings());
+    }
+  }, [selectedRequestType]);
+
+  const onSubmit: SubmitHandler<createRequest> = async (data) => {};
 
   return (
     <div>
@@ -54,17 +70,21 @@ const CreateRequestPage: FC = () => {
             className="form-field"
             select
             label="Request Building"
-          ></TextField>
+          >
+            {buildings.map((building) => (
+              <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
+            ))}
+          </TextField>
+          {selectedRequestType == "Building Property Link" && (
+            <>
+              <TextField label="Role within building" className="form-field" />
+              <TextField
+                label="Property request is about"
+                className="form-field"
+              />
+            </>
+          )}
         </div>
-        {selectedRequestType == "Building Property Link" && (
-          <div className="container">
-            <TextField label="Role within building" className="form-field" />
-            <TextField
-              label="Property request is about"
-              className="form-field"
-            />
-          </div>
-        )}
         {selectedRequestType == "Repair" && (
           <div className="container">
             <TextField
@@ -83,23 +103,29 @@ const CreateRequestPage: FC = () => {
         )}
         {documents.value.map((file) => (
           <>
-            <div className="container">
-              {file.type.includes("image") && (
-                <img
-                  src={URL.createObjectURL(file)}
-                  className="image"
-                  width="300px"
-                />
-              )}
-              {file.type.includes("pdf") && (
-                <object data={URL.createObjectURL(file)} />
-              )}
-              <p>
-                {fileTypeConstants.fileName} {file.name}
-              </p>
-              <Button onClick={() => dispatch(removeDocument(file))}>X</Button>
-            </div>
-            <Divider />
+            {file.type && (
+              <>
+                <div className="container">
+                  {file.type.includes("image") && (
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="image"
+                      width="300px"
+                    />
+                  )}
+                  {file.type.includes("pdf") && (
+                    <object data={URL.createObjectURL(file)} />
+                  )}
+                  <p>
+                    {fileTypeConstants.fileName} {file.name}
+                  </p>
+                  <Button onClick={() => dispatch(removeDocument(file))}>
+                    X
+                  </Button>
+                </div>
+                <Divider />
+              </>
+            )}
           </>
         ))}
         <div className="container"></div>

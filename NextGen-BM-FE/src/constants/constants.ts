@@ -46,4 +46,5 @@ export const fileTypeConstants = {
   supportedFileTypes: "Accepted format: image and pdf files",
   fileName: "File name:",
   submit: "Submit request",
+  selectFile: "Attach a file",
 };
