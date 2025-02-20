@@ -21,7 +21,7 @@ const propertySlice = createSlice({
             state.value = [...state.value, action.payload]
         },
         removeProperty: (state, action: PayloadAction<Property>) => {
-            state.value = state.value.filter(property => property.propertyId != action.payload.propertyId)
+            state.value = state.value.filter(property => property.propertyNumber != action.payload.propertyNumber)
         },
         updateProperty: (state, action: PayloadAction<Property>) => {
             state.value = [...state.value]
