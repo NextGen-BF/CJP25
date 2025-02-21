@@ -26,6 +26,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                                                                                         new JsonSerializerOptions{
                                                                                             PropertyNameCaseInsensitive = true
                                                                                             });
+                if (building==null) return;
                 int buildingId=building.BuildingId, userId;
                 if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
                     return;
