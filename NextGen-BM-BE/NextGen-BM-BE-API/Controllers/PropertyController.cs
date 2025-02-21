@@ -56,7 +56,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("building/{buildingId}")]
-        [Authorize(Policy = "SuperForBuilding")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> GetPropertyByBuildingId(int buildingId)
         {
             var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
@@ -67,7 +67,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        [Authorize(Policy = "SuperForBuilding")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> CreateProperty(PropertyViewModel propertyViewModel)
         {
             await _propertyService.CreatePropertyAsync(propertyViewModel);
@@ -80,7 +80,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Policy = "SuperForBuilding")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> UpdateProperty(PropertyViewModel propertyViewModel)
         {
             await _propertyService.UpdatePropertyAsync(propertyViewModel);

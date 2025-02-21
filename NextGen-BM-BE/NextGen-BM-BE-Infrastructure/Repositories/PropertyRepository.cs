@@ -188,7 +188,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't delete this property");
+                throw new Exception("Couldn't retrieve this property user!");
             }
         }
     }

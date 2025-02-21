@@ -19,7 +19,7 @@ public class RequestController: ControllerBase {
     }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
-    [Authorize(Policy = "SuperForBuilding")]
+    [Authorize(Policy = "Super For Building")]
     public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
     {
         var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
@@ -38,7 +38,7 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
-    [Authorize(Policy = "SuperForBuilding")]
+    [Authorize(Policy = "Super For Building")]
     public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
     {
         var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
