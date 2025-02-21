@@ -53,7 +53,7 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("user/building/new")]
-    public async Task<IActionResult> CreateUserBuildingRequest(UserBuildings userBuildings)
+    public async Task<IActionResult> CreateUserBuildingRequest(UserBuildingsViewModel userBuildings)
     {
         await _requestService.CreateUserBuildingRequestAsync(userBuildings);
         return CreatedAtAction(nameof(GetUserBuildingRequests), new {buildingId=userBuildings.BuildingId}, userBuildings);
