@@ -12,6 +12,7 @@ import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
 
 const CreateBuildingPage: FC = () => {
+  const userId = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
@@ -29,6 +30,17 @@ const CreateBuildingPage: FC = () => {
 
   const onSubmit: SubmitHandler<Building> = async (data) => {
     data.buildingProperties = buildingProperties;
+    data.userBuildings = [
+      {
+        userBuildingsId: 0,
+        userId: userId.userId,
+        roleId: null,
+        buildingId: 0,
+        startDate: data.dateBuilt,
+        endDate: null,
+        approved: true,
+      },
+    ];
     await dispatch(createBuilding(data));
   };
 
@@ -81,7 +93,7 @@ const CreateBuildingPage: FC = () => {
                 value <= 0 ? valueErrors.buildingSizeNegative : true,
             })}
             label="Building Size"
-            type="number" // this doesn't allow to put a decimal number in the field - only integers 
+            type="number" // this doesn't allow to put a decimal number in the field - only integers
             variant="outlined"
             size="small"
             fullWidth
