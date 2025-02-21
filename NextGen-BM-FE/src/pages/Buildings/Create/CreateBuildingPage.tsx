@@ -12,9 +12,12 @@ import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice";
 import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import { useNavigate } from "react-router-dom";
 
 const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
   );
@@ -40,6 +43,9 @@ const CreateBuildingPage: FC = () => {
           snackbarMessage: SucessSnackbarConstants.createBuildingSuccess,
         }),
       );
+      setTimeout(() => {
+        navigate("/buildings");
+      }, 3000);
     } catch (error) {
       dispatch(
         setSnackbar({
