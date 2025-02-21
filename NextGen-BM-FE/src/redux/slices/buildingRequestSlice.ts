@@ -33,7 +33,7 @@ const UserBuildingRequestsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       createUserBuildingRequest.fulfilled,
-      (state, action: PayloadAction<UserBuildingRequests>) => {
+      (_state, action: PayloadAction<UserBuildingRequests>) => {
         addRequest(action.payload);
       },
     );

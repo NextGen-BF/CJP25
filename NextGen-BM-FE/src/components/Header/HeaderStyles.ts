@@ -1,4 +1,4 @@
-import { SxProps, useTheme } from "@mui/material";
+import { SxProps } from "@mui/material";
 
 export const headerStyles:{[key:string]:SxProps}={
     appBarStyles:{
