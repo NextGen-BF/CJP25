@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Divider,
+  Link,
   Paper,
   TextField,
   Typography,
@@ -129,6 +130,11 @@ const LoginPage: FC = () => {
             <div className="error-message">{errors.root.message}</div>
           )}
         </form>
+        <div style={{ textAlign: "center" }}>
+          <Link href={"/signup"} variant="body2">
+            {LoginConstants.signUpLink}
+          </Link>
+        </div>
       </Paper>
     </Container>
   );
