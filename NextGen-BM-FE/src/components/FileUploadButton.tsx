@@ -12,11 +12,21 @@ const FileUploadButton: FC = () => {
   const documents = useSelector((state: RootState) => state.documentReducer);
   const [error, setError] = useState("");
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    console.log(documents);
+    if (!file) return;
     if (e.target.files) {
-      if (e.target.files[0].size < 10000000) {
+      if (e.target.files[0].size > 10000000) {
+        setError(fileTypeConstants.fileSizeError);
+        return;
+      }
+      if (documents.value.some((doc) => doc.name == file.name)) {
+        setError(fileTypeConstants.fileExistsError);
+        return;
+      } else {
         dispatch(addDocument(e.target.files[0]));
         setError("");
-      } else setError(fileTypeConstants.fileSizeError);
+      }
     }
   }
   useEffect(() => {
@@ -25,6 +35,7 @@ const FileUploadButton: FC = () => {
 
   const triggerFileInput = () => {
     ref.current?.click();
+    if (ref.current) ref.current.value = "";
   };
 
   return (

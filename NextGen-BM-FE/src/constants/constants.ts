@@ -50,4 +50,5 @@ export const fileTypeConstants = {
   submit: "Submit request",
   selectFile: "Attach a file",
   fileSizeError: "Maximum file size is 10Mb!",
+  fileExistsError: "You have already uploaded a file with this name!",
 };
