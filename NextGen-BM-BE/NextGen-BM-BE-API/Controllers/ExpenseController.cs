@@ -11,6 +11,7 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ExpenseController : ControllerBase
     {
         private readonly IExpensesService _expensesService;

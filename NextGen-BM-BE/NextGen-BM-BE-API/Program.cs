@@ -162,6 +162,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
+    options.AddPolicy("User In Building", policy => policy.AddRequirements(new BuildingResidentRequirement()));
     options.AddPolicy("Super For Building", policy => policy.AddRequirements(new BuildingManagerRequirement("Super")));
     options.AddPolicy("Super For Property Building", policy => policy.AddRequirements(new PropertyPermissionRequirement("Super")));
     options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner")));
@@ -171,6 +172,8 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, RequestCreateUpdateHandler>();
 #endregion
 
 #region Cors

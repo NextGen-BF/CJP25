@@ -89,6 +89,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{propertyId}")]
+        [Authorize(Policy = "Super For Property Building")]
         public async Task<IActionResult> DeleteProperty(int propertyId)
         {
             await _propertyService.DeletePropertyAsync(propertyId);

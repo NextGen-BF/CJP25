@@ -10,6 +10,7 @@ namespace NextGen_BM_BE_API.Controllers{
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class RequestController: ControllerBase {
 
     private readonly IRequestService _requestService;
@@ -48,6 +49,7 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("repair/new")]
+    [Authorize(Policy = "User In Building")]
     public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
         await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
@@ -72,6 +74,7 @@ public class RequestController: ControllerBase {
 
     [HttpPut]
     [Route("repair/update")]
+    [Authorize(Policy = "User In Building")]
     public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
         await _requestService.UpdateRepairRequestAsync(repairRequestViewModel);
