@@ -11,5 +11,6 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public int NumOfElevators { get; set; }
         public List<BuildingExpenseViewModel>? BuildingExpenses { get; set; }
         public List<PropertyViewModel>? BuildingProperties { get; set; }
+        public List<UserBuildingsViewModel>? UserBuildings {get; set;}
     }
 }

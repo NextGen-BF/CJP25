@@ -57,9 +57,10 @@ public class RequestService : IRequestService
         await _createRequestNoteUseCase.Execute(requestNotes);
     }
 
-    public async Task CreateUserBuildingRequestAsync(UserBuildings userBuildings)
+    public async Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings)
     {
-        await _createUserBuildingRequestUseCase.Execute(userBuildings);
+        var userBuildingRequest = _mapper.Map<UserBuildings>(userBuildings);
+        await _createUserBuildingRequestUseCase.Execute(userBuildingRequest);
     }
 
     public async Task DeleteRepairRequestAsync(int requestId)

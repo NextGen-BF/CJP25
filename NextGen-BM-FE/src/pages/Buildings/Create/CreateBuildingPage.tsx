@@ -15,6 +15,7 @@ import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../consta
 import { useNavigate } from "react-router-dom";
 
 const CreateBuildingPage: FC = () => {
+  const userId = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -34,6 +35,17 @@ const CreateBuildingPage: FC = () => {
 
   const onSubmit: SubmitHandler<Building> = async (data) => {
     data.buildingProperties = buildingProperties;
+    data.userBuildings = [
+      {
+        userBuildingsId: 0,
+        userId: userId.userId,
+        roleId: null,
+        buildingId: 0,
+        startDate: data.dateBuilt,
+        endDate: null,
+        approved: true,
+      },
+    ];
     try {
       await dispatch(createBuilding(data)).unwrap();
       dispatch(

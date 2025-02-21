@@ -7,9 +7,9 @@ namespace NextGen_BM_BE_Application.UseCases.Buildings.Create
     {
         private readonly IBuildingRepository buildingRepository = _buildingRepository;
 
-        public async Task Execute(Building building)
+        public async Task<Building> Execute(Building building)
         {
-            await buildingRepository.CreateBuildingAsync(building);
+            return await buildingRepository.CreateBuildingAsync(building);
         }
     }
 }
