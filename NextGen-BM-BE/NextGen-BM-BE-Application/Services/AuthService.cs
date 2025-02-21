@@ -17,10 +17,11 @@ namespace NextGen_BM_BE_Application.Services{
         public async Task<string> LoginAsync(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user == null && !await _userManager.CheckPasswordAsync(user, loginModel.Password))
-                return null;
-            var token = _jwtService.GenerateJwtToken(user);
-            return token;
+            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password)){
+                var token = _jwtService.GenerateJwtToken(user);
+                return token;
+            }
+            return null;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel registerModel)
