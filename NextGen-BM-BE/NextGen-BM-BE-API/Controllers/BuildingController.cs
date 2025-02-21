@@ -30,7 +30,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        [Authorize(Policy = "SuperForBuilding")]
+        [Authorize(Policy = "UserInBuilding")]
         public async Task<IActionResult> GetBuildingById(int buildingId)
         {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);

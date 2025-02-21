@@ -92,6 +92,7 @@ builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
+builder.Services.AddScoped<GetPropertyUserLinkUseCase>();
 #endregion
 
 
@@ -162,11 +163,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
     options.AddPolicy("SuperForBuilding", policy => policy.AddRequirements(new BuildingManagerRequirement()));
-    options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
+    options.AddPolicy("UserInBuilding", policy => policy.AddRequirements(new BuildingResidentRequirement()));
+    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyOwnerRequirement()));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
 builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
 #endregion
 
 #region Cors
