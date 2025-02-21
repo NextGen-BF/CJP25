@@ -7,7 +7,7 @@ using System.Text.Json;
 using NextGen_BM_BE_Domain.ViewModels;
 
 namespace NextGen_BM_BE_Application.AuthHandlers{
-    public class PropertyCreateUpdateHandler : AuthorizationHandler<BuildingManagerRequirement>
+    public class PropertyCreateUpdateHandler : AuthorizationHandler<PropertyPermissionRequirement>
     {
         private readonly GetUserBuildingLinkUseCase _getUserBuildingLinkUseCase;
         private readonly UserManager<User> _userManager;
@@ -18,20 +18,25 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
             _userManager=userManager;
 
         }
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, BuildingManagerRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PropertyPermissionRequirement requirement)
         {
             if (context.Resource is HttpContext httpContext)
             {
-                var property = await JsonSerializer.DeserializeAsync<PropertyViewModel>(httpContext.Request.Body, 
-                                                                                        new JsonSerializerOptions{
-                                                                                            PropertyNameCaseInsensitive = true
-                                                                                            });
-                if (property==null) return;
+                string body;
+                using (StreamReader streamReader=new StreamReader(httpContext.Request.Body))
+                    body=await streamReader.ReadToEndAsync();
+                
+                if (body=="") return;
+
+                var property = JsonSerializer.Deserialize<PropertyViewModel>(body, 
+                                                                            new JsonSerializerOptions{
+                                                                                PropertyNameCaseInsensitive = true
+                                                                                });
                 int buildingId=property.BuildingId, userId;
                 if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
-                if (userBuilding?.Role?.Name=="Super")
+                if (requirement.AllowedRoles.Contains(userBuilding?.Role?.Name))
                     context.Succeed(requirement);
                 context.Fail();
             }

@@ -22,11 +22,15 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
         {
             if (context.Resource is HttpContext httpContext)
             {
-                var building = await JsonSerializer.DeserializeAsync<BuildingViewModel>(httpContext.Request.Body, 
-                                                                                        new JsonSerializerOptions{
-                                                                                            PropertyNameCaseInsensitive = true
-                                                                                            });
-                if (building==null) return;
+                string body;
+                using (StreamReader streamReader=new StreamReader(httpContext.Request.Body))
+                    body=await streamReader.ReadToEndAsync();
+                
+                if (body=="") return;
+                var building = JsonSerializer.Deserialize<BuildingViewModel>(body, 
+                                                            new JsonSerializerOptions{
+                                                                PropertyNameCaseInsensitive = true,
+                                                                });
                 int buildingId=building.BuildingId, userId;
                 if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
                     return;

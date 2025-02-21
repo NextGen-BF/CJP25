@@ -7,7 +7,7 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using Microsoft.AspNetCore.Http;
 
 namespace NextGen_BM_BE_Application.AuthHandlers{
-    public class PropertyAccessHandler : AuthorizationHandler<PropertyOwnerRequirement>
+    public class PropertyAccessHandler : AuthorizationHandler<PropertyPermissionRequirement>
     {
         private readonly GetPropertyUserLinkUseCase _getPropertyUserLinkUseCase;
         private readonly UserManager<User> _userManager;
@@ -18,7 +18,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
             _userManager=userManager;
 
         }
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PropertyOwnerRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PropertyPermissionRequirement requirement)
         {
             if (context.Resource is HttpContext httpContext)
             {

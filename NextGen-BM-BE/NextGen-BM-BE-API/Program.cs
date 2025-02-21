@@ -163,9 +163,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
     options.AddPolicy("Super For Building", policy => policy.AddRequirements(new BuildingManagerRequirement("Super")));
-    options.AddPolicy("User In Building", policy => policy.AddRequirements(new BuildingResidentRequirement()));
-    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyOwnerRequirement("Property Owner")));
-    options.AddPolicy("Property User", policy => policy.AddRequirements(new PropertyOwnerRequirement("Property Owner", "Tenant")));
+    options.AddPolicy("Super For Property Building", policy => policy.AddRequirements(new PropertyPermissionRequirement("Super")));
+    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner")));
+    options.AddPolicy("Property User", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner", "Tenant")));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
 builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
