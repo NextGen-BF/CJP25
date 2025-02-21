@@ -20,7 +20,7 @@ export interface UserBuildingRequests {
   userId: number;
   buildingId: number;
   approved: boolean;
-  role: string;
+  roleId: number | null;
   startDate: Date;
   endDate: Date | null;
 }

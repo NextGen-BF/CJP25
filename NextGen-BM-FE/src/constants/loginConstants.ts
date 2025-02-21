@@ -17,6 +17,7 @@ export const LoginConstants = {
   subtitleText: "Welcome, please sign in to continue.",
   googleLogin: "Sign in with Google",
   signIn: "Sign in",
+  signUpLink: "Don't have a profile?",
   emailRequired: "Email field is required!",
   emailInvalid: "Email field is invalid",
   passwordRequired: "Password field is required!",
