@@ -27,7 +27,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                     ||!int.TryParse(_userManager.GetUserId(context.User), out userId))
                     return;
                 var propertyUser = await _getPropertyUserLinkUseCase.Execute(userId, propertyId);
-                if (propertyUser?.Role?.Name=="Property Owner")
+                if (requirement.AllowedRoles.Contains(propertyUser?.Role?.Name))
                     context.Succeed(requirement);
                 context.Fail();
             }

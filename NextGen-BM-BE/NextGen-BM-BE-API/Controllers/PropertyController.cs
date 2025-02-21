@@ -35,6 +35,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{propertyId}")]
+        [Authorize(Policy = "Property User")]
         public async Task<IActionResult> GetPropertyById(int propertyId)
         {
             var result = await _propertyService.GetPropertyByIdAsync(propertyId);

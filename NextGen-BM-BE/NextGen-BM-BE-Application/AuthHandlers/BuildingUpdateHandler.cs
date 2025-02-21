@@ -30,7 +30,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
-                if (userBuilding?.Role?.Name=="Super")
+                if (userBuilding?.Role?.Name==requirement.RoleName)
                     context.Succeed(requirement);
                 context.Fail();
             }
