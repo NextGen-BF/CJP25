@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+ frontend:
+  build:
+   dockerfile: "NextGen-BM-FE/Dockerfile"
+  ports:
+   - "5173:5173"
+  volumes:
+   - ./docker-frontend/vite.config.ts:/app/vite.config.ts
+  depends_on:
+   - backend
+  env_file: "vite.env"
+ backend:
+  build: 
+   dockerfile: "NextGen-BM-BE/Dockerfile"
+  ports:
+   - "5204:5204"
+   - "7261:7261"
+  volumes:
+   - ~/.microsoft/usersecrets/346e6da5-0d5a-4edd-8a31-b014199b62dc:/root/.microsoft/usersecrets/346e6da5-0d5a-4edd-8a31-b014199b62dc
+  env_file: "aspnet.env"
+
+
+
+   

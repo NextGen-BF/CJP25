@@ -8,12 +8,6 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
 
         [Required]
         public int PropertyId { get; set; }
-
-        [Required]
-        public int UserId { get; set; }
-
-        [Required]
-        public int RoleId { get; set; }
         public DateOnly EffectiveDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public decimal PercentOfApartmentOwned { get; set; }

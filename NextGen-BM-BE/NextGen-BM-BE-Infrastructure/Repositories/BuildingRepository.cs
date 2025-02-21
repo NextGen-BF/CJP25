@@ -14,12 +14,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task CreateBuildingAsync(Building building)
+        public async Task<Building> CreateBuildingAsync(Building building)
         {
             try
             {
                 await _dbContext.Buildings.AddAsync(building);
                 await _dbContext.SaveChangesAsync();
+                return building;
             }
             catch (Exception ex)
             {
@@ -67,12 +68,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                var foundBuilding = await _dbContext.Buildings.Where(b => b.BuildingId == buildingId && b.DeletedDate == null)
-                .Include(b => b.BuildingAddress)
-                .Include(b => b.BuildingExpenses)
-                .Include(b => b.Properties)
-                .AsNoTracking()
-                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("The building was not found.");
+                var foundBuilding =
+                    await _dbContext
+                        .Buildings.Where(b => b.BuildingId == buildingId && b.DeletedDate == null)
+                        .Include(b => b.BuildingAddress)
+                        .Include(b => b.BuildingExpenses)
+                        .Include(b => b.Properties)
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync()
+                    ?? throw new KeyNotFoundException("The building was not found.");
                 return foundBuilding;
             }
             catch (Exception ex)
@@ -81,11 +85,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetBuildingsByUserIdAsync(Guid userId)
+        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId)
         {
             try
             {
-                var buildings = await _dbContext.UserBuildings.Where(ub => ub.User.Id == userId.ToString() && ub.DeletedDate == null)
+                var buildings = await _dbContext
+                    .UserBuildings.Where(ub => ub.User.Id == userId && ub.DeletedDate == null)
                     .Include(b => b.Building.BuildingExpenses)
                     .Include(b => b.Building.Properties)
                     .Include(b => b.Building.BuildingAddress)
@@ -96,16 +101,26 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error when trying {nameof(GetBuildingsByUserIdAsync)}. Error was: " + ex.Message, ex);
+                throw new Exception(
+                    $"Error when trying {nameof(GetBuildingsByUserIdAsync)}. Error was: "
+                        + ex.Message,
+                    ex
+                );
             }
         }
 
-        public async Task DeleteUserBuildingLinkAsync(Guid userId, int buildingId)
+        public async Task DeleteUserBuildingLinkAsync(int userId, int buildingId)
         {
             try
             {
-            var userBuilding = await _dbContext.UserBuildings.Where(ub => ub.User.Id == userId.ToString() && ub.BuildingId == buildingId && ub.DeletedDate == null).FirstOrDefaultAsync();
-                if(userBuilding is not null)
+                var userBuilding = await _dbContext
+                    .UserBuildings.Where(ub =>
+                        ub.User.Id == userId
+                        && ub.BuildingId == buildingId
+                        && ub.DeletedDate == null
+                    )
+                    .FirstOrDefaultAsync();
+                if (userBuilding is not null)
                 {
                     userBuilding.DeletedDate = DateOnly.FromDateTime(DateTime.Now);
                     _dbContext.UserBuildings.Update(userBuilding);
@@ -116,9 +131,11 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Error trying to delete userBuildings. Error was "+ ex.Message, ex);
+                throw new Exception(
+                    "Error trying to delete userBuildings. Error was " + ex.Message,
+                    ex
+                );
             }
-
         }
 
         public async Task UpdateBuildingAsync(Building building)

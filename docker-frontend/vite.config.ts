@@ -5,9 +5,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    include: ["@mui/styled-engine"],
+    include: ['@mui/styled-engine'],
   },
-  define: {
-    "process.browser": true,
-  },
+  server: {
+    host: '0.0.0.0',
+    port: 5173
+  }
 });
