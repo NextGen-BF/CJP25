@@ -9,6 +9,7 @@ public class RepairRequest
     public required int BuildingId { get; set; }
     public required string RequestDescription { get; set; }
     public int RequestStatusId { get; set; }
+    public int UserId { get; set; }
     public DateOnly DateOpened { get; set; }
     public DateOnly? DateSettled { get; set; }
     public DateOnly? DeletedDate { get; set; }

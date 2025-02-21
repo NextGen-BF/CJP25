@@ -13,10 +13,14 @@ export function transformRequest(
       requestId: 0,
       userId: request.userId,
       requestDescription: request.description || "",
-      status: "Pending",
-      dateOpened: request.startDate,
+      status: {
+        statusId: 7,
+        title: "In review",
+      },
+      dateOpened: request.startDate.toISOString().split("T")[0],
       dateSettled: null,
       notes: null,
+      buildingId: request.buildingId,
     };
   } else if (request.requestType == "Building Property Link") {
     return {
@@ -24,7 +28,7 @@ export function transformRequest(
       userId: request.userId,
       buildingId: request.buildingId,
       approved: false,
-      role: request.role || "",
+      roleId: request.roleId,
       startDate: request.startDate,
       endDate: null,
     };

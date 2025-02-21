@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { createRequest, RepairRequest } from "../../models/requests";
+import { createRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Divider, MenuItem, TextField } from "@mui/material";
 import "./createRequestPage.scss";
@@ -29,7 +29,7 @@ const CreateRequestPage: FC = () => {
   } = useForm<createRequest>({
     defaultValues: {
       userId: user.userId,
-      startDate: new Date(Date.now()),
+      startDate: new Date(),
     },
   });
   const selectedRequestType = watch("requestType");

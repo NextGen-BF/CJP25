@@ -2,10 +2,14 @@ export interface RepairRequest {
   requestId: number;
   userId: number;
   requestDescription: string;
-  status: string;
-  dateOpened: Date;
+  status: {
+    statusId: number;
+    title: string;
+  };
+  dateOpened: Date | string;
   dateSettled: Date | null;
   notes: RequestNotes[] | null;
+  buildingId: number;
 }
 
 export interface RequestNotes {
@@ -32,6 +36,6 @@ export interface createRequest {
   userId: number;
   propertyId: number | null;
   description: string | null;
-  role: string | null; //Will change to enum/int after roles are created in db
+  roleId: number | null; //Will change to enum/int after roles are created in db
   startDate: Date;
 }

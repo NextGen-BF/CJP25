@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createBuildingConstants } from "../../../constants/constants";
@@ -10,9 +10,11 @@ import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
+import { useNavigate } from "react-router-dom";
 
 const CreateBuildingPage: FC = () => {
-  const userId = useSelector((state: RootState) => state.loginReducer.value);
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
@@ -21,19 +23,26 @@ const CreateBuildingPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Building>({
     defaultValues: {
       dateBuilt: new Date(Date.now()),
     },
   });
 
+  useEffect(() => {
+    if (!user.isLoggedIn) navigate("/login");
+
+    if (isSubmitSuccessful) reset();
+  }, [user, isSubmitSuccessful]);
+
   const onSubmit: SubmitHandler<Building> = async (data) => {
     data.buildingProperties = buildingProperties;
     data.userBuildings = [
       {
         userBuildingsId: 0,
-        userId: userId.userId,
+        userId: user.userId,
         roleId: null,
         buildingId: 0,
         startDate: data.dateBuilt,
