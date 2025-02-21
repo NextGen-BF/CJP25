@@ -13,13 +13,14 @@ import {
   getBuildingsByUserId,
 } from "../../redux/services/buildingService";
 import { transformRequest } from "../../utils/requestConverter";
+import { useNavigate } from "react-router-dom";
+import { createRepairRequest } from "../../redux/services/requestService";
 
 const CreateRequestPage: FC = () => {
+  const navigate = useNavigate();
   const documents = useSelector((state: RootState) => state.documentReducer);
   const dispatch = useAppDispatch();
-  const userId = useSelector(
-    (state: RootState) => state.loginReducer.value.userId,
-  );
+  const user = useSelector((state: RootState) => state.loginReducer.value);
   const {
     register,
     handleSubmit,
@@ -27,7 +28,7 @@ const CreateRequestPage: FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<createRequest>({
     defaultValues: {
-      userId: userId,
+      userId: user.userId,
       startDate: new Date(Date.now()),
     },
   });
@@ -38,23 +39,25 @@ const CreateRequestPage: FC = () => {
   );
 
   useEffect(() => {
+    if (!user.isLoggedIn) navigate("/login");
     if (selectedRequestType === "Repair") {
-      dispatch(getBuildingsByUserId(userId));
+      dispatch(getBuildingsByUserId(user.userId));
     } else {
       dispatch(getAllBuildings());
     }
-  }, [selectedRequestType]);
+  }, [selectedRequestType, user]);
 
   const onSubmit: SubmitHandler<createRequest> = async (data) => {
     if (data.requestType == "Repair") {
       const repairRequest = transformRequest(data);
-      console.log(repairRequest);
+      if (repairRequest && "requestId" in repairRequest) {
+        dispatch(createRepairRequest(repairRequest));
+        console.log(repairRequest);
+      }
     } else {
       const buildingRequest = transformRequest(data);
       console.log(buildingRequest);
     }
-    console.log(data);
-    console.log(data.startDate);
   };
 
   return (
