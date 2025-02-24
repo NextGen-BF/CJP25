@@ -41,6 +41,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("property/{propertyId}")]
+        [Authorize(Policy = "Property Owner")]
         public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId)
         {
             var propertyPaymentsByPropertyId =

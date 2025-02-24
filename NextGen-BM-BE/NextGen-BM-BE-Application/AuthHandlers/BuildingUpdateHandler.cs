@@ -5,17 +5,15 @@ using Microsoft.AspNetCore.Identity;
 using NextGen_BM_BE_Domain.Entities;
 using System.Text.Json;
 using NextGen_BM_BE_Domain.ViewModels;
+using System.Security.Claims;
 
 namespace NextGen_BM_BE_Application.AuthHandlers{
     public class BuildingUpdateHandler : AuthorizationHandler<BuildingManagerRequirement>
     {
         private readonly GetUserBuildingLinkUseCase _getUserBuildingLinkUseCase;
-        private readonly UserManager<User> _userManager;
-        public BuildingUpdateHandler(GetUserBuildingLinkUseCase getUserBuildingLinkUseCase,
-                                    UserManager<User> userManager)
+        public BuildingUpdateHandler(GetUserBuildingLinkUseCase getUserBuildingLinkUseCase)
         {
             _getUserBuildingLinkUseCase = getUserBuildingLinkUseCase;
-            _userManager=userManager;
 
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, BuildingManagerRequirement requirement)
@@ -32,12 +30,12 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                                                                 PropertyNameCaseInsensitive = true,
                                                                 });
                 int buildingId=building.BuildingId, userId;
-                if (!int.TryParse(_userManager.GetUserId(context.User), out userId))
+                if (!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
                 if (userBuilding?.Role?.Name==requirement.RoleName)
                     context.Succeed(requirement);
-                context.Fail();
+                else context.Fail();
             }
         }
     }
