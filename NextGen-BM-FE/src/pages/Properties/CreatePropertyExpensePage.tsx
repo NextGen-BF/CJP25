@@ -16,17 +16,42 @@ import { createPropertyExpense } from "../../redux/services/expenseService";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "../../style/shared.scss";
 import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
+import { setSnackbar } from "../../redux/slices/snackbarSlice";
+import {
+  ErrorSnackbarConstants,
+  SucessSnackbarConstants,
+} from "../../constants/snackbarConstants";
 
 const CreatePropertyExpense: FC = () => {
   const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<PropertyExpense>();
 
+  const startDate = watch("startDate");
+
   const onSubmit: SubmitHandler<PropertyExpense> = async (data) => {
-    await dispatch(createPropertyExpense(data));
+    try {
+      await dispatch(createPropertyExpense(data)).unwrap();
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "success",
+          snackbarMessage: SucessSnackbarConstants.createPropertyExpenseSuccess,
+        }),
+      );
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.createPropertyExpenseError,
+        }),
+      );
+    }
   };
 
   return (
@@ -96,8 +121,12 @@ const CreatePropertyExpense: FC = () => {
                 if (
                   value.getMonth == new Date(Date.now()).getMonth &&
                   value.getFullYear() == new Date(Date.now()).getFullYear()
-                )
+                ) {
                   return valueErrors.endDateCurrentMonth;
+                }
+                if (new Date(value) < new Date(startDate)) {
+                  return valueErrors.endDateBeforeStartDate;
+                }
               },
             })}
             slotProps={{ inputLabel: { shrink: true } }}
