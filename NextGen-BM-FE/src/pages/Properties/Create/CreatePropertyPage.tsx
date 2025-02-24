@@ -68,11 +68,32 @@ const CreatePropertyPage: FC = () => {
   const buildings: Building[] = useSelector(
     (state: RootState) => state.buildingReducer.value,
   );
+  const propertyTypes: {typeId: number, title: string}[] = [
+    {
+      typeId: 1,
+      title: "Apartment"
+    },
+    {
+      typeId: 2,
+      title: "Garage"
+    },
+    {
+      typeId: 3,
+      title: "Atelier"
+    },
+    {
+      typeId: 4,
+      title: "Storage"
+    }
+  ]
   const buildingList = buildings
     ? buildings.map((building) => (
         <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
       ))
     : [];
+  const typeList = propertyTypes.map((type) =>(
+    <MenuItem value={type.typeId}>{type.title}</MenuItem>
+  ));
   const textInputFields = textFieldInputProps.map((props) => (
     <CreatePropertyInput
       name={props.name}
@@ -88,6 +109,22 @@ const CreatePropertyPage: FC = () => {
       <h1>Add a new property</h1>
 
       <form className="create-property-form" onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+          name="propertyTypeId"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={createPropertyPageStyles.inputStyles}
+              select
+              required={true}
+              label="Type"
+              size="small"
+            >
+              {typeList}
+            </TextField>
+          )}
+        />
         {textInputFields}
         <Controller
           name="entranceIsExternal"

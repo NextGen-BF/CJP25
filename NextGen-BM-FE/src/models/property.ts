@@ -1,5 +1,6 @@
 export interface Property{
     propertyId: number;
+    propertyTypeId: number;
     propertyNumber: number;
     buildingId: number;
     size: number;
