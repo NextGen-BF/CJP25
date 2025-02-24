@@ -18,9 +18,11 @@ export const Header: FC = () => {
   return (
     <AppBar sx={headerStyles.appBarStyles}>
       <div className="home-menu-button">
-        <IconButton onClick={() => toggle()} sx={{ color: "white" }}>
-          <MenuIcon />
-        </IconButton>
+        {userToken.isLoggedIn && (
+          <IconButton onClick={() => toggle()} sx={{ color: "white" }}>
+            <MenuIcon />
+          </IconButton>
+        )}
         <NavLink className={"header-link"} to="/">
           Home
         </NavLink>
