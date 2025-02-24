@@ -1,38 +1,40 @@
-import { Property } from "./property"
+import { Property } from "./property";
+import { UserBuildingRequests } from "./requests";
 
 export interface Building {
-    buildingId: number,
-    buildingAddress: Address,
-    alias: string | null,
-    floorNum: number,
-    totalBuildingSize: number,
-    dateBuilt: Date,
-    numOfElevators: number,
-    buildingExpenses: BuildingExpense[] | null;
-    buildingProperties: Property[] | null;
+  buildingId: number;
+  buildingAddress: Address;
+  alias: string | null;
+  floorNum: number;
+  totalBuildingSize: number;
+  dateBuilt: Date;
+  numOfElevators: number;
+  buildingExpenses: BuildingExpense[] | null;
+  buildingProperties: Property[] | null;
+  userBuildings: UserBuildingRequests[] | null;
 }
 
 export interface Address {
-    addressId: number,
-    streetName: string,
-    streetNumber: number,
-    entrance: string,
-    district: string,
-    city: string,
-    postalCode: string,
-    country: string,
+  addressId: number;
+  streetName: string;
+  streetNumber: number;
+  entrance: string;
+  district: string;
+  city: string;
+  postalCode: string;
+  country: string;
 }
 
 export interface BuildingExpense {
-    buildingExpenseId: number,
-    title: string,
-    totalAmount: number,
-    supplier: string,
-    dateOpened: Date,
-    dueDate: Date,
-    paymentDate: Date,
-    description: string,
-    isTemplate: boolean,
-    repeatPeriod: number,
-    invoiceUrl: string | null,
+  buildingExpenseId: number;
+  title: string;
+  totalAmount: number;
+  supplier: string;
+  dateOpened: Date;
+  dueDate: Date;
+  paymentDate: Date;
+  description: string;
+  isTemplate: boolean;
+  repeatPeriod: number;
+  invoiceUrl: string | null;
 }

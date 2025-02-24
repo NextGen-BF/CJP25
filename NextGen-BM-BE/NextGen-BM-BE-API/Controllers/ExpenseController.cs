@@ -62,7 +62,7 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
-            return Ok();
+            return Ok(propertyExpense);
         }
 
         [HttpPost]

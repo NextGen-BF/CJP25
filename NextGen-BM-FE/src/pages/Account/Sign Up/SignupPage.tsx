@@ -1,14 +1,19 @@
 import { Button, TextField } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import "./signup.scss";
-import { validateFormData } from "../../../utils/signupValidation";
-import { validationConstants } from "../../../constants/constants.ts";
+import {
+  signupResponseConstants,
+  validationConstants,
+} from "../../../constants/constants.ts";
 import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../redux/store.ts";
+import { setSnackbar } from "../../../redux/slices/snackbarSlice.ts";
+import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LoginConstants } from "../../../constants/loginConstants.ts";
 
 export interface FormData {
   firstName: string;
@@ -22,118 +27,142 @@ export interface FormData {
 const SignupPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phoneNumber: "",
-  });
-  let errors = new Map<String, String>();
-  const [presentedErrors, setpresentedErrors] = useState(errors);
-  const message = useSelector(
-    (state: RootState) => state.signupReducer.signupResultMessage,
-  );
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    errors.delete(name);
-    setFormData((previousData) => ({ ...previousData, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    setError,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
 
-  const handleFormSubmition = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    errors = validateFormData(formData);
-    setpresentedErrors(errors);
-    errors.delete("");
-    if (errors.size === 0) {
-      dispatch(signupCall({ ...formData }));
-      navigate("/login");
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      await dispatch(signupCall({ ...data })).unwrap();
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "success",
+          snackbarMessage: SucessSnackbarConstants.signUpSuccess,
+        }),
+      );
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.signUpError,
+        }),
+      );
+      
+      setError("root", {
+        message: signupResponseConstants.genericError,
+      });
     }
   };
 
   return (
     <div className="sign-up-container">
-      <form className="sign-up-form" onSubmit={(e) => handleFormSubmition(e)}>
+      <form className="sign-up-form" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="sign-up-header">Sign Up</h2>
-        <h4 className="sign-up-message" hidden={message.length === 0}>
-          {message}
-        </h4>
         <div className="names-container">
           <TextField
-            name={validationConstants.firstNameField}
+            {...register("firstName", {
+              required: validationConstants.nameEmpty,
+            })}
             label="First Name *"
-            error={presentedErrors.has(validationConstants.firstNameField)}
-            helperText={presentedErrors.get(validationConstants.firstNameField)}
             variant="outlined"
             size="small"
-            onChange={(e) => handleChange(e)}
           />
           <TextField
-            name={validationConstants.lastNameField}
+            {...register("lastName", {
+              required: validationConstants.nameEmpty,
+            })}
             label="Last Name *"
-            error={presentedErrors.has(validationConstants.lastNameField)}
-            helperText={presentedErrors.get(validationConstants.lastNameField)}
             variant="outlined"
             size="small"
-            onChange={(e) => handleChange(e)}
           />
         </div>
+        {errors.lastName && (
+          <span className="error-message">{errors.lastName.message}</span>
+        )}
 
         <TextField
-          required
-          name="email"
+          {...register("email", {
+            required: LoginConstants.emailRequired,
+            pattern: {
+              value: validationConstants.regexEmailRequirements,
+              message: LoginConstants.emailInvalid,
+            },
+          })}
           label="Email"
           type="email"
           variant="outlined"
           size="small"
           fullWidth
-          onChange={(e) => handleChange(e)}
         />
-
+        {errors.email && (
+          <span className="error-message">{errors.email.message}</span>
+        )}
         <TextField
-          name={validationConstants.passwordField}
+          {...register("password", {
+            required: validationConstants.passwordEmpty,
+            pattern: {
+              value: validationConstants.regexPasswordRequirements,
+              message: validationConstants.passwordRequirements,
+            },
+          })}
           label="Password *"
-          error={presentedErrors.has(validationConstants.passwordField)}
-          helperText={presentedErrors.get(validationConstants.passwordField)}
           type="password"
           variant="outlined"
           size="small"
           fullWidth
-          onChange={(e) => handleChange(e)}
         />
-
+        {errors.password && (
+          <span className="error-message">{errors.password.message}</span>
+        )}
         <TextField
-          name={validationConstants.confirmPasswordField}
+          {...register("confirmPassword", {
+            required: validationConstants.passwordEmpty,
+            pattern: {
+              value: validationConstants.regexPasswordRequirements,
+              message: validationConstants.passwordRequirements,
+            },
+            validate: (value) =>
+              value == getValues("password")
+                ? true
+                : validationConstants.confirmPasswordDoesNotMatch,
+          })}
           label="Confirm Password *"
-          error={presentedErrors.has(validationConstants.confirmPasswordField)}
-          helperText={presentedErrors.get(
-            validationConstants.confirmPasswordField,
-          )}
           type="password"
-          variant="outlined"
           size="small"
           fullWidth
-          onChange={(e) => handleChange(e)}
         />
-
+        {errors.confirmPassword && (
+          <span className="error-message">
+            {errors.confirmPassword.message}
+          </span>
+        )}
         <TextField
+          {...register("phoneNumber")}
           name="phoneNumber"
           label="Phone number"
-          error={presentedErrors.has("phoneNumber")}
-          helperText={presentedErrors.get("phoneNumber")}
           type="text"
           variant="outlined"
           size="small"
           fullWidth
-          onChange={(e) => handleChange(e)}
         />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          disabled={isSubmitting}
+        >
           Submit
         </Button>
 

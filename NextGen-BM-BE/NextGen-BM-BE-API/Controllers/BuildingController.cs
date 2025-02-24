@@ -49,8 +49,8 @@ namespace NextGen_BM_BE_API.Controllers
         [Route("new")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
-            await _buildingService.CreateBuildingAsync(building);
-            return Ok();
+            var createdBuilding = await _buildingService.CreateBuildingAsync(building);
+            return Ok(createdBuilding);
         }
 
         [HttpDelete]

@@ -68,10 +68,11 @@ namespace NextGen_BM_BE_Application.Services
             return buildingsList;
         }
 
-        public async Task CreateBuildingAsync(BuildingViewModel buildingDto)
+        public async Task<BuildingViewModel> CreateBuildingAsync(BuildingViewModel buildingDto)
         {
             var building = _mapper.Map<Building>(buildingDto);
-            await _createBuildingUseCase.Execute(building);
+            var createdBuilding = await _createBuildingUseCase.Execute(building);
+            return _mapper.Map<BuildingViewModel>(createdBuilding);
         }
 
         public async Task UpdateBuildingAsync(BuildingViewModel buildingDto)

@@ -14,12 +14,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task CreateBuildingAsync(Building building)
+        public async Task<Building> CreateBuildingAsync(Building building)
         {
             try
             {
                 await _dbContext.Buildings.AddAsync(building);
                 await _dbContext.SaveChangesAsync();
+                return building;
             }
             catch (Exception ex)
             {
