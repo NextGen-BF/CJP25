@@ -61,7 +61,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        [Authorize(Policy = "Super For Building")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
@@ -81,7 +81,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Policy = "Super For Building")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> UpdateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.UpdatePropertyExpenseAsync(propertyExpense);
@@ -90,7 +90,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{expenseId}")]
-        [Authorize(Policy = "Super For Building")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> DeleteExpense(int expenseId)
         {
             await _expensesService.DeletePropertyExpenseAsync(expenseId);

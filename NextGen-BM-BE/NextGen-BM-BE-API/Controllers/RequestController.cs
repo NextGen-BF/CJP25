@@ -74,7 +74,6 @@ public class RequestController: ControllerBase {
 
     [HttpPut]
     [Route("repair/update")]
-    [Authorize(Policy = "User In Building")]
     public async Task<IActionResult> UpdateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
         await _requestService.UpdateRepairRequestAsync(repairRequestViewModel);

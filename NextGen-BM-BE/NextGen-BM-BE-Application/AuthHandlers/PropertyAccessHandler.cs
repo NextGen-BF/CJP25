@@ -23,7 +23,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 if (!int.TryParse(httpContext?.GetRouteValue("propertyId")?.ToString(), out propertyId)
                     ||!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
-                var propertyUser = await _getPropertyUserLinkUseCase.Execute(userId, propertyId);
+                var propertyUser = await _getPropertyUserLinkUseCase.Execute(propertyId, userId);
                 if (requirement.AllowedRoles.Contains(propertyUser?.Role?.Name))
                     context.Succeed(requirement);
                 else context.Fail();
