@@ -5,6 +5,7 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public int PropertyId { get; set; }
         public int PropertyNumber { get; set; }
         public int BuildingId { get; set; }
+        public int PropertyTypeId { get; set; }
         public decimal Size { get; set; }
         public int Floor { get; set; }
         public decimal SizeOfIdealParts { get; set; }

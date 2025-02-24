@@ -2,6 +2,7 @@ using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Properties.Delete;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -88,6 +89,11 @@ namespace NextGen_BM_BE_Application.Services
         public async Task DeletePropertyResidentAsync(int propertyResidentId)
         {
             await _deletePropertyResidentUseCase.Execute(propertyResidentId);
+        }
+
+        public Task<Enums> GetPropertyTypesAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

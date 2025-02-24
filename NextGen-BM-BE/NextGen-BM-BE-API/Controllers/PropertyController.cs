@@ -98,5 +98,12 @@ namespace NextGen_BM_BE_API.Controllers
             await _propertyService.DeletePropertyResidentAsync(propertyResidentId);
             return Ok();
         }
+        [HttpGet]
+        [Route("property/type/all")]
+        public async Task<IActionResult> GetPropertyTypes()
+        {
+            await _propertyService.GetPropertyTypesAsync();
+            return Ok();
+        }
     }
 };
