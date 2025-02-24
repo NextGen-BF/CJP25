@@ -174,6 +174,7 @@ builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, PropertyCreateUpdateHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, RequestCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyDeleteHandler>();
 #endregion
 
 #region Cors
