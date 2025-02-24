@@ -33,6 +33,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 if (!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
+                //only allow building supers(managers)
                 if (userBuilding?.Role?.Name==requirement.RoleName)
                     context.Succeed(requirement);
                 else context.Fail();

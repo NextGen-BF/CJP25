@@ -24,6 +24,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                     ||!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
                 var propertyUser = await _getPropertyUserLinkUseCase.Execute(propertyId, userId);
+                //allow multiple roles
                 if (requirement.AllowedRoles.Contains(propertyUser?.Role?.Name))
                     context.Succeed(requirement);
                 else context.Fail();

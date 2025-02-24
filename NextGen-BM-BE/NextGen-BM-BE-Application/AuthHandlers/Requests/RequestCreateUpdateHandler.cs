@@ -33,6 +33,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 if (!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
+                //should allow any approved user in building
                 if (userBuilding!=null)
                     context.Succeed(requirement);
                 else context.Fail();

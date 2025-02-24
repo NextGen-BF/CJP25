@@ -34,6 +34,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 if (!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
                     return;
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
+                //allow multiple roles
                 if (requirement.AllowedRoles.Contains(userBuilding?.Role?.Name))
                     context.Succeed(requirement);
                 else context.Fail();

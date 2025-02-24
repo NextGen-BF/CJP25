@@ -34,6 +34,7 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
                 int buildingId=property.BuildingId;
 
                 var userBuilding = await _getUserBuildingLinkUseCase.Execute(userId, buildingId);
+                //should only allow supers
                 if (requirement.AllowedRoles.Contains(userBuilding?.Role?.Name))
                     context.Succeed(requirement);
                 else context.Fail();
