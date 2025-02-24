@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.VisualBasic;
 using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
@@ -20,6 +21,8 @@ namespace NextGen_BM_BE_Application.Services
 
         private readonly CreateExpensesUseCase _createExpensesUseCase;
 
+        private readonly CreatePropertyPaymentsUseCase _createPropertyPaymentsUseCase;
+
         private readonly CreatePropertyPaymentsForPropertiesUseCase _createPropertyPaymentsForPropertiesUseCase;
 
         private readonly UpdateExpensesUseCase _updateExpensesUseCase;
@@ -33,6 +36,7 @@ namespace NextGen_BM_BE_Application.Services
             GetAllPropertyPaymentsByBuildingIdUseCase getAllPropertyPaymentsByBuildingIdUseCase,
             GetAllPropertyPaymentsByPropertyIdUseCase getAllPropertyPaymentsByPropertyIdUseCase,
             CreateExpensesUseCase createExpensesUseCase,
+            CreatePropertyPaymentsUseCase createPropertyPaymentsUseCase,
             CreatePropertyPaymentsForPropertiesUseCase createPropertyPaymentsForPropertiesUseCase,
             UpdateExpensesUseCase updateExpensesUseCase,
             DeleteExpensesUseCase deleteExpensesUseCase,
@@ -44,7 +48,9 @@ namespace NextGen_BM_BE_Application.Services
             _getAllPropertyPaymentsByBuildingIdUseCase = getAllPropertyPaymentsByBuildingIdUseCase;
             _getAllPropertyPaymentsByPropertyIdUseCase = getAllPropertyPaymentsByPropertyIdUseCase;
             _createExpensesUseCase = createExpensesUseCase;
-            _createPropertyPaymentsForPropertiesUseCase = createPropertyPaymentsForPropertiesUseCase;
+            _createPropertyPaymentsUseCase = createPropertyPaymentsUseCase;
+            _createPropertyPaymentsForPropertiesUseCase =
+                createPropertyPaymentsForPropertiesUseCase;
             _updateExpensesUseCase = updateExpensesUseCase;
             _deleteExpensesUseCase = deleteExpensesUseCase;
             _mapper = mapper;
@@ -107,6 +113,12 @@ namespace NextGen_BM_BE_Application.Services
         {
             var expense = _mapper.Map<PropertyExpense>(propertyExpenseDto);
             await _createExpensesUseCase.Execute(expense);
+        }
+
+        public async Task CreatePropertyPaymentsAsync(PropertyPaymentsViewModel propertyPaymentDto)
+        {
+            var payment = _mapper.Map<PropertyPayments>(propertyPaymentDto);
+            await _createPropertyPaymentsUseCase.Execute(payment);
         }
 
         public async Task CreatePropertyPaymentsForPropertiesAsync(

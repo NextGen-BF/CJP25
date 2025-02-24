@@ -43,3 +43,8 @@ export const createPropertyExpenseConstants = {
   create: "Create Property Epense",
   addRecond: "Add a property",
 };
+
+export const createPropertyPaymentConstants = {
+  title: "Create Property Payments",
+  create: "Create Property Payment",
+};

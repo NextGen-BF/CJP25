@@ -66,6 +66,16 @@ namespace NextGen_BM_BE_API.Controllers
         }
 
         [HttpPost]
+        [Route("create/propertypayment")]
+        public async Task<IActionResult> CreatePropertyPayment(
+            PropertyPaymentsViewModel propertyPayment
+        )
+        {
+            await _expensesService.CreatePropertyPaymentsAsync(propertyPayment);
+            return Ok(propertyPayment);
+        }
+
+        [HttpPost]
         [Route("create/property")]
         public async Task<IActionResult> CreatePropertyPaymentsForProperties(
             List<int> propertyIds,

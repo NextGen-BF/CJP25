@@ -75,6 +75,32 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
+        public async Task CreatePropertyPaymentsAsync(PropertyPayments propertyPayment)
+        {
+            try
+            {
+                if (propertyPayment.PropertyExpenseId == 0)
+                {
+                    propertyPayment.PropertyExpenseId = _dbContext
+                        .PropertyExpense.First()
+                        .PropertyExpenseId;
+                }
+                if (propertyPayment.PropertyId == 0)
+                {
+                    propertyPayment.PropertyId = _dbContext.Property.First().PropertyId;
+                }
+                await _dbContext.PropertyPayments.AddAsync(propertyPayment);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"{nameof(CreatePropertyPaymentsAsync)} threw an error of: ",
+                    ex
+                );
+            }
+        }
+
         public async Task DeletePropertyExpenseAsync(int propertyExpenseId)
         {
             try
