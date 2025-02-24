@@ -48,14 +48,12 @@ const loginSlice = createSlice({
         if (action.payload.token.length < 1) {
           token = getLoginState().token;
         }
-        console.log(action.payload);
         const user = jwtDecode(token);
         state.value = {
           token: token,
           userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
         };
-        console.log(state.value);
         localStorage.setItem("JWT-BM", action.payload.token);
       },
     );
