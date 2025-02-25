@@ -110,7 +110,7 @@ const CreatePropertyPage: FC = () => {
 
       <form className="create-property-form" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-          name="propertyTypeId"
+          name="propertyType.typeId"
           control={control}
           render={({ field }) => (
             <TextField

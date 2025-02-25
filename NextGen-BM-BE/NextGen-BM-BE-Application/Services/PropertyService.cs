@@ -94,9 +94,10 @@ namespace NextGen_BM_BE_Application.Services
             await _deletePropertyResidentUseCase.Execute(propertyResidentId);
         }
 
-        public async Task<IList<Enums>> GetPropertyTypesAsync()
+        public async Task<IList<PropertyTypeViewModel>> GetPropertyTypesAsync()
         {
-            return await _getPropertyTypesUseCase.Execute();
+            var enums = await _getPropertyTypesUseCase.Execute();
+            return _mapper.Map<IList<PropertyTypeViewModel>>(enums);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace NextGen_BM_BE_Domain.Entities.PropertyAggregate
         public bool EntranceIsExternal { get; set; }
         public DateOnly? DeletedDate { get; set; }
         public Building? Building { get; set; }
+        public Enums? PropertyType { get; set; }
         public ICollection<PropertyUsers>? Users { get; set; }
         public ICollection<PropertyPayments>? Payments { get; set; }
         public ICollection<PropertyResidents>? PropertyResidents { get; set; }

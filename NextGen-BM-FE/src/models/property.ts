@@ -1,6 +1,6 @@
 export interface Property{
     propertyId: number;
-    propertyTypeId: number;
+    propertyType: PropertyType;
     propertyNumber: number;
     buildingId: number;
     size: number;
@@ -37,4 +37,10 @@ export interface PropertyExpense{
     startDate: Date;
     endDate: Date;
     Description: string;
+}
+
+export interface PropertyType{
+    typeId: number;
+    title: string;
+    description: string;
 }

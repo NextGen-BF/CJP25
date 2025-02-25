@@ -85,6 +85,7 @@ namespace NextGen_BM_BE_Application.Mapper
 
             //Property models
             CreateMap<Property, PropertyViewModel>()
+                .ForMember(dest => dest.PropertyType, opt => opt.MapFrom(src => src.PropertyType))
                 .ForMember(dest => dest.PropertyPayments, opt => opt.MapFrom(src => src.Payments))
                 .ForMember(
                     dest => dest.ResidentHistory,
@@ -92,6 +93,10 @@ namespace NextGen_BM_BE_Application.Mapper
                 );
             CreateMap<PropertyViewModel, Property>()
                 .ForMember(dest => dest.Payments, opt => opt.MapFrom(src => src.PropertyPayments))
+                .ForMember(
+                    dest => dest.PropertyTypeId,
+                    opt => opt.MapFrom(src => src.PropertyType.TypeId)
+                )
                 .ForMember(
                     dest => dest.PropertyResidents,
                     opt => opt.MapFrom(src => src.ResidentHistory)
@@ -107,6 +112,11 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<PropertyExpense, PropertyExpenseViewModel>();
             CreateMap<PropertyExpenseViewModel, PropertyExpense>();
+
+            CreateMap<Enums, PropertyTypeViewModel>()
+                .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.EnumsId));
+            CreateMap<PropertyTypeViewModel, Enums>()
+                .ForMember(dest => dest.EnumsId, opt => opt.MapFrom(src => src.TypeId));
             //Request models
             CreateMap<RepairRequest, RepairRequestViewModel>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus))

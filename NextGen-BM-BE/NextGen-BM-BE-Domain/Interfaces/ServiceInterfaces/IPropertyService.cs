@@ -13,6 +13,6 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces{
         Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId);
         Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId);
         Task DeletePropertyResidentAsync(int propertyResidentId);
-        Task<IList<Enums>> GetPropertyTypesAsync();
+        Task<IList<PropertyTypeViewModel>> GetPropertyTypesAsync();
     }
 }
