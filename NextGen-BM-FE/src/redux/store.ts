@@ -8,6 +8,7 @@ import navigationReducer from "./slices/navigationSlice";
 import propertyReducer from "./slices/propertySlice";
 import documentReducer from "./slices/documentSlice";
 import repairRequestReducer from "./slices/repairRequest";
+import snackbarReducer from "./slices/snackbarSlice";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     navigationReducer: navigationReducer,
     documentReducer: documentReducer,
     repairRequestReducer: repairRequestReducer,
+    snackBarReducer: snackbarReducer,
   },
 });
 

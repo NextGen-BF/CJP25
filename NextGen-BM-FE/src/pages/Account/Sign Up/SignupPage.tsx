@@ -9,6 +9,9 @@ import {
 import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../redux/store.ts";
+import { setSnackbar } from "../../../redux/slices/snackbarSlice.ts";
+import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginConstants } from "../../../constants/loginConstants.ts";
 
@@ -36,8 +39,25 @@ const SignupPage: FC = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       await dispatch(signupCall({ ...data })).unwrap();
-      navigate("/login");
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "success",
+          snackbarMessage: SucessSnackbarConstants.signUpSuccess,
+        }),
+      );
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.signUpError,
+        }),
+      );
+      
       setError("root", {
         message: signupResponseConstants.genericError,
       });

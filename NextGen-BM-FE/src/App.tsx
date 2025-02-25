@@ -27,6 +27,7 @@ import BuildingsListPage from "./pages/Buildings/BuildingListPage";
 import BuildingPage from "./pages/Buildings/BuildingPage";
 import CreatePropertyPaymentsPage from "./pages/Properties/CreatePropertyPaymentsPage";
 import CreatePropertyExpensePage from "./pages/Properties/CreatePropertyExpensePage";
+import Snackbar from "./pages/Snackbar";
 
 const App: FC = () => {
   const router = createBrowserRouter(
@@ -61,7 +62,12 @@ const App: FC = () => {
       </Route>,
     ),
   );
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Snackbar />
+      <RouterProvider router={router} />;
+    </>
+  );
 };
 
 export default App;

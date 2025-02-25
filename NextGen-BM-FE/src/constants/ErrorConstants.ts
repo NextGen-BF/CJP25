@@ -24,6 +24,7 @@ export const valueErrors = {
   numOfElevatorsNegative: "Number of elevators cannot be negative!",
   streetNumberNegative: "Street number cannot be negative or 0!",
   endDateCurrentMonth: "End date cannot be in the current month!",
+  endDateBeforeStartDate: "End date cannot be before start date!",
   priceNegative: "Price cannot be negative!",
   
 };

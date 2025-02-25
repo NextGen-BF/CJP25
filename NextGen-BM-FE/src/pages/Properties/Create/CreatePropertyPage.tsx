@@ -1,23 +1,25 @@
 import { FC } from "react";
-import { useForm, SubmitHandler, Controller, Control, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler, Controller, Control } from "react-hook-form";
 import { Property } from "../../../models/property";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createProperty } from "../../../redux/services/propertyService";
 import TextField from "@mui/material/TextField";
-import { Button, InputLabel, MenuItem, Select } from "@mui/material";
+import { Button, MenuItem } from "@mui/material";
 import { Building } from "../../../models/building";
 import { getAllBuildings } from "../../../redux/services/buildingService";
 import { useSelector } from "react-redux";
 import "./createPropertyPage.scss";
 import { CreatePropertyInput } from "./CreatePropertyControlledInput";
 import { createPropertyPageStyles } from "./CreatePropertyPageStyles";
+import { setSnackbar } from "../../../redux/slices/snackbarSlice";
+import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 
-const textFieldInputProps=[
+const textFieldInputProps = [
   {
     name: "propertyNumber",
     label: "Property Number",
     type: "number",
-    required: true
+    required: true,
   },
   {
     name: "floor",
@@ -36,26 +38,55 @@ const textFieldInputProps=[
     label: "Size of ideal parts",
     type: "number",
     required: true,
-  }
-]
+  },
+];
 
 const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
-  const {control, handleSubmit} = useForm<Property>();
-  const onSubmit: SubmitHandler<Property> = (data) => dispatch(createProperty(data));
-  
-  const buildings:Building[]=useSelector((state: RootState) => state.buildingReducer.value);
-  const buildingList=buildings?buildings.map(building=>
-    <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
-  ):[];
-  const textInputFields=textFieldInputProps.map(props=>
-    <CreatePropertyInput name={props.name} label={props.label} type={props.type} required={props.required} control={control as unknown as Control}/>
+  const { control, handleSubmit } = useForm<Property>();
+  const onSubmit: SubmitHandler<Property> = async (data) => {
+    try {
+      await dispatch(createProperty(data)).unwrap();
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "success",
+          snackbarMessage: SucessSnackbarConstants.createPropertySucess,
+        }),
+      );
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.createPropertyError,
+        }),
+      );
+    }
+  };
+
+  const buildings: Building[] = useSelector(
+    (state: RootState) => state.buildingReducer.value,
   );
+  const buildingList = buildings
+    ? buildings.map((building) => (
+        <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
+      ))
+    : [];
+  const textInputFields = textFieldInputProps.map((props) => (
+    <CreatePropertyInput
+      name={props.name}
+      label={props.label}
+      type={props.type}
+      required={props.required}
+      control={control as unknown as Control}
+    />
+  ));
 
   return (
     <div>
       <h1>Add a new property</h1>
-      
+
       <form className="create-property-form" onSubmit={handleSubmit(onSubmit)}>
         {textInputFields}
         <Controller
@@ -63,13 +94,13 @@ const CreatePropertyPage: FC = () => {
           control={control}
           render={({ field }) => (
             <TextField
-            {...field}
-            sx={createPropertyPageStyles.inputStyles}
-            label="External entrance"
-            variant="standard"
-            type="checkbox"
-            defaultValue={false}
-            size="small"
+              {...field}
+              sx={createPropertyPageStyles.inputStyles}
+              label="External entrance"
+              variant="standard"
+              type="checkbox"
+              defaultValue={false}
+              size="small"
             />
           )}
         />
@@ -78,20 +109,24 @@ const CreatePropertyPage: FC = () => {
           control={control}
           render={({ field }) => (
             <TextField
-            {...field}
-            sx={createPropertyPageStyles.inputStyles}
-            select
-            required={true}
-            label="Building"
-            size="small"
-            //should eventually only return the manager's buildings
-            onFocus={()=>dispatch(getAllBuildings())}
+              {...field}
+              sx={createPropertyPageStyles.inputStyles}
+              select
+              required={true}
+              label="Building"
+              size="small"
+              //should eventually only return the manager's buildings
+              onFocus={() => dispatch(getAllBuildings())}
             >
               {buildingList}
             </TextField>
           )}
         />
-        <Button sx={createPropertyPageStyles.inputStyles} type="submit" variant="contained">
+        <Button
+          sx={createPropertyPageStyles.inputStyles}
+          type="submit"
+          variant="contained"
+        >
           Create Property
         </Button>
       </form>
