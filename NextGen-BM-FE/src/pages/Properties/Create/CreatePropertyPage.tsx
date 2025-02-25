@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { useForm, SubmitHandler, Controller, Control } from "react-hook-form";
-import { Property } from "../../../models/property";
+import { Property, PropertyType } from "../../../models/property";
 import { RootState, useAppDispatch } from "../../../redux/store";
-import { createProperty } from "../../../redux/services/propertyService";
+import { createProperty, getPropertyTypes } from "../../../redux/services/propertyService";
 import TextField from "@mui/material/TextField";
 import { Button, MenuItem } from "@mui/material";
 import { Building } from "../../../models/building";
@@ -45,6 +45,8 @@ const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
   const { control, handleSubmit } = useForm<Property>();
   const onSubmit: SubmitHandler<Property> = async (data) => {
+    data.propertyType = propertyTypes.find((type)=>type.typeId==data.propertyType.typeId)??{typeId:0, title:"", description:""}
+    console.log(data);
     try {
       await dispatch(createProperty(data)).unwrap();
       dispatch(
@@ -68,24 +70,9 @@ const CreatePropertyPage: FC = () => {
   const buildings: Building[] = useSelector(
     (state: RootState) => state.buildingReducer.value,
   );
-  const propertyTypes: {typeId: number, title: string}[] = [
-    {
-      typeId: 1,
-      title: "Apartment"
-    },
-    {
-      typeId: 2,
-      title: "Garage"
-    },
-    {
-      typeId: 3,
-      title: "Atelier"
-    },
-    {
-      typeId: 4,
-      title: "Storage"
-    }
-  ]
+  const propertyTypes: PropertyType[] = useSelector(
+    (state: RootState) => state.propertyReducer.types,
+  );
   const buildingList = buildings
     ? buildings.map((building) => (
         <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
@@ -120,6 +107,7 @@ const CreatePropertyPage: FC = () => {
               required={true}
               label="Type"
               size="small"
+              onFocus={() => dispatch(getPropertyTypes())}
             >
               {typeList}
             </TextField>

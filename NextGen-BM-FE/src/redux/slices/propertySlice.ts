@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Property } from "../../models/property";
+import { Property, PropertyType } from "../../models/property";
+import { getPropertyTypes } from "../services/propertyService";
 
 interface PropertyState {
-    value: Property[]
+    value: Property[],
+    types: PropertyType[]
 }
 
 const initialState: PropertyState = {
-    value: []
+    value: [],
+    types: []
 }
 
 const propertySlice = createSlice({
@@ -25,7 +28,14 @@ const propertySlice = createSlice({
             state.value = [...state.value, action.payload]
         }
     },
-})
+    extraReducers: (builder) => {
+        builder.addCase(getPropertyTypes.fulfilled, (state, action: PayloadAction<PropertyType[]>) => {
+            state.types=action.payload;
+            })
+        }
+    }
+)
+
 
 export const { addProperty, removeProperty, updateProperty } = propertySlice.actions;
 

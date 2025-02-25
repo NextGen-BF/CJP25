@@ -71,9 +71,6 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
 
-            CreateMap<PropertyViewModel, Property>();
-            CreateMap<Property, PropertyViewModel>();
-
             CreateMap<PropertyExpenseViewModel, PropertyExpense>();
             CreateMap<PropertyExpense, PropertyExpenseViewModel>();
 
@@ -93,6 +90,7 @@ namespace NextGen_BM_BE_Application.Mapper
                 );
             CreateMap<PropertyViewModel, Property>()
                 .ForMember(dest => dest.Payments, opt => opt.MapFrom(src => src.PropertyPayments))
+                .ForMember(dest => dest.PropertyType, opt => opt.Ignore())
                 .ForMember(
                     dest => dest.PropertyTypeId,
                     opt => opt.MapFrom(src => src.PropertyType.TypeId)
@@ -115,8 +113,6 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<Enums, PropertyTypeViewModel>()
                 .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.EnumsId));
-            CreateMap<PropertyTypeViewModel, Enums>()
-                .ForMember(dest => dest.EnumsId, opt => opt.MapFrom(src => src.TypeId));
             //Request models
             CreateMap<RepairRequest, RepairRequestViewModel>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus))
