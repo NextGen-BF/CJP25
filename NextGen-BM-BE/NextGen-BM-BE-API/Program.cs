@@ -50,6 +50,7 @@ builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
+builder.Services.AddScoped<GetPropertyExpensesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByPropertyIdUseCase>();

@@ -57,6 +57,15 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(propertyPaymentsByBuildingId);
         }
 
+        [HttpGet]
+        [Route("propertyexpense/{buildingid}")]
+        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid)
+        {
+            var propertyExpensesByBuildingId =
+                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid);
+            return Ok(propertyExpensesByBuildingId);
+        }
+
         [HttpPost]
         [Route("new")]
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)

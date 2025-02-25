@@ -5,6 +5,7 @@ namespace NextGen_BM_BE_Domain.Interfaces
     public interface IExpensesRepository
     {
         Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId);
+        Task<List<PropertyExpense>> GetPropertyExpensesByBuildingIdAsync(int buildingId);
         Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId);
         Task<List<PropertyPayments>> GetPropertyPaymentsByBuildingIdAsync(int buildingId);
         Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(int propertyId);

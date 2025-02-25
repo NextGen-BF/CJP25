@@ -11,6 +11,7 @@ import {
 import { createPropertyPaymentConstants } from "../../constants/constants";
 import { Button, TextField } from "@mui/material";
 import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
+import { formatDate } from "../../utils/globalFunctions";
 
 const CreatePropertyPaymentsPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -60,11 +61,16 @@ const CreatePropertyPaymentsPage: FC = () => {
               validate: (value) =>
                 value <= 0 ? valueErrors.amountOwedNegative : true,
             })}
-            label="Price"
+            label="Amount"
             type="text"
             variant="outlined"
             size="small"
             fullWidth
+            slotProps={{
+              input: {
+                endAdornment: <span>лв.</span>, 
+              },
+            }}
           />
           {errors.amountOwed && (
             <div className="error-message">{errors.amountOwed.message}</div>
@@ -76,6 +82,7 @@ const CreatePropertyPaymentsPage: FC = () => {
             })}
             slotProps={{ inputLabel: { shrink: true } }}
             label="Date Opened"
+            defaultValue={formatDate(new Date())}
             type="date"
             variant="outlined"
             size="small"
@@ -103,34 +110,6 @@ const CreatePropertyPaymentsPage: FC = () => {
           />
           {errors.dueDate && (
             <div className="error-message">{errors.dueDate.message}</div>
-          )}
-
-          <TextField
-            {...register("status", {
-              required: requiredErrors.status,
-            })}
-            label="Status"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.status && (
-            <div className="error-message">{errors.status.message}</div>
-          )}
-
-          <TextField
-            {...register("paymentMethod", {
-              required: requiredErrors.paymentMethod,
-            })}
-            label="Payment method"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.paymentMethod && (
-            <div className="error-message">{errors.paymentMethod.message}</div>
           )}
           <Button fullWidth type="submit" disabled={isSubmitting}>
             {createPropertyPaymentConstants.create}

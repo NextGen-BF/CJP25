@@ -21,6 +21,7 @@ export interface ResidentHistory{
 
 export interface PropertyPayments{
     paymentId: number;
+    propertyId: number;
     amountOwed: number;
     dateOpened: Date;
     dueDate: Date;
