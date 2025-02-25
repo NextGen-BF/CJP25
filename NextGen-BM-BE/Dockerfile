@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+RUN apt-get update && apt-get install -y curl
+
 WORKDIR /app
 EXPOSE 5204/tcp 7261/tcp
 
