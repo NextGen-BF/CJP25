@@ -20,6 +20,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly DeletePropertyUseCase _deletePropertyUseCase;
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
         private readonly DeletePropertyResidentUseCase _deletePropertyResidentUseCase;
+        private readonly GetPropertyTypesUseCase _getPropertyTypesUseCase;
         private readonly IMapper _mapper;
 
         public PropertyService(
@@ -31,6 +32,7 @@ namespace NextGen_BM_BE_Application.Services
             DeletePropertyUseCase deletePropertyUseCase,
             UpdatePropertyUseCase updatePropertyUseCase,
             DeletePropertyResidentUseCase deletePropertyResidentUseCase,
+            GetPropertyTypesUseCase getPropertyTypesUseCase,
             IMapper mapper
         )
         {
@@ -42,6 +44,7 @@ namespace NextGen_BM_BE_Application.Services
             _deletePropertyUseCase = deletePropertyUseCase;
             _updatePropertyUseCase = updatePropertyUseCase;
             _deletePropertyResidentUseCase = deletePropertyResidentUseCase;
+            _getPropertyTypesUseCase=getPropertyTypesUseCase;
             _mapper = mapper;
         }
 
@@ -91,9 +94,9 @@ namespace NextGen_BM_BE_Application.Services
             await _deletePropertyResidentUseCase.Execute(propertyResidentId);
         }
 
-        public Task<IList<Enums>> GetPropertyTypesAsync()
+        public async Task<IList<Enums>> GetPropertyTypesAsync()
         {
-            throw new NotImplementedException();
+            return await _getPropertyTypesUseCase.Execute();
         }
     }
 }

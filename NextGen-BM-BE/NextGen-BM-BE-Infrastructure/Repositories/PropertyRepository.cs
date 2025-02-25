@@ -181,6 +181,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     .Where(ptype => ptype.DeletedDate == null
                             //should maybe be moved to application layer
                             &&ptype.Type=="PropertyType")
+                    .AsNoTracking()
                     .ToListAsync();
             }
             catch (DbException exception)

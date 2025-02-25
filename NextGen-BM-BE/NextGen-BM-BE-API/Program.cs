@@ -89,6 +89,7 @@ builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
+builder.Services.AddScoped<GetPropertyTypesUseCase>();
 #endregion
 
 

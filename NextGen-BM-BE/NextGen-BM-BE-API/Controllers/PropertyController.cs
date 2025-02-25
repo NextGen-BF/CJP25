@@ -102,8 +102,8 @@ namespace NextGen_BM_BE_API.Controllers
         [Route("property/type/all")]
         public async Task<IActionResult> GetPropertyTypes()
         {
-            await _propertyService.GetPropertyTypesAsync();
-            return Ok();
+            var types = await _propertyService.GetPropertyTypesAsync();
+            return Ok(types);
         }
     }
 };
