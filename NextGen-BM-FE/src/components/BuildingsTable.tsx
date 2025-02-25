@@ -6,6 +6,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Button, Divider, TextFie
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import "./scss/buildingTable.scss";
 import { useNavigate } from "react-router-dom";
+import { PropertyType } from "../models/property";
 
 const BuildingsTable: FC = () => {
   const dispatch = useAppDispatch();
@@ -51,6 +52,12 @@ const BuildingsTable: FC = () => {
       width: 180,
       type: "boolean",
     },
+    {
+      field: "propertyType",
+      headerName: "Property Type",
+      width: 150,
+      valueGetter: (propertyType:PropertyType) => propertyType.title
+    }
   ]
 
   const expensesColumns: GridColDef[] = [
