@@ -11,14 +11,16 @@ import {
 } from "@mui/x-data-grid";
 import { Check, X, Pencil, DeleteIcon } from "lucide-react";
 import { Button } from "@mui/material";
-import { useAppDispatch } from "../redux/store";
+import { RootState, useAppDispatch } from "../redux/store";
 import {
   addProperty,
   removeProperty,
   updateProperty,
 } from "../redux/slices/propertySlice";
-import { Property } from "../models/property";
+import { Property, PropertyType } from "../models/property";
 import { editableTableConstants } from "../constants/constants";
+import { getPropertyTypes } from "../redux/services/propertyService";
+import { useSelector } from "react-redux";
 
 declare module "@mui/x-data-grid" {
   interface ToolbarPropsOverrides {
@@ -33,11 +35,15 @@ export default function EditableTable() {
   const dispatch = useAppDispatch();
   const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const propertyTypes: PropertyType[] = useSelector(
+    (state: RootState) => state.propertyReducer.types,
+  );
 
   function EditToolbar(props: GridSlotProps["toolbar"]) {
     const { setRows, setRowModesModel } = props;
 
     const handleClick = () => {
+      dispatch(getPropertyTypes());
       let newRow: Property = {
         propertyId: 0,
         propertyNumber: rows.length + 1,
@@ -48,6 +54,11 @@ export default function EditableTable() {
         entranceIsExternal: true,
         payments: null,
         residentHistory: null,
+        propertyType: {
+          typeId: 0,
+          title: "",
+          description: ""
+        }
       };
       setRows((oldRows) => [...oldRows, newRow]);
       setRowModesModel((oldModel) => ({
@@ -68,6 +79,7 @@ export default function EditableTable() {
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = newRow as Property;
+    updatedRow.propertyType=propertyTypes.find((type)=>type.typeId==newRow.propertyType)??{typeId:0, title:"", description:""}
     setRows((prevRows) =>
       prevRows.map((row) =>
         row.propertyNumber === updatedRow.propertyNumber ? updatedRow : row,
@@ -132,6 +144,17 @@ export default function EditableTable() {
       width: 180,
       editable: true,
       type: "boolean",
+    },
+    {
+      field: "propertyType",
+      headerName: "Property Type",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: propertyTypes,
+      getOptionLabel: (value) => (value as PropertyType)?.title,
+      getOptionValue: (value) => (value as PropertyType)?.typeId,
+      valueFormatter: (propertyType:PropertyType) => propertyType?.title
     },
     {
       field: "actions",

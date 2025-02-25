@@ -56,7 +56,7 @@ const BuildingsTable: FC = () => {
       field: "propertyType",
       headerName: "Property Type",
       width: 150,
-      valueGetter: (propertyType:PropertyType) => propertyType.title
+      valueGetter: (propertyType:PropertyType) => propertyType?.title
     }
   ]
 
