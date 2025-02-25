@@ -12,33 +12,34 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         private readonly DataContext _dataContext;
         public RequestRepository(DataContext dataContext)
         {
-            _dataContext=dataContext;
-        } 
-        public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
+            _dataContext = dataContext;
+        }
+        public async Task<RepairRequest> CreateRepairRequestAsync(RepairRequest repairRequest)
         {
             try
             {
                 await _dataContext.RepairRequests.AddAsync(repairRequest);
                 await _dataContext.SaveChangesAsync();
+                return repairRequest;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this request");
+                throw new Exception("Couldn't create this request", exception);
             }
         }
 
         public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
             try
-            {   
+            {
                 await _dataContext.RequestNotes.AddAsync(requestNotes);
                 await _dataContext.SaveChangesAsync();
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this note");
+                throw new Exception("Couldn't create this note", exception);
             }
         }
 
@@ -52,7 +53,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this request");
+                throw new Exception("Couldn't create this request", exception);
             }
         }
 
@@ -71,7 +72,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't delete this request");
+                throw new Exception("Couldn't delete this request", exception);
             }
         }
 
@@ -92,7 +93,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't delete this note");
+                throw new Exception("Couldn't delete this note", exception);
             }
         }
 
@@ -100,17 +101,18 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext.RepairRequests
-                    .Where(request=>request.RepairRequestId==requestId&&request.DeletedDate==null)
-                    .Include(request=>request.Notes)
-                    .Include(request=>request.RequestStatus)
+                var request = await _dataContext.RepairRequests
+                    .Where(request => request.RepairRequestId == requestId && request.DeletedDate == null)
+                    .Include(request => request.Notes)
+                    .Include(request => request.RequestStatus)
                     .AsNoTracking()
                     .SingleOrDefaultAsync();
+                return request;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this request");
+                throw new Exception("Couldn't retrieve data for this request", exception);
             }
         }
 
@@ -119,15 +121,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 return await _dataContext.RepairRequests
-                    .Where(request=>request.BuildingId==buildingId&&request.DeletedDate==null)
-                    .Include(request=>request.Notes)
-                    .Include(request=>request.RequestStatus)
+                    .Where(request => request.BuildingId == buildingId && request.DeletedDate == null)
+                    .Include(request => request.Notes)
+                    .Include(request => request.RequestStatus)
                     .ToListAsync();
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this building's requests");
+                throw new Exception("Couldn't retrieve data for this building's requests", exception);
             }
         }
 
@@ -136,15 +138,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 return await _dataContext.UserBuildings
-                    .Where(userBuilding=>userBuilding.BuildingId==buildingId&&userBuilding.DeletedDate==null)
-                    .Include(userBuildings=>userBuildings.Role)
+                    .Where(userBuilding => userBuilding.BuildingId == buildingId && userBuilding.DeletedDate == null)
+                    .Include(userBuildings => userBuildings.Role)
                     .AsNoTracking()
                     .ToListAsync();
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this building's requests");
+                throw new Exception("Couldn't retrieve data for this building's requests", exception);
             }
         }
 
@@ -158,7 +160,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't update this request");
+                throw new Exception("Couldn't update this request", exception);
             }
         }
 
@@ -172,7 +174,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't update this note");
+                throw new Exception("Couldn't update this note", exception);
             }
         }
     }

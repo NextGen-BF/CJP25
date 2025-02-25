@@ -13,7 +13,6 @@ const FileUploadButton: FC = () => {
   const [error, setError] = useState("");
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    console.log(documents);
     if (!file) return;
     if (e.target.files) {
       if (e.target.files[0].size > 10000000) {

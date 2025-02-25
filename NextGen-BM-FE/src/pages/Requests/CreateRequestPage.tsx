@@ -15,6 +15,7 @@ import {
 import { transformRequest } from "../../utils/requestConverter";
 import { useNavigate } from "react-router-dom";
 import { createRepairRequest } from "../../redux/services/requestService";
+import { uploadFile } from "../../redux/services/documentService";
 
 const CreateRequestPage: FC = () => {
   const navigate = useNavigate();
@@ -48,16 +49,29 @@ const CreateRequestPage: FC = () => {
   }, [selectedRequestType, user]);
 
   const onSubmit: SubmitHandler<createRequest> = async (data) => {
-    if (data.requestType == "Repair") {
-      const repairRequest = transformRequest(data);
-      if (repairRequest && "requestId" in repairRequest) {
-        dispatch(createRepairRequest(repairRequest));
-        console.log(repairRequest);
+    try {
+      if (data.requestType == "Repair") {
+        const repairRequest = transformRequest(data);
+        let files = new FormData();
+        if (repairRequest && "requestId" in repairRequest) {
+          documents.value.forEach((doc) => {
+            files.append("files", doc);
+          });
+          var request = await dispatch(
+            createRepairRequest(repairRequest),
+          ).unwrap();
+          await dispatch(
+            uploadFile({
+              files: files,
+              requestId: request.requestId,
+              requestType: data.requestType,
+            }),
+          ).unwrap();
+        }
+      } else {
+        const buildingRequest = transformRequest(data);
       }
-    } else {
-      const buildingRequest = transformRequest(data);
-      console.log(buildingRequest);
-    }
+    } catch (error) {}
   };
 
   return (

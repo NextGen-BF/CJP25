@@ -16,5 +16,6 @@ public class RepairRequest
     public Building? Building { get; set; }
     public Enums? RequestStatus { get; set; }
     public User? User { get; set; }
+    public List<RequestFiles>? Files { get; set; }
     public ICollection<RequestNotes>? Notes { get; set; }
 }

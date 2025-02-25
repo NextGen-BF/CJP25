@@ -10,6 +10,7 @@ export interface RepairRequest {
   dateSettled: Date | null;
   notes: RequestNotes[] | null;
   buildingId: number;
+  files: FormData | null;
 }
 
 export interface RequestNotes {

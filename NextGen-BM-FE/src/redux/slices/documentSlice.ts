@@ -13,7 +13,6 @@ const documentSlice = createSlice({
   initialState,
   reducers: {
     addDocument: (state, action: PayloadAction<File>) => {
-      console.log(action.payload);
       state.value = [...state.value, action.payload];
     },
     removeDocument: (state, action: PayloadAction<File>) => {

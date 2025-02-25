@@ -13,7 +13,6 @@ interface UserSignupData {
 export const signupCall = createAsyncThunk(
   "account/register",
   async (data: UserSignupData, thunkAPI) => {
-    console.log(data);
     return axios
       .post(`${apiURL}/account/register`, data)
       .then(function (response) {

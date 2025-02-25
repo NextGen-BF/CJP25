@@ -1,13 +1,12 @@
-
-
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.ViewModels;
 
-namespace NextGen_BM_BE_Domain.Services{
+namespace NextGen_BM_BE_Domain.Services
+{
     public interface IRequestService
     {
-        Task CreateRepairRequestAsync(RepairRequestViewModel repairRequest);
+        Task<RepairRequestViewModel> CreateRepairRequestAsync(RepairRequestViewModel repairRequest);
         Task CreateRequestNoteAsync(RequestNotesViewModel requestNotes);
         Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings);
         Task DeleteRepairRequestNoteAsync(int requestNoteId);
@@ -17,6 +16,6 @@ namespace NextGen_BM_BE_Domain.Services{
         Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId);
         Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequest);
         Task UpdateRequestNoteAsync(RequestNotesViewModel requestNote);
-        }
+    }
 
 }

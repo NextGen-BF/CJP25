@@ -21,6 +21,7 @@ export function transformRequest(
       dateSettled: null,
       notes: null,
       buildingId: request.buildingId,
+      files: null,
     };
   } else if (request.requestType == "Building Property Link") {
     return {

@@ -1,13 +1,28 @@
-import aws from "aws-sdk";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios, { AxiosError } from "axios";
+import { apiURL } from "../../api/shared";
 
-const bucketName = import.meta.env.VITE_BUCKET_NAME;
-
-const bucket = new aws.S3({
-  region: import.meta.env.VITE_BUCKET_REGION,
-  accessKeyId: import.meta.env.VITE_BUCKET_ACCESS_KEY,
-  secretAccessKey: import.meta.env.VITE_BUCKET_SECRET_KEY,
-});
-
-export const uploadFile = createAsyncThunk
-
+export const uploadFile = createAsyncThunk(
+  "documents/upload",
+  async (
+    data: { files: FormData; requestId: number; requestType: string },
+    thunkAPI,
+  ) => {
+    data.files.append("requestType", data.requestType);
+    return await axios
+      .post(`${apiURL}/request/document/upload/${data.requestId}`, data.files, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
+        },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+          return thunkAPI.rejectWithValue(err.response?.data);
+        }
+        return thunkAPI.rejectWithValue(err);
+      });
+  },
+);

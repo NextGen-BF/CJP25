@@ -53,7 +53,6 @@ const LoginPage: FC = () => {
   useEffect(() => {
     if (googleLoginTokens?.access_token)
       dispatch(loginWithGoogleCall(googleLoginTokens.id_token));
-    console.log(googleLoginTokens);
   }, [googleLoginTokens]);
 
   const GoogleAuthProvider = useGoogleLogin({

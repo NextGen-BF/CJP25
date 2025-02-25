@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,11 +25,14 @@ using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 //Setup in user secrets
 string connectionString =
@@ -48,6 +52,7 @@ builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();

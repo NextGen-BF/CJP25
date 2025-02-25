@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace NextGen_BM_BE_Domain.ViewModels
 {
     public class RepairRequestViewModel
@@ -9,6 +11,7 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public required RequestStatusViewModel Status { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly? DateSettled { get; set; }
+        public List<IFormFile>? Files { get; set; }
         public List<RequestNotesViewModel>? Notes { get; set; }
     }
 }

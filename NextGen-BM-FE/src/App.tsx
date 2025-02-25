@@ -1,3 +1,4 @@
+import "./utils/init.ts";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -48,8 +49,14 @@ const App: FC = () => {
         <Route path="/building" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
         <Route path="/property/fees" element={<PropertyFeesPage />} />
-        <Route path="/create/propertypayments" element={<CreatePropertyPaymentsPage />}/>
-        <Route path="/create/propertyexpense" element={<CreatePropertyExpensePage />}/>
+        <Route
+          path="/create/propertypayments"
+          element={<CreatePropertyPaymentsPage />}
+        />
+        <Route
+          path="/create/propertyexpense"
+          element={<CreatePropertyExpensePage />}
+        />
         <Route path="/payment" element={<PaymentPage />} />
       </Route>,
     ),
