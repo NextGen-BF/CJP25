@@ -108,20 +108,8 @@ namespace NextGen_BM_BE_Application.Mapper
                     opt => opt.MapFrom(src => src.ResidentHistory)
                 );
 
-            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
-                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate))
-                .ForPath(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Title))
-                .ForPath(
-                    dest => dest.PaymentMethod,
-                    opt => opt.MapFrom(src => src.PaymentMethod.Title)
-                );
-            CreateMap<PropertyPaymentsViewModel, PropertyPayments>()
-                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate))
-                .ForPath(dest => dest.Status.Title, opt => opt.MapFrom(src => src.Status))
-                .ForPath(
-                    dest => dest.PaymentMethod.Title,
-                    opt => opt.MapFrom(src => src.PaymentMethod)
-                );
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>();
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>();
 
             CreateMap<PropertyResidents, ResidentHistoryViewModel>();
             CreateMap<ResidentHistoryViewModel, PropertyResidents>();
