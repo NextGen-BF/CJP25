@@ -36,5 +36,5 @@ export interface PropertyExpense{
     price:number;
     startDate: Date;
     endDate: Date;
-    Description: string;
+    description: string;
 }

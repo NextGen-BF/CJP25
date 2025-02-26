@@ -1,8 +1,15 @@
 import { FC, useEffect, useState } from "react";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Property, PropertyPayments } from "../../models/property";
-import { createPropertyPayment } from "../../redux/services/expenseService";
+import {
+  Property,
+  PropertyExpense,
+  PropertyPayments,
+} from "../../models/property";
+import {
+  createPropertyPayment,
+  getPropertyExpensesByBuildingId,
+} from "../../redux/services/expenseService";
 import { setSnackbar } from "../../redux/slices/snackbarSlice";
 import {
   ErrorSnackbarConstants,
@@ -27,35 +34,56 @@ import { getBuildingsByUserId } from "../../redux/services/buildingService";
 const CreatePropertyPaymentsPage: FC = () => {
   const dispatch = useAppDispatch();
 
-  const userId = useSelector((state: RootState) => state.loginReducer.value.userId);
+  const userId = useSelector(
+    (state: RootState) => state.loginReducer.value.userId,
+  );
 
   useEffect(() => {
-    if (userId)
-      dispatch(getBuildingsByUserId(userId));
+    if (userId) dispatch(getBuildingsByUserId(userId));
   }, [dispatch, userId]);
 
-const buildings: Building[] = useSelector(
-  (state: RootState) => state.buildingReducer.value,
-);
-const buildingList = buildings
-  ? buildings.map((building) => (
-      <MenuItem key={building.buildingId} value={building.buildingId}>
-        {building.alias}
-      </MenuItem>
-    ))
-  : [];
+  const buildings: Building[] = useSelector(
+    (state: RootState) => state.buildingReducer.value,
+  );
+  const buildingList = buildings
+    ? buildings.map((building) => (
+        <MenuItem key={building.buildingId} value={building.buildingId}>
+          {building.alias}
+        </MenuItem>
+      ))
+    : [];
 
   const [selectedBuilding, setSelectedBuilding] = useState<number | "">("");
   const [buildingProperties, setBuildingProperties] = useState<Property[]>([]);
   const [selectedProperty, setSelectedProperty] = useState<number | "">("");
+  const [propertyExpenses, setPropertyExpenses] = useState<PropertyExpense[]>(
+    [],
+  );
+  const [selectedExpense, setSelectedExpense] = useState<number>(0);
+
+  useEffect(() => {
+    if (selectedBuilding !== "") {
+      dispatch(getPropertyExpensesByBuildingId(selectedBuilding))
+        .then((response) => {
+          setPropertyExpenses(response.payload);
+        })
+        .catch(() => {
+          setPropertyExpenses([]);
+        });
+    }
+  }, [selectedBuilding, dispatch]);
 
   const handleBuildingChange = (event: SelectChangeEvent<number>) => {
     const buildingId = Number(event.target.value);
     setSelectedBuilding(buildingId);
 
-    const selectedBuildingWithProperties = buildings.find((building) => building.buildingId === buildingId);
+    const selectedBuildingWithProperties = buildings.find(
+      (building) => building.buildingId === buildingId,
+    );
     if (selectedBuildingWithProperties) {
-      setBuildingProperties(selectedBuildingWithProperties.buildingProperties ?? []); 
+      setBuildingProperties(
+        selectedBuildingWithProperties.buildingProperties ?? [],
+      );
     } else {
       setBuildingProperties([]);
     }
@@ -64,7 +92,6 @@ const buildingList = buildings
   const handlePropertyChange = (event: SelectChangeEvent<number>) => {
     setSelectedProperty(Number(event.target.value));
   };
-
 
   const {
     register,
@@ -106,11 +133,9 @@ const buildingList = buildings
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormControl fullWidth>
-            <InputLabel id="building-select-label">
-              Building
-            </InputLabel>
+            <InputLabel id="building-select-label">Building</InputLabel>
             <Select
-              labelId="people-select-label"
+              labelId="building-select-label"
               value={selectedBuilding}
               onChange={handleBuildingChange}
             >
@@ -118,22 +143,45 @@ const buildingList = buildings
             </Select>
           </FormControl>
 
-        {selectedBuilding !== "" && buildingProperties.length > 0 && (
-        <FormControl fullWidth>
-          <InputLabel id="interest-select-label">Property</InputLabel>
-          <Select
-            labelId="interest-select-label"
-            value={selectedProperty}
-            onChange={handlePropertyChange}
-          >
-            {buildingProperties.map((property, index) => (
-              <MenuItem key={index} value={property.propertyNumber}>
-                {property.propertyNumber}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
+          {selectedBuilding !== "" && buildingProperties.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="property-select-label">Property</InputLabel>
+              <Select
+                labelId="property-select-label"
+                value={selectedProperty}
+                onChange={handlePropertyChange}
+              >
+                {buildingProperties.map((property) => (
+                  <MenuItem
+                    key={property.propertyId}
+                    value={property.propertyNumber}
+                  >
+                    {property.propertyNumber}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          {selectedBuilding !== "" && propertyExpenses.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="property-expense-select-label">Property Expense</InputLabel>
+              <Select
+                labelId="property-expense-select-label"
+                value={selectedExpense}
+                onChange={(e) => setSelectedExpense(e.target.value as number)}
+              >
+                {propertyExpenses.map((propertyExpense) => (
+                  <MenuItem
+                    key={propertyExpense.propertyExpenseId}
+                    value={propertyExpense.description}
+                  >
+                    {propertyExpense.description}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
 
           <TextField
             {...register("amountOwed", {
