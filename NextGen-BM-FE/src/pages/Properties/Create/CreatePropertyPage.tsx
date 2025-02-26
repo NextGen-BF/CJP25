@@ -6,13 +6,14 @@ import { createProperty, getPropertyTypes } from "../../../redux/services/proper
 import TextField from "@mui/material/TextField";
 import { Button, MenuItem } from "@mui/material";
 import { Building } from "../../../models/building";
-import { getAllBuildings } from "../../../redux/services/buildingService";
+import { getAllBuildings, getBuildingsByUserId } from "../../../redux/services/buildingService";
 import { useSelector } from "react-redux";
 import "./createPropertyPage.scss";
 import { CreatePropertyInput } from "./CreatePropertyControlledInput";
 import { createPropertyPageStyles } from "./CreatePropertyPageStyles";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice";
 import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import { createPropertyPageConstants, propertyFormConstants } from "../../../constants/createPropertyConstants.ts";
 
 const textFieldInputProps = [
   {
@@ -73,6 +74,9 @@ const CreatePropertyPage: FC = () => {
   const propertyTypes: PropertyType[] = useSelector(
     (state: RootState) => state.propertyReducer.types,
   );
+  const userId: number = useSelector(
+    (state: RootState) => state.loginReducer.value.userId,
+  );
   const buildingList = buildings
     ? buildings.map((building) => (
         <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
@@ -93,7 +97,7 @@ const CreatePropertyPage: FC = () => {
 
   return (
     <div>
-      <h1>Add a new property</h1>
+      <h1>{createPropertyPageConstants.pageTitle}</h1>
 
       <form className="create-property-form" onSubmit={handleSubmit(onSubmit)}>
       <Controller
@@ -141,7 +145,7 @@ const CreatePropertyPage: FC = () => {
               label="Building"
               size="small"
               //should eventually only return the manager's buildings
-              onFocus={() => dispatch(getAllBuildings())}
+              onFocus={() => dispatch(getBuildingsByUserId(userId))}
             >
               {buildingList}
             </TextField>
@@ -152,7 +156,7 @@ const CreatePropertyPage: FC = () => {
           type="submit"
           variant="contained"
         >
-          Create Property
+          {propertyFormConstants.submitButton}
         </Button>
       </form>
     </div>
