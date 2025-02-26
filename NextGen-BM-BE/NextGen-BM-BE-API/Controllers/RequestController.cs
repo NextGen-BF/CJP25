@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
@@ -9,6 +10,7 @@ namespace NextGen_BM_BE_API.Controllers{
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class RequestController: ControllerBase {
 
     private readonly IRequestService _requestService;
@@ -18,6 +20,7 @@ public class RequestController: ControllerBase {
     }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
+    [Authorize(Policy = "Super For Building")]
     public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
     {
         var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
@@ -36,6 +39,7 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
+    [Authorize(Policy = "Super For Building")]
     public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
     {
         var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
@@ -45,6 +49,7 @@ public class RequestController: ControllerBase {
 
     [HttpPost]
     [Route("repair/new")]
+    [Authorize(Policy = "User In Building")]
     public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModel)
     {
         await _requestService.CreateRepairRequestAsync(repairRequestViewModel);

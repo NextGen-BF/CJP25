@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
@@ -148,6 +149,26 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (Exception)
             {
                 throw new Exception($"Building with id of {building.BuildingId} was not found.");
+            }
+        }
+
+        public async Task<UserBuildings> GetUserBuildingsLink(int userId, int buildingId)
+        {
+            try
+            {
+                return await _dbContext.UserBuildings.Where(ub =>
+                        ub.User.Id == userId
+                        && ub.BuildingId == buildingId
+                        && ub.DeletedDate == null
+                        && ub.Approved
+                    )
+                    .Include(ub => ub.Role)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception($"UserBuilding with building id of {buildingId} and user id of {userId} was not found.");
             }
         }
     }
