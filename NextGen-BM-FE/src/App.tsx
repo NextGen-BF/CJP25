@@ -33,7 +33,7 @@ import { RootState } from "./redux/store";
 
 const App: FC = () => {
   const userId = useSelector((state: RootState) => state.loginReducer.value.userId);
-  console.log(userId);
+  
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
