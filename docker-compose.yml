@@ -10,6 +10,12 @@ services:
   depends_on:
    - backend
   env_file: "vite.env"
+  healthcheck:
+   test: "curl -o /dev/null --fail http://0.0.0.0:5173/ || exit 1"
+   interval: 30s
+   timeout: 30s
+   retries: 2
+   start_period: 60s
  backend:
   build: 
    dockerfile: "NextGen-BM-BE/Dockerfile"
@@ -19,6 +25,14 @@ services:
   volumes:
    - ~/.microsoft/usersecrets/346e6da5-0d5a-4edd-8a31-b014199b62dc:/root/.microsoft/usersecrets/346e6da5-0d5a-4edd-8a31-b014199b62dc
   env_file: "aspnet.env"
+  healthcheck:
+   test: "curl -k --fail https://0.0.0.0:7261/Health/check || exit 1"
+   interval: 30s
+   timeout: 30s
+   retries: 2
+   start_period: 60s
+
+
 
 
 

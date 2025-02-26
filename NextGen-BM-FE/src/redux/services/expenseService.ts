@@ -3,16 +3,13 @@ import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
 import { PropertyExpense } from "../../models/property";
 import { PropertyPayments } from "../../models/property";
+import axiosInstance from "./interceptors/authorizationInterceptors";
 
 export const getPropertyPaymentsByPropertyId = createAsyncThunk(
   "expense/getPropertyPaymentsByPropertyId",
   async (propertyId: number, thunkAPI) => {
-    return await axios
-      .get(`${apiURL}/expense/property/${propertyId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-        },
-      })
+    return await axiosInstance
+      .get(`${apiURL}/expense/property/${propertyId}`)
       .then(function (response) {
         return response.data;
       })

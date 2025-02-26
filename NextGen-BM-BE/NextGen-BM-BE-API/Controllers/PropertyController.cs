@@ -13,7 +13,6 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
@@ -25,6 +24,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetAllProperties()
         {
             var result = await _propertyService.GetAllPropertiesAsync();
@@ -35,6 +35,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{propertyId}")]
+        [Authorize(Policy = "Property User")]
         public async Task<IActionResult> GetPropertyById(int propertyId)
         {
             var result = await _propertyService.GetPropertyByIdAsync(propertyId);
@@ -55,6 +56,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("building/{buildingId}")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> GetPropertyByBuildingId(int buildingId)
         {
             var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
@@ -65,6 +67,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
+        [Authorize(Policy = "Super For Property Building")]
         public async Task<IActionResult> CreateProperty(PropertyViewModel propertyViewModel)
         {
             await _propertyService.CreatePropertyAsync(propertyViewModel);
@@ -77,6 +80,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
+        [Authorize(Policy = "Super For Property Building")]
         public async Task<IActionResult> UpdateProperty(PropertyViewModel propertyViewModel)
         {
             await _propertyService.UpdatePropertyAsync(propertyViewModel);
@@ -85,6 +89,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{propertyId}")]
+        [Authorize(Policy = "Super For Property Building")]
         public async Task<IActionResult> DeleteProperty(int propertyId)
         {
             await _propertyService.DeletePropertyAsync(propertyId);
@@ -93,6 +98,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("resident/delete/{propertyResidentId}")]
+        [Authorize(Policy = "Property Owner")]
         public async Task<IActionResult> DeletePropertyResident(int propertyResidentId)
         {
             await _propertyService.DeletePropertyResidentAsync(propertyResidentId);

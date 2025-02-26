@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NextGen_BM_BE_Application.AuthHandlers;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -48,6 +50,7 @@ builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
+builder.Services.AddScoped<GetUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
 builder.Services.AddScoped<GetPropertyExpensesByBuildingIdUseCase>();
@@ -91,6 +94,7 @@ builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
+builder.Services.AddScoped<GetPropertyUserLinkUseCase>();
 #endregion
 
 
@@ -160,9 +164,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
-    options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
+    options.AddPolicy("User In Building", policy => policy.AddRequirements(new BuildingResidentRequirement()));
+    options.AddPolicy("Super For Building", policy => policy.AddRequirements(new BuildingManagerRequirement("Super")));
+    options.AddPolicy("Super For Property Building", policy => policy.AddRequirements(new PropertyPermissionRequirement("Super")));
+    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner")));
+    options.AddPolicy("Property User", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner", "Tenant")));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
+builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, RequestCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyDeleteHandler>();
 #endregion
 
 #region Cors
