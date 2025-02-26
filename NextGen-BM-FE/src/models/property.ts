@@ -25,8 +25,8 @@ export interface PropertyPayments{
     amountOwed: number;
     dateOpened: Date;
     dueDate: Date;
-    status: string;
-    paymentMethod: string;
+    status?: string;
+    paymentMethod?: string;
 }
 
 export interface PropertyExpense{

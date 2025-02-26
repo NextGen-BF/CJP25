@@ -6,8 +6,8 @@ namespace NextGen_BM_BE_Domain.ViewModels
         public decimal AmountOwed { get; set; }
         public DateOnly DateOpened { get; set; }
         public DateOnly DueDate { get; set; }
-        public required string Status { get; set; }
-        public required string PaymentMethod { get; set; }
+        public string? Status { get; set; }
+        public string? PaymentMethod { get; set; }
         public int? PaymentParentId { get; set; }
     }
 }
