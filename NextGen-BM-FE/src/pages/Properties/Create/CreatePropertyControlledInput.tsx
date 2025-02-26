@@ -9,6 +9,7 @@ export interface InputProps{
     label: string,
     type: string,
     required: boolean,
+    rules: Object,
     control: Control
 }
 
@@ -17,7 +18,8 @@ export const CreatePropertyInput: FC<InputProps> = (props)=>{
         <Controller
           name={props.name}
           control={props.control}
-          render={({ field }) => (
+          rules={props.rules}
+          render={({ field, fieldState: { error }}) => (
             <TextField
             {...field}
             sx={createPropertyPageStyles.inputStyles}
@@ -26,6 +28,7 @@ export const CreatePropertyInput: FC<InputProps> = (props)=>{
             type={props.type}
             variant="outlined"
             size="small"
+            error={error!==undefined}
             />
           )}
         />

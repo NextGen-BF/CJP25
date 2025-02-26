@@ -6,7 +6,7 @@ import { createProperty, getPropertyTypes } from "../../../redux/services/proper
 import TextField from "@mui/material/TextField";
 import { Button, MenuItem } from "@mui/material";
 import { Building } from "../../../models/building";
-import { getAllBuildings, getBuildingsByUserId } from "../../../redux/services/buildingService";
+import { getBuildingsByUserId } from "../../../redux/services/buildingService";
 import { useSelector } from "react-redux";
 import "./createPropertyPage.scss";
 import { CreatePropertyInput } from "./CreatePropertyControlledInput";
@@ -15,36 +15,54 @@ import { setSnackbar } from "../../../redux/slices/snackbarSlice";
 import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 import { createPropertyPageConstants, propertyFormConstants } from "../../../constants/createPropertyConstants.ts";
 
-const textFieldInputProps = [
+const textFieldInputProps =(building:Building|undefined, type:PropertyType)=> [
   {
     name: "propertyNumber",
     label: "Property Number",
     type: "number",
     required: true,
+    rules:{
+      validate: (value:number)=>{
+        console.log(building, type);
+        return !(building?.buildingProperties?.find(p=>p.propertyNumber==value&&p.propertyType.typeId==type.typeId)) || "Number already in use"
+      }
+    }, 
   },
   {
     name: "floor",
     label: "Floor",
     type: "number",
     required: true,
+    rules:{
+      validate: (value:number)=>{
+        return building?.floorNum as number > value || "Invalid floor number"
+      }
+    }
   },
   {
     name: "size",
     label: "Size",
     type: "number",
     required: true,
+    rules:{
+      min: {value: 0, message: "oops"}
+    }
   },
   {
     name: "sizeOfIdealParts",
     label: "Size of ideal parts",
     type: "number",
     required: true,
+    rules:{
+      min:0,
+      max:100
+    }
   },
 ];
 
 const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { control, handleSubmit } = useForm<Property>();
+  const { getValues, control, handleSubmit, formState:{errors} } = useForm<Property>({mode: "onChange"});
   const onSubmit: SubmitHandler<Property> = async (data) => {
     data.propertyType = propertyTypes.find((type)=>type.typeId==data.propertyType.typeId)??{typeId:0, title:"", description:""}
     console.log(data);
@@ -85,14 +103,23 @@ const CreatePropertyPage: FC = () => {
   const typeList = propertyTypes.map((type) =>(
     <MenuItem value={type.typeId}>{type.title}</MenuItem>
   ));
-  const textInputFields = textFieldInputProps.map((props) => (
-    <CreatePropertyInput
-      name={props.name}
-      label={props.label}
-      type={props.type}
-      required={props.required}
-      control={control as unknown as Control}
-    />
+  const textInputFields = textFieldInputProps(buildings.find(b=>b.buildingId===getValues().buildingId),
+                                              getValues().propertyType).map((props) => (
+    <>
+      <CreatePropertyInput
+        name={props.name}
+        label={props.label}
+        type={props.type}
+        required={props.required}
+        rules={props.rules}
+        control={control as unknown as Control}
+      />
+      {(errors as any)[props.name] && (
+            <div className="error-message">
+              {(errors as any)[props.name].message}
+            </div>
+          )}
+    </>
   ));
 
   return (
