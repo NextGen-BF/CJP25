@@ -1,16 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
+import { PropertyExpense } from "../../models/property";
+import axiosInstance from "./interceptors/authorizationInterceptors";
 
 export const getPropertyPaymentsByPropertyId = createAsyncThunk(
   "expense/getPropertyPaymentsByPropertyId",
   async (propertyId: number, thunkAPI) => {
-    return await axios
-      .get(`${apiURL}/expense/property/${propertyId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-        },
-      })
+    return await axiosInstance
+      .get(`${apiURL}/expense/property/${propertyId}`)
       .then(function (response) {
         return response.data;
       })
@@ -26,12 +24,8 @@ export const getPropertyPaymentsByPropertyId = createAsyncThunk(
 export const getPropertyPaymentsByBuildingId = createAsyncThunk(
     "expense/getPropertyPaymentsByBuildingId",
     async (buildingId: number, thunkAPI) => {
-      return await axios
-        .get(`${apiURL}/expense/building/${buildingId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-          },
-        })
+      return await axiosInstance
+        .get(`${apiURL}/expense/building/${buildingId}`)
         .then(function (response) {
           return response.data;
         })
@@ -47,12 +41,8 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
   export const getPropertyPaymentsByUserId = createAsyncThunk(
     "expense/getPropertyPaymentsByUserId",
     async (userId: number, thunkAPI) => {
-      return await axios
-        .get(`${apiURL}/expense/user/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-          },
-        })
+      return await axiosInstance
+        .get(`${apiURL}/expense/user/${userId}`)
         .then(function (response) {
           return response.data;
         })
@@ -64,12 +54,9 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
         });
     },
   );
-import { PropertyExpense } from "../../models/property";
 
 export const createPropertyExpense=createAsyncThunk("expense/new", async(expense: PropertyExpense, thunkAPI)=> {
-  return await axios.post(`${apiURL}/expense/new`, expense, {headers: {
-      Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`
-  }})
+  return await axiosInstance.post(`${apiURL}/expense/new`, expense)
   .then(function(response){
       return response.data;
   }).catch((err: Error | AxiosError) => {

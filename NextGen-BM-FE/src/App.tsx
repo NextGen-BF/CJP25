@@ -44,14 +44,14 @@ const App: FC = () => {
         <Route path="/request" element={<ProtectedRoute element={<RequestPage />} userId={userId} />} />
         <Route path="/create/property" element={<ProtectedRoute element={<CreatePropertyPage />} userId={userId} />} />
         <Route path="/properties" element={<ProtectedRoute element={<PropertyListPage />} userId={userId} />} />
-        <Route path="/property" element={<ProtectedRoute element={<PropertyPage />} userId={userId} />} />
+        <Route path="/property/:id?" element={<ProtectedRoute element={<PropertyPage />} userId={userId} />} />
         <Route path="/property/residents" element={<ProtectedRoute element={<PropertyResidentsPage /> } userId={userId} />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/account" element={<ProtectedRoute element={<MyAccountPage />} userId={userId} />} />
         <Route path="/recover" element={<ProtectedRoute element={<AccountRecoveryPage />} userId={userId} />} />
         <Route path="/create/building" element={<ProtectedRoute element={<CreateBuildingPage />} userId={userId} />} />
         <Route path="/buildings" element={<ProtectedRoute element={<BuildingsListPage />} userId={userId} />} />
-        <Route path="/building" element={<ProtectedRoute element={<BuildingPage />} userId={userId} />} />
+        <Route path="/building/:id?" element={<ProtectedRoute element={<BuildingPage />} userId={userId} />} />
         <Route path="/building/expenses" element={<ProtectedRoute element={<BuildingExpensesPage />} userId={userId} />} />
         <Route path="/property/fees" element={<ProtectedRoute element={<PropertyFeesPage />} userId={userId} />} />
         <Route
