@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { useAppDispatch } from "../../redux/store";
+import { FC, useEffect, useState } from "react";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { PropertyPayments } from "../../models/property";
+import { Property, PropertyPayments } from "../../models/property";
 import { createPropertyPayment } from "../../redux/services/expenseService";
 import { setSnackbar } from "../../redux/slices/snackbarSlice";
 import {
@@ -9,12 +9,62 @@ import {
   SucessSnackbarConstants,
 } from "../../constants/snackbarConstants";
 import { createPropertyPaymentConstants } from "../../constants/constants";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
 import { formatDate } from "../../utils/globalFunctions";
+import { Building } from "../../models/building";
+import { useSelector } from "react-redux";
+import { getBuildingsByUserId } from "../../redux/services/buildingService";
 
 const CreatePropertyPaymentsPage: FC = () => {
   const dispatch = useAppDispatch();
+
+  const userId = useSelector((state: RootState) => state.loginReducer.value.userId);
+
+  useEffect(() => {
+    if (userId)
+      dispatch(getBuildingsByUserId(userId));
+  }, [dispatch, userId]);
+
+const buildings: Building[] = useSelector(
+  (state: RootState) => state.buildingReducer.value,
+);
+const buildingList = buildings
+  ? buildings.map((building) => (
+      <MenuItem key={building.buildingId} value={building.buildingId}>
+        {building.alias}
+      </MenuItem>
+    ))
+  : [];
+
+  const [selectedBuilding, setSelectedBuilding] = useState<number | "">("");
+  const [buildingProperties, setBuildingProperties] = useState<Property[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState<number | "">("");
+
+  const handleBuildingChange = (event: SelectChangeEvent<number>) => {
+    const buildingId = Number(event.target.value);
+    setSelectedBuilding(buildingId);
+
+    const selectedBuildingWithProperties = buildings.find((building) => building.buildingId === buildingId);
+    if (selectedBuildingWithProperties) {
+      setBuildingProperties(selectedBuildingWithProperties.buildingProperties ?? []); 
+    } else {
+      setBuildingProperties([]);
+    }
+  };
+
+  const handlePropertyChange = (event: SelectChangeEvent<number>) => {
+    setSelectedProperty(Number(event.target.value));
+  };
+
 
   const {
     register,
@@ -55,6 +105,36 @@ const CreatePropertyPaymentsPage: FC = () => {
           className="create-propertyExpense-form"
           onSubmit={handleSubmit(onSubmit)}
         >
+          <FormControl fullWidth>
+            <InputLabel id="building-select-label">
+              Building
+            </InputLabel>
+            <Select
+              labelId="people-select-label"
+              value={selectedBuilding}
+              onChange={handleBuildingChange}
+            >
+              {buildingList}
+            </Select>
+          </FormControl>
+
+        {selectedBuilding !== "" && buildingProperties.length > 0 && (
+        <FormControl fullWidth>
+          <InputLabel id="interest-select-label">Property</InputLabel>
+          <Select
+            labelId="interest-select-label"
+            value={selectedProperty}
+            onChange={handlePropertyChange}
+          >
+            {buildingProperties.map((property, index) => (
+              <MenuItem key={index} value={property.propertyNumber}>
+                {property.propertyNumber}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+
           <TextField
             {...register("amountOwed", {
               required: requiredErrors.amountOwed,
@@ -68,7 +148,7 @@ const CreatePropertyPaymentsPage: FC = () => {
             fullWidth
             slotProps={{
               input: {
-                endAdornment: <span>лв.</span>, 
+                endAdornment: <span>лв.</span>,
               },
             }}
           />

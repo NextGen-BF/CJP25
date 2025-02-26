@@ -46,6 +46,27 @@ export const getPropertyPaymentsByBuildingId = createAsyncThunk(
   },
 );
 
+export const getPropertyExpensesByBuildingId = createAsyncThunk(
+  "expense/getPropertyExpensesByBuildingId",
+  async (buildingId: number, thunkAPI) => {
+    return await axios
+      .get(`${apiURL}/expense/propertyexpense/${buildingId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
+        },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+          return thunkAPI.rejectWithValue(err.response?.data);
+        }
+        return thunkAPI.rejectWithValue(err);
+      });
+  },
+);
+
 export const getPropertyPaymentsByUserId = createAsyncThunk(
   "expense/getPropertyPaymentsByUserId",
   async (userId: number, thunkAPI) => {
@@ -91,12 +112,12 @@ export const createPropertyPayment = createAsyncThunk(
   `${apiURL}/expense/create/propertypayment`,
   async (payment: PropertyPayments, thunkAPI) => {
     return await axios
-    .post(`${apiURL}/expense/create/propertypayment`, payment, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-      },
-    })
-    .then(function (response) {
+      .post(`${apiURL}/expense/create/propertypayment`, payment, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
+        },
+      })
+      .then(function (response) {
         return response.data;
       })
       .catch((err: Error | AxiosError) => {
