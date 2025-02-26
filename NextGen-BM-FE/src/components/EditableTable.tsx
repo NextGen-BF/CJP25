@@ -45,7 +45,7 @@ export default function EditableTable() {
     const handleClick = () => {
       dispatch(getPropertyTypes());
       let newRow: Property = {
-        propertyId: 0,
+        propertyId: rows.length + 1,
         propertyNumber: rows.length + 1,
         buildingId: 0,
         size: 0,
@@ -82,7 +82,7 @@ export default function EditableTable() {
     updatedRow.propertyType=propertyTypes.find((type)=>type.typeId==newRow.propertyType)??{typeId:0, title:"", description:""}
     setRows((prevRows) =>
       prevRows.map((row) =>
-        row.propertyNumber === updatedRow.propertyNumber ? updatedRow : row,
+        row.propertyId === updatedRow.propertyId ? updatedRow : row,
       ),
     );
     dispatch(updateProperty(updatedRow));
@@ -105,7 +105,7 @@ export default function EditableTable() {
   };
 
   const handleDeleteClick = (id: number) => () => {
-    let row = rows.filter((row) => row.propertyNumber !== id);
+    let row = rows.filter((row) => row.propertyId !== id);
     setRows(row);
     dispatch(removeProperty(row[0]));
   };
@@ -197,7 +197,7 @@ export default function EditableTable() {
     <div>
       <DataGrid
         rows={rows}
-        getRowId={(row) => row.propertyNumber}
+        getRowId={(row) => row.propertyId}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

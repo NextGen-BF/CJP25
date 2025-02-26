@@ -34,7 +34,23 @@ const CreateBuildingPage: FC = () => {
   });
 
   const onSubmit: SubmitHandler<Building> = async (data) => {
-    data.buildingProperties = buildingProperties;
+    data.buildingProperties = buildingProperties.map((property)=>
+      {
+        const newProperty={
+          propertyId: 0,
+          propertyNumber: property.propertyNumber,
+          buildingId: 0,
+          size: property.size,
+          floor: property.floor,
+          sizeOfIdealParts: property.sizeOfIdealParts,
+          entranceIsExternal: property.entranceIsExternal,
+          payments: null,
+          residentHistory: null,
+          propertyType: property.propertyType
+          }
+        return newProperty;
+      }
+    );
     data.userBuildings = [
       {
         userBuildingsId: 0,
