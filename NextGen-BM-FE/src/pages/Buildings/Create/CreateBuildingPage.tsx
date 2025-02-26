@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createBuildingConstants } from "../../../constants/constants";
@@ -13,12 +13,17 @@ import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice";
 import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 import { useNavigate } from "react-router-dom";
+import { resetProperties } from "../../../redux/slices/propertySlice";
 
 const CreateBuildingPage: FC = () => {
   const userId = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+        dispatch(resetProperties());
+      }, []);
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
   );

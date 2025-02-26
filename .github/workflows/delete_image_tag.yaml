@@ -1,0 +1,41 @@
+name: 'Delete Container Image Tag'
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Container Image Tag to Delete'
+        required: true
+        type: string
+      service:
+        description: 'Select the service: frontend or backend'
+        required: true
+        type: string
+        default: frontend
+
+env:
+  PACKAGE_NAME: cjp25-${{ github.event.inputs.service }}
+
+jobs:
+  print-inputs-and-env:
+  # Remove when https://github.com/orgs/community/discussions/49648 is delivered
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Workflow Dispatch Inputs and Env Vars
+        uses: shayki5/print-workflow-dispatch-inputs@v1
+        with:
+          print_env_vars: 'true'  # Set to 'true' to print environment variables
+          add_to_summary: 'true'  # Set to 'true' to add inputs to GitHub Summary
+
+  purge-image:
+    name: Delete image from ghcr.io
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: chipkent/action-cleanup-package@v1.0.1
+        with:
+          package-name: ${{ env.PACKAGE_NAME }}
+          tag: ${{ inputs.image_tag }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
