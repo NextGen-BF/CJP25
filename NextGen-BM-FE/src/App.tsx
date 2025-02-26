@@ -39,14 +39,14 @@ const App: FC = () => {
         <Route path="/request" element={<RequestPage />} />
         <Route path="/create/property" element={<CreatePropertyPage />} />
         <Route path="/properties" element={<PropertyListPage />} />
-        <Route path="/property" element={<PropertyPage />} />
+        <Route path="/property/:id?" element={<PropertyPage />} />
         <Route path="/property/residents" element={<PropertyResidentsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/account" element={<MyAccountPage />} />
         <Route path="/recover" element={<AccountRecoveryPage />} />
         <Route path="/create/building" element={<CreateBuildingPage />} />
         <Route path="/buildings" element={<BuildingsListPage />} />
-        <Route path="/building" element={<BuildingPage />} />
+        <Route path="/building/:id?" element={<BuildingPage />} />
         <Route path="/building/expenses" element={<BuildingExpensesPage />} />
         <Route path="/property/fees" element={<PropertyFeesPage />} />
         <Route

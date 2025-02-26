@@ -1,0 +1,74 @@
+name: Build and Push Container Image
+
+on:
+  push:
+    tags:
+      - "frontend-v*"
+      - "backend-v*"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Determine Build Target
+        id: build_target
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/frontend-v* ]]; then
+            echo "SERVICE=frontend" >> $GITHUB_ENV
+            echo "CONTEXT=./NextGen-BM-FE" >> $GITHUB_ENV
+            echo "VERSION=${GITHUB_REF#refs/tags/frontend-v}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == refs/tags/backend-v* ]]; then
+            echo "SERVICE=backend" >> $GITHUB_ENV
+            echo "CONTEXT=./NextGen-BM-BE" >> $GITHUB_ENV
+            echo "VERSION=${GITHUB_REF#refs/tags/backend-v}" >> $GITHUB_ENV
+          else
+            echo "Tag does not match expected patterns."
+            exit 1
+          fi
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ env.SERVICE }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ env.VERSION }}
+          labels: |
+            org.opencontainers.image.title=CJP ${{ env.SERVICE }}
+            org.opencontainers.image.description=CJP ${{ env.SERVICE }} Service
+            org.opencontainers.image.vendor=Blankfactor LLC
+
+      - name: Build and push
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ env.CONTEXT }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
