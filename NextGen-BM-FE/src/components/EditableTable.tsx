@@ -8,6 +8,7 @@ import {
   GridActionsCellItem,
   GridToolbarContainer,
   GridSlotProps,
+  GridPreProcessEditCellProps,
 } from "@mui/x-data-grid";
 import { Check, X, Pencil, DeleteIcon } from "lucide-react";
 import { Button } from "@mui/material";
@@ -116,6 +117,13 @@ export default function EditableTable() {
       headerName: "Property Number",
       width: 150,
       editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = rows.find(p=>p.propertyId!=params.id
+                                  &&p.propertyNumber==params.props.value
+                                  &&params.otherFieldsProps&&params.otherFieldsProps["propertyType"].value==p.propertyType.typeId);
+        console.log(params.row)
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "size",
@@ -123,6 +131,10 @@ export default function EditableTable() {
       width: 120,
       editable: true,
       type: "number",
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0;
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "floor",
@@ -137,6 +149,10 @@ export default function EditableTable() {
       width: 180,
       editable: true,
       type: "number",
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0 || params.props.value > 100;
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "entranceIsExternal",
@@ -208,6 +224,7 @@ export default function EditableTable() {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        onProcessRowUpdateError={(error)=>console.log(error.message)}
       />
     </div>
   );

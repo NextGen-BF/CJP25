@@ -27,5 +27,7 @@ export const valueErrors = {
   endDateBeforeStartDate: "End date cannot be before start date!",
   priceNegative: "Price cannot be negative!",
   propertySizeNegative: "Property size can't be negative!",
-  propertySizeOfIdealParts: "The size of ideal parts is in % (between 0 and 100)!"
+  propertySizeOfIdealParts: "The size of ideal parts is in % (between 0 and 100)!",
+  propertyNumberTaken: "Number already in use!",
+  propertyInvalidFloor: "Invalid floor number"
 };
