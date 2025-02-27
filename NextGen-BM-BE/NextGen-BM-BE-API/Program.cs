@@ -53,10 +53,12 @@ builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
 builder.Services.AddScoped<GetUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
+builder.Services.AddScoped<GetPropertyExpensesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByPropertyIdUseCase>();
 builder.Services.AddScoped<CreateExpensesUseCase>();
+builder.Services.AddScoped<CreatePropertyPaymentsUseCase>();
 builder.Services.AddScoped<CreatePropertyPaymentsForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();

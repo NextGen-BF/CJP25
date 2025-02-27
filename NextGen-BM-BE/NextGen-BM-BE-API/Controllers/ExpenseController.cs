@@ -59,6 +59,15 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(propertyPaymentsByBuildingId);
         }
 
+        [HttpGet]
+        [Route("propertyexpense/{buildingid}")]
+        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid)
+        {
+            var propertyExpensesByBuildingId =
+                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid);
+            return Ok(propertyExpensesByBuildingId);
+        }
+
         [HttpPost]
         [Route("new")]
         [Authorize(Policy = "Super")]
@@ -66,6 +75,16 @@ namespace NextGen_BM_BE_API.Controllers
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
             return Ok(propertyExpense);
+        }
+
+        [HttpPost]
+        [Route("create/propertypayment")]
+        public async Task<IActionResult> CreatePropertyPayment(
+            PropertyPaymentsViewModel propertyPayment
+        )
+        {
+            await _expensesService.CreatePropertyPaymentsAsync(propertyPayment);
+            return Ok(propertyPayment);
         }
 
         [HttpPost]

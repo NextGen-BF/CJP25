@@ -508,6 +508,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyExpenseTemplateId"));
 
+                    b.Property<int>("BuildingId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
@@ -522,6 +525,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PropertyExpenseTemplateId");
+
+                    b.HasIndex("BuildingId");
 
                     b.HasIndex("RepeatPeriodId");
 
@@ -926,11 +931,19 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyExpenseTemplate", b =>
                 {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
+                        .WithMany("PropertyExpenseTemplates")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "RepeatPeriod")
                         .WithMany()
                         .HasForeignKey("RepeatPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Building");
 
                     b.Navigation("RepeatPeriod");
                 });
@@ -1008,6 +1021,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Navigation("BuildingExpenses");
 
                     b.Navigation("Properties");
+
+                    b.Navigation("PropertyExpenseTemplates");
 
                     b.Navigation("RepairRequests");
 

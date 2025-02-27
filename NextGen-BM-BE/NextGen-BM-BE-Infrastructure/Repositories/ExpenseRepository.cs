@@ -24,7 +24,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     .Property.Where(p =>
                         propertyIds.Contains(p.PropertyId) && p.DeletedDate == null
                     )
-                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
+                    .Include(p => p.Payments)
                     .ToListAsync();
                 if (properties.Any())
                 {
@@ -75,6 +75,32 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
+        public async Task CreatePropertyPaymentsAsync(PropertyPayments propertyPayment)
+        {
+            try
+            {
+                if (propertyPayment.PropertyExpenseId == 0)
+                {
+                    propertyPayment.PropertyExpenseId = _dbContext
+                        .PropertyExpense.First()
+                        .PropertyExpenseId;
+                }
+                if (propertyPayment.PropertyId == 0)
+                {
+                    propertyPayment.PropertyId = _dbContext.Property.First().PropertyId;
+                }
+                await _dbContext.PropertyPayments.AddAsync(propertyPayment);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"{nameof(CreatePropertyPaymentsAsync)} threw an error of: ",
+                    ex
+                );
+            }
+        }
+
         public async Task DeletePropertyExpenseAsync(int propertyExpenseId)
         {
             try
@@ -108,7 +134,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 List<Property> propertiesByBuildingId = await _dbContext
                     .Property.Where(p => p.BuildingId == buildingId && p.DeletedDate == null)
-                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
+                    .Include(p => p.Payments)
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -135,8 +161,9 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             try
             {
                 PropertyExpense? foundPropertyExpense = await _dbContext
-                    .PropertyExpense.AsNoTracking()
-                    .Where(p => p.PropertyExpenseId == propertyExpenseId && p.DeletedDate == null)
+                    .PropertyExpense.Where(p =>
+                        p.PropertyExpenseId == propertyExpenseId && p.DeletedDate == null
+                    )
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
                 if (foundPropertyExpense is null)
@@ -151,6 +178,36 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
+        public async Task<List<PropertyExpense>> GetPropertyExpensesByBuildingIdAsync(
+            int buildingId
+        )
+        {
+            try
+            {
+                List<PropertyExpense> propertyExpensesByBuildingId = await _dbContext
+                    .PropertyExpense.Where(p => p.DeletedDate == null)
+                    .Include(p => p.PropertyExpenseTemplate)
+                    .ThenInclude(pe => pe.Building)
+                    .Where(p =>
+                        p.PropertyExpenseTemplate != null
+                        && p.PropertyExpenseTemplate.DeletedDate == null
+                        && p.PropertyExpenseTemplate.Building != null
+                        && p.PropertyExpenseTemplate.Building.DeletedDate == null
+                        && p.PropertyExpenseTemplate.Building.BuildingId == buildingId
+                    )
+                    .AsNoTracking()
+                    .ToListAsync();
+                return propertyExpensesByBuildingId;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"{GetPropertyExpensesByBuildingIdAsync} threw an error of: ",
+                    ex
+                );
+            }
+        }
+
         public async Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(
             int propertyId
         )
@@ -159,7 +216,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 Property? property = await _dbContext
                     .Property.Where(p => p.PropertyId == propertyId && p.DeletedDate == null)
-                    .Include(p => p.Payments.Where(p => p.DeletedDate == null))
+                    .Include(p => p.Payments)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
 
@@ -202,7 +259,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                         .Property.Where(p =>
                             p.PropertyId == user.PropertyId && p.DeletedDate == null
                         )
-                        .Include(p => p.Payments.Where(p => p.DeletedDate == null))
+                        .Include(p => p.Payments)
                         .AsNoTracking()
                         .ToListAsync();
 
