@@ -155,7 +155,7 @@ const CreatePropertyPaymentsPage: FC = () => {
                 {buildingProperties.map((property) => (
                   <MenuItem
                     key={property.propertyId}
-                    value={property.propertyNumber}
+                    value={property.propertyId}
                   >
                     {property.propertyNumber}
                   </MenuItem>
@@ -175,7 +175,7 @@ const CreatePropertyPaymentsPage: FC = () => {
                 {propertyExpenses.map((propertyExpense) => (
                   <MenuItem
                     key={propertyExpense.propertyExpenseId}
-                    value={propertyExpense.description}
+                    value={propertyExpense.propertyExpenseId}
                   >
                     {propertyExpense.description}
                   </MenuItem>
