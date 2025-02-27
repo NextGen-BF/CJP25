@@ -9,23 +9,36 @@ using NextGen_BM_BE_Domain.ViewModels;
 namespace NextGen_BM_BE_API.Controllers
 {
 
-[ApiController]
-[Route("[controller]")]
-public class RequestController: ControllerBase {
+    [ApiController]
+    [Route("[controller]")]
+    [Authorize]
+    public class RequestController : ControllerBase
+    {
+        private readonly IRequestService _requestService;
+        private readonly IDocumentService _documentService;
+        public RequestController(IRequestService requestService, IDocumentService documentService, IConfiguration configuration)
+        {
+            _requestService = requestService;
+            _documentService = documentService;
+        }
+        [HttpGet]
+        [Route("building/repair/{buildingId}")]
+        [Authorize(Policy = "Super For Building")]
+        public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
+        {
+            var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
 
-    private readonly IRequestService _requestService;
-    public RequestController(IRequestService requestService)
-    {
-        _requestService=requestService;
-    }
-    [HttpGet]
-    [Route("building/repair/{buildingId}")]
-    public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
-    {
-        var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
-        if (result==null) return BadRequest();
-        return Ok(result);
-    }
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetRequestsByUserId(int userId)
+        {
+            //TODO: Add mapping to generic request view model and a service which gets both userbuilding requests and repair requests
+
+            return Ok();
+        }
 
         [HttpGet]
         [Route("repair/{requestId}")]
@@ -36,22 +49,32 @@ public class RequestController: ControllerBase {
             return Ok(result);
         }
 
-    [HttpGet]
-    [Route("user/building/{buildingId}")]
-    public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
-    {
-        var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
-        if (result==null) return BadRequest();
-        return Ok(result);
-    }
+        [HttpGet]
+        [Route("user/building/{buildingId}")]
+        [Authorize(Policy = "Super For Building")]
+        public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
+        {
+            var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
 
-    [HttpPost]
-    [Route("repair/new")]
-    public async Task<IActionResult> CreateRepairRequest(RepairRequestViewModel repairRequestViewModel)
-    {
-        await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
-        return CreatedAtAction(nameof(GetRepairRequestById), new {requestId=repairRequestViewModel.RequestId}, repairRequestViewModel);
-    }
+        [HttpPost]
+        [Route("repair/new")]
+        [Authorize(Policy = "User In Building")]
+        public async Task<IActionResult> CreateRepairRequest([FromBody] RepairRequestViewModel repairRequestViewModel)
+        {
+            var createdRequest = await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
+            return Ok(createdRequest);
+        }
+
+        [HttpPost]
+        [Route("document/upload/{requestId}")]
+        public async Task<IActionResult> UploadDocumentRequests([FromForm] IList<IFormFile> files, int requestId, [FromForm] string requestType)
+        {
+            await _documentService.UploadDocuments(files, requestId, requestType);
+            return Ok();
+        }
 
         [HttpPost]
         [Route("user/building/new")]
