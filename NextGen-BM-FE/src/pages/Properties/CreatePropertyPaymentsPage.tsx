@@ -60,12 +60,15 @@ const CreatePropertyPaymentsPage: FC = () => {
     [],
   );
   const [selectedExpense, setSelectedExpense] = useState<number>(0);
+  const [expensesLoaded, setExpensesLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedBuilding !== "") {
+      setExpensesLoaded(false);
       dispatch(getPropertyExpensesByBuildingId(selectedBuilding))
         .then((response) => {
           setPropertyExpenses(response.payload);
+          setExpensesLoaded(true);
         })
         .catch(() => {
           setPropertyExpenses([]);
@@ -240,7 +243,7 @@ const CreatePropertyPaymentsPage: FC = () => {
           {errors.dueDate && (
             <div className="error-message">{errors.dueDate.message}</div>
           )}
-          {selectedBuilding && propertyExpenses.length === 0 && (<div className="error-message">{valueErrors.noExpenses}</div>)}
+          {selectedBuilding && expensesLoaded && propertyExpenses.length === 0 && (<div className="error-message">{valueErrors.noExpenses}</div>)}
           <Button fullWidth type="submit" disabled={propertyExpenses.length === 0 || isSubmitting}>
             {createPropertyPaymentConstants.create}
           </Button>
