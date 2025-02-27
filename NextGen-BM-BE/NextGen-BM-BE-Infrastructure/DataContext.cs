@@ -25,5 +25,16 @@ namespace NextGen_BM_BE_Infrastructure
         public DbSet<RepairRequest> RepairRequests { get; set; }
         public DbSet<RequestNotes> RequestNotes { get; set; }
         public DbSet<PropertyExpenseTemplate> PropertyExpenseTemplate { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<PropertyExpenseTemplate>()
+                .HasOne(p => p.Building)
+                .WithMany(b => b.PropertyExpenseTemplates)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }

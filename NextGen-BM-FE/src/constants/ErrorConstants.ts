@@ -15,6 +15,11 @@ export const requiredErrors = {
   startDate: "Start Date is required!",
   endDate: "End Date is required!",
   price: "Price is required!",
+  amountOwed: "Amount is required!",
+  dateOpened: "Date Opened is required!",
+  dueDate: "Due Date is required!",
+  status: "Status is required!",
+  paymentMethod: "Payment method is required!",
 };
 
 export const valueErrors = {
@@ -26,5 +31,7 @@ export const valueErrors = {
   endDateCurrentMonth: "End date cannot be in the current month!",
   endDateBeforeStartDate: "End date cannot be before start date!",
   priceNegative: "Price cannot be negative!",
+  amountOwedNegative: "Amount cannot be negative!",
+  dueDateBeforeDateOpened: "Due date cannot be before date opened!",
   
 };

@@ -2,16 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
 import { Building } from "../../models/building";
+import axiosInstance from "./interceptors/authorizationInterceptors";
 
 export const createBuilding = createAsyncThunk(
   "building/new",
   async (building: Building, thunkAPI) => {
-    return await axios
-      .post(`${apiURL}/building/new`, building, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-        },
-      })
+    return await axiosInstance
+      .post(`${apiURL}/building/new`, building)
       .then(function (response) {
         return response.data;
       })
@@ -27,12 +24,8 @@ export const createBuilding = createAsyncThunk(
 export const getBuildingsByUserId = createAsyncThunk(
   "building/user/id",
   async (userId: number, thunkAPI) => {
-    return await axios
-      .get(`${apiURL}/building/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-        },
-      })
+    return await axiosInstance
+      .get(`${apiURL}/building/user/${userId}`)
       .then(function (response) {
         return response.data;
       })
@@ -53,13 +46,12 @@ interface UserBuildingDeleteData {
 export const deleteUserBuildingLink = createAsyncThunk(
   "building/delete/user/id",
   async (data: UserBuildingDeleteData, thunkAPI) => {
-    return await axios
+    return await axiosInstance
       .post(
         `${apiURL}/building/delete/user/${data.userId}`,
         JSON.stringify(data.buildingId),
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
             "Content-Type": "application/json",
           },
         },
@@ -78,12 +70,8 @@ export const deleteUserBuildingLink = createAsyncThunk(
 );
 
 export const getAllBuildings = createAsyncThunk("building/all", async () => {
-  return await axios
-    .get(`${apiURL}/building/all`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
-      },
-    })
+  return await axiosInstance
+    .get(`${apiURL}/building/all`)
     .then(function (response) {
       return response.data;
     })

@@ -15,7 +15,7 @@ import { useAppDispatch } from "../redux/store";
 import {
   addProperty,
   removeProperty,
-  updateProperty,
+  updateProperty
 } from "../redux/slices/propertySlice";
 import { Property } from "../models/property";
 import { editableTableConstants } from "../constants/constants";

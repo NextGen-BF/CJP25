@@ -28,7 +28,8 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(
                     dest => dest.Properties,
                     opt => opt.MapFrom(src => src.BuildingProperties)
-                ).ForMember(
+                )
+                .ForMember(
                     dest => dest.UserBuildings,
                     opt => opt.MapFrom(src => src.UserBuildings)
                 );
@@ -45,7 +46,8 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(
                     dest => dest.BuildingProperties,
                     opt => opt.MapFrom(src => src.Properties)
-                ).ForMember(
+                )
+                .ForMember(
                     dest => dest.UserBuildings,
                     opt => opt.MapFrom(src => src.UserBuildings)
                 );
@@ -54,7 +56,10 @@ namespace NextGen_BM_BE_Application.Mapper
             CreateMap<Address, AddressViewModel>();
 
             CreateMap<UserBuildingsViewModel, UserBuildings>()
-                .ForMember(dest => dest.UserBuildingsId, opt => opt.MapFrom(src => src.UserBuildingsId))
+                .ForMember(
+                    dest => dest.UserBuildingsId,
+                    opt => opt.MapFrom(src => src.UserBuildingsId)
+                )
                 .ForMember(dest => dest.BuildingId, opt => opt.MapFrom(src => src.BuildingId))
                 .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
@@ -64,10 +69,16 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.Role, opt => opt.Ignore());
 
             CreateMap<UserBuildings, UserBuildingsViewModel>()
-                .ForMember(dest => dest.UserBuildingsId, opt => opt.MapFrom(src => src.UserBuildingsId))
+                .ForMember(
+                    dest => dest.UserBuildingsId,
+                    opt => opt.MapFrom(src => src.UserBuildingsId)
+                )
                 .ForMember(dest => dest.BuildingId, opt => opt.MapFrom(src => src.BuildingId))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role != null ? src.Role.Id : (int?)null))
+                .ForMember(
+                    dest => dest.RoleId,
+                    opt => opt.MapFrom(src => src.Role != null ? src.Role.Id : (int?)null)
+                )
                 .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
@@ -98,10 +109,8 @@ namespace NextGen_BM_BE_Application.Mapper
                     opt => opt.MapFrom(src => src.ResidentHistory)
                 );
 
-            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
-                .ForMember(dest => dest.DateDue, opt => opt.MapFrom(src => src.DueDate));
-            CreateMap<PropertyPaymentsViewModel, PropertyPayments>()
-                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DateDue));
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>();
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>();
 
             CreateMap<PropertyResidents, ResidentHistoryViewModel>();
             CreateMap<ResidentHistoryViewModel, PropertyResidents>();

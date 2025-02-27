@@ -28,37 +28,42 @@ import BuildingPage from "./pages/Buildings/BuildingPage";
 import CreatePropertyPaymentsPage from "./pages/Properties/CreatePropertyPaymentsPage";
 import CreatePropertyExpensePage from "./pages/Properties/CreatePropertyExpensePage";
 import Snackbar from "./pages/Snackbar";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import { useSelector } from "react-redux";
+import { RootState } from "./redux/store";
 
 const App: FC = () => {
+  const userId = useSelector((state: RootState) => state.loginReducer.value.userId);
+  
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/create/request" element={<CreateRequestPage />} />
-        <Route path="/requests" element={<RequestsListPage />} />
-        <Route path="/request" element={<RequestPage />} />
-        <Route path="/create/property" element={<CreatePropertyPage />} />
-        <Route path="/properties" element={<PropertyListPage />} />
-        <Route path="/property" element={<PropertyPage />} />
-        <Route path="/property/residents" element={<PropertyResidentsPage />} />
+        <Route path="/create/request" element={<ProtectedRoute element={<CreateRequestPage />} userId={userId} />} />
+        <Route path="/requests" element={<ProtectedRoute element={<RequestsListPage />} userId={userId} />} />
+        <Route path="/request" element={<ProtectedRoute element={<RequestPage />} userId={userId} />} />
+        <Route path="/create/property" element={<ProtectedRoute element={<CreatePropertyPage />} userId={userId} />} />
+        <Route path="/properties" element={<ProtectedRoute element={<PropertyListPage />} userId={userId} />} />
+        <Route path="/property/:id?" element={<ProtectedRoute element={<PropertyPage />} userId={userId} />} />
+        <Route path="/property/residents" element={<ProtectedRoute element={<PropertyResidentsPage /> } userId={userId} />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/account" element={<MyAccountPage />} />
-        <Route path="/recover" element={<AccountRecoveryPage />} />
-        <Route path="/create/building" element={<CreateBuildingPage />} />
-        <Route path="/buildings" element={<BuildingsListPage />} />
-        <Route path="/building" element={<BuildingPage />} />
-        <Route path="/building/expenses" element={<BuildingExpensesPage />} />
-        <Route path="/property/fees" element={<PropertyFeesPage />} />
+        <Route path="/account" element={<ProtectedRoute element={<MyAccountPage />} userId={userId} />} />
+        <Route path="/recover" element={<ProtectedRoute element={<AccountRecoveryPage />} userId={userId} />} />
+        <Route path="/create/building" element={<ProtectedRoute element={<CreateBuildingPage />} userId={userId} />} />
+        <Route path="/buildings" element={<ProtectedRoute element={<BuildingsListPage />} userId={userId} />} />
+        <Route path="/building/:id?" element={<ProtectedRoute element={<BuildingPage />} userId={userId} />} />
+        <Route path="/building/expenses" element={<ProtectedRoute element={<BuildingExpensesPage />} userId={userId} />} />
+        <Route path="/property/fees" element={<ProtectedRoute element={<PropertyFeesPage />} userId={userId} />} />
         <Route
           path="/create/propertypayments"
-          element={<CreatePropertyPaymentsPage />}
+          element={<ProtectedRoute element={<CreatePropertyPaymentsPage />} userId={userId} />}
         />
         <Route
           path="/create/propertyexpense"
-          element={<CreatePropertyExpensePage />}
+          element={<ProtectedRoute element={<CreatePropertyExpensePage />} userId={userId} />}
         />
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment" element={<ProtectedRoute element={<PaymentPage />} userId={userId} />} />
       </Route>,
     ),
   );

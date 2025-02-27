@@ -16,12 +16,17 @@ import {
   SucessSnackbarConstants,
 } from "../../../constants/snackbarConstants.ts";
 import { useNavigate } from "react-router-dom";
+import { resetProperties } from "../../../redux/slices/propertySlice";
 
 const CreateBuildingPage: FC = () => {
   const user = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+        dispatch(resetProperties());
+      }, []);
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
   );
@@ -128,7 +133,7 @@ const CreateBuildingPage: FC = () => {
                 value <= 0 ? valueErrors.buildingSizeNegative : true,
             })}
             label="Building Size"
-            type="number" // this doesn't allow to put a decimal number in the field - only integers
+            type="text" 
             variant="outlined"
             size="small"
             fullWidth

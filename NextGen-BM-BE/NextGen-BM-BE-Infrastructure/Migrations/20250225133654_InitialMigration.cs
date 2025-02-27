@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NextGen_BM_BE_Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class IntitialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,28 +221,6 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyExpenseTemplate",
-                columns: table => new
-                {
-                    PropertyExpenseTemplateId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ExpenseTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PerResident = table.Column<bool>(type: "bit", nullable: false),
-                    RepeatPeriodId = table.Column<int>(type: "int", nullable: false),
-                    DeletedDate = table.Column<DateOnly>(type: "date", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PropertyExpenseTemplate", x => x.PropertyExpenseTemplateId);
-                    table.ForeignKey(
-                        name: "FK_PropertyExpenseTemplate_Enums_RepeatPeriodId",
-                        column: x => x.RepeatPeriodId,
-                        principalTable: "Enums",
-                        principalColumn: "EnumsId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BuildingExpenses",
                 columns: table => new
                 {
@@ -309,6 +287,34 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PropertyExpenseTemplate",
+                columns: table => new
+                {
+                    PropertyExpenseTemplateId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExpenseTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PerResident = table.Column<bool>(type: "bit", nullable: false),
+                    RepeatPeriodId = table.Column<int>(type: "int", nullable: false),
+                    DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    BuildingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyExpenseTemplate", x => x.PropertyExpenseTemplateId);
+                    table.ForeignKey(
+                        name: "FK_PropertyExpenseTemplate_Buildings_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Buildings",
+                        principalColumn: "BuildingId");
+                    table.ForeignKey(
+                        name: "FK_PropertyExpenseTemplate_Enums_RepeatPeriodId",
+                        column: x => x.RepeatPeriodId,
+                        principalTable: "Enums",
+                        principalColumn: "EnumsId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RepairRequests",
                 columns: table => new
                 {
@@ -352,10 +358,10 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BuildingId = table.Column<int>(type: "int", nullable: false),
                     Approved = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -377,37 +383,6 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         column: x => x.BuildingId,
                         principalTable: "Buildings",
                         principalColumn: "BuildingId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PropertyExpense",
-                columns: table => new
-                {
-                    PropertyExpenseId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PropertyExpenseTemplateId = table.Column<int>(type: "int", nullable: false),
-                    ResponsibleRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PropertyExpense", x => x.PropertyExpenseId);
-                    table.ForeignKey(
-                        name: "FK_PropertyExpense_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PropertyExpense_PropertyExpenseTemplate_PropertyExpenseTemplateId",
-                        column: x => x.PropertyExpenseTemplateId,
-                        principalTable: "PropertyExpenseTemplate",
-                        principalColumn: "PropertyExpenseTemplateId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -468,6 +443,37 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         column: x => x.PropertyId,
                         principalTable: "Property",
                         principalColumn: "PropertyId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyExpense",
+                columns: table => new
+                {
+                    PropertyExpenseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PropertyExpenseTemplateId = table.Column<int>(type: "int", nullable: false),
+                    ResponsibleRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeletedDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyExpense", x => x.PropertyExpenseId);
+                    table.ForeignKey(
+                        name: "FK_PropertyExpense_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropertyExpense_PropertyExpenseTemplate_PropertyExpenseTemplateId",
+                        column: x => x.PropertyExpenseTemplateId,
+                        principalTable: "PropertyExpenseTemplate",
+                        principalColumn: "PropertyExpenseTemplateId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -616,6 +622,11 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                 name: "IX_PropertyExpense_RoleId",
                 table: "PropertyExpense",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropertyExpenseTemplate_BuildingId",
+                table: "PropertyExpenseTemplate",
+                column: "BuildingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PropertyExpenseTemplate_RepeatPeriodId",
