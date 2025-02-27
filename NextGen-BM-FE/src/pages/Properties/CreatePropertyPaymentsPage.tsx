@@ -103,7 +103,7 @@ const CreatePropertyPaymentsPage: FC = () => {
   const dateOpened = watch("dateOpened");
 
   const onSubmit: SubmitHandler<PropertyPayments> = async (data) => {
-    data.propertyId = buildingProperties.find(p => p.propertyNumber == selectedProperty)?.propertyId || 0;
+    data.propertyId = buildingProperties.find(p => p.propertyId == selectedProperty)?.propertyId || 0;
     try {
       await dispatch(createPropertyPayment(data)).unwrap();
       dispatch(
