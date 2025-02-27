@@ -190,5 +190,25 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 throw new Exception("Couldn't retrieve property types");
             }
         }
+
+        public async Task<PropertyUsers> GetPropertyUserLinkAsync(int propertyId, int userId)
+        {
+            try
+            {
+                return await _dataContext.PropertyUsers.Where(pu =>
+                        pu.User.Id == userId
+                        && pu.PropertyId == propertyId
+                        && pu.DeletedDate == null
+                    )
+                    .Include(pu => pu.Role)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve this property user!");
+            }
+        }
     }
 }

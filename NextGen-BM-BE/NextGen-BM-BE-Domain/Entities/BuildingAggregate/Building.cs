@@ -21,4 +21,5 @@ public class Building
     public ICollection<BuildingExpense>? BuildingExpenses { get; set; }
     public ICollection<RepairRequest>? RepairRequests { get; set; }
     public ICollection<UserBuildings>? UserBuildings { get; set; }
+    public ICollection<PropertyExpenseTemplate>? PropertyExpenseTemplates { get; set; }
 }

@@ -22,11 +22,12 @@ export interface ResidentHistory{
 
 export interface PropertyPayments{
     paymentId: number;
+    propertyId: number;
     amountOwed: number;
     dateOpened: Date;
     dueDate: Date;
-    status: string;
-    paymentMethod: string;
+    status?: string;
+    paymentMethod?: string;
 }
 
 export interface PropertyExpense{
@@ -36,7 +37,7 @@ export interface PropertyExpense{
     price:number;
     startDate: Date;
     endDate: Date;
-    Description: string;
+    description: string;
 }
 
 export interface PropertyType{

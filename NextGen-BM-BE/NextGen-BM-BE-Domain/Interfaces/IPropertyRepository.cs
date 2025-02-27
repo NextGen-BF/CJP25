@@ -14,5 +14,6 @@ namespace NextGen_BM_BE_Domain.Interfaces
         Task DeletePropertyAsync(int propertyId);
         Task DeletePropertyResidentAsync(int propertyResidentId);
         Task<List<Enums>> GetPropertyTypesAsync();
+        Task<PropertyUsers> GetPropertyUserLinkAsync(int propertyId, int userId);
     }
 }
