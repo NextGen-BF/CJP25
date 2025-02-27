@@ -9,14 +9,12 @@ import { NavLink } from "react-router-dom";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { getPropertyPaymentsByUserId } from "../../redux/services/expenseService";
 import { useSelector } from "react-redux";
+import { formatDate } from "../../utils/globalFunctions";
 
 const PropertyFeesPage: FC = () => {
   const userId = useSelector((state: RootState) => state.loginReducer.value.userId)
   const dispatch = useAppDispatch();
-  const formatDate = (date: Date): string => {
-    return date.toISOString().split("T")[0];
-  };
-
+  
   const columns = [
     {
       field: "amountOwed",

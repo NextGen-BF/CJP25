@@ -40,6 +40,11 @@ export const createPropertyExpenseConstants = {
   role: "Role",
   role_owner: "Owner",
   role_tenant: "Tenant",
-  create: "Create Property Epense",
+  create: "Create Property Expense",
   addRecond: "Add a property",
+};
+
+export const createPropertyPaymentConstants = {
+  title: "Create Property Payments",
+  create: "Create Property Payment",
 };

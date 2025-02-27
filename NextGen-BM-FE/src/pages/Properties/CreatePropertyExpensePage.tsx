@@ -88,7 +88,7 @@ const CreatePropertyExpense: FC = () => {
             )}
           </FormControl>
           <TextField
-            {...register("Description", {
+            {...register("description", {
               required: requiredErrors.description,
             })}
             label="Description"
@@ -97,8 +97,8 @@ const CreatePropertyExpense: FC = () => {
             size="medium"
             fullWidth
           />
-          {errors.Description && (
-            <div className="error-message">{errors.Description.message}</div>
+          {errors.description && (
+            <div className="error-message">{errors.description.message}</div>
           )}
           <TextField
             {...register("startDate", {
