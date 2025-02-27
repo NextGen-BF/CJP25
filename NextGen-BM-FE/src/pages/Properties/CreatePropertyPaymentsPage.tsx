@@ -240,7 +240,7 @@ const CreatePropertyPaymentsPage: FC = () => {
           {errors.dueDate && (
             <div className="error-message">{errors.dueDate.message}</div>
           )}
-          {propertyExpenses.length === 0 && (<div className="error-message">{valueErrors.noExpenses}</div>)}
+          {selectedBuilding && propertyExpenses.length === 0 && (<div className="error-message">{valueErrors.noExpenses}</div>)}
           <Button fullWidth type="submit" disabled={propertyExpenses.length === 0 || isSubmitting}>
             {createPropertyPaymentConstants.create}
           </Button>
