@@ -16,7 +16,8 @@ export interface RepairRequest {
 export interface RequestNotes {
   noteId: number;
   createdBy: number;
-  createDate: Date;
+  createDate: Date | string;
+  requestId: number;
   noteText: string;
 }
 
@@ -39,4 +40,22 @@ export interface createRequest {
   description: string | null;
   roleId: number | null; //Will change to enum/int after roles are created in db
   startDate: Date;
+}
+
+export interface RequestRow {
+  id: number;
+  requestTitle: string;
+  buildingAlias: string;
+  requestType: string;
+  userName: string;
+  description: string;
+  status: string;
+  dateCreated: Date;
+  notes: RequestNotes[];
+}
+
+export enum RequestStatus {
+  approved = "Approved",
+  denied = "Denied",
+  pending = "Pending",
 }

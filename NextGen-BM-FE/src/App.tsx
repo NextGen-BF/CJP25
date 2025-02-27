@@ -65,7 +65,7 @@ const App: FC = () => {
   return (
     <>
       <Snackbar />
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </>
   );
 };

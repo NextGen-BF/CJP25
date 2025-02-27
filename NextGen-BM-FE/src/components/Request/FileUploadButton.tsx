@@ -1,9 +1,9 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../redux/store";
-import { addDocument } from "../redux/slices/documentSlice";
-import "./scss/fileUploadButton.scss";
-import { fileTypeConstants } from "../constants/constants";
+import { RootState, useAppDispatch } from "../../redux/store";
+import { addDocument } from "../../redux/slices/documentSlice";
+import "../scss/fileUploadButton.scss";
+import { fileTypeConstants } from "../../constants/constants";
 import { Button } from "@mui/material";
 
 const FileUploadButton: FC = () => {

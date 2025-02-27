@@ -7,7 +7,8 @@ namespace NextGen_BM_BE_Domain.Services
     public interface IRequestService
     {
         Task<RepairRequestViewModel> CreateRepairRequestAsync(RepairRequestViewModel repairRequest);
-        Task CreateRequestNoteAsync(RequestNotesViewModel requestNotes);
+        Task<RequestNotesViewModel> CreateRequestNoteAsync(RequestNotesViewModel requestNotes);
+        
         Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings);
         Task DeleteRepairRequestNoteAsync(int requestNoteId);
         Task DeleteRepairRequestAsync(int requestId);

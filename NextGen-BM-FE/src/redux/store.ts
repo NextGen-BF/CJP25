@@ -7,8 +7,9 @@ import googleLoginSlice from "./slices/googleLoginSlice";
 import navigationReducer from "./slices/navigationSlice";
 import propertyReducer from "./slices/propertySlice";
 import documentReducer from "./slices/documentSlice";
-import repairRequestReducer from "./slices/repairRequest";
+import repairRequestReducer from "./slices/repairRequestSlice";
 import snackbarReducer from "./slices/snackbarSlice";
+import modalStateReducer from "./slices/modalSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     documentReducer: documentReducer,
     repairRequestReducer: repairRequestReducer,
     snackBarReducer: snackbarReducer,
+    modalStateReducer: modalStateReducer,
   },
 });
 

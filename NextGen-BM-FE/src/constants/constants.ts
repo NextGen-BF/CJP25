@@ -33,6 +33,7 @@ export const logOut = {
 
 export const editableTableConstants = {
   addRecord: "Add a property",
+  pageSizeOptions: [5, 10, 25, 50, 100],
 };
 
 export const createPropertyExpenseConstants = {

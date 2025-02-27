@@ -3,7 +3,8 @@ using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 
-namespace NextGen_BM_BE_Application.Services{
+namespace NextGen_BM_BE_Application.Services
+{
     public class AuthService : IAuthService
     {
         private readonly IJwtService _jwtService;
@@ -17,7 +18,8 @@ namespace NextGen_BM_BE_Application.Services{
         public async Task<string> LoginAsync(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password)){
+            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            {
                 var token = _jwtService.GenerateJwtToken(user);
                 return token;
             }

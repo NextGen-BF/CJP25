@@ -14,12 +14,10 @@ namespace NextGen_BM_BE_API.Controllers
     {
         private readonly IRequestService _requestService;
         private readonly IDocumentService _documentService;
-        private readonly IConfiguration _config;
         public RequestController(IRequestService requestService, IDocumentService documentService, IConfiguration configuration)
         {
             _requestService = requestService;
             _documentService = documentService;
-            _config = configuration;
         }
         [HttpGet]
         [Route("building/repair/{buildingId}")]
@@ -28,6 +26,15 @@ namespace NextGen_BM_BE_API.Controllers
             var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
             if (result == null) return BadRequest();
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetRequestsByUserId(int userId)
+        {
+            //TODO: Add mapping to generic request view model and a service which gets both userbuilding requests and repair requests
+            
+            return Ok();
         }
 
         [HttpGet]
@@ -75,9 +82,9 @@ namespace NextGen_BM_BE_API.Controllers
         [Route("note/new")]
         public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesViewModel)
         {
-            await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
+            var note = await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
             //TODO: when notes gain more priority and/if fe needs to make an api call to get notes seperately, pass that method
-            return Ok();
+            return Ok(note);
         }
 
         [HttpPut]

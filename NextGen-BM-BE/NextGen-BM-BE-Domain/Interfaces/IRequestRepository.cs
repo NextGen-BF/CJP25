@@ -10,7 +10,7 @@ namespace NextGen_BM_BE_Domain.Interfaces
         Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingID);
         Task<RepairRequest> CreateRepairRequestAsync(RepairRequest repairRequest);
         Task CreateUserBuildingRequestAsync(UserBuildings userBuildings);
-        Task CreateRepairRequestNotesAsync(RequestNotes requestNotes);
+        Task<RequestNotes> CreateRepairRequestNotesAsync(RequestNotes requestNotes);
         Task UpdateRepairRequestAsync(RepairRequest repairRequest);
         Task UpdateRequestNotesAsync(RequestNotes requestNotes);
         Task DeleteRepairRequestAsync(int requestId);

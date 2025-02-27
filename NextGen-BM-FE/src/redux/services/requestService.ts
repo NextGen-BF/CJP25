@@ -1,7 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
-import { RepairRequest, UserBuildingRequests } from "../../models/requests";
+import {
+  RepairRequest,
+  RequestNotes,
+  UserBuildingRequests,
+} from "../../models/requests";
 
 export const createRepairRequest = createAsyncThunk(
   "request/repair/new",
@@ -42,5 +46,33 @@ export const createUserBuildingRequest = createAsyncThunk(
         }
         return thunkAPI.rejectWithValue(err);
       });
+  },
+);
+
+export const postRequestNote = createAsyncThunk(
+  "request/note/new",
+  async (note: RequestNotes, thunkAPI) => {
+    return await axios
+      .post(`${apiURL}/request/note/new`, note, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT-BM")}`,
+        },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+          return thunkAPI.rejectWithValue(err.response?.data);
+        }
+        return thunkAPI.rejectWithValue(err);
+      });
+  },
+);
+
+export const getRepairRequests = createAsyncThunk(
+  "request/repair/all",
+  async () => {
+    return await axios.get(`${apiURL}/request/repair/all`)
   },
 );

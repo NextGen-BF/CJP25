@@ -85,6 +85,7 @@ builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();

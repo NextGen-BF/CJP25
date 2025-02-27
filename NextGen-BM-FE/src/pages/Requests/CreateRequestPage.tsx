@@ -1,12 +1,11 @@
 import { FC, useEffect } from "react";
 import { createRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, Divider, MenuItem, TextField } from "@mui/material";
+import { Button, MenuItem, TextField } from "@mui/material";
 import "./createRequestPage.scss";
-import FileUploadButton from "../../components/FileUploadButton";
+import FileUploadButton from "../../components/Request/FileUploadButton";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { removeDocument } from "../../redux/slices/documentSlice";
 import { fileTypeConstants } from "../../constants/constants";
 import {
   getAllBuildings,
@@ -16,6 +15,7 @@ import { transformRequest } from "../../utils/requestConverter";
 import { useNavigate } from "react-router-dom";
 import { createRepairRequest } from "../../redux/services/requestService";
 import { uploadFile } from "../../redux/services/documentService";
+import UploadedFilesList from "../../components/Request/UploadedFilesList";
 
 const CreateRequestPage: FC = () => {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ const CreateRequestPage: FC = () => {
     }
   }, [selectedRequestType, user]);
 
+  //TODO: Add toast notifs here
   const onSubmit: SubmitHandler<createRequest> = async (data) => {
     try {
       if (data.requestType == "Repair") {
@@ -70,6 +71,7 @@ const CreateRequestPage: FC = () => {
         }
       } else {
         const buildingRequest = transformRequest(data);
+        console.log(buildingRequest);
       }
     } catch (error) {}
   };
@@ -107,6 +109,7 @@ const CreateRequestPage: FC = () => {
           </TextField>
           {selectedRequestType == "Building Property Link" && (
             <>
+              {/* TODO: Add actual roles */}
               <TextField label="Role within building" className="form-field" />
               <TextField
                 label="Property request is about"
@@ -143,33 +146,7 @@ const CreateRequestPage: FC = () => {
             <span className="error-message">{errors.description.message}</span>
           )}
         </div>
-        {documents.value.map((file) => (
-          <>
-            {file.type && (
-              <>
-                <div className="container">
-                  {file.type.includes("image") && (
-                    <img
-                      src={URL.createObjectURL(file)}
-                      className="image"
-                      width="300px"
-                    />
-                  )}
-                  {file.type.includes("pdf") && (
-                    <object data={URL.createObjectURL(file)} />
-                  )}
-                  <p>
-                    {fileTypeConstants.fileName} {file.name}
-                  </p>
-                  <Button onClick={() => dispatch(removeDocument(file))}>
-                    X
-                  </Button>
-                </div>
-                <Divider />
-              </>
-            )}
-          </>
-        ))}
+        <UploadedFilesList />
         <div className="container"></div>
         <div className="anchored-container">
           <FileUploadButton />

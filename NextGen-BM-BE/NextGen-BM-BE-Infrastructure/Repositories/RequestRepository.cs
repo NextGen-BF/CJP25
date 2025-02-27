@@ -29,12 +29,13 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
+        public async Task<RequestNotes> CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
             try
             {
                 await _dataContext.RequestNotes.AddAsync(requestNotes);
                 await _dataContext.SaveChangesAsync();
+                return requestNotes;
             }
             catch (DbException exception)
             {

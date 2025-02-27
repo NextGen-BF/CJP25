@@ -31,7 +31,6 @@ public class RequestService : IRequestService
                         UpdateRepairRequestUseCase updateRepairRequestUseCase,
                         UpdateRequestNoteUseCase updateRequestNoteUseCase,
                         GetUserBuildingRequests getUserBuildingRequests,
-                        IDocumentService documentService,
                         IMapper mapper)
     {
         _createRepairRequestUseCase = createRepairRequestUseCase;
@@ -53,10 +52,17 @@ public class RequestService : IRequestService
         return _mapper.Map<RepairRequestViewModel>(createdRequest);
     }
 
-    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
+    public async Task<RequestsGenericViewModel> GetAllRequestsByUserId()
+    {
+        //TODO: call get userbuilding requests and repair request by userId
+        return null;
+    }
+
+    public async Task<RequestNotesViewModel> CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
     {
         var requestNotes = _mapper.Map<RequestNotes>(requestNotesViewModel);
-        await _createRequestNoteUseCase.Execute(requestNotes);
+        var createdNote = await _createRequestNoteUseCase.Execute(requestNotes);
+        return _mapper.Map<RequestNotesViewModel>(createdNote);
     }
 
     public async Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings)
