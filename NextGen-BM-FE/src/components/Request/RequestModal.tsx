@@ -47,14 +47,18 @@ const RequestModal: FC = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<RequestRow>();
 
   const handleModalClose = () => {
     dispatch(setSelectedRow({ selectedRow: null, isOpened: false }));
   };
+
+  const setState = () => {
+    
+    setDisabledState(true);
+  }
 
   useEffect(() => {
     if (modalState.selectedRow) {
@@ -87,13 +91,13 @@ const RequestModal: FC = () => {
             </Box>
             <Box sx={textFieldStyle}>
               <TextField
-                {...register("description")}
                 fullWidth
                 multiline
                 disabled
-                value={modalState.selectedRow?.description}
                 label="Request Description"
                 minRows={5}
+                value={modalState.selectedRow?.requestDescription}
+                // For some reason requestDescription is being sent instead of description?? And this works??
               />
             </Box>
             <Box sx={textFieldStyle}>
@@ -111,8 +115,8 @@ const RequestModal: FC = () => {
                 fullWidth
                 disabled={disabledState}
                 label="Status"
-                placeholder={getValues("status")}
                 size="small"
+                value={modalState.selectedRow?.status}
                 select
               >
                 {statusEnum.map((status) => (
@@ -126,7 +130,7 @@ const RequestModal: FC = () => {
                 disabled
                 label="User Name"
                 size="small"
-                value={modalState.selectedRow?.userName}
+                value={modalState.selectedRow?.userFullName}
               />
             </Box>
             <Box sx={textFieldStyle}>
@@ -160,7 +164,8 @@ const RequestModal: FC = () => {
               </Button>
             </div>
             <Box sx={textFieldStyle}>
-              <RequestNotes />
+              {Array.isArray(modalState.selectedRow?.notes) &&
+                modalState.selectedRow.notes.length > 0 && <RequestNotes />}
               <Paper style={{ marginTop: 10 }}>
                 <TextField
                   multiline

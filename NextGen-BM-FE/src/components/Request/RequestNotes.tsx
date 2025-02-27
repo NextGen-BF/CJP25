@@ -18,11 +18,11 @@ const RequestNotes: FC = () => {
 
   const getUserName = async (userId: number, noteId: number) => {
     const user = await dispatch(getUserById(userId));
-    console.log(user);
     if (getUserById.fulfilled.match(user)) {
+      const userNames = user.payload.firstName + " " + user.payload.lastName;
       setUserNames((prevRecords) => ({
         ...prevRecords,
-        [noteId]: user.payload.userName,
+        [noteId]: userNames,
       }));
     }
   };
@@ -59,7 +59,7 @@ const RequestNotes: FC = () => {
                 variant="caption"
                 style={{ textAlign: "left", bottom: "5%", color: "gray" }}
               >
-                {note.createDate.toDateString()}
+                {note.createDate.toString()}
               </Typography>
             </Paper>
           ))}

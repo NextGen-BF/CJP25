@@ -1,8 +1,5 @@
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NextGen_BM_BE_Domain.Entities;
-using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -16,17 +13,17 @@ namespace NextGen_BM_BE_API.Controllers
     {
         private readonly IRequestService _requestService;
         private readonly IDocumentService _documentService;
-        public RequestController(IRequestService requestService, IDocumentService documentService, IConfiguration configuration)
+        public RequestController(IRequestService requestService, IDocumentService documentService)
         {
             _requestService = requestService;
             _documentService = documentService;
         }
         [HttpGet]
-        [Route("building/repair/{buildingId}")]
+        [Route("building/repair")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
+        public async Task<IActionResult> GetRepairRequestsByBuildingId(IList<int> buildingIds)
         {
-            var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
+            var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingIds);
             if (result == null) return BadRequest();
             return Ok(result);
         }
@@ -35,9 +32,8 @@ namespace NextGen_BM_BE_API.Controllers
         [Route("user/{userId}")]
         public async Task<IActionResult> GetRequestsByUserId(int userId)
         {
-            //TODO: Add mapping to generic request view model and a service which gets both userbuilding requests and repair requests
-
-            return Ok();
+            var requests = await _requestService.GetRequestsByUserIdAsync(userId);
+            return Ok(requests);
         }
 
         [HttpGet]
@@ -52,20 +48,28 @@ namespace NextGen_BM_BE_API.Controllers
         [HttpGet]
         [Route("user/building/{buildingId}")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
+        public async Task<IActionResult> GetUserBuildingRequests(IList<int> buildingIds)
         {
-            var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
+            var result = await _requestService.GetUserBuildingRequestsAsync(buildingIds);
             if (result == null) return BadRequest();
             return Ok(result);
         }
 
         [HttpPost]
         [Route("repair/new")]
-        [Authorize(Policy = "User In Building")]
+        // [Authorize(Policy = "User In Building")] Will debate wether this is required
         public async Task<IActionResult> CreateRepairRequest([FromBody] RepairRequestViewModel repairRequestViewModel)
         {
             var createdRequest = await _requestService.CreateRepairRequestAsync(repairRequestViewModel);
             return Ok(createdRequest);
+        }
+
+        [HttpPost]
+        [Route("status/set/{requestId}/{statusId}")]
+        public async Task<IActionResult> SetRequestStatus([FromBody] string requestType, int requestId, int statusId)
+        {
+            await _requestService.SetRequestStatusAsync(requestId, statusId, requestType);
+            return Ok();
         }
 
         [HttpPost]

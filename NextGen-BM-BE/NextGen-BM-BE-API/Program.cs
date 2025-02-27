@@ -1,6 +1,7 @@
 using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NextGen_BM_BE_Application.AuthHandlers;
@@ -44,6 +45,7 @@ Console.WriteLine(connectionString);
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
+// builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true);
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 #region Dependency Injection
@@ -76,9 +78,11 @@ builder.Services.AddScoped<DeleteRepairRequestUseCase>();
 builder.Services.AddScoped<GetAllRepairRequestsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetRequestByIdUseCase>();
 builder.Services.AddScoped<GetUserBuildingRequests>();
+builder.Services.AddScoped<GetAllRequestsByUserIdUseCase>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<UpdateRequestNoteUseCase>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
+builder.Services.AddScoped<SetRequestStatusUseCase>();
 
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();

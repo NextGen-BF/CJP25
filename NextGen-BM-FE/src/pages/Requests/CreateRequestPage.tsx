@@ -16,6 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { createRepairRequest } from "../../redux/services/requestService";
 import { uploadFile } from "../../redux/services/documentService";
 import UploadedFilesList from "../../components/Request/UploadedFilesList";
+import { setSnackbar } from "../../redux/slices/snackbarSlice";
+import {
+  ErrorSnackbarConstants,
+  SucessSnackbarConstants,
+} from "../../constants/snackbarConstants";
 
 const CreateRequestPage: FC = () => {
   const navigate = useNavigate();
@@ -48,16 +53,15 @@ const CreateRequestPage: FC = () => {
     }
   }, [selectedRequestType, user]);
 
-  //TODO: Add toast notifs here
   const onSubmit: SubmitHandler<createRequest> = async (data) => {
     try {
+      let files = new FormData();
+      documents.value.forEach((doc) => {
+        files.append("files", doc);
+      });
       if (data.requestType == "Repair") {
         const repairRequest = transformRequest(data);
-        let files = new FormData();
         if (repairRequest && "requestId" in repairRequest) {
-          documents.value.forEach((doc) => {
-            files.append("files", doc);
-          });
           var request = await dispatch(
             createRepairRequest(repairRequest),
           ).unwrap();
@@ -68,12 +72,26 @@ const CreateRequestPage: FC = () => {
               requestType: data.requestType,
             }),
           ).unwrap();
+          dispatch(
+            setSnackbar({
+              snackbarOpen: true,
+              snackbarType: "success",
+              snackbarMessage: SucessSnackbarConstants.createRequestSuccess,
+            }),
+          );
         }
       } else {
         const buildingRequest = transformRequest(data);
-        console.log(buildingRequest);
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          snackbarOpen: true,
+          snackbarType: "error",
+          snackbarMessage: ErrorSnackbarConstants.createRequestError,
+        }),
+      );
+    }
   };
 
   return (

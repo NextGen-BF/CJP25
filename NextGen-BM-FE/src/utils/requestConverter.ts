@@ -11,11 +11,12 @@ export function transformRequest(
   if (request.requestType == "Repair") {
     return {
       requestId: 0,
+      requestTitle: request.requestTitle,
       userId: request.userId,
       requestDescription: request.description || "",
       status: {
-        statusId: 7,
-        title: "In review",
+        statusId: 20,
+        title: "In Review",
       },
       dateOpened: request.startDate.toISOString().split("T")[0],
       dateSettled: null,
@@ -26,6 +27,7 @@ export function transformRequest(
   } else if (request.requestType == "Building Property Link") {
     return {
       userBuildingsId: 0,
+      requestTitle: request.requestTitle,
       userId: request.userId,
       buildingId: request.buildingId,
       approved: false,

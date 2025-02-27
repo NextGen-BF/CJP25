@@ -6,14 +6,13 @@ using Microsoft.Extensions.Configuration;
 public class DocumentService : IDocumentService
 {
 
-    private readonly IAmazonS3 _s3Client;
     private readonly IConfiguration _config;
-    public DocumentService(IAmazonS3 s3Client, IConfiguration configuration)
+    public DocumentService(IConfiguration configuration)
     {
         _config = configuration;
     }
 
-    public Task<List<IFormFile>> GetDocumentsByRequestId()
+    public Task<List<IFormFile>> GetDocumentsByRequestId(int requestId, string requestType)
     {
         throw new NotImplementedException();
     }
@@ -39,7 +38,7 @@ public class DocumentService : IDocumentService
                     InputStream = file.OpenReadStream()
                 };
                 request.Metadata.Add("Content-Type", file.ContentType);
-                await _s3Client.PutObjectAsync(request);
+                await s3Client.PutObjectAsync(request);
                 filePaths.Add(request.Key);
             }
             return filePaths;

@@ -28,7 +28,7 @@ namespace NextGen_BM_BE_Application.Services
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel registerModel)
         {
-            var user = new User { UserName = registerModel.Email, Email = registerModel.Email };
+            var user = new User { UserName = registerModel.Email, Email = registerModel.Email, FirstName = registerModel.FirstName, LastName = registerModel.LastName };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             return result;
         }

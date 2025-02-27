@@ -1,5 +1,6 @@
 export interface RepairRequest {
   requestId: number;
+  requestTitle: string;
   userId: number;
   requestDescription: string;
   status: {
@@ -23,6 +24,7 @@ export interface RequestNotes {
 
 export interface UserBuildingRequests {
   userBuildingsId: number;
+  requestTitle: string;
   userId: number;
   buildingId: number;
   approved: boolean;
@@ -47,15 +49,15 @@ export interface RequestRow {
   requestTitle: string;
   buildingAlias: string;
   requestType: string;
-  userName: string;
+  userFullName: string;
   description: string;
   status: string;
-  dateCreated: Date;
+  dateCreated: Date | string;
   notes: RequestNotes[];
 }
 
 export enum RequestStatus {
   approved = "Approved",
   denied = "Denied",
-  pending = "Pending",
+  pending = "In review",
 }

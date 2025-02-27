@@ -6,6 +6,7 @@ namespace NextGen_BM_BE_Domain.Entities.RequestAggregate;
 public class RepairRequest
 {
     public int RepairRequestId { get; set; }
+    public required string RequestTitle { get; set; }
     public required int BuildingId { get; set; }
     public required string RequestDescription { get; set; }
     public int RequestStatusId { get; set; }

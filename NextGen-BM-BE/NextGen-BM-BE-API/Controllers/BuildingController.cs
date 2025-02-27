@@ -21,7 +21,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
-        [Authorize(Policy = "Admin")]
+        // [Authorize(Policy = "Admin")] Will debate wether this is required or not
         public async Task<IActionResult> GetAllBuildings()
         {
             var allbuildings = await _buildingService.GetAllBuildingsAsync();

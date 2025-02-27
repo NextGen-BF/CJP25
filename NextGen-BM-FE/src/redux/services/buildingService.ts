@@ -61,7 +61,6 @@ export const deleteUserBuildingLink = createAsyncThunk(
       })
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
-          console.log(err);
           return thunkAPI.rejectWithValue(err.response?.data);
         }
         return thunkAPI.rejectWithValue(err);

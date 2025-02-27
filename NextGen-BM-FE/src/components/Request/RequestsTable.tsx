@@ -2,47 +2,24 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { FC } from "react";
 import "../scss/requestsTable.scss";
 import { editableTableConstants } from "../../constants/constants";
-import { RequestRow } from "../../models/requests";
 import RequestModal from "./RequestModal";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { setSelectedRow } from "../../redux/slices/modalSlice";
+import { useSelector } from "react-redux";
+import { getAllRequestsForUser } from "../../redux/services/requestService";
 
 const RequestTable: FC = () => {
   const dispatch = useAppDispatch();
+  const user = useSelector((state: RootState) => state.loginReducer.value);
 
-  const request: RequestRow[] = [
-    {
-      id: 0,
-      requestTitle: "Test",
-      buildingAlias: "Test",
-      requestType: "Repair",
-      userName: "Kiril Test",
-      description: "Description...",
-      status: "Pending",
-      dateCreated: new Date(Date.now()),
-      notes: [
-        {
-          noteId: 0,
-          requestId: 0,
-          createdBy: 1,
-          createDate: new Date(Date.now()),
-          noteText: "Bazinga bazinga",
-        },
-        {
-          noteId: 1,
-          requestId: 0,
-          createdBy: 2,
-          createDate: new Date(Date.now()),
-          noteText: "Bazinga because bazinga is bazinga",
-        },
-      ],
-    },
-  ];
+  const request = useSelector(
+    (state: RootState) => state.requestGenericReducer.value,
+  );
+
+  if (request.length == 0) dispatch(getAllRequestsForUser(user.userId));
 
   const handleRowClick = (id: number) => {
-    console.log("Test");
-    console.log(request[id]);
-    dispatch(setSelectedRow({ selectedRow: request[id], isOpened: true }));
+    dispatch(setSelectedRow({ selectedRow: request[id - 1], isOpened: true }));
   };
 
   const requestColumns: GridColDef[] = [
@@ -62,28 +39,34 @@ const RequestTable: FC = () => {
       flex: 1,
     },
     {
-      field: "userName",
+      field: "userFullName",
       headerName: "Name of user",
       flex: 1,
     },
     {
-      field: "dateOpened",
+      field: "dateCreated",
       headerName: "Date Created",
       flex: 1,
     },
     {
-      field: "status.title",
+      field: "status",
       headerName: "Status",
       flex: 1,
     },
   ];
 
+  // Add a custom auto-incrementing ID
+  const requestsWithCustomId = request.map((row, index) => ({
+    ...row,
+    customId: index + 1, // Auto-incrementing ID
+  }));
+
   return (
     <div>
       <div className="table-container">
         <DataGrid
-          rows={request}
-          getRowId={(row) => row.id}
+          rows={requestsWithCustomId}
+          getRowId={(row) => row.customId}
           columns={requestColumns}
           pageSizeOptions={editableTableConstants.pageSizeOptions}
           slots={{ toolbar: GridToolbar }}

@@ -53,3 +53,8 @@ export const fileTypeConstants = {
   fileSizeError: "Maximum file size is 10Mb!",
   fileExistsError: "You have already uploaded a file with this name!",
 };
+
+export const createPropertyPaymentConstants = {
+  title: "Create Property Payments",
+  create: "Create Property Payment",
+};

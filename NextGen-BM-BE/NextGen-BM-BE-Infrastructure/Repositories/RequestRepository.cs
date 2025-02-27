@@ -1,8 +1,8 @@
 using System.Data.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
-using NextGen_BM_BE_Domain.Entities.RequestAggregate.Specifications;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
@@ -117,15 +117,36 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
+        public async Task<IList<RepairRequest>> GetRepairRequestsByUserId(int userId)
         {
             try
             {
                 return await _dataContext.RepairRequests
-                    .Where(request => request.BuildingId == buildingId && request.DeletedDate == null)
+                .Where(request => request.UserId == userId && request.DeletedDate == null)
+                .Include(request => request.Notes)
+                .Include(request => request.RequestStatus)
+                .ToListAsync();
+
+            }
+            catch (DbException exception)
+            {
+                throw new Exception("Couldn't retrieve data for this request", exception);
+
+            }
+        }
+
+        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds)
+        {
+            try
+            {
+                var requests = await _dataContext.RepairRequests
+                    .Where(request => buildingIds.Contains(request.BuildingId) && request.DeletedDate == null)
                     .Include(request => request.Notes)
                     .Include(request => request.RequestStatus)
+                    .Include(request => request.Building)
+                    .Include(request => request.User)
                     .ToListAsync();
+                return requests;
             }
             catch (DbException exception)
             {
@@ -134,13 +155,15 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds)
         {
             try
             {
                 return await _dataContext.UserBuildings
-                    .Where(userBuilding => userBuilding.BuildingId == buildingId && userBuilding.DeletedDate == null)
+                    .Where(userBuilding => buildingIds.Contains(userBuilding.BuildingId) && userBuilding.DeletedDate == null)
                     .Include(userBuildings => userBuildings.Role)
+                    .Include(userBuilding => userBuilding.Building)
+                    .Include(request => request.User)
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -176,6 +199,31 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 //will eventually be replaced by custom one
                 throw new Exception("Couldn't update this note", exception);
+            }
+        }
+
+        public async Task SetRequestStatusAsync(int requestId, int statusId, string requestType)
+        {
+            try
+            {
+                if (requestType == "Repair")
+                {
+                    var request = await _dataContext.RepairRequests.Where(request => request.RepairRequestId == requestId).FirstOrDefaultAsync() ?? throw new Exception($"Request with id: {requestId} not found.");
+                    request.RequestStatusId = statusId;
+                    _dataContext.Update(request);
+                    await _dataContext.SaveChangesAsync();
+                }
+                else
+                {
+                    var request = await _dataContext.UserBuildings.Where(request => request.UserBuildingsId == requestId).FirstOrDefaultAsync() ?? throw new Exception($"Request with id: {requestId} not found.");
+                    request.Approved = !request.Approved;
+                    _dataContext.Update(request);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not set status for request", ex);
             }
         }
     }
