@@ -50,8 +50,11 @@ const RequestModal: FC = () => {
     (state: RootState) => state.modalStateReducer.value,
   );
   const [requestStatus, setRequestState] = useState<RequestStatus>({
-    statusId: 0,
-    title: modalState.selectedRow?.status ?? " ",
+    statusId:
+      statusList.find(
+        (status) => status.title == modalState.selectedRow?.status,
+      )?.statusId ?? 0,
+    title: modalState.selectedRow?.status ?? "",
   });
   const handleModalClose = () => {
     dispatch(setSelectedRow({ selectedRow: null, isOpened: false }));
@@ -66,7 +69,7 @@ const RequestModal: FC = () => {
       );
       if (status) setRequestState(status);
     }
-  }, [statusList]);
+  }, [statusList, modalState.selectedRow?.status]);
 
   const setState = () => {
     if (modalState.selectedRow) {
@@ -113,7 +116,6 @@ const RequestModal: FC = () => {
                 label="Request Description"
                 minRows={5}
                 value={modalState.selectedRow?.requestDescription}
-                // For some reason requestDescription is being sent instead of description?? And this works??
               />
             </Box>
             <Box sx={textFieldStyle}>
@@ -125,21 +127,19 @@ const RequestModal: FC = () => {
                 value={modalState.selectedRow?.buildingAlias}
               />
             </Box>
-            {/* <Box sx={textFieldStyle}>
+            <Box sx={textFieldStyle}>
               <TextField
                 fullWidth
                 disabled={disabledState}
                 label="Status"
                 size="small"
-                value={requestStatus?.title}
+                value={requestStatus.statusId}
                 onChange={(e) => {
                   const selectedStatus = statusList.find(
                     (status) => status.statusId == Number(e.target.value),
                   );
                   if (selectedStatus) {
-                    console.log(selectedStatus);
                     setRequestState(selectedStatus);
-                    console.log(requestStatus);
                   }
                 }}
                 select
@@ -147,8 +147,8 @@ const RequestModal: FC = () => {
                 {statusList.map((status) => (
                   <MenuItem value={status.statusId}>{status.title}</MenuItem>
                 ))}
-              </TextField> 
-            </Box>  -- Is bugged out, created separate task to fix this field*/}
+              </TextField>
+            </Box>
             <Box sx={textFieldStyle}>
               <TextField
                 fullWidth
