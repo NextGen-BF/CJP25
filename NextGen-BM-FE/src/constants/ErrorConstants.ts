@@ -34,7 +34,7 @@ export const valueErrors = {
   propertySizeNegative: "Property size can't be negative!",
   propertySizeOfIdealParts: "The size of ideal parts is in % (between 0 and 100)!",
   propertyNumberTaken: "Number already in use!",
-  propertyInvalidFloor: "Invalid floor number"
+  propertyInvalidFloor: "Invalid floor number",
   amountOwedNegative: "Amount cannot be negative!",
   dueDateBeforeDateOpened: "Due date cannot be before date opened!",
   noExpenses: "There are no expenses, so you cannot make a payment!",
