@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -9,11 +10,12 @@ namespace NextGen_BM_BE_Application.Services
     {
         private readonly IJwtService _jwtService;
         private readonly UserManager<User> _userManager;
-
-        public AuthService(UserManager<User> userManager, IJwtService jwtService)
+        private readonly RoleManager<Role> _roleManager;
+        public AuthService(UserManager<User> userManager, IJwtService jwtService, RoleManager<Role> roleManager)
         {
             _jwtService = jwtService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public async Task<string> LoginAsync(LoginModel loginModel)
         {

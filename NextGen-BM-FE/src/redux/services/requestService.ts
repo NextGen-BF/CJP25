@@ -46,7 +46,6 @@ export const createUserBuildingRequest = createAsyncThunk(
 export const postRequestNote = createAsyncThunk(
   "request/note/new",
   async (note: RequestNotes, thunkAPI) => {
-    console.log(note);
     return await axiosInstance
       .post(`${apiURL}/request/note/new`, note)
       .then(function (response) {
@@ -104,7 +103,6 @@ interface setStatusInput {
 export const setRequestStatus = createAsyncThunk(
   "request/status/set",
   async (statusInput: setStatusInput, thunkAPI) => {
-    console.log(statusInput);
     return await axiosInstance
       .post(
         `${apiURL}/request/status/set/${statusInput.requestId}/${statusInput.statusId}`,

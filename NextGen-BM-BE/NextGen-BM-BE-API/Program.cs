@@ -45,8 +45,8 @@ Console.WriteLine(connectionString);
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
-// builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true);
-builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
+//builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true);
+builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<DataContext>();
 
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();

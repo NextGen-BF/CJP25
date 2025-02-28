@@ -100,7 +100,6 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> CreateRepairRequestNote(RequestNotesViewModel requestNotesViewModel)
         {
             var note = await _requestService.CreateRequestNoteAsync(requestNotesViewModel);
-            //TODO: when notes gain more priority and/if fe needs to make an api call to get notes seperately, pass that method
             return Ok(note);
         }
 

@@ -73,7 +73,6 @@ const RequestModal: FC = () => {
 
   const setState = () => {
     if (modalState.selectedRow) {
-      console.log(modalState.selectedRow);
       dispatch(
         setRequestStatus({
           requestId: modalState.selectedRow?.requestId,
