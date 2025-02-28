@@ -57,7 +57,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("repair/new")]
-        // [Authorize(Policy = "User In Building")] Will debate wether this is required
+        [Authorize(Policy = "User In Building")]
         public async Task<IActionResult> CreateRepairRequest([FromBody] RepairRequestViewModel repairRequestViewModel)
         {
             var createdRequest = await _requestService.CreateRepairRequestAsync(repairRequestViewModel);

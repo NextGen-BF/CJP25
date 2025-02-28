@@ -21,7 +21,6 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
-        // [Authorize(Policy = "Admin")] Will debate wether this is required or not
         public async Task<IActionResult> GetAllBuildings()
         {
             var allbuildings = await _buildingService.GetAllBuildingsAsync();
@@ -30,7 +29,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        // [Authorize(Policy = "Super For Building")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> GetBuildingById(int buildingId)
         {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
@@ -48,7 +47,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        // [Authorize(Policy = "Super")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             var createdBuilding = await _buildingService.CreateBuildingAsync(building);
