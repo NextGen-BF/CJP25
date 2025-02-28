@@ -33,5 +33,5 @@ export const valueErrors = {
   priceNegative: "Price cannot be negative!",
   amountOwedNegative: "Amount cannot be negative!",
   dueDateBeforeDateOpened: "Due date cannot be before date opened!",
-  
+  noExpenses: "There are no expenses, so you cannot make a payment!",
 };
