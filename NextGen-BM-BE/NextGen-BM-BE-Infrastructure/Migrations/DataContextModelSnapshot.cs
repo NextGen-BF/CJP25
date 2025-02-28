@@ -560,7 +560,11 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("RequestStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<string>("RequestTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RepairRequestId");
@@ -611,6 +615,40 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RequestNotes");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestFiles", b =>
+                {
+                    b.Property<int>("RequestFilesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestFilesId"));
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RepairRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserBuildingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestFilesId");
+
+                    b.HasIndex("RepairRequestId");
+
+                    b.HasIndex("UserBuildingsId");
+
+                    b.ToTable("RequestFiles");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.Role", b =>
@@ -664,6 +702,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -730,6 +776,10 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("RequestTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
@@ -964,7 +1014,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Building");
 
@@ -984,6 +1036,17 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestFiles", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", null)
+                        .WithMany("Files")
+                        .HasForeignKey("RepairRequestId");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.UserBuildings", null)
+                        .WithMany("Files")
+                        .HasForeignKey("UserBuildingsId");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.UserBuildings", b =>
@@ -1049,7 +1112,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", b =>
                 {
+                    b.Navigation("Files");
+
                     b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.UserBuildings", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,7 +14,7 @@ export const signupCall = createAsyncThunk(
   "account/register",
   async (data: UserSignupData, thunkAPI) => {
     return axios
-      .post(`${apiURL}/account/register`, data)
+      .post(`${apiURL}/auth/register`, data)
       .then(function (response) {
         return {
           data: response.data,

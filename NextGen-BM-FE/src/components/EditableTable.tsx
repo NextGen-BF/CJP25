@@ -115,8 +115,8 @@ export default function EditableTable() {
     {
       field: "propertyNumber",
       headerName: "Property Number",
-      width: 150,
       editable: true,
+      flex: 1,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = rows.find(p=>p.propertyId!=params.id
                                   &&p.propertyNumber==params.props.value
@@ -128,9 +128,9 @@ export default function EditableTable() {
     {
       field: "size",
       headerName: "Size (in m2)",
-      width: 120,
       editable: true,
       type: "number",
+      flex: 1,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value < 0;
         return { ...params.props, error: hasError };
@@ -139,16 +139,16 @@ export default function EditableTable() {
     {
       field: "floor",
       headerName: "Floor",
-      width: 120,
       editable: true,
       type: "number",
+      flex: 1,
     },
     {
       field: "sizeOfIdealParts",
       headerName: "Ideal Parts (in %)",
-      width: 180,
       editable: true,
       type: "number",
+      flex: 1,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value < 0 || params.props.value > 100;
         return { ...params.props, error: hasError };
@@ -157,9 +157,20 @@ export default function EditableTable() {
     {
       field: "entranceIsExternal",
       headerName: "External Entrance",
-      width: 180,
       editable: true,
       type: "boolean",
+      flex: 1,
+    },
+    {
+      field: "propertyType",
+      headerName: "Property Type",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: propertyTypes,
+      getOptionLabel: (value) => (value as PropertyType)?.title,
+      getOptionValue: (value) => (value as PropertyType)?.typeId,
+      valueFormatter: (propertyType:PropertyType) => propertyType?.title
     },
     {
       field: "propertyType",
@@ -176,41 +187,41 @@ export default function EditableTable() {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 150,
+      flex: 1,
       getActions: ({ id }) => {
         const isEditing = rowModesModel[id]?.mode === GridRowModes.Edit;
         return isEditing
           ? [
-            <GridActionsCellItem
-              icon={<Check size={18} />}
-              label="Save"
-              onClick={() => handleSaveClick(id as number)}
-            />,
-            <GridActionsCellItem
-              icon={<X size={18} />}
-              label="Cancel"
-              onClick={() => handleCancelClick(id as number)}
-            />,
-          ]
+              <GridActionsCellItem
+                icon={<Check size={18} />}
+                label="Save"
+                onClick={() => handleSaveClick(id as number)}
+              />,
+              <GridActionsCellItem
+                icon={<X size={18} />}
+                label="Cancel"
+                onClick={() => handleCancelClick(id as number)}
+              />,
+            ]
           : [
-            <GridActionsCellItem
-              icon={<Pencil size={18} />}
-              label="Edit"
-              onClick={() => handleEditClick(id as number)}
-            />,
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={handleDeleteClick(id as number)}
-              color="inherit"
-            />,
-          ];
+              <GridActionsCellItem
+                icon={<Pencil size={18} />}
+                label="Edit"
+                onClick={() => handleEditClick(id as number)}
+              />,
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={handleDeleteClick(id as number)}
+                color="inherit"
+              />,
+            ];
       },
     },
   ];
 
   return (
-    <div>
+    <div style={{ width: "90%" }}>
       <DataGrid
         rows={rows}
         getRowId={(row) => row.propertyId}

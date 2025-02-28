@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { FC } from "react";
-import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
+import { Control, Controller} from "react-hook-form";
 import { createPropertyPageStyles } from "./CreatePropertyPageStyles";
 
 export interface InputProps{

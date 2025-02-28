@@ -1,3 +1,4 @@
+import "./utils/init.ts";
 import {
   createBrowserRouter,
   createRoutesFromElements,
