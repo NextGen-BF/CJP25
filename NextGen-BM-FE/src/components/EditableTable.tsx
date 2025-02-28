@@ -173,17 +173,6 @@ export default function EditableTable() {
       valueFormatter: (propertyType:PropertyType) => propertyType?.title
     },
     {
-      field: "propertyType",
-      headerName: "Property Type",
-      width: 150,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: propertyTypes,
-      getOptionLabel: (value) => (value as PropertyType)?.title,
-      getOptionValue: (value) => (value as PropertyType)?.typeId,
-      valueFormatter: (propertyType:PropertyType) => propertyType?.title
-    },
-    {
       field: "actions",
       type: "actions",
       headerName: "Actions",
