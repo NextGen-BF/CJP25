@@ -21,7 +21,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
-        [Authorize(Policy = "Admin")]
+        [Authorize]
         public async Task<IActionResult> GetAllBuildings()
         {
             var allbuildings = await _buildingService.GetAllBuildingsAsync();
@@ -30,7 +30,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        [Authorize(Policy = "Super For Building")]
+        [Authorize]
         public async Task<IActionResult> GetBuildingById(int buildingId)
         {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
