@@ -1,0 +1,22 @@
+.table-container{
+    width: 80%;
+    display: flex;
+    margin: auto;
+}
+
+.model-container{
+    position: absolute;
+    width: 100%;
+    background-color: aliceblue;
+    border: 2px solid #000;
+}
+
+.modal-container-div{
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+}

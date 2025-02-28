@@ -33,6 +33,7 @@ export const logOut = {
 
 export const editableTableConstants = {
   addRecord: "Add a property",
+  pageSizeOptions: [5, 10, 25, 50, 100],
 };
 
 export const createPropertyExpenseConstants = {
@@ -42,6 +43,15 @@ export const createPropertyExpenseConstants = {
   role_tenant: "Tenant",
   create: "Create Property Expense",
   addRecond: "Add a property",
+};
+
+export const fileTypeConstants = {
+  supportedFileTypes: "Accepted format: image and pdf files",
+  fileName: "File name:",
+  submit: "Submit request",
+  selectFile: "Attach a file",
+  fileSizeError: "Maximum file size is 10Mb!",
+  fileExistsError: "You have already uploaded a file with this name!",
 };
 
 export const createPropertyPaymentConstants = {
