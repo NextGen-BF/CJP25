@@ -1,4 +1,5 @@
 using AutoMapper;
+using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
@@ -17,44 +18,69 @@ public class RequestService : IRequestService
     private readonly DeleteRepairRequestUseCase _deleteRepairRequestUseCase;
     private readonly GetAllRepairRequestsByBuildingIdUseCase _getAllRepairRequestsByBuildingIdUseCase;
     private readonly GetUserBuildingRequests _getUserBuildingRequests;
-    private readonly GetRequestByIdUseCase _getRequestByIdUseCase; 
+    private readonly GetAllRequestsByUserIdUseCase _getAllRequestsByUserIdUserCase;
+    private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
+    private readonly GetRequestByIdUseCase _getRequestByIdUseCase;
+    private readonly GetRequestStatuesUseCase _getRequestStatusesUseCase;
     private readonly UpdateRepairRequestUseCase _updateRepairRequestUseCase;
     private readonly UpdateRequestNoteUseCase _updateRequestNoteUseCase;
+    private readonly SetRequestStatusUseCase _setRequestStatusUseCase;
     private readonly IMapper _mapper;
-    public RequestService( CreateRepairRequestUseCase createRepairRequestUseCase,
-                            CreateRequestNotesUseCase createRequestNoteUseCase,
-                            CreateUserBuildingRequestUseCase createUserBuildingRequestUseCase,
-                            DeleteRepairRequestNoteUseCase deleteRepairRequestNoteUseCase,
-                            DeleteRepairRequestUseCase deleteRepairRequestUseCase,
-                            GetAllRepairRequestsByBuildingIdUseCase getAllRepairRequestsByBuildingIdUseCase,
-                            GetRequestByIdUseCase getRequestByIdUseCase,
-                            UpdateRepairRequestUseCase updateRepairRequestUseCase,
-                            UpdateRequestNoteUseCase updateRequestNoteUseCase,
-                            GetUserBuildingRequests getUserBuildingRequests,
-                            IMapper mapper)
+    public RequestService(CreateRepairRequestUseCase createRepairRequestUseCase,
+                        CreateRequestNotesUseCase createRequestNoteUseCase,
+                        CreateUserBuildingRequestUseCase createUserBuildingRequestUseCase,
+                        DeleteRepairRequestNoteUseCase deleteRepairRequestNoteUseCase,
+                        DeleteRepairRequestUseCase deleteRepairRequestUseCase,
+                        GetAllRepairRequestsByBuildingIdUseCase getAllRepairRequestsByBuildingIdUseCase,
+                        GetRequestByIdUseCase getRequestByIdUseCase,
+                        GetUserBuildingRequests getUserBuildingRequests,
+                        GetAllRequestsByUserIdUseCase getAllRequestsByUserIdUseCase,
+                        GetBuildingsByUserIdUseCase getBuildingsByUserIdUseCase,
+                        UpdateRepairRequestUseCase updateRepairRequestUseCase,
+                        UpdateRequestNoteUseCase updateRequestNoteUseCase,
+                        SetRequestStatusUseCase setRequestStatusUseCase,
+                        GetRequestStatuesUseCase getRequestStatuesUseCase,
+                        IMapper mapper)
     {
-        _createRepairRequestUseCase=createRepairRequestUseCase;
-        _createRequestNoteUseCase=createRequestNoteUseCase;
-        _createUserBuildingRequestUseCase=createUserBuildingRequestUseCase;
-        _deleteRepairRequestNoteUseCase=deleteRepairRequestNoteUseCase;
-        _deleteRepairRequestUseCase=deleteRepairRequestUseCase;
-        _getAllRepairRequestsByBuildingIdUseCase=getAllRepairRequestsByBuildingIdUseCase;
-        _getRequestByIdUseCase=getRequestByIdUseCase;
-        _updateRepairRequestUseCase=updateRepairRequestUseCase;
-        _updateRequestNoteUseCase=updateRequestNoteUseCase;
-        _getUserBuildingRequests=getUserBuildingRequests;
-        _mapper=mapper;
+        _createRepairRequestUseCase = createRepairRequestUseCase;
+        _createRequestNoteUseCase = createRequestNoteUseCase;
+        _createUserBuildingRequestUseCase = createUserBuildingRequestUseCase;
+        _deleteRepairRequestNoteUseCase = deleteRepairRequestNoteUseCase;
+        _deleteRepairRequestUseCase = deleteRepairRequestUseCase;
+        _getAllRepairRequestsByBuildingIdUseCase = getAllRepairRequestsByBuildingIdUseCase;
+        _getRequestByIdUseCase = getRequestByIdUseCase;
+        _getAllRequestsByUserIdUserCase = getAllRequestsByUserIdUseCase;
+        _getUserBuildingRequests = getUserBuildingRequests;
+        _getBuildingsByUserIdUseCase = getBuildingsByUserIdUseCase;
+        _updateRepairRequestUseCase = updateRepairRequestUseCase;
+        _updateRequestNoteUseCase = updateRequestNoteUseCase;
+        _setRequestStatusUseCase = setRequestStatusUseCase;
+        _getRequestStatusesUseCase = getRequestStatuesUseCase;
+        _mapper = mapper;
     }
-    public async Task CreateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
+    public async Task<RepairRequestViewModel> CreateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
     {
         var repairRequest = _mapper.Map<RepairRequest>(repairRequestViewModel);
-        await _createRepairRequestUseCase.Execute(repairRequest);
+        var createdRequest = await _createRepairRequestUseCase.Execute(repairRequest);
+        return _mapper.Map<RepairRequestViewModel>(createdRequest);
     }
 
-    public async Task CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
+    public async Task<IList<RequestsGenericViewModel>> GetRequestsByUserIdAsync(int userId)
+    {
+        var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
+        var buildingIds = new List<int>();
+        foreach (var building in buildings)
+        {
+            buildingIds.Add(building.BuildingId);
+        }
+        return await _getAllRequestsByUserIdUserCase.Execute(buildingIds);
+    }
+
+    public async Task<RequestNotesViewModel> CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
     {
         var requestNotes = _mapper.Map<RequestNotes>(requestNotesViewModel);
-        await _createRequestNoteUseCase.Execute(requestNotes);
+        var createdNote = await _createRequestNoteUseCase.Execute(requestNotes);
+        return _mapper.Map<RequestNotesViewModel>(createdNote);
     }
 
     public async Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings)
@@ -73,9 +99,9 @@ public class RequestService : IRequestService
         await _deleteRepairRequestNoteUseCase.Execute(requestNoteId);
     }
 
-    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(int buildingId)
+    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(IList<int> buildingIds)
     {
-        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingId);
+        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingIds);
         return _mapper.Map<IList<RepairRequestViewModel>>(buildingRepairRequests);
     }
 
@@ -85,9 +111,9 @@ public class RequestService : IRequestService
         return _mapper.Map<RepairRequestViewModel>(repairRequest);
     }
 
-    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
+    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds)
     {
-        return await _getUserBuildingRequests.Execute(buildingId);
+        return await _getUserBuildingRequests.Execute(buildingIds);
     }
 
     public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
@@ -100,5 +126,16 @@ public class RequestService : IRequestService
     {
         var requestNote = _mapper.Map<RequestNotes>(requestNotesViewModel);
         await _updateRequestNoteUseCase.Execute(requestNote);
+    }
+
+    public async Task SetRequestStatusAsync(int requestId, int statusId, string requestType)
+    {
+        await _setRequestStatusUseCase.Execute(requestId, statusId, requestType);
+    }
+
+    public async Task<IList<RequestStatusViewModel>> GetRequestStatusesAsync()
+    {
+        var statuses = await _getRequestStatusesUseCase.Execute();
+        return _mapper.Map<IList<RequestStatusViewModel>>(statuses);
     }
 }
