@@ -1,3 +1,4 @@
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -12,5 +13,6 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces{
         Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId);
         Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId);
         Task DeletePropertyResidentAsync(int propertyResidentId);
+        Task<IList<PropertyTypeViewModel>> GetPropertyTypesAsync();
     }
 }

@@ -1,3 +1,4 @@
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 
 namespace NextGen_BM_BE_Domain.Interfaces
@@ -12,6 +13,7 @@ namespace NextGen_BM_BE_Domain.Interfaces
         Task UpdatePropertyAsync(Property property);
         Task DeletePropertyAsync(int propertyId);
         Task DeletePropertyResidentAsync(int propertyResidentId);
+        Task<List<Enums>> GetPropertyTypesAsync();
         Task<PropertyUsers> GetPropertyUserLinkAsync(int propertyId, int userId);
     }
 }

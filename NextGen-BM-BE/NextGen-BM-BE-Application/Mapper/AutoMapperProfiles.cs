@@ -83,9 +83,6 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
 
-            CreateMap<PropertyViewModel, Property>();
-            CreateMap<Property, PropertyViewModel>();
-
             CreateMap<PropertyExpenseViewModel, PropertyExpense>();
             CreateMap<PropertyExpense, PropertyExpenseViewModel>();
 
@@ -97,6 +94,7 @@ namespace NextGen_BM_BE_Application.Mapper
 
             //Property models
             CreateMap<Property, PropertyViewModel>()
+                .ForMember(dest => dest.PropertyType, opt => opt.MapFrom(src => src.PropertyType))
                 .ForMember(dest => dest.PropertyPayments, opt => opt.MapFrom(src => src.Payments))
                 .ForMember(
                     dest => dest.ResidentHistory,
@@ -104,6 +102,11 @@ namespace NextGen_BM_BE_Application.Mapper
                 );
             CreateMap<PropertyViewModel, Property>()
                 .ForMember(dest => dest.Payments, opt => opt.MapFrom(src => src.PropertyPayments))
+                .ForMember(dest => dest.PropertyType, opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.PropertyTypeId,
+                    opt => opt.MapFrom(src => src.PropertyType.TypeId)
+                )
                 .ForMember(
                     dest => dest.PropertyResidents,
                     opt => opt.MapFrom(src => src.ResidentHistory)
@@ -117,6 +120,9 @@ namespace NextGen_BM_BE_Application.Mapper
 
             CreateMap<PropertyExpense, PropertyExpenseViewModel>();
             CreateMap<PropertyExpenseViewModel, PropertyExpense>();
+
+            CreateMap<Enums, PropertyTypeViewModel>()
+                .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.EnumsId));
             //Request models
             CreateMap<RepairRequest, RepairRequestViewModel>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus))

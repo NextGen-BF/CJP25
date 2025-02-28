@@ -8,17 +8,20 @@ import {
   GridActionsCellItem,
   GridToolbarContainer,
   GridSlotProps,
+  GridPreProcessEditCellProps,
 } from "@mui/x-data-grid";
 import { Check, X, Pencil, DeleteIcon } from "lucide-react";
 import { Button } from "@mui/material";
-import { useAppDispatch } from "../redux/store";
+import { RootState, useAppDispatch } from "../redux/store";
 import {
   addProperty,
   removeProperty,
   updateProperty
 } from "../redux/slices/propertySlice";
-import { Property } from "../models/property";
+import { Property, PropertyType } from "../models/property";
 import { editableTableConstants } from "../constants/constants";
+import { getPropertyTypes } from "../redux/services/propertyService";
+import { useSelector } from "react-redux";
 
 declare module "@mui/x-data-grid" {
   interface ToolbarPropsOverrides {
@@ -33,13 +36,17 @@ export default function EditableTable() {
   const dispatch = useAppDispatch();
   const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const propertyTypes: PropertyType[] = useSelector(
+    (state: RootState) => state.propertyReducer.types,
+  );
 
   function EditToolbar(props: GridSlotProps["toolbar"]) {
     const { setRows, setRowModesModel } = props;
 
     const handleClick = () => {
+      dispatch(getPropertyTypes());
       let newRow: Property = {
-        propertyId: 0,
+        propertyId: rows.length + 1,
         propertyNumber: rows.length + 1,
         buildingId: 0,
         size: 0,
@@ -48,6 +55,11 @@ export default function EditableTable() {
         entranceIsExternal: true,
         payments: null,
         residentHistory: null,
+        propertyType: {
+          typeId: 0,
+          title: "",
+          description: ""
+        }
       };
       setRows((oldRows) => [...oldRows, newRow]);
       setRowModesModel((oldModel) => ({
@@ -68,9 +80,10 @@ export default function EditableTable() {
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = newRow as Property;
+    updatedRow.propertyType=propertyTypes.find((type)=>type.typeId==newRow.propertyType)??{typeId:0, title:"", description:""}
     setRows((prevRows) =>
       prevRows.map((row) =>
-        row.propertyNumber === updatedRow.propertyNumber ? updatedRow : row,
+        row.propertyId === updatedRow.propertyId ? updatedRow : row,
       ),
     );
     dispatch(updateProperty(updatedRow));
@@ -93,7 +106,7 @@ export default function EditableTable() {
   };
 
   const handleDeleteClick = (id: number) => () => {
-    let row = rows.filter((row) => row.propertyNumber !== id);
+    let row = rows.filter((row) => row.propertyId !== id);
     setRows(row);
     dispatch(removeProperty(row[0]));
   };
@@ -104,6 +117,13 @@ export default function EditableTable() {
       headerName: "Property Number",
       editable: true,
       flex: 1,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = rows.find(p=>p.propertyId!=params.id
+                                  &&p.propertyNumber==params.props.value
+                                  &&params.otherFieldsProps&&params.otherFieldsProps["propertyType"].value==p.propertyType.typeId);
+        console.log(params.row)
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "size",
@@ -111,6 +131,10 @@ export default function EditableTable() {
       editable: true,
       type: "number",
       flex: 1,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0;
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "floor",
@@ -125,6 +149,10 @@ export default function EditableTable() {
       editable: true,
       type: "number",
       flex: 1,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0 || params.props.value > 100;
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "entranceIsExternal",
@@ -132,6 +160,17 @@ export default function EditableTable() {
       editable: true,
       type: "boolean",
       flex: 1,
+    },
+    {
+      field: "propertyType",
+      headerName: "Property Type",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: propertyTypes,
+      getOptionLabel: (value) => (value as PropertyType)?.title,
+      getOptionValue: (value) => (value as PropertyType)?.typeId,
+      valueFormatter: (propertyType:PropertyType) => propertyType?.title
     },
     {
       field: "actions",
@@ -174,7 +213,7 @@ export default function EditableTable() {
     <div style={{ width: "90%" }}>
       <DataGrid
         rows={rows}
-        getRowId={(row) => row.propertyNumber}
+        getRowId={(row) => row.propertyId}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
@@ -185,6 +224,7 @@ export default function EditableTable() {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        onProcessRowUpdateError={(error)=>console.log(error.message)}
       />
     </div>
   );

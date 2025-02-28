@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
@@ -169,6 +170,24 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             {
                 //will eventually be replaced by custom one
                 throw new Exception("Couldn't delete this property");
+            }
+        }
+
+        public async Task<List<Enums>> GetPropertyTypesAsync()
+        {
+            try
+            {
+                return await _dataContext.Enums
+                    .Where(ptype => ptype.DeletedDate == null
+                            //should maybe be moved to application layer
+                            &&ptype.Type=="PropertyType")
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (DbException exception)
+            {
+                //will eventually be replaced by custom one
+                throw new Exception("Couldn't retrieve property types");
             }
         }
 

@@ -94,6 +94,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     .UserBuildings.Where(ub => ub.User.Id == userId && ub.DeletedDate == null)
                     .Include(b => b.Building.BuildingExpenses)
                     .Include(b => b.Building.Properties)
+                        .ThenInclude(p => p.PropertyType)
                     .Include(b => b.Building.BuildingAddress)
                     .Select(ub => ub.Building)
                     .AsNoTracking()

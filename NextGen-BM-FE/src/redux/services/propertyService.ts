@@ -19,10 +19,7 @@ export const createProperty = createAsyncThunk('/property/new', async(property:P
     }
 );
 export const getProperty = createAsyncThunk("property", async(propertyId:number, thunkAPI)=>{
-    return await axios.get(`${apiURL}/property/${propertyId}`, {
-        headers: 
-            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
-        })
+    return await axiosInstance.get(`${apiURL}/property/${propertyId}`)
         .then(
             function(response){
                 return response.data;
@@ -36,10 +33,7 @@ export const getProperty = createAsyncThunk("property", async(propertyId:number,
     }
 );
 export const deleteProperty = createAsyncThunk("property/delete", async(propertyId:number, thunkAPI)=>{
-    return await axios.delete(`${apiURL}/property/delete/${propertyId}`, {
-        headers: 
-            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
-        })
+    return await axiosInstance.delete(`${apiURL}/property/delete/${propertyId}`)
         .then(
             function(response){
                 return propertyId;
@@ -53,10 +47,7 @@ export const deleteProperty = createAsyncThunk("property/delete", async(property
     }
 );
 export const deletePropertyResident = createAsyncThunk("property/resident/delete", async(propertyId:number, thunkAPI)=>{
-    return await axios.delete(`${apiURL}/property/resident/delete/${propertyId}`, {
-        headers: 
-            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
-        })
+    return await axiosInstance.delete(`${apiURL}/property/resident/delete/${propertyId}`)
         .then(
             function(response){
                 return response.data;
@@ -70,10 +61,7 @@ export const deletePropertyResident = createAsyncThunk("property/resident/delete
     }
 );
 export const updateProperty = createAsyncThunk("property/update", async(property:Property, thunkAPI)=>{
-    return await axios.put(`${apiURL}/property/update`, property, {
-        headers: 
-            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
-        })
+    return await axiosInstance.put(`${apiURL}/property/update`, property)
         .then(
             function(response){
                 //returns request data because response doesn't return updated now
@@ -88,10 +76,7 @@ export const updateProperty = createAsyncThunk("property/update", async(property
     }
 );
 export const getProperties = createAsyncThunk("properties", async(_, thunkAPI)=>{
-    return await axios.get(`${apiURL}/property/all`, {
-        headers: 
-            {Authorization: `Bearer ${localStorage.getItem('JWT-BM')}`}
-        })
+    return await axiosInstance.get(`${apiURL}/property/all`)
         .then(
             function(response){
                 return response.data;
@@ -104,3 +89,16 @@ export const getProperties = createAsyncThunk("properties", async(_, thunkAPI)=>
         })
     }
 );
+
+export const getPropertyTypes = createAsyncThunk("property/type/all", async (_, thunkAPI) => {
+    return await axiosInstance.get(`${apiURL}/property/type/all`)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch((err: Error | AxiosError) => {
+            if (axios.isAxiosError(err)) {
+                return thunkAPI.rejectWithValue(err.response?.data)
+            }
+            return thunkAPI.rejectWithValue(err);
+        });
+})

@@ -2,6 +2,7 @@ using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Properties.Delete;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -19,6 +20,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly DeletePropertyUseCase _deletePropertyUseCase;
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
         private readonly DeletePropertyResidentUseCase _deletePropertyResidentUseCase;
+        private readonly GetPropertyTypesUseCase _getPropertyTypesUseCase;
         private readonly IMapper _mapper;
 
         public PropertyService(
@@ -30,6 +32,7 @@ namespace NextGen_BM_BE_Application.Services
             DeletePropertyUseCase deletePropertyUseCase,
             UpdatePropertyUseCase updatePropertyUseCase,
             DeletePropertyResidentUseCase deletePropertyResidentUseCase,
+            GetPropertyTypesUseCase getPropertyTypesUseCase,
             IMapper mapper
         )
         {
@@ -41,6 +44,7 @@ namespace NextGen_BM_BE_Application.Services
             _deletePropertyUseCase = deletePropertyUseCase;
             _updatePropertyUseCase = updatePropertyUseCase;
             _deletePropertyResidentUseCase = deletePropertyResidentUseCase;
+            _getPropertyTypesUseCase=getPropertyTypesUseCase;
             _mapper = mapper;
         }
 
@@ -88,6 +92,12 @@ namespace NextGen_BM_BE_Application.Services
         public async Task DeletePropertyResidentAsync(int propertyResidentId)
         {
             await _deletePropertyResidentUseCase.Execute(propertyResidentId);
+        }
+
+        public async Task<IList<PropertyTypeViewModel>> GetPropertyTypesAsync()
+        {
+            var enums = await _getPropertyTypesUseCase.Execute();
+            return _mapper.Map<IList<PropertyTypeViewModel>>(enums);
         }
     }
 }

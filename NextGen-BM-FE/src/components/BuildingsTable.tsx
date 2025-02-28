@@ -16,6 +16,7 @@ import {
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import "./scss/buildingTable.scss";
 import { useNavigate } from "react-router-dom";
+import { PropertyType } from "../models/property";
 import { buildingConstants } from "../constants/buildingConstants";
 import { editableTableConstants } from "../constants/constants";
 
@@ -64,6 +65,12 @@ const BuildingsTable: FC = () => {
       flex: 1,
       type: "boolean",
     },
+    {
+      field: "propertyType",
+      headerName: "Property Type",
+      width: 150,
+      valueGetter: (propertyType:PropertyType) => propertyType?.title
+    }
   ];
 
   const expensesColumns: GridColDef[] = [
