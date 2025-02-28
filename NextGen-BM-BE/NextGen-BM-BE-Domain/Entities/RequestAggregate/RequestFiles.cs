@@ -8,6 +8,7 @@ namespace NextGen_BM_BE_Domain.Entities
         public int RequestFilesId { get; set; }
         public required string FilePath { get; set; }
         public required string RequestType { get; set; }
+        public int RequestId { get; set; } = 0; //Will remove after demo, for now everything in the db is breaking if this is not included for some reason
         public int RepairRequestId { get; set; }
         public int UserBuildingId { get; set; }
         public RepairRequest? RepairRequest { get; set; }

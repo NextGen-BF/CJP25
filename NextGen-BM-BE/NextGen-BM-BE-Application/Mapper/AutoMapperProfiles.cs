@@ -133,9 +133,12 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.RepairRequestId, opt => opt.MapFrom(src => src.RequestId));
 
             CreateMap<RequestNotes, RequestNotesViewModel>()
-                .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.RequestNotesId));
+                .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.RequestNotesId))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RepairRequestId))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.User.Id));
             CreateMap<RequestNotesViewModel, RequestNotes>()
-                .ForMember(dest => dest.RequestNotesId, opt => opt.MapFrom(src => src.NoteId));
+                .ForMember(dest => dest.RequestNotesId, opt => opt.MapFrom(src => src.NoteId))
+                .ForMember(dest => dest.RepairRequestId, opt => opt.MapFrom(src => src.RequestId));
 
             CreateMap<Enums, RequestStatusViewModel>()
                 .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.EnumsId));

@@ -41,6 +41,7 @@ public class DocumentService : IDocumentService
                 await s3Client.PutObjectAsync(request);
                 filePaths.Add(request.Key);
             }
+            await UploadFilePaths(requestId, filePaths, requestType);
             return filePaths;
         }
         catch (Exception ex)
@@ -51,9 +52,7 @@ public class DocumentService : IDocumentService
 
     private Task UploadFilePaths(int requestId, IList<string> filePaths, string requestType)
     {
-        //Will upload to a new table called "RequestDocuments" which will have two FK values, both nullabe
-        //One pointing to RepairRequest and the other to UserBuildingRequest
-        //It will also have request type and the filePaths to the files in AWS S3
+        
         return null;
     }
 }

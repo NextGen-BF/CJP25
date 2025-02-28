@@ -21,6 +21,7 @@ public class RequestService : IRequestService
     private readonly GetAllRequestsByUserIdUseCase _getAllRequestsByUserIdUserCase;
     private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
     private readonly GetRequestByIdUseCase _getRequestByIdUseCase;
+    private readonly GetRequestStatuesUseCase _getRequestStatusesUseCase;
     private readonly UpdateRepairRequestUseCase _updateRepairRequestUseCase;
     private readonly UpdateRequestNoteUseCase _updateRequestNoteUseCase;
     private readonly SetRequestStatusUseCase _setRequestStatusUseCase;
@@ -38,6 +39,7 @@ public class RequestService : IRequestService
                         UpdateRepairRequestUseCase updateRepairRequestUseCase,
                         UpdateRequestNoteUseCase updateRequestNoteUseCase,
                         SetRequestStatusUseCase setRequestStatusUseCase,
+                        GetRequestStatuesUseCase getRequestStatuesUseCase,
                         IMapper mapper)
     {
         _createRepairRequestUseCase = createRepairRequestUseCase;
@@ -53,6 +55,7 @@ public class RequestService : IRequestService
         _updateRepairRequestUseCase = updateRepairRequestUseCase;
         _updateRequestNoteUseCase = updateRequestNoteUseCase;
         _setRequestStatusUseCase = setRequestStatusUseCase;
+        _getRequestStatusesUseCase = getRequestStatuesUseCase;
         _mapper = mapper;
     }
     public async Task<RepairRequestViewModel> CreateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
@@ -128,5 +131,11 @@ public class RequestService : IRequestService
     public async Task SetRequestStatusAsync(int requestId, int statusId, string requestType)
     {
         await _setRequestStatusUseCase.Execute(requestId, statusId, requestType);
+    }
+
+    public async Task<IList<RequestStatusViewModel>> GetRequestStatusesAsync()
+    {
+        var statuses = await _getRequestStatusesUseCase.Execute();
+        return _mapper.Map<IList<RequestStatusViewModel>>(statuses);
     }
 }

@@ -30,7 +30,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
-        [Authorize(Policy = "Super For Building")]
+        // [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> GetBuildingById(int buildingId)
         {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
@@ -48,7 +48,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
-        [Authorize(Policy = "Super")]
+        // [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             var createdBuilding = await _buildingService.CreateBuildingAsync(building);

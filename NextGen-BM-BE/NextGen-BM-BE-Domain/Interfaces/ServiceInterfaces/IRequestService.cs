@@ -10,6 +10,7 @@ namespace NextGen_BM_BE_Domain.Services
         Task<RequestNotesViewModel> CreateRequestNoteAsync(RequestNotesViewModel requestNotes);
         Task SetRequestStatusAsync(int requestId, int statusId, string requestType);
         Task<IList<RequestsGenericViewModel>> GetRequestsByUserIdAsync(int userId);
+        Task<IList<RequestStatusViewModel>> GetRequestStatusesAsync();
         Task CreateUserBuildingRequestAsync(UserBuildingsViewModel userBuildings);
         Task DeleteRepairRequestNoteAsync(int requestNoteId);
         Task DeleteRepairRequestAsync(int requestId);

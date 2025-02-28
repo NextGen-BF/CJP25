@@ -45,19 +45,18 @@ export interface createRequest {
 }
 
 export interface RequestRow {
-  id: number;
+  requestId: number;
   requestTitle: string;
   buildingAlias: string;
   requestType: string;
   userFullName: string;
-  description: string;
+  requestDescription: string;
   status: string;
   dateCreated: Date | string;
   notes: RequestNotes[];
 }
 
-export enum RequestStatus {
-  approved = "Approved",
-  denied = "Denied",
-  pending = "In review",
+export interface RequestStatus {
+  statusId: number;
+  title: string;
 }

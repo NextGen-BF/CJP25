@@ -5,7 +5,7 @@ namespace NextGen_BM_BE_Domain.Entities
     public class UserBuildings
     {
         public int UserBuildingsId { get; set; }
-        public required string RequestTitle { get; set; }
+        public required string RequestTitle { get; set; } = " ";
         public int BuildingId { get; set; }
         public bool Approved { get; set; }
         public int UserId { get; set; }

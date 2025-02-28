@@ -20,6 +20,7 @@ const RequestTable: FC = () => {
 
   const handleRowClick = (id: number) => {
     dispatch(setSelectedRow({ selectedRow: request[id - 1], isOpened: true }));
+    console.log(request[id-1])
   };
 
   const requestColumns: GridColDef[] = [

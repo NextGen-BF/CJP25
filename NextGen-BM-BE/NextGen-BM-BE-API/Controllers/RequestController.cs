@@ -72,6 +72,14 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("status")]
+        public async Task<IActionResult> GetRequestStatuses()
+        {
+            var statuses = await _requestService.GetRequestStatusesAsync();
+            return Ok(statuses);
+        }
+
         [HttpPost]
         [Route("document/upload/{requestId}")]
         public async Task<IActionResult> UploadDocumentRequests([FromForm] IList<IFormFile> files, int requestId, [FromForm] string requestType)

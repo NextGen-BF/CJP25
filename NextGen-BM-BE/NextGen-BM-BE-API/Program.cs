@@ -83,6 +83,7 @@ builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<UpdateRequestNoteUseCase>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<SetRequestStatusUseCase>();
+builder.Services.AddScoped<GetRequestStatuesUseCase>();
 
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();

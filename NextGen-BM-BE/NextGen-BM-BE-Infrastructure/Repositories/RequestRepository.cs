@@ -226,5 +226,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                 throw new Exception("Could not set status for request", ex);
             }
         }
+
+        public Task CreateRequestFilesAsync(int requestId, IList<string> filePaths, string requestType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IList<Enums>> GetRequestStatusesAsync()
+        {
+            try
+            {
+                return await _dataContext.Enums.Where(enums => enums.Type == "RequestStatus").ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not get request statuses", ex);
+            }
+        }
     }
 }

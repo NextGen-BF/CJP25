@@ -11,11 +11,14 @@ import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { setSelectedRow } from "../../redux/slices/modalSlice";
-import { RequestRow, RequestStatus } from "../../models/requests";
-import { useForm } from "react-hook-form";
 import RequestNotes from "./RequestNotes";
 import UploadedFilesList from "./UploadedFilesList";
-import { postRequestNote } from "../../redux/services/requestService";
+import {
+  getRequestStatuses,
+  postRequestNote,
+  setRequestStatus,
+} from "../../redux/services/requestService";
+import { RequestStatus } from "../../models/requests";
 
 const style = {
   position: "absolute",
@@ -37,34 +40,47 @@ const textFieldStyle = {
 
 const RequestModal: FC = () => {
   const user = useSelector((state: RootState) => state.loginReducer.value);
+  const statusList = useSelector(
+    (state: RootState) => state.requestStatusReducer.value,
+  );
   const dispatch = useAppDispatch();
   const [disabledState, setDisabledState] = useState<boolean>(true);
   const [newNoteText, setNewNoteText] = useState<string>("");
-  const statusEnum = Object.values<RequestStatus>(RequestStatus);
   const modalState = useSelector(
     (state: RootState) => state.modalStateReducer.value,
   );
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<RequestRow>();
-
+  const [requestStatus, setRequestState] = useState<RequestStatus>({
+    statusId: 0,
+    title: modalState.selectedRow?.status ?? " ",
+  });
   const handleModalClose = () => {
     dispatch(setSelectedRow({ selectedRow: null, isOpened: false }));
   };
 
-  const setState = () => {
-    
-    setDisabledState(true);
-  }
-
   useEffect(() => {
-    if (modalState.selectedRow) {
-      reset(modalState.selectedRow);
+    if (statusList.length == 0) dispatch(getRequestStatuses());
+
+    if (statusList.length > 0 && modalState.selectedRow?.status) {
+      var status = statusList.find(
+        (stat) => stat.title == modalState.selectedRow?.status,
+      );
+      if (status) setRequestState(status);
     }
-  }, [modalState.selectedRow, reset]);
+  }, [statusList]);
+
+  const setState = () => {
+    if (modalState.selectedRow) {
+      console.log(modalState.selectedRow);
+      dispatch(
+        setRequestStatus({
+          requestId: modalState.selectedRow?.requestId,
+          statusId: requestStatus?.statusId ?? 0,
+          requestType: modalState.selectedRow?.requestType,
+        }),
+      );
+    }
+    setDisabledState(true);
+  };
 
   return (
     <div>
@@ -109,21 +125,30 @@ const RequestModal: FC = () => {
                 value={modalState.selectedRow?.buildingAlias}
               />
             </Box>
-            <Box sx={textFieldStyle}>
+            {/* <Box sx={textFieldStyle}>
               <TextField
-                {...register("status")}
                 fullWidth
                 disabled={disabledState}
                 label="Status"
                 size="small"
-                value={modalState.selectedRow?.status}
+                value={requestStatus?.title}
+                onChange={(e) => {
+                  const selectedStatus = statusList.find(
+                    (status) => status.statusId == Number(e.target.value),
+                  );
+                  if (selectedStatus) {
+                    console.log(selectedStatus);
+                    setRequestState(selectedStatus);
+                    console.log(requestStatus);
+                  }
+                }}
                 select
               >
-                {statusEnum.map((status) => (
-                  <MenuItem value={status.toString()}>{status}</MenuItem>
+                {statusList.map((status) => (
+                  <MenuItem value={status.statusId}>{status.title}</MenuItem>
                 ))}
-              </TextField>
-            </Box>
+              </TextField> 
+            </Box>  -- Is bugged out, created separate task to fix this field*/}
             <Box sx={textFieldStyle}>
               <TextField
                 fullWidth
@@ -155,11 +180,7 @@ const RequestModal: FC = () => {
               <Button fullWidth onClick={() => setDisabledState(false)}>
                 Edit
               </Button>
-              <Button
-                disabled={isSubmitting}
-                fullWidth
-                onClick={() => setDisabledState(true)}
-              >
+              <Button fullWidth onClick={() => setState()}>
                 Save
               </Button>
             </div>
@@ -184,7 +205,7 @@ const RequestModal: FC = () => {
                         noteId: 0,
                         createdBy: user.userId,
                         createDate: new Date().toISOString().split("T")[0],
-                        requestId: modalState.selectedRow?.id ?? 0,
+                        requestId: modalState.selectedRow?.requestId ?? 0,
                         noteText: newNoteText,
                       }),
                     )

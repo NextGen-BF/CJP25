@@ -15,7 +15,7 @@ export function transformRequest(
       userId: request.userId,
       requestDescription: request.description || "",
       status: {
-        statusId: 20,
+        statusId: 1,
         title: "In Review",
       },
       dateOpened: request.startDate.toISOString().split("T")[0],
