@@ -55,9 +55,9 @@ namespace NextGen_BM_BE_Application.Services
             await _deletePropertyUseCase.Execute(propertyId);
         }
 
-        public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync()
+        public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync(int? page, int? pageSize)
         {
-            var properties = await _getAllPropertiesUseCase.Execute();
+            var properties = await _getAllPropertiesUseCase.Execute(page, pageSize);
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 
@@ -73,15 +73,15 @@ namespace NextGen_BM_BE_Application.Services
             return _mapper.Map<PropertyViewModel>(property);
         }
 
-        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId, int? page, int? pageSize)
         {
-            var properties = await _getPropertiesByUserIdUseCase.Execute(userId);
+            var properties = await _getPropertiesByUserIdUseCase.Execute(userId, page, pageSize);
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 
-        public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId, int? page, int? pageSize)
         {
-            var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
+            var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId, page, pageSize);
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 

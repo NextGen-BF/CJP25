@@ -1,3 +1,4 @@
+using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -22,9 +23,9 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAllBuildings()
+        public async Task<IActionResult> GetAllBuildings([FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var allbuildings = await _buildingService.GetAllBuildingsAsync();
+            var allbuildings = await _buildingService.GetAllBuildingsAsync(page, pageSize);
             return Ok(allbuildings);
         }
 
@@ -38,10 +39,10 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetBuildingsByUserId(int userId)
+        public async Task<IActionResult> GetBuildingsByUserId(int userId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
 
-            var buildings = await _buildingService.GetBuildingsByUserIdAsync(userId);
+            var buildings = await _buildingService.GetBuildingsByUserIdAsync(userId, page, pageSize);
             return Ok(buildings);
         }
 

@@ -18,9 +18,9 @@ public class RequestController: ControllerBase {
     }
     [HttpGet]
     [Route("building/repair/{buildingId}")]
-    public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId)
+    public async Task<IActionResult> GetRepairRequestsByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
     {
-        var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId);
+        var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingId, page, pageSize);
         if (result==null) return BadRequest();
         return Ok(result);
     }
@@ -36,9 +36,9 @@ public class RequestController: ControllerBase {
 
     [HttpGet]
     [Route("user/building/{buildingId}")]
-    public async Task<IActionResult> GetUserBuildingRequests(int buildingId)
+    public async Task<IActionResult> GetUserBuildingRequests(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
     {
-        var result = await _requestService.GetUserBuildingRequestsAsync(buildingId);
+        var result = await _requestService.GetUserBuildingRequestsAsync(buildingId, page, pageSize);
         if (result==null) return BadRequest();
         return Ok(result);
     }

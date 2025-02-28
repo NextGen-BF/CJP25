@@ -47,9 +47,9 @@ namespace NextGen_BM_BE_Application.Services
             return _mapper.Map<BuildingViewModel>(building);
         }
 
-        public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync()
+        public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync(int? page, int? pageSize)
         {
-            var buildings = await _getAllBuildingsUseCase.Execute();
+            var buildings = await _getAllBuildingsUseCase.Execute(page, pageSize);
             List<BuildingViewModel> buildingsList = new();
             foreach(var building in buildings){
                 buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
@@ -57,9 +57,9 @@ namespace NextGen_BM_BE_Application.Services
             return buildingsList;
         }
 
-        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId)
+        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize)
         {
-            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
+            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId, page, pageSize);
             List<BuildingViewModel> buildingsList = new();
             foreach (var building in buildings)
             {

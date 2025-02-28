@@ -31,29 +31,29 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId)
+        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
-                userId
+                userId, page, pageSize
             );
             return Ok(propertyPaymentsByUserId);
         }
 
         [HttpGet]
         [Route("property/{propertyId}")]
-        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId)
+        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByPropertyId =
-                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId);
+                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId, page, pageSize);
             return Ok(propertyPaymentsByPropertyId);
         }
 
         [HttpGet]
         [Route("building/{buildingId}")]
-        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByBuildingId =
-                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId);
+                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId, page, pageSize);
             return Ok(propertyPaymentsByBuildingId);
         }
 

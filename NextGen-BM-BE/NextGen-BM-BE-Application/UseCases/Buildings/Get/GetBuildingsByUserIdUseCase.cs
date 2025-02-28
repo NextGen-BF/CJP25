@@ -12,9 +12,9 @@ namespace NextGen_BM_BE_Application.UseCases.Buildings.Get
     {
         private readonly IBuildingRepository _buildingRepository = buildingRepository;
     
-        public async Task<IList<Building>> Execute(int userId)
+        public async Task<IList<Building>> Execute(int userId, int? page, int? pageSize)
         {
-            var result = await _buildingRepository.GetBuildingsByUserIdAsync(userId);
+            var result = await _buildingRepository.GetBuildingsByUserIdAsync(userId, page, pageSize);
             return result;
         }
     }

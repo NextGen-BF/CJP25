@@ -25,9 +25,9 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAllProperties()
+        public async Task<IActionResult> GetAllProperties([FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetAllPropertiesAsync();
+            var result = await _propertyService.GetAllPropertiesAsync(page, pageSize);
             if (result == null)
                 return BadRequest();
             return Ok(result);
@@ -45,9 +45,9 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertiesByUserId(int userId)
+        public async Task<IActionResult> GetPropertiesByUserId(int userId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetPropertyByUserIdAsync(userId);
+            var result = await _propertyService.GetPropertyByUserIdAsync(userId, page, pageSize);
             if (result == null)
                 return BadRequest();
             return Ok(result);
@@ -55,9 +55,9 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("building/{buildingId}")]
-        public async Task<IActionResult> GetPropertyByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
+            var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId, page, pageSize);
             if (result == null)
                 return BadRequest();
             return Ok(result);

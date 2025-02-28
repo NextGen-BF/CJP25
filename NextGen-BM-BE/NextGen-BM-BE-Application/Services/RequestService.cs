@@ -73,9 +73,9 @@ public class RequestService : IRequestService
         await _deleteRepairRequestNoteUseCase.Execute(requestNoteId);
     }
 
-    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(int buildingId)
+    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(int buildingId, int? page, int? pageSize)
     {
-        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingId);
+        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingId, page, pageSize);
         return _mapper.Map<IList<RepairRequestViewModel>>(buildingRepairRequests);
     }
 
@@ -85,9 +85,9 @@ public class RequestService : IRequestService
         return _mapper.Map<RepairRequestViewModel>(repairRequest);
     }
 
-    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
+    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId, int? page, int? pageSize)
     {
-        return await _getUserBuildingRequests.Execute(buildingId);
+        return await _getUserBuildingRequests.Execute(buildingId, page, pageSize);
     }
 
     public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)

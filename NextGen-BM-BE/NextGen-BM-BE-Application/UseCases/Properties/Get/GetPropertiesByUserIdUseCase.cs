@@ -7,9 +7,9 @@ namespace NextGen_BM_BE_Application.UseCases.Expenses.Get
     public sealed class GetPropertiesByUserIdUseCase(IPropertyRepository _propertyRepositories)
     {
         private readonly IPropertyRepository propertyRepository = _propertyRepositories;
-        public async Task<IList<Property>> Execute(int userId)
+        public async Task<IList<Property>> Execute(int userId, int? page, int? pageSize)
         {
-            var result = await propertyRepository.GetPropertiesByUserIdAsync(userId);
+            var result = await propertyRepository.GetPropertiesByUserIdAsync(userId, page, pageSize);
             return result;
         }
     }

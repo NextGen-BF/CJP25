@@ -46,7 +46,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetAllBuildingsAsync()
+        public async Task<List<Building>> GetAllBuildingsAsync(int? page, int? pageSize)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId)
+        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize)
         {
             try
             {

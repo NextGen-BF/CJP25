@@ -6,9 +6,9 @@ namespace NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces
     public interface IExpensesService
     {
         Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId);
-        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByUserIdAsync(int userId);
-        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByBuildingIdAsync(int buildingId);
-        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByPropertyIdAsync(int propertyId);
+        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByUserIdAsync(int userId, int? page, int? pageSize);
+        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByBuildingIdAsync(int buildingId, int? page, int? pageSize);
+        Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByPropertyIdAsync(int propertyId, int? page, int? pageSize);
         Task CreatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);
         Task CreatePropertyPaymentsForPropertiesAsync(List<int> propertyIds, int expenseId);
         Task UpdatePropertyExpenseAsync(PropertyExpenseViewModel propertyExpense);

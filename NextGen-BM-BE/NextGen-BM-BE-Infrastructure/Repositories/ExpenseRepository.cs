@@ -99,7 +99,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         }
 
         public async Task<List<PropertyPayments>> GetPropertyPaymentsByBuildingIdAsync(
-            int buildingId
+            int buildingId, int? page, int? pageSize
         )
         {
             try
@@ -152,7 +152,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         }
 
         public async Task<List<PropertyPayments>> GetPropertyPaymentsByPropertyIdAsync(
-            int propertyId
+            int propertyId, int? page, int? pageSize
         )
         {
             try
@@ -186,7 +186,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId)
+        public async Task<List<PropertyPayments>> GetPropertyPaymentsByUserIdAsync(int userId, int? page, int? pageSize)
         {
             try
             {

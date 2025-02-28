@@ -56,11 +56,11 @@ namespace NextGen_BM_BE_Application.Services
         }
 
         public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByUserIdAsync(
-            int userId
+            int userId, int? page, int? pageSize
         )
         {
             var propertyPaymentsByUserId = await _getAllPropertyPaymentsByUserIdUseCase.Execute(
-                userId
+                userId, page, pageSize
             );
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
 
@@ -72,11 +72,11 @@ namespace NextGen_BM_BE_Application.Services
         }
 
         public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByBuildingIdAsync(
-            int buildingId
+            int buildingId, int? page, int? pageSize
         )
         {
             var propertyPaymentsByBuildingId =
-                await _getAllPropertyPaymentsByBuildingIdUseCase.Execute(buildingId);
+                await _getAllPropertyPaymentsByBuildingIdUseCase.Execute(buildingId, page, pageSize);
 
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
 
@@ -88,11 +88,11 @@ namespace NextGen_BM_BE_Application.Services
         }
 
         public async Task<List<PropertyPaymentsViewModel>> GetPropertyPaymentsByPropertyIdAsync(
-            int propertyId
+            int propertyId, int? page, int? pageSize
         )
         {
             var propertyPaymentsByPropertyId =
-                await _getAllPropertyPaymentsByPropertyIdUseCase.Execute(propertyId);
+                await _getAllPropertyPaymentsByPropertyIdUseCase.Execute(propertyId, page, pageSize);
 
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
 

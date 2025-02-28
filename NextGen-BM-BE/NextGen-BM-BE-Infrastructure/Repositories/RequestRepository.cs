@@ -114,7 +114,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId)
+        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId, int? page, int? pageSize)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId, int? page, int? pageSize)
         {
             try
             {
