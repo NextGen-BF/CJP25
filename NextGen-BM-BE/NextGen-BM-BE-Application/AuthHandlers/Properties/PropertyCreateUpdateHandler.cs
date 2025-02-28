@@ -6,6 +6,7 @@ using NextGen_BM_BE_Domain.Entities;
 using System.Text.Json;
 using NextGen_BM_BE_Domain.ViewModels;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 namespace NextGen_BM_BE_Application.AuthHandlers{
     public class PropertyCreateUpdateHandler : AuthorizationHandler<PropertyPermissionRequirement>
@@ -21,14 +22,16 @@ namespace NextGen_BM_BE_Application.AuthHandlers{
             if (context.Resource is HttpContext httpContext)
             {
                 string body;
-                using (StreamReader streamReader=new StreamReader(httpContext.Request.Body))
+                httpContext.Request.EnableBuffering();
+                using (StreamReader streamReader=new StreamReader(httpContext.Request.Body, leaveOpen:true))
                     body=await streamReader.ReadToEndAsync();
-                
+                httpContext.Request.Body.Position=0;
                 if (body=="") return;
-
+                
                 var property = JsonSerializer.Deserialize<PropertyViewModel>(body, 
                                                                             new JsonSerializerOptions{
-                                                                                PropertyNameCaseInsensitive = true
+                                                                                PropertyNameCaseInsensitive = true,
+                                                                                NumberHandling=JsonNumberHandling.AllowReadingFromString
                                                                                 });
                 int buildingId=property.BuildingId, userId;
                 if (!int.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
