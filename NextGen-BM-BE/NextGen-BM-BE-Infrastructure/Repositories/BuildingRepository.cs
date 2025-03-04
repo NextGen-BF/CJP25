@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
+using NextGen_BM_BE_Infrastructure.DataStructures;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
 {
@@ -50,11 +50,18 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dbContext
+                var query = _dbContext
                     .Buildings.Where(b => b.DeletedDate == null)
                     .Include(b => b.BuildingAddress)
                     .Include(b => b.BuildingExpenses)
-                    .Include(b => b.Properties)
+                    .Include(b => b.Properties);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Building>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
             }
