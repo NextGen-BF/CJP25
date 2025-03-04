@@ -3,6 +3,7 @@ using NextGen_BM_BE_Application.UseCases.Buildings.Create;
 using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
 using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 using NextGen_BM_BE_Application.UseCases.Buildings.Update;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -50,10 +51,22 @@ namespace NextGen_BM_BE_Application.Services
         public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync(int? page, int? pageSize)
         {
             var buildings = await _getAllBuildingsUseCase.Execute(page, pageSize);
-            List<BuildingViewModel> buildingsList = new();
-            foreach(var building in buildings){
-                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+            
+            List<BuildingViewModel> buildingsList;
+            if (page!=null&&pageSize!=null)
+            {
+                buildingsList=new PagedList<BuildingViewModel>{Page=(int)page, PageSize=(int)pageSize};
+                buildingsList.AddRange(_mapper.Map<PagedList<BuildingViewModel>>(buildings));
+                ((PagedList<BuildingViewModel>)buildingsList).TotalCount=((PagedList<Building>)buildings).TotalCount;
             }
+            else 
+            {
+                buildingsList = new List<BuildingViewModel>();
+                foreach(var building in buildings){
+                    buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                }
+            }
+            
             return buildingsList;
         }
 

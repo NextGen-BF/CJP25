@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
-namespace NextGen_BM_BE_Infrastructure.DataStructures{
+namespace NextGen_BM_BE_Domain.DataStructures{
     public class PagedList<T>:List<T>
     {
         private int _page;
         private int _pageSize;
+        public int TotalCount{ get; set; }
         public int TotalPages { 
-                get => Count/PageSize; 
+                get => TotalCount/PageSize;
             }
         public int Page {
                 get => _page;
@@ -19,9 +19,10 @@ namespace NextGen_BM_BE_Infrastructure.DataStructures{
         }
         public async Task Paginate(IQueryable<T> query)
         {
-            var items= await query.Skip((Page-1)*PageSize)
+            var items= query.Skip((Page-1)*PageSize)
                 .Take(PageSize)
-                .ToListAsync();
+                .ToList();
+            TotalCount = query.Count();
             AddRange(items);
         }
     }

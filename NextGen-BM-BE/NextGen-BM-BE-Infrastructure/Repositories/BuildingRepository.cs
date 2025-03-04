@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
-using NextGen_BM_BE_Infrastructure.DataStructures;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
 {

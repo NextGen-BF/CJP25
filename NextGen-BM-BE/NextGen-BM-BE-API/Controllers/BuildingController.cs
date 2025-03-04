@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
+using NextGen_BM_BE_Domain.DataStructures;
 
 namespace NextGen_BM_BE_API.Controllers
 {
@@ -25,7 +26,10 @@ namespace NextGen_BM_BE_API.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllBuildings([FromQuery] int? page, [FromQuery] int? pageSize)
         {
+            
             var allbuildings = await _buildingService.GetAllBuildingsAsync(page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<BuildingViewModel>{Items=allbuildings, PageCount=((PagedList<BuildingViewModel>)allbuildings).TotalPages});
             return Ok(allbuildings);
         }
 
