@@ -11,7 +11,6 @@ namespace NextGen_BM_BE_API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingService _buildingService;
@@ -23,6 +22,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("all")]
+        [Authorize]
         public async Task<IActionResult> GetAllBuildings([FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var allbuildings = await _buildingService.GetAllBuildingsAsync(page, pageSize);
@@ -31,6 +31,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("{buildingId}")]
+        [Authorize]
         public async Task<IActionResult> GetBuildingById(int buildingId)
         {
             var building = await _buildingService.GetBuildingByIdAsync(buildingId);
@@ -48,6 +49,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPost]
         [Route("new")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateBuilding(BuildingViewModel building)
         {
             var createdBuilding = await _buildingService.CreateBuildingAsync(building);
@@ -56,6 +58,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/user/{userId}")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> DeleteUserBuildingLink(
             int userId,
             [FromBody] int buildingId
@@ -67,6 +70,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> UpdateBuilding(BuildingViewModel building)
         {
             await _buildingService.UpdateBuildingAsync(building);
@@ -75,6 +79,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{buildingId}")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> DeleteBuilding(int buildingId)
         {
             await _buildingService.DeleteBuildingAsync(buildingId);

@@ -8,9 +8,9 @@ namespace NextGen_BM_BE_Application.UseCases.Requests.Get
     public sealed class GetUserBuildingRequests(IRequestRepository _requestRepository)
     {
         private readonly IRequestRepository requestRepository = _requestRepository;
-        public async Task<IList<UserBuildings>> Execute(int buildingId, int? page, int? pageSize)
+        public async Task<IList<UserBuildings>> Execute(IList<int> buildingIds, int? page, int? pageSize)
         {
-            var result = await requestRepository.GetUserBuildingRequestsAsync(buildingId, page, pageSize);
+            var result = await requestRepository.GetUserBuildingRequestsAsync(buildingIds, page, pageSize);
             return result;
         }
     }

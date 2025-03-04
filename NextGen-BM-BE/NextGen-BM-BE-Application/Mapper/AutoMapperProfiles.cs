@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
@@ -27,7 +28,8 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(
                     dest => dest.Properties,
                     opt => opt.MapFrom(src => src.BuildingProperties)
-                ).ForMember(
+                )
+                .ForMember(
                     dest => dest.UserBuildings,
                     opt => opt.MapFrom(src => src.UserBuildings)
                 );
@@ -44,7 +46,8 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(
                     dest => dest.BuildingProperties,
                     opt => opt.MapFrom(src => src.Properties)
-                ).ForMember(
+                )
+                .ForMember(
                     dest => dest.UserBuildings,
                     opt => opt.MapFrom(src => src.UserBuildings)
                 );
@@ -53,7 +56,10 @@ namespace NextGen_BM_BE_Application.Mapper
             CreateMap<Address, AddressViewModel>();
 
             CreateMap<UserBuildingsViewModel, UserBuildings>()
-                .ForMember(dest => dest.UserBuildingsId, opt => opt.MapFrom(src => src.UserBuildingsId))
+                .ForMember(
+                    dest => dest.UserBuildingsId,
+                    opt => opt.MapFrom(src => src.UserBuildingsId)
+                )
                 .ForMember(dest => dest.BuildingId, opt => opt.MapFrom(src => src.BuildingId))
                 .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
@@ -61,12 +67,18 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.User, opt => opt.Ignore())
                 .ForMember(dest => dest.Role, opt => opt.Ignore());
-            
+
             CreateMap<UserBuildings, UserBuildingsViewModel>()
-                .ForMember(dest => dest.UserBuildingsId, opt => opt.MapFrom(src => src.UserBuildingsId))
+                .ForMember(
+                    dest => dest.UserBuildingsId,
+                    opt => opt.MapFrom(src => src.UserBuildingsId)
+                )
                 .ForMember(dest => dest.BuildingId, opt => opt.MapFrom(src => src.BuildingId))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role != null ? src.Role.Id : (int?)null))
+                .ForMember(
+                    dest => dest.RoleId,
+                    opt => opt.MapFrom(src => src.Role != null ? src.Role.Id : (int?)null)
+                )
                 .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
@@ -97,10 +109,8 @@ namespace NextGen_BM_BE_Application.Mapper
                     opt => opt.MapFrom(src => src.ResidentHistory)
                 );
 
-            CreateMap<PropertyPayments, PropertyPaymentsViewModel>()
-                .ForMember(dest => dest.DateDue, opt => opt.MapFrom(src => src.DueDate));
-            CreateMap<PropertyPaymentsViewModel, PropertyPayments>()
-                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DateDue));
+            CreateMap<PropertyPayments, PropertyPaymentsViewModel>();
+            CreateMap<PropertyPaymentsViewModel, PropertyPayments>();
 
             CreateMap<PropertyResidents, ResidentHistoryViewModel>();
             CreateMap<ResidentHistoryViewModel, PropertyResidents>();
@@ -111,7 +121,9 @@ namespace NextGen_BM_BE_Application.Mapper
             CreateMap<RepairRequest, RepairRequestViewModel>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus))
                 .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.Notes))
-                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RepairRequestId));
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RepairRequestId))
+                .ForMember(dest => dest.Files, opt => opt.Ignore());
+
             CreateMap<RepairRequestViewModel, RepairRequest>()
                 .ForMember(
                     dest => dest.RequestStatusId,
@@ -121,14 +133,42 @@ namespace NextGen_BM_BE_Application.Mapper
                 .ForMember(dest => dest.RepairRequestId, opt => opt.MapFrom(src => src.RequestId));
 
             CreateMap<RequestNotes, RequestNotesViewModel>()
-                .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.RequestNotesId));
+                .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.RequestNotesId))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RepairRequestId))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.User.Id));
             CreateMap<RequestNotesViewModel, RequestNotes>()
-                .ForMember(dest => dest.RequestNotesId, opt => opt.MapFrom(src => src.NoteId));
+                .ForMember(dest => dest.RequestNotesId, opt => opt.MapFrom(src => src.NoteId))
+                .ForMember(dest => dest.RepairRequestId, opt => opt.MapFrom(src => src.RequestId));
 
             CreateMap<Enums, RequestStatusViewModel>()
                 .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.EnumsId));
             CreateMap<RequestStatusViewModel, Enums>()
                 .ForMember(dest => dest.EnumsId, opt => opt.MapFrom(src => src.StatusId));
+
+
+            CreateMap<RepairRequest, RequestsGenericViewModel>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus.Title))
+            .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RepairRequestId))
+            .ForMember(dest => dest.BuildingAlias, opt => opt.MapFrom(src => src.Building.Alias))
+            .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.DateOpened))
+            .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.RequestType, opt => opt.MapFrom(src => "Repair"))
+            .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+            .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.Notes))
+            ;
+
+
+            CreateMap<UserBuildings, RequestsGenericViewModel>()
+            .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.UserBuildingsId))
+            .ForMember(dest => dest.BuildingAlias, opt => opt.MapFrom(src => src.Building.Alias))
+            .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.StartDate))
+            .ForMember(dest => dest.RequestedRole, opt => opt.MapFrom(src => src.Role.Name))
+            .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Approved ? "Approved" : "In Review"))
+            .ForMember(dest => dest.RequestType, opt => opt.MapFrom(src => "Building"))
+            ;
+
         }
     }
 }

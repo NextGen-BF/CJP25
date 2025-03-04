@@ -1,3 +1,5 @@
+using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
+
 namespace NextGen_BM_BE_Domain.Entities
 {
     public class PropertyExpenseTemplate
@@ -8,5 +10,6 @@ namespace NextGen_BM_BE_Domain.Entities
         public int RepeatPeriodId { get; set; }
         public DateOnly? DeletedDate { get; set; }
         public Enums? RepeatPeriod { get; set; }
+        public Building Building { get; set; }
     }
 };

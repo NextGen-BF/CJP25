@@ -7,9 +7,9 @@ namespace NextGen_BM_BE_Application.UseCases.Requests.Get
     public sealed class GetAllRepairRequestsByBuildingIdUseCase(IRequestRepository _requestRepository)
     {
         private readonly IRequestRepository requestRepository = _requestRepository;
-        public async Task<IList<RepairRequest>> Execute(int buildingId, int? page, int? pageSize)
+        public async Task<IList<RepairRequest>> Execute(IList<int> buildingIds, int? page, int? pageSize)
         {
-            var result = await requestRepository.GetRepairRequestsByBuildingIdAsync(buildingId, page, pageSize);
+            var result = await requestRepository.GetRepairRequestsByBuildingIdAsync(buildingIds, page, pageSize);
             return result;
         }
     }

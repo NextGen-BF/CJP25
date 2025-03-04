@@ -12,8 +12,8 @@ using NextGen_BM_BE_Infrastructure;
 namespace NextGen_BM_BE_Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250219095636_IntitialMigration")]
-    partial class IntitialMigration
+    [Migration("20250227111052_adding-user-names")]
+    partial class addingusernames
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -511,6 +511,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyExpenseTemplateId"));
 
+                    b.Property<int>("BuildingId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly?>("DeletedDate")
                         .HasColumnType("date");
 
@@ -525,6 +528,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PropertyExpenseTemplateId");
+
+                    b.HasIndex("BuildingId");
 
                     b.HasIndex("RepeatPeriodId");
 
@@ -558,7 +563,11 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.Property<int>("RequestStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<string>("RequestTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RepairRequestId");
@@ -609,6 +618,40 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RequestNotes");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestFiles", b =>
+                {
+                    b.Property<int>("RequestFilesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestFilesId"));
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RepairRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserBuildingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestFilesId");
+
+                    b.HasIndex("RepairRequestId");
+
+                    b.HasIndex("UserBuildingsId");
+
+                    b.ToTable("RequestFiles");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.Role", b =>
@@ -662,6 +705,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -728,6 +779,10 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("RequestTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
@@ -929,11 +984,19 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.PropertyExpenseTemplate", b =>
                 {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.BuildingAggregate.Building", "Building")
+                        .WithMany("PropertyExpenseTemplates")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("NextGen_BM_BE_Domain.Entities.Enums", "RepeatPeriod")
                         .WithMany()
                         .HasForeignKey("RepeatPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Building");
 
                     b.Navigation("RepeatPeriod");
                 });
@@ -954,7 +1017,9 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.HasOne("NextGen_BM_BE_Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Building");
 
@@ -974,6 +1039,17 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestFiles", b =>
+                {
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", null)
+                        .WithMany("Files")
+                        .HasForeignKey("RepairRequestId");
+
+                    b.HasOne("NextGen_BM_BE_Domain.Entities.UserBuildings", null)
+                        .WithMany("Files")
+                        .HasForeignKey("UserBuildingsId");
                 });
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.UserBuildings", b =>
@@ -1012,6 +1088,8 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
                     b.Navigation("Properties");
 
+                    b.Navigation("PropertyExpenseTemplates");
+
                     b.Navigation("RepairRequests");
 
                     b.Navigation("UserBuildings");
@@ -1037,7 +1115,14 @@ namespace NextGen_BM_BE_Infrastructure.Migrations
 
             modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.RequestAggregate.RepairRequest", b =>
                 {
+                    b.Navigation("Files");
+
                     b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("NextGen_BM_BE_Domain.Entities.UserBuildings", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

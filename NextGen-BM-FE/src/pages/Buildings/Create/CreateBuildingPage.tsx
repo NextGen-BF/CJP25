@@ -11,12 +11,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { createBuilding } from "../../../redux/services/buildingService";
 import { requiredErrors, valueErrors } from "../../../constants/ErrorConstants";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice";
-import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import {
+  ErrorSnackbarConstants,
+  SucessSnackbarConstants,
+} from "../../../constants/snackbarConstants.ts";
 import { useNavigate } from "react-router-dom";
 import { resetProperties } from "../../../redux/slices/propertySlice";
 
 const CreateBuildingPage: FC = () => {
-  const userId = useSelector((state: RootState) => state.loginReducer.value);
+  const user = useSelector((state: RootState) => state.loginReducer.value);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -31,19 +34,26 @@ const CreateBuildingPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Building>({
     defaultValues: {
       dateBuilt: new Date(Date.now()),
     },
   });
 
+  useEffect(() => {
+    if (!user.isLoggedIn) navigate("/login");
+
+    if (isSubmitSuccessful) reset();
+  }, [user, isSubmitSuccessful]);
+
   const onSubmit: SubmitHandler<Building> = async (data) => {
     data.buildingProperties = buildingProperties;
     data.userBuildings = [
       {
         userBuildingsId: 0,
-        userId: userId.userId,
+        userId: user.userId,
         roleId: null,
         buildingId: 0,
         startDate: data.dateBuilt,
@@ -123,7 +133,7 @@ const CreateBuildingPage: FC = () => {
                 value <= 0 ? valueErrors.buildingSizeNegative : true,
             })}
             label="Building Size"
-            type="number" // this doesn't allow to put a decimal number in the field - only integers
+            type="text" 
             variant="outlined"
             size="small"
             fullWidth

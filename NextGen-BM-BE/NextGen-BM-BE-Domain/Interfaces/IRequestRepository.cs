@@ -5,15 +5,18 @@ namespace NextGen_BM_BE_Domain.Interfaces
 {
     public interface IRequestRepository
     {
-        Task<RepairRequest> GetRepairRequestByIdAsync(int requestID);
-        Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingID, int? page, int? pageSize);
-        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingID, int? page, int? pageSize);
-        Task CreateRepairRequestAsync(RepairRequest repairRequest);
+        Task<RepairRequest> GetRepairRequestByIdAsync(int requestId);
+        Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize);
+        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingId, int? page, int? pageSize);
+        Task<IList<Enums>> GetRequestStatusesAsync();
+        Task<RepairRequest> CreateRepairRequestAsync(RepairRequest repairRequest);
         Task CreateUserBuildingRequestAsync(UserBuildings userBuildings);
-        Task CreateRepairRequestNotesAsync(RequestNotes requestNotes);
+        Task<RequestNotes> CreateRepairRequestNotesAsync(RequestNotes requestNotes);
+        Task CreateRequestFilesAsync(int requestId, IList<string> filePaths, string requestType);
         Task UpdateRepairRequestAsync(RepairRequest repairRequest);
         Task UpdateRequestNotesAsync(RequestNotes requestNotes);
+        Task SetRequestStatusAsync(int requestId, int statusId, string requestType);
         Task DeleteRepairRequestAsync(int requestId);
-        Task DeleteRequestNotesAsync(int requestNotesID);
+        Task DeleteRequestNotesAsync(int requestNotesId);
     }
 };

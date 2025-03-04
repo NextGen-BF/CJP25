@@ -1,6 +1,10 @@
+using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NextGen_BM_BE_Application.AuthHandlers;
 using NextGen_BM_BE_Application.Mapper;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Buildings.Create;
@@ -24,11 +28,14 @@ using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 //Setup in user secrets
 string connectionString =
@@ -38,6 +45,7 @@ Console.WriteLine(connectionString);
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
+// builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true);
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
 
 #region Dependency Injection
@@ -48,12 +56,16 @@ builder.Services.AddScoped<CreateBuildingUseCase>();
 builder.Services.AddScoped<UpdateBuildingUseCase>();
 builder.Services.AddScoped<DeleteBuildingUseCase>();
 builder.Services.AddScoped<DeleteUserBuildingLinkUseCase>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddScoped<GetUserBuildingLinkUseCase>();
 
 builder.Services.AddScoped<GetPropertyExpenseByIdUseCase>();
+builder.Services.AddScoped<GetPropertyExpensesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByUserIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetAllPropertyPaymentsByPropertyIdUseCase>();
 builder.Services.AddScoped<CreateExpensesUseCase>();
+builder.Services.AddScoped<CreatePropertyPaymentsUseCase>();
 builder.Services.AddScoped<CreatePropertyPaymentsForPropertiesUseCase>();
 builder.Services.AddScoped<UpdateExpensesUseCase>();
 builder.Services.AddScoped<DeleteExpensesUseCase>();
@@ -66,9 +78,12 @@ builder.Services.AddScoped<DeleteRepairRequestUseCase>();
 builder.Services.AddScoped<GetAllRepairRequestsByBuildingIdUseCase>();
 builder.Services.AddScoped<GetRequestByIdUseCase>();
 builder.Services.AddScoped<GetUserBuildingRequests>();
+builder.Services.AddScoped<GetAllRequestsByUserIdUseCase>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
 builder.Services.AddScoped<UpdateRequestNoteUseCase>();
 builder.Services.AddScoped<UpdateRepairRequestUseCase>();
+builder.Services.AddScoped<SetRequestStatusUseCase>();
+builder.Services.AddScoped<GetRequestStatuesUseCase>();
 
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
@@ -80,6 +95,7 @@ builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
@@ -89,6 +105,7 @@ builder.Services.AddScoped<DeletePropertyResidentUseCase>();
 builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
+builder.Services.AddScoped<GetPropertyUserLinkUseCase>();
 #endregion
 
 
@@ -158,9 +175,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
-    options.AddPolicy("Property Owner", policy => policy.RequireRole("Owner"));
+    options.AddPolicy("User In Building", policy => policy.AddRequirements(new BuildingResidentRequirement()));
+    options.AddPolicy("Super For Building", policy => policy.AddRequirements(new BuildingManagerRequirement("Super")));
+    options.AddPolicy("Super For Property Building", policy => policy.AddRequirements(new PropertyPermissionRequirement("Super")));
+    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner")));
+    options.AddPolicy("Property User", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner", "Tenant")));
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
+builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, BuildingUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, RequestCreateUpdateHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PropertyDeleteHandler>();
 #endregion
 
 #region Cors

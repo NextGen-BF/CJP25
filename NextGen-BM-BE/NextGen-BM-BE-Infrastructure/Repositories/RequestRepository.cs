@@ -1,8 +1,8 @@
 using System.Data.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
-using NextGen_BM_BE_Domain.Entities.RequestAggregate.Specifications;
 using NextGen_BM_BE_Domain.Interfaces;
 
 namespace NextGen_BM_BE_Infrastructure.Repositories
@@ -12,33 +12,35 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         private readonly DataContext _dataContext;
         public RequestRepository(DataContext dataContext)
         {
-            _dataContext=dataContext;
-        } 
-        public async Task CreateRepairRequestAsync(RepairRequest repairRequest)
+            _dataContext = dataContext;
+        }
+        public async Task<RepairRequest> CreateRepairRequestAsync(RepairRequest repairRequest)
         {
             try
             {
                 await _dataContext.RepairRequests.AddAsync(repairRequest);
                 await _dataContext.SaveChangesAsync();
+                return repairRequest;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this request");
+                throw new Exception("Couldn't create this request", exception);
             }
         }
 
-        public async Task CreateRepairRequestNotesAsync(RequestNotes requestNotes)
+        public async Task<RequestNotes> CreateRepairRequestNotesAsync(RequestNotes requestNotes)
         {
             try
-            {   
+            {
                 await _dataContext.RequestNotes.AddAsync(requestNotes);
                 await _dataContext.SaveChangesAsync();
+                return requestNotes;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this note");
+                throw new Exception("Couldn't create this note", exception);
             }
         }
 
@@ -52,7 +54,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't create this request");
+                throw new Exception("Couldn't create this request", exception);
             }
         }
 
@@ -71,7 +73,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't delete this request");
+                throw new Exception("Couldn't delete this request", exception);
             }
         }
 
@@ -92,7 +94,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't delete this note");
+                throw new Exception("Couldn't delete this note", exception);
             }
         }
 
@@ -100,51 +102,75 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext.RepairRequests
-                    .Where(request=>request.RepairRequestId==requestId&&request.DeletedDate==null)
-                    .Include(request=>request.Notes)
-                    .Include(request=>request.RequestStatus)
+                var request = await _dataContext.RepairRequests
+                    .Where(request => request.RepairRequestId == requestId && request.DeletedDate == null)
+                    .Include(request => request.Notes)
+                    .Include(request => request.RequestStatus)
                     .AsNoTracking()
                     .SingleOrDefaultAsync();
+                return request;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this request");
+                throw new Exception("Couldn't retrieve data for this request", exception);
             }
         }
 
-        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(int buildingId, int? page, int? pageSize)
+        public async Task<IList<RepairRequest>> GetRepairRequestsByUserId(int userId, int? page, int? pageSize)
         {
             try
             {
                 return await _dataContext.RepairRequests
-                    .Where(request=>request.BuildingId==buildingId&&request.DeletedDate==null)
-                    .Include(request=>request.Notes)
-                    .Include(request=>request.RequestStatus)
+                .Where(request => request.UserId == userId && request.DeletedDate == null)
+                .Include(request => request.Notes)
+                .Include(request => request.RequestStatus)
+                .ToListAsync();
+
+            }
+            catch (DbException exception)
+            {
+                throw new Exception("Couldn't retrieve data for this request", exception);
+
+            }
+        }
+
+        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize)
+        {
+            try
+            {
+                var requests = await _dataContext.RepairRequests
+                    .Where(request => buildingIds.Contains(request.BuildingId) && request.DeletedDate == null)
+                    .Include(request => request.Notes)
+                    .Include(request => request.RequestStatus)
+                    .Include(request => request.Building)
+                    .Include(request => request.User)
                     .ToListAsync();
+                return requests;
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this building's requests");
+                throw new Exception("Couldn't retrieve data for this building's requests", exception);
             }
         }
 
-        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(int buildingId, int? page, int? pageSize)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds, int? page, int? pageSize)
         {
             try
             {
                 return await _dataContext.UserBuildings
-                    .Where(userBuilding=>userBuilding.BuildingId==buildingId&&userBuilding.DeletedDate==null)
-                    .Include(userBuildings=>userBuildings.Role)
+                    .Where(userBuilding => buildingIds.Contains(userBuilding.BuildingId) && userBuilding.DeletedDate == null)
+                    .Include(userBuildings => userBuildings.Role)
+                    .Include(userBuilding => userBuilding.Building)
+                    .Include(request => request.User)
                     .AsNoTracking()
                     .ToListAsync();
             }
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't retrieve data for this building's requests");
+                throw new Exception("Couldn't retrieve data for this building's requests", exception);
             }
         }
 
@@ -158,7 +184,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't update this request");
+                throw new Exception("Couldn't update this request", exception);
             }
         }
 
@@ -172,7 +198,49 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             catch (DbException exception)
             {
                 //will eventually be replaced by custom one
-                throw new Exception("Couldn't update this note");
+                throw new Exception("Couldn't update this note", exception);
+            }
+        }
+
+        public async Task SetRequestStatusAsync(int requestId, int statusId, string requestType)
+        {
+            try
+            {
+                if (requestType == "Repair")
+                {
+                    var request = await _dataContext.RepairRequests.Where(request => request.RepairRequestId == requestId).FirstOrDefaultAsync() ?? throw new Exception($"Request with id: {requestId} not found.");
+                    request.RequestStatusId = statusId;
+                    _dataContext.Update(request);
+                    await _dataContext.SaveChangesAsync();
+                }
+                else
+                {
+                    var request = await _dataContext.UserBuildings.Where(request => request.UserBuildingsId == requestId).FirstOrDefaultAsync() ?? throw new Exception($"Request with id: {requestId} not found.");
+                    request.Approved = !request.Approved;
+                    _dataContext.Update(request);
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not set status for request", ex);
+            }
+        }
+
+        public Task CreateRequestFilesAsync(int requestId, IList<string> filePaths, string requestType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IList<Enums>> GetRequestStatusesAsync()
+        {
+            try
+            {
+                return await _dataContext.Enums.Where(enums => enums.Type == "RequestStatus").ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not get request statuses", ex);
             }
         }
     }

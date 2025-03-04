@@ -41,6 +41,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("property/{propertyId}")]
+        [Authorize(Policy = "Property Owner")]
         public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByPropertyId =
@@ -50,6 +51,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("building/{buildingId}")]
+        [Authorize(Policy = "Super For Building")]
         public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByBuildingId =
@@ -57,12 +59,32 @@ namespace NextGen_BM_BE_API.Controllers
             return Ok(propertyPaymentsByBuildingId);
         }
 
+        [HttpGet]
+        [Route("propertyexpense/{buildingid}")]
+        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid)
+        {
+            var propertyExpensesByBuildingId =
+                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid);
+            return Ok(propertyExpensesByBuildingId);
+        }
+
         [HttpPost]
         [Route("new")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> CreateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.CreatePropertyExpenseAsync(propertyExpense);
             return Ok(propertyExpense);
+        }
+
+        [HttpPost]
+        [Route("create/propertypayment")]
+        public async Task<IActionResult> CreatePropertyPayment(
+            PropertyPaymentsViewModel propertyPayment
+        )
+        {
+            await _expensesService.CreatePropertyPaymentsAsync(propertyPayment);
+            return Ok(propertyPayment);
         }
 
         [HttpPost]
@@ -78,6 +100,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpPut]
         [Route("update")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> UpdateExpense(PropertyExpenseViewModel propertyExpense)
         {
             await _expensesService.UpdatePropertyExpenseAsync(propertyExpense);
@@ -86,6 +109,7 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpDelete]
         [Route("delete/{expenseId}")]
+        [Authorize(Policy = "Super")]
         public async Task<IActionResult> DeleteExpense(int expenseId)
         {
             await _expensesService.DeletePropertyExpenseAsync(expenseId);
