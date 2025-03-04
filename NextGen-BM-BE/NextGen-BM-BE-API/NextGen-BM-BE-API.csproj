@@ -12,7 +12,6 @@
     <PackageReference Include="AWSSDK.Core" Version="3.7.12" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.0" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.110" />
-    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.69.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

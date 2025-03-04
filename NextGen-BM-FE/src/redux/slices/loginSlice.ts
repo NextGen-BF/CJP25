@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginCall } from "../services/loginService";
 import { jwtDecode } from "jwt-decode";
+import { loginWithGoogleCall } from "../services/googleLoginService";
 
 interface LoginState {
   value: {
@@ -55,6 +56,23 @@ const loginSlice = createSlice({
           isLoggedIn: true,
         };
         localStorage.setItem("JWT-BM", action.payload.token);
+      },
+    );
+    builder.addCase(
+      loginWithGoogleCall.fulfilled,
+      (state, action: PayloadAction<{ token: string }>) => {
+        let token = action.payload.token;
+        if (action.payload.token.length < 1) {
+          token = getLoginState().token;
+        }
+        const user = jwtDecode(token);
+        state.value = {
+          token: token,
+          userId: parseInt(user.sub ?? "0"),
+          isLoggedIn: true,
+        };
+        localStorage.setItem("JWT-BM", action.payload.token);
+        console.log(state.value);
       },
     );
   },

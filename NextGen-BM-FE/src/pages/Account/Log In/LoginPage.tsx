@@ -65,9 +65,11 @@ const LoginPage: FC = () => {
     flow: "auth-code",
   });
 
-  if (userToken.isLoggedIn) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (userToken.isLoggedIn) {
+      navigate("/");
+    }
+  }, [userToken]);
 
   return (
     <Container maxWidth="xs" className="text-field">
