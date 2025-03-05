@@ -9,7 +9,6 @@ import {
 import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../redux/store.ts";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice.ts";
 import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
 import { SubmitHandler, useForm } from "react-hook-form";

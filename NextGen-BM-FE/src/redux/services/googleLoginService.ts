@@ -5,9 +5,9 @@ import { CodeResponse } from "@react-oauth/google";
 
 export const loginWithGoogleCall = createAsyncThunk(
   "loginWithGoogle",
-  async (payload: string, thunkAPI) => {
+  async (googleToken: string, thunkAPI) => {
     return await axios
-      .post(`${apiURL}/Google/get-google-jwt`, payload, {
+      .post(`${apiURL}/auth/login-google`, googleToken, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json;charset=utf-8",
