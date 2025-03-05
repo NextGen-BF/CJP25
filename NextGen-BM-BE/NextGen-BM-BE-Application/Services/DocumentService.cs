@@ -7,9 +7,11 @@ public class DocumentService : IDocumentService
 {
 
     private readonly IConfiguration _config;
-    public DocumentService(IConfiguration configuration)
+    private readonly IAmazonS3 _s3Client;
+    public DocumentService(IConfiguration configuration, IAmazonS3 amazonS3)
     {
         _config = configuration;
+        _s3Client = amazonS3;
     }
 
     public Task<List<IFormFile>> GetDocumentsByRequestId(int requestId, string requestType)
@@ -38,10 +40,10 @@ public class DocumentService : IDocumentService
                     InputStream = file.OpenReadStream()
                 };
                 request.Metadata.Add("Content-Type", file.ContentType);
-                await s3Client.PutObjectAsync(request);
+                await _s3Client.PutObjectAsync(request);
                 filePaths.Add(request.Key);
             }
-            await UploadFilePaths(requestId, filePaths, requestType);
+            //await UploadFilePaths(requestId, filePaths, requestType);
             return filePaths;
         }
         catch (Exception ex)
@@ -52,7 +54,7 @@ public class DocumentService : IDocumentService
 
     private Task UploadFilePaths(int requestId, IList<string> filePaths, string requestType)
     {
-        
+
         return null;
     }
 }
