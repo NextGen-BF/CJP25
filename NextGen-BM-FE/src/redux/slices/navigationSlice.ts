@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface NavigationState {
     open:boolean
@@ -14,10 +14,13 @@ const navigationSlice=createSlice({
     reducers:{
         toggleDrawer(state){
             state.open=!state.open;
-        }
+        },
+        closeDrawer(state){
+            state.open = false;
+        },
     }
 });
 
-export const { toggleDrawer } = navigationSlice.actions;
+export const { toggleDrawer, closeDrawer } = navigationSlice.actions;
 const navigationReducer = navigationSlice.reducer;
 export default navigationReducer;
