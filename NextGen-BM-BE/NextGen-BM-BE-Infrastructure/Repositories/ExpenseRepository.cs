@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
@@ -130,22 +131,21 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                List<PropertyPayments> propertyPaymentsByBuildingId = new List<PropertyPayments>();
+                var query = _dbContext
+                    .PropertyPayments
+                    .Include(p => p.Property)
+                    .Where(p => p.Property.BuildingId == buildingId && p.Property.DeletedDate == null);
 
-                List<Property> propertiesByBuildingId = await _dbContext
-                    .Property.Where(p => p.BuildingId == buildingId && p.DeletedDate == null)
-                    .Include(p => p.Payments)
+                if (page!=null&&pageSize!=null)
+                {
+                    Console.WriteLine(pageSize);
+                    var pagedList=new PagedList<PropertyPayments>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
-
-                foreach (Property property in propertiesByBuildingId)
-                {
-                    if (property.Payments is not null)
-                    {
-                        propertyPaymentsByBuildingId.AddRange(property.Payments);
-                    }
-                }
-                return propertyPaymentsByBuildingId;
             }
             catch (Exception ex)
             {
@@ -179,12 +179,12 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         }
 
         public async Task<List<PropertyExpense>> GetPropertyExpensesByBuildingIdAsync(
-            int buildingId
+            int buildingId, int? page, int? pageSize
         )
         {
             try
             {
-                List<PropertyExpense> propertyExpensesByBuildingId = await _dbContext
+                var query = _dbContext
                     .PropertyExpense.Where(p => p.DeletedDate == null)
                     .Include(p => p.PropertyExpenseTemplate)
                     .ThenInclude(pe => pe.Building)
@@ -194,10 +194,17 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                         && p.PropertyExpenseTemplate.Building != null
                         && p.PropertyExpenseTemplate.Building.DeletedDate == null
                         && p.PropertyExpenseTemplate.Building.BuildingId == buildingId
-                    )
+                    );
+                if (page!=null&&pageSize!=null)
+                {
+                    Console.WriteLine(pageSize);
+                    var pagedList=new PagedList<PropertyExpense>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
-                return propertyExpensesByBuildingId;
             }
             catch (Exception ex)
             {
@@ -214,25 +221,18 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                Property? property = await _dbContext
-                    .Property.Where(p => p.PropertyId == propertyId && p.DeletedDate == null)
-                    .Include(p => p.Payments)
+                var query = _dbContext.PropertyPayments
+                    .Include(p => p.Property)
+                    .Where(p => p.Property.PropertyId==propertyId);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<PropertyPayments>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
-                    .FirstOrDefaultAsync();
-
-                if (property is null)
-                {
-                    throw new KeyNotFoundException("The property was not found.");
-                }
-
-                if (property.Payments is not null)
-                {
-                    return property.Payments.ToList();
-                }
-                else
-                {
-                    return new List<PropertyPayments>();
-                }
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -247,31 +247,19 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                PropertyUsers? user = await _dbContext
-                    .PropertyUsers.Where(p => p.PropertyUsersId == userId && p.DeletedDate == null)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync();
-                List<PropertyPayments> propertyPaymentsByUserId = new List<PropertyPayments>();
-
-                if (user is not null)
+                var propertyPaymentsByUserIdQuery = _dbContext.PropertyPayments
+                    .Include(p => p.Property)
+                        .ThenInclude(p => p.Users)
+                    .Where(p => p.Property.Users.Any(u => u.User.Id==userId));
+                if (page!=null&&pageSize!=null)
                 {
-                    List<Property> userProperties = await _dbContext
-                        .Property.Where(p =>
-                            p.PropertyId == user.PropertyId && p.DeletedDate == null
-                        )
-                        .Include(p => p.Payments)
-                        .AsNoTracking()
-                        .ToListAsync();
-
-                    foreach (Property property in userProperties)
-                    {
-                        if (property.Payments is not null)
-                        {
-                            propertyPaymentsByUserId.AddRange(property.Payments);
-                        }
-                    }
+                    var pagedList=new PagedList<PropertyPayments>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(propertyPaymentsByUserIdQuery);
+                    return pagedList;
                 }
-                return propertyPaymentsByUserId;
+                return await propertyPaymentsByUserIdQuery
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

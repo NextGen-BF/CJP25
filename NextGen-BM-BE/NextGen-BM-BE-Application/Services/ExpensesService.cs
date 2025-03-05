@@ -66,11 +66,11 @@ namespace NextGen_BM_BE_Application.Services
         }
 
         public async Task<List<PropertyExpenseViewModel>> GetPropertyExpensesByBuildingIdAsync(
-            int buildingId
+            int buildingId, int? page, int? pageSize
         )
         {
             var propertyExpensesByBuildingId =
-                await _getPropertyExpensesByBuildingIdUseCase.Execute(buildingId);
+                await _getPropertyExpensesByBuildingIdUseCase.Execute(buildingId, page, pageSize);
             List<PropertyExpenseViewModel> propertyExpensesList = new();
 
             foreach (var propertyExpense in propertyExpensesByBuildingId)

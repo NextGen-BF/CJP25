@@ -61,10 +61,10 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("propertyexpense/{buildingid}")]
-        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid)
+        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid, [FromQuery]int? page, [FromQuery]int? pageSize)
         {
             var propertyExpensesByBuildingId =
-                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid);
+                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid, page, pageSize);
             return Ok(propertyExpensesByBuildingId);
         }
 
