@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.DataStructures;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -25,6 +27,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingIds, page, pageSize);
             if (result == null) return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<RepairRequestViewModel>{Items=result, PageCount=((PagedList<RepairRequestViewModel>)result).TotalPages});
             return Ok(result);
         }
 
@@ -52,6 +56,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var result = await _requestService.GetUserBuildingRequestsAsync(buildingIds, page, pageSize);
             if (result == null) return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<UserBuildings>{Items=result, PageCount=((PagedList<UserBuildings>)result).TotalPages});
             return Ok(result);
         }
 

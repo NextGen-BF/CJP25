@@ -4,6 +4,7 @@ using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Update;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Services;
@@ -102,6 +103,15 @@ public class RequestService : IRequestService
     public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize)
     {
         var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingIds, page, pageSize);
+        
+        if (page!=null&&pageSize!=null)
+        {
+            var requestsList=new PagedList<RepairRequestViewModel>{Page=(int)page,
+                                                                PageSize=(int)pageSize,
+                                                                TotalCount=((PagedList<RequestsGenericViewModel>)buildingRepairRequests).TotalCount};
+            requestsList.AddRange(_mapper.Map<PagedList<RepairRequestViewModel>>(buildingRepairRequests));
+            return requestsList;
+        }
         return _mapper.Map<IList<RepairRequestViewModel>>(buildingRepairRequests);
     }
 
@@ -113,7 +123,17 @@ public class RequestService : IRequestService
 
     public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds, int? page, int? pageSize)
     {
-        return await _getUserBuildingRequests.Execute(buildingIds, page, pageSize);
+        var userBuildingRequests = await _getUserBuildingRequests.Execute(buildingIds, page, pageSize);
+        
+        if (page!=null&&pageSize!=null)
+        {
+            var requestsList=new PagedList<UserBuildings>{Page=(int)page,
+                                                                PageSize=(int)pageSize,
+                                                                TotalCount=((PagedList<UserBuildings>)userBuildingRequests).TotalCount};
+            requestsList.AddRange(_mapper.Map<PagedList<UserBuildings>>(userBuildingRequests));
+            return requestsList;
+        }
+        return _mapper.Map<IList<UserBuildings>>(userBuildingRequests);
     }
 
     public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
