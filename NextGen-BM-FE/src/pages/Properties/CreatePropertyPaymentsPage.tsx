@@ -140,7 +140,7 @@ const CreatePropertyPaymentsPage: FC = () => {
         </Typography>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="container" style={{ width: "85%" }}>
+            <div className="container">
               <FormControl fullWidth>
                 <InputLabel id="building-select-label">Building</InputLabel>
                 <Select

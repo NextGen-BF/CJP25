@@ -93,7 +93,7 @@ const CreatePropertyPage: FC = () => {
           Add a new property
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="container" style={{ width: "85%" }}>
+          <div className="container">
             {textInputFields}
             <Controller
               name="entranceIsExternal"

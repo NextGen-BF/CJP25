@@ -87,7 +87,7 @@ const CreateBuildingPage: FC = () => {
   return (
     <div>
       <Paper className="paper-container" style={{ width: "50%" }}>
-        <div className="container" style={{ width: "85%" }}>
+        <div className="container">
           <form
             className="create-building-form"
             onSubmit={handleSubmit(onSubmit)}

@@ -64,7 +64,7 @@ const CreatePropertyExpense: FC = () => {
         </Typography>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="container" style={{ width: "85%" }}>
+            <div className="container">
               <FormControl fullWidth required>
                 <InputLabel id="role-label">
                   {createPropertyExpenseConstants.role}
