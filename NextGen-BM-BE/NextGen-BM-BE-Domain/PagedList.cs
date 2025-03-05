@@ -7,7 +7,7 @@ namespace NextGen_BM_BE_Domain.DataStructures{
         private int _pageSize;
         public int TotalCount{ get; set; }
         public int TotalPages { 
-                get => TotalCount/PageSize;
+                get => (int)Math.Ceiling((double)TotalCount/PageSize);
             }
         public int Page {
                 get => _page;

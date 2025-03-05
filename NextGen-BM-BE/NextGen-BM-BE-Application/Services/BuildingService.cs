@@ -52,33 +52,46 @@ namespace NextGen_BM_BE_Application.Services
         {
             var buildings = await _getAllBuildingsUseCase.Execute(page, pageSize);
             
-            List<BuildingViewModel> buildingsList;
             if (page!=null&&pageSize!=null)
             {
-                buildingsList=new PagedList<BuildingViewModel>{Page=(int)page, PageSize=(int)pageSize};
+                var buildingsList=new PagedList<BuildingViewModel>{Page=(int)page,
+                                                                    PageSize=(int)pageSize,
+                                                                    TotalCount=((PagedList<Building>)buildings).TotalCount};
                 buildingsList.AddRange(_mapper.Map<PagedList<BuildingViewModel>>(buildings));
-                ((PagedList<BuildingViewModel>)buildingsList).TotalCount=((PagedList<Building>)buildings).TotalCount;
+                
+                return buildingsList;
             }
             else 
             {
-                buildingsList = new List<BuildingViewModel>();
+                var buildingsList = new List<BuildingViewModel>();
                 foreach(var building in buildings){
                     buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
                 }
+                return buildingsList;
             }
-            
-            return buildingsList;
         }
 
         public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize)
         {
             var buildings = await _getBuildingsByUserIdUseCase.Execute(userId, page, pageSize);
-            List<BuildingViewModel> buildingsList = new();
-            foreach (var building in buildings)
+            
+            if (page!=null&&pageSize!=null)
             {
-                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                var buildingsList=new PagedList<BuildingViewModel>{Page=(int)page,
+                                                                    PageSize=(int)pageSize,
+                                                                    TotalCount=((PagedList<Building>)buildings).TotalCount};
+                buildingsList.AddRange(_mapper.Map<PagedList<BuildingViewModel>>(buildings));
+                
+                return buildingsList;
             }
-            return buildingsList;
+            else 
+            {
+                var buildingsList = new List<BuildingViewModel>();
+                foreach(var building in buildings){
+                    buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                }
+                return buildingsList;
+            }
         }
 
         public async Task<BuildingViewModel> CreateBuildingAsync(BuildingViewModel buildingDto)

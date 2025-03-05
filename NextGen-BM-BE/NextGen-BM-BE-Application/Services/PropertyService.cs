@@ -2,6 +2,7 @@ using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Properties.Delete;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -58,7 +59,17 @@ namespace NextGen_BM_BE_Application.Services
         public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync(int? page, int? pageSize)
         {
             var properties = await _getAllPropertiesUseCase.Execute(page, pageSize);
-            return _mapper.Map<IList<PropertyViewModel>>(properties);
+
+            if (page!=null&&pageSize!=null)
+            {
+                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
+                                                                    PageSize=(int)pageSize,
+                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
+                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
+                return propertiesList;
+            }
+
+            return _mapper.Map<List<PropertyViewModel>>(properties);
         }
 
         public async Task UpdatePropertyAsync(PropertyViewModel propertyViewModel)
@@ -76,12 +87,30 @@ namespace NextGen_BM_BE_Application.Services
         public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId, int? page, int? pageSize)
         {
             var properties = await _getPropertiesByUserIdUseCase.Execute(userId, page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+            {
+                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
+                                                                    PageSize=(int)pageSize,
+                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
+                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
+                return propertiesList;
+            }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 
         public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId, int? page, int? pageSize)
         {
             var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId, page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+            {
+                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
+                                                                    PageSize=(int)pageSize,
+                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
+                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
+                return propertiesList;
+            }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 

@@ -48,6 +48,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
 
             var buildings = await _buildingService.GetBuildingsByUserIdAsync(userId, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<BuildingViewModel>{Items=buildings, PageCount=((PagedList<BuildingViewModel>)buildings).TotalPages});
             return Ok(buildings);
         }
 

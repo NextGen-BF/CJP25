@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -28,8 +29,11 @@ namespace NextGen_BM_BE_API.Controllers
         public async Task<IActionResult> GetAllProperties([FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var result = await _propertyService.GetAllPropertiesAsync(page, pageSize);
+            
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 
@@ -51,6 +55,8 @@ namespace NextGen_BM_BE_API.Controllers
             var result = await _propertyService.GetPropertyByUserIdAsync(userId, page, pageSize);
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 
@@ -62,6 +68,8 @@ namespace NextGen_BM_BE_API.Controllers
             var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId, page, pageSize);
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 
