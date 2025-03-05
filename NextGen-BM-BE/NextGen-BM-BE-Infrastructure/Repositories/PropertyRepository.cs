@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 
@@ -51,13 +52,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext
+                
+                var query = _dataContext
                     .Property.Where(property => property.DeletedDate == null)
                     .Include(property => property.Users.Where(u => u.DeletedDate == null))
                     .Include(property => property.Payments.Where(p => p.DeletedDate == null))
                     .Include(property =>
                         property.PropertyResidents.Where(r => r.DeletedDate == null)
-                    )
+                    );
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Property>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
+                    .AsNoTracking()
                     .ToListAsync();
             }
             catch (DbException exception)
@@ -71,7 +81,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                var properties = await _dataContext
+                var query = _dataContext
                     .Property.Where(property =>
                         property.BuildingId == buildingId && property.DeletedDate == null
                     )
@@ -79,10 +89,16 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     .Include(property => property.Payments.Where(p => p.DeletedDate == null))
                     .Include(property =>
                         property.PropertyResidents.Where(r => r.DeletedDate == null)
-                    )
+                    );
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Property>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
-                return properties;
             }
             catch (DbException exception)
             {
@@ -95,7 +111,7 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                return await _dataContext
+                var query = _dataContext
                     .Property.Include(property => property.Users.Where(u => u.DeletedDate == null))
                     .Where(property =>
                         property.Users.Any(u => u.User.Id == userId) && property.DeletedDate == null
@@ -103,7 +119,14 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     .Include(property => property.Payments.Where(p => p.DeletedDate == null))
                     .Include(property =>
                         property.PropertyResidents.Where(r => r.DeletedDate == null)
-                    )
+                    );
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Property>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
             }

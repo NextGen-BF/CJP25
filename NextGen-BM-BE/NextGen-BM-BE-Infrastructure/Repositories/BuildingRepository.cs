@@ -97,15 +97,21 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
         {
             try
             {
-                var buildings = await _dbContext
+                var buildingsQuery = _dbContext
                     .UserBuildings.Where(ub => ub.User.Id == userId && ub.DeletedDate == null)
                     .Include(b => b.Building.BuildingExpenses)
                     .Include(b => b.Building.Properties)
                     .Include(b => b.Building.BuildingAddress)
-                    .Select(ub => ub.Building)
+                    .Select(ub => ub.Building);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Building>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(buildingsQuery);
+                    return pagedList;
+                }
+                return await buildingsQuery
                     .AsNoTracking()
                     .ToListAsync();
-                return buildings;
             }
             catch (Exception ex)
             {
