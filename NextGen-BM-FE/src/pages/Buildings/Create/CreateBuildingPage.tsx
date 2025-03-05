@@ -59,6 +59,7 @@ const CreateBuildingPage: FC = () => {
         startDate: data.dateBuilt,
         endDate: null,
         approved: true,
+        requestTitle: ""
       },
     ];
     try {

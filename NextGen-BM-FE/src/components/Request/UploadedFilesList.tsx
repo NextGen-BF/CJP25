@@ -14,7 +14,7 @@ const UploadedFilesList: FC = () => {
         <>
           {file.type && (
             <>
-              <div className="container">
+              <div className="file-container">
                 {file.type.includes("image") && (
                   <img
                     src={URL.createObjectURL(file)}

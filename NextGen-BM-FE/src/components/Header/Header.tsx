@@ -5,16 +5,18 @@ import { headerStyles } from "./HeaderStyles.ts";
 import "./header.scss";
 import { RootState, useAppDispatch } from "../../redux/store.ts";
 import { pageTitles } from "../../constants/pageTitlesConstant.ts";
-import { toggleDrawer } from "../../redux/slices/navigationSlice.ts";
+import { closeDrawer, toggleDrawer } from "../../redux/slices/navigationSlice.ts";
 import { useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import { logout } from "../../redux/slices/loginSlice.ts";
+import { closeSnackbar } from "../../redux/slices/snackbarSlice.ts";
 
 export const Header: FC = () => {
   const userToken = useSelector((state: RootState) => state.loginReducer.value);
   const location = useLocation().pathname;
   const dispatch = useAppDispatch();
   const toggle = () => dispatch(toggleDrawer());
+
   return (
     <AppBar sx={headerStyles.appBarStyles}>
       <div className="home-menu-button">
@@ -31,7 +33,13 @@ export const Header: FC = () => {
       {userToken.isLoggedIn ? (
         <NavLink
           className={"header-link"}
-          onClick={() => dispatch(logout())}
+          onClick={() => 
+            {
+              dispatch(logout());
+              dispatch(closeDrawer());
+              dispatch(closeSnackbar());
+            }
+          }
           to="/login"
         >
           Log Out
