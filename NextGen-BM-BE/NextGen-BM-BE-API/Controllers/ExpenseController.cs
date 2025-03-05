@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -36,6 +37,8 @@ namespace NextGen_BM_BE_API.Controllers
             var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
                 userId, page, pageSize
             );
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByUserId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByUserId).TotalPages});
             return Ok(propertyPaymentsByUserId);
         }
 
@@ -46,6 +49,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var propertyPaymentsByPropertyId =
                 await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByPropertyId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByPropertyId).TotalPages});
             return Ok(propertyPaymentsByPropertyId);
         }
 
@@ -56,6 +61,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var propertyPaymentsByBuildingId =
                 await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByBuildingId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByBuildingId).TotalPages});
             return Ok(propertyPaymentsByBuildingId);
         }
 
@@ -65,6 +72,8 @@ namespace NextGen_BM_BE_API.Controllers
         {
             var propertyExpensesByBuildingId =
                 await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyExpenseViewModel>{Items= propertyExpensesByBuildingId, PageCount=((PagedList<PropertyExpenseViewModel>)propertyExpensesByBuildingId).TotalPages});
             return Ok(propertyExpensesByBuildingId);
         }
 

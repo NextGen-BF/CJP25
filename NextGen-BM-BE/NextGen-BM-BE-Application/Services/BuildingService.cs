@@ -20,6 +20,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly DeleteUserBuildingLinkUseCase _deleteUserBuildingLinkUseCase;
         private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
 
         public BuildingService(
             GetBuildingsByUserIdUseCase getBuildingsByUserIdUseCase,
@@ -29,7 +30,8 @@ namespace NextGen_BM_BE_Application.Services
             UpdateBuildingUseCase updateBuildingUseCase,
             DeleteBuildingUseCase deleteBuildingUseCase,
             DeleteUserBuildingLinkUseCase deleteUserBuildingLinkUseCase,
-            IMapper mapper
+            IMapper mapper,
+            IPaginationService paginationService
         )
         {
             _getBuildingsByUserIdUseCase = getBuildingsByUserIdUseCase;
@@ -40,6 +42,7 @@ namespace NextGen_BM_BE_Application.Services
             _deleteBuildingUseCase = deleteBuildingUseCase;
             _deleteUserBuildingLinkUseCase = deleteUserBuildingLinkUseCase;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task<BuildingViewModel> GetBuildingByIdAsync(int buildingId)
@@ -53,14 +56,7 @@ namespace NextGen_BM_BE_Application.Services
             var buildings = await _getAllBuildingsUseCase.Execute(page, pageSize);
             
             if (page!=null&&pageSize!=null)
-            {
-                var buildingsList=new PagedList<BuildingViewModel>{Page=(int)page,
-                                                                    PageSize=(int)pageSize,
-                                                                    TotalCount=((PagedList<Building>)buildings).TotalCount};
-                buildingsList.AddRange(_mapper.Map<PagedList<BuildingViewModel>>(buildings));
-                
-                return buildingsList;
-            }
+                return _paginationService.MapPagedResult<BuildingViewModel, Building>((PagedList<Building>)buildings);
             else 
             {
                 var buildingsList = new List<BuildingViewModel>();
@@ -76,14 +72,7 @@ namespace NextGen_BM_BE_Application.Services
             var buildings = await _getBuildingsByUserIdUseCase.Execute(userId, page, pageSize);
             
             if (page!=null&&pageSize!=null)
-            {
-                var buildingsList=new PagedList<BuildingViewModel>{Page=(int)page,
-                                                                    PageSize=(int)pageSize,
-                                                                    TotalCount=((PagedList<Building>)buildings).TotalCount};
-                buildingsList.AddRange(_mapper.Map<PagedList<BuildingViewModel>>(buildings));
-                
-                return buildingsList;
-            }
+                return _paginationService.MapPagedResult<BuildingViewModel, Building>((PagedList<Building>)buildings);
             else 
             {
                 var buildingsList = new List<BuildingViewModel>();

@@ -4,6 +4,7 @@ using NextGen_BM_BE_Application.UseCases.Expenses.Create;
 using NextGen_BM_BE_Application.UseCases.Expenses.Delete;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Expenses.Update;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -31,6 +32,7 @@ namespace NextGen_BM_BE_Application.Services
 
         private readonly DeleteExpensesUseCase _deleteExpensesUseCase;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
 
         public ExpensesService(
             GetPropertyExpenseByIdUseCase getPropertyExpenseByIdUseCase,
@@ -43,7 +45,8 @@ namespace NextGen_BM_BE_Application.Services
             CreatePropertyPaymentsForPropertiesUseCase createPropertyPaymentsForPropertiesUseCase,
             UpdateExpensesUseCase updateExpensesUseCase,
             DeleteExpensesUseCase deleteExpensesUseCase,
-            IMapper mapper
+            IMapper mapper,
+            IPaginationService paginationService
         )
         {
             _getPropertyExpenseByIdUseCase = getPropertyExpenseByIdUseCase;
@@ -58,6 +61,7 @@ namespace NextGen_BM_BE_Application.Services
             _updateExpensesUseCase = updateExpensesUseCase;
             _deleteExpensesUseCase = deleteExpensesUseCase;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task<PropertyExpense> GetPropertyExpenseByIdAsync(int propertyExpenseId)
@@ -73,6 +77,9 @@ namespace NextGen_BM_BE_Application.Services
                 await _getPropertyExpensesByBuildingIdUseCase.Execute(buildingId, page, pageSize);
             List<PropertyExpenseViewModel> propertyExpensesList = new();
 
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<PropertyExpenseViewModel, PropertyExpense>((PagedList<PropertyExpense>)propertyExpensesByBuildingId);
+
             foreach (var propertyExpense in propertyExpensesByBuildingId)
             {
                 propertyExpensesList.Add(_mapper.Map<PropertyExpenseViewModel>(propertyExpense));
@@ -87,6 +94,10 @@ namespace NextGen_BM_BE_Application.Services
             var propertyPaymentsByUserId = await _getAllPropertyPaymentsByUserIdUseCase.Execute(
                 userId, page, pageSize
             );
+            
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<PropertyPaymentsViewModel, PropertyPayments>((PagedList<PropertyPayments>)propertyPaymentsByUserId);
+            
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
 
             foreach (var propertyPayment in propertyPaymentsByUserId)
@@ -102,6 +113,9 @@ namespace NextGen_BM_BE_Application.Services
         {
             var propertyPaymentsByBuildingId =
                 await _getAllPropertyPaymentsByBuildingIdUseCase.Execute(buildingId, page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<PropertyPaymentsViewModel, PropertyPayments>((PagedList<PropertyPayments>)propertyPaymentsByBuildingId);
 
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
 
@@ -120,6 +134,9 @@ namespace NextGen_BM_BE_Application.Services
                 await _getAllPropertyPaymentsByPropertyIdUseCase.Execute(propertyId, page, pageSize);
 
             List<PropertyPaymentsViewModel> propertyPaymentsList = new();
+
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<PropertyPaymentsViewModel, PropertyPayments>((PagedList<PropertyPayments>)propertyPaymentsByPropertyId);
 
             foreach (var propertyPayment in propertyPaymentsByPropertyId)
             {

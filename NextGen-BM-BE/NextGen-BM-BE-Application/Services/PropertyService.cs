@@ -21,6 +21,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
         private readonly DeletePropertyResidentUseCase _deletePropertyResidentUseCase;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
 
         public PropertyService(
             GetPropertiesByIdUseCase getPropertiesByIdUseCase,
@@ -31,7 +32,8 @@ namespace NextGen_BM_BE_Application.Services
             DeletePropertyUseCase deletePropertyUseCase,
             UpdatePropertyUseCase updatePropertyUseCase,
             DeletePropertyResidentUseCase deletePropertyResidentUseCase,
-            IMapper mapper
+            IMapper mapper,
+            IPaginationService paginationService
         )
         {
             _getPropertiesByIdUseCase = getPropertiesByIdUseCase;
@@ -43,6 +45,7 @@ namespace NextGen_BM_BE_Application.Services
             _updatePropertyUseCase = updatePropertyUseCase;
             _deletePropertyResidentUseCase = deletePropertyResidentUseCase;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task CreatePropertyAsync(PropertyViewModel propertyViewModel)
@@ -62,11 +65,7 @@ namespace NextGen_BM_BE_Application.Services
 
             if (page!=null&&pageSize!=null)
             {
-                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
-                                                                    PageSize=(int)pageSize,
-                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
-                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
-                return propertiesList;
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
             }
 
             return _mapper.Map<List<PropertyViewModel>>(properties);
@@ -90,11 +89,7 @@ namespace NextGen_BM_BE_Application.Services
 
             if (page!=null&&pageSize!=null)
             {
-                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
-                                                                    PageSize=(int)pageSize,
-                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
-                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
-                return propertiesList;
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
             }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
@@ -105,11 +100,7 @@ namespace NextGen_BM_BE_Application.Services
 
             if (page!=null&&pageSize!=null)
             {
-                var propertiesList=new PagedList<PropertyViewModel>{Page=(int)page,
-                                                                    PageSize=(int)pageSize,
-                                                                    TotalCount=((PagedList<Property>)properties).TotalCount};
-                propertiesList.AddRange(_mapper.Map<PagedList<PropertyViewModel>>(properties));
-                return propertiesList;
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
             }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
