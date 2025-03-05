@@ -150,6 +150,7 @@ const CreateRequestPage: FC = () => {
                       multiline
                       minRows={3}
                       label="Description"
+                      fullWidth
                     />
                   </div>
                 </>
