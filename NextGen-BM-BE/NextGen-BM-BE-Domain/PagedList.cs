@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace NextGen_BM_BE_Domain.DataStructures{
     public class PagedList<T>:List<T>
@@ -11,17 +12,17 @@ namespace NextGen_BM_BE_Domain.DataStructures{
             }
         public int Page {
                 get => _page;
-                set { _page = value; }
+                set { _page = value<1 ? 1 : value; }
             }
         public int PageSize {
             get => _pageSize;
-            set { _pageSize = value; }
+            set { _pageSize = value<1 ? 1 : value; }
         }
         public async Task Paginate(IQueryable<T> query)
         {
-            var items= query.Skip((Page-1)*PageSize)
+            var items = await query.Skip((Page-1)*PageSize)
                 .Take(PageSize)
-                .ToList();
+                .ToListAsync();
             TotalCount = query.Count();
             AddRange(items);
         }
