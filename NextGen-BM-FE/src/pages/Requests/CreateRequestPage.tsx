@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { createRequest } from "../../models/requests";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, MenuItem, TextField } from "@mui/material";
+import { Button, MenuItem, Paper, TextField, Typography } from "@mui/material";
 import "./createRequestPage.scss";
 import FileUploadButton from "../../components/Request/FileUploadButton";
 import { useSelector } from "react-redux";
@@ -82,6 +82,7 @@ const CreateRequestPage: FC = () => {
         }
       } else {
         const buildingRequest = transformRequest(data);
+        //TODO: Implement property requests.
       }
     } catch (error) {
       dispatch(
@@ -97,81 +98,94 @@ const CreateRequestPage: FC = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="container">
-          <TextField
-            label="Request Title"
-            {...register("requestTitle", {
-              required: "Request Title is required!",
-            })}
-            className="form-field"
-          />
-          <TextField
-            label="Request Type"
-            {...register("requestType")}
-            className="form-field"
-            select
-          >
-            {requestTypes.map((index) => (
-              <MenuItem value={index}>{index}</MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            {...register("buildingId")}
-            className="form-field"
-            select
-            label="Request Building"
-          >
-            {buildings.map((building) => (
-              <MenuItem value={building.buildingId}>{building.alias}</MenuItem>
-            ))}
-          </TextField>
-          {selectedRequestType == "Building Property Link" && (
-            <>
-              {/* TODO: Add actual roles */}
-              <TextField label="Role within building" className="form-field" />
-              <TextField
-                label="Property request is about"
-                className="form-field"
-              />
-            </>
-          )}
-        </div>
-        <div>
-          {errors.requestTitle && (
-            <p className="error-message">{errors.requestType?.message}</p>
-          )}
-        </div>
-        {selectedRequestType == "Repair" && (
-          <>
+        <Paper className="paper-container">
+          <Typography variant="h4" style={{ textAlign: "center" }}>
+            Create a request:
+          </Typography>
+          <div style={{ display: "flex", margin: "auto" }}>
             <div className="container">
               <TextField
-                {...register("description", {
-                  validate: (value) =>
-                    selectedRequestType == "Repair" && value == ""
-                      ? "Description field is required!"
-                      : true,
+                label="Request Title"
+                {...register("requestTitle", {
+                  required: "Request Title is required!",
                 })}
-                multiline
-                minRows={3}
                 className="form-field"
-                label="Description"
               />
+              <TextField
+                label="Request Type"
+                {...register("requestType")}
+                className="form-field"
+                select
+              >
+                {requestTypes.map((index) => (
+                  <MenuItem value={index}>{index}</MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                {...register("buildingId")}
+                className="form-field"
+                select
+                label="Request Building"
+              >
+                {buildings.map((building) => (
+                  <MenuItem value={building.buildingId}>
+                    {building.alias}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {selectedRequestType == "Building Property Link" && (
+                <>
+                  {/* TODO: Add actual roles */}
+                  <TextField
+                    label="Role within building"
+                    className="form-field"
+                  />
+                  <TextField
+                    label="Property request is about"
+                    className="form-field"
+                  />
+                </>
+              )}
+              {selectedRequestType == "Repair" && (
+                <>
+                  <div>
+                    <TextField
+                      {...register("description", {
+                        validate: (value) =>
+                          selectedRequestType == "Repair" && value == ""
+                            ? "Description field is required!"
+                            : true,
+                      })}
+                      multiline
+                      minRows={3}
+                      className="form-field"
+                      label="Description"
+                    />
+                  </div>
+                </>
+              )}
+              <div>
+                {errors.description && (
+                  <span className="error-message">
+                    {errors.description.message}
+                  </span>
+                )}
+              </div>
             </div>
-          </>
-        )}
-        <div className="container">
-          {errors.description && (
-            <span className="error-message">{errors.description.message}</span>
-          )}
-        </div>
-        <UploadedFilesList />
-        <div className="container"></div>
-        <div className="anchored-container">
-          <FileUploadButton />
-          <Button type="submit" className="button" disabled={isSubmitting}>
-            {fileTypeConstants.submit}
-          </Button>
-        </div>
+            <div>
+              {errors.requestTitle && (
+                <p className="error-message">{errors.requestType?.message}</p>
+              )}
+            </div>
+          </div>
+          <UploadedFilesList />
+          <div className="anchored-container">
+            <FileUploadButton />
+            <Button type="submit" className="button" disabled={isSubmitting}>
+              {fileTypeConstants.submit}
+            </Button>
+          </div>
+        </Paper>
       </form>
     </div>
   );
