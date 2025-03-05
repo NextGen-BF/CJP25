@@ -21,9 +21,11 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   SelectChangeEvent,
   TextField,
+  Typography,
 } from "@mui/material";
 import { requiredErrors, valueErrors } from "../../constants/ErrorConstants";
 import { formatDate } from "../../utils/globalFunctions";
@@ -106,7 +108,9 @@ const CreatePropertyPaymentsPage: FC = () => {
   const dateOpened = watch("dateOpened");
 
   const onSubmit: SubmitHandler<PropertyPayments> = async (data) => {
-    data.propertyId = buildingProperties.find(p => p.propertyId == selectedProperty)?.propertyId || 0;
+    data.propertyId =
+      buildingProperties.find((p) => p.propertyId == selectedProperty)
+        ?.propertyId || 0;
     try {
       await dispatch(createPropertyPayment(data)).unwrap();
       dispatch(
@@ -130,125 +134,140 @@ const CreatePropertyPaymentsPage: FC = () => {
 
   return (
     <>
-      <h1>{createPropertyPaymentConstants.title}</h1>
-      <div className="text-field-container">
-        <form
-          className="create-propertyExpense-form"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <FormControl fullWidth>
-            <InputLabel id="building-select-label">Building</InputLabel>
-            <Select
-              labelId="building-select-label"
-              value={selectedBuilding}
-              onChange={handleBuildingChange}
-            >
-              {buildingList}
-            </Select>
-          </FormControl>
+      <Paper className="paper-container">
+        <Typography variant="h4" style={{ textAlign: "center" }}>
+          {createPropertyPaymentConstants.title}
+        </Typography>
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container" style={{ width: "85%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="building-select-label">Building</InputLabel>
+                <Select
+                  labelId="building-select-label"
+                  value={selectedBuilding}
+                  onChange={handleBuildingChange}
+                >
+                  {buildingList}
+                </Select>
+              </FormControl>
 
-          {selectedBuilding !== "" && buildingProperties.length > 0 && (
-            <FormControl fullWidth>
-              <InputLabel id="property-select-label">Property</InputLabel>
-              <Select
-                labelId="property-select-label"
-                value={selectedProperty}
-                onChange={handlePropertyChange}
-              >
-                {buildingProperties.map((property) => (
-                  <MenuItem
-                    key={property.propertyId}
-                    value={property.propertyId}
+              {selectedBuilding !== "" && buildingProperties.length > 0 && (
+                <FormControl fullWidth>
+                  <InputLabel id="property-select-label">Property</InputLabel>
+                  <Select
+                    labelId="property-select-label"
+                    value={selectedProperty}
+                    onChange={handlePropertyChange}
                   >
-                    {property.propertyNumber}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+                    {buildingProperties.map((property) => (
+                      <MenuItem
+                        key={property.propertyId}
+                        value={property.propertyId}
+                      >
+                        {property.propertyNumber}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
 
-          {selectedBuilding !== "" && propertyExpenses.length > 0 && (
-            <FormControl fullWidth>
-              <InputLabel id="property-expense-select-label">Property Expense</InputLabel>
-              <Select
-                labelId="property-expense-select-label"
-                value={selectedExpense}
-                onChange={(e) => setSelectedExpense(e.target.value as number)}
-              >
-                {propertyExpenses.map((propertyExpense) => (
-                  <MenuItem
-                    key={propertyExpense.propertyExpenseId}
-                    value={propertyExpense.propertyExpenseId}
+              {selectedBuilding !== "" && propertyExpenses.length > 0 && (
+                <FormControl fullWidth>
+                  <InputLabel id="property-expense-select-label">
+                    Property Expense
+                  </InputLabel>
+                  <Select
+                    labelId="property-expense-select-label"
+                    value={selectedExpense}
+                    onChange={(e) =>
+                      setSelectedExpense(e.target.value as number)
+                    }
                   >
-                    {propertyExpense.description}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+                    {propertyExpenses.map((propertyExpense) => (
+                      <MenuItem
+                        key={propertyExpense.propertyExpenseId}
+                        value={propertyExpense.propertyExpenseId}
+                      >
+                        {propertyExpense.description}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
 
-          <TextField
-            {...register("amountOwed", {
-              required: requiredErrors.amountOwed,
-              validate: (value) =>
-                value <= 0 ? valueErrors.amountOwedNegative : true,
-            })}
-            label="Amount"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-            slotProps={{
-              input: {
-                endAdornment: <span>лв.</span>,
-              },
-            }}
-          />
-          {errors.amountOwed && (
-            <div className="error-message">{errors.amountOwed.message}</div>
-          )}
+              <TextField
+                {...register("amountOwed", {
+                  required: requiredErrors.amountOwed,
+                  validate: (value) =>
+                    value <= 0 ? valueErrors.amountOwedNegative : true,
+                })}
+                label="Amount"
+                type="text"
+                variant="outlined"
+                size="small"
+                fullWidth
+                slotProps={{
+                  input: {
+                    endAdornment: <span>лв.</span>,
+                  },
+                }}
+              />
+              {errors.amountOwed && (
+                <div className="error-message">{errors.amountOwed.message}</div>
+              )}
 
-          <TextField
-            {...register("dateOpened", {
-              required: requiredErrors.dateOpened,
-            })}
-            slotProps={{ inputLabel: { shrink: true } }}
-            label="Date Opened"
-            defaultValue={formatDate(new Date())}
-            type="date"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.dateOpened && (
-            <div className="error-message">{errors.dateOpened.message}</div>
-          )}
+              <TextField
+                {...register("dateOpened", {
+                  required: requiredErrors.dateOpened,
+                })}
+                slotProps={{ inputLabel: { shrink: true } }}
+                label="Date Opened"
+                defaultValue={formatDate(new Date())}
+                type="date"
+                variant="outlined"
+                size="small"
+                fullWidth
+              />
+              {errors.dateOpened && (
+                <div className="error-message">{errors.dateOpened.message}</div>
+              )}
 
-          <TextField
-            {...register("dueDate", {
-              required: requiredErrors.dueDate,
-              validate: (value) => {
-                if (new Date(value) < new Date(dateOpened)) {
-                  return valueErrors.dueDateBeforeDateOpened;
-                }
-              },
-            })}
-            slotProps={{ inputLabel: { shrink: true } }}
-            label="Due Date"
-            type="date"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.dueDate && (
-            <div className="error-message">{errors.dueDate.message}</div>
-          )}
-          {selectedBuilding && expensesLoaded && propertyExpenses.length === 0 && (<div className="error-message">{valueErrors.noExpenses}</div>)}
-          <Button fullWidth type="submit" disabled={propertyExpenses.length === 0 || isSubmitting}>
-            {createPropertyPaymentConstants.create}
-          </Button>
-        </form>
-      </div>
+              <TextField
+                {...register("dueDate", {
+                  required: requiredErrors.dueDate,
+                  validate: (value) => {
+                    if (new Date(value) < new Date(dateOpened)) {
+                      return valueErrors.dueDateBeforeDateOpened;
+                    }
+                  },
+                })}
+                slotProps={{ inputLabel: { shrink: true } }}
+                label="Due Date"
+                type="date"
+                variant="outlined"
+                size="small"
+                fullWidth
+              />
+              {errors.dueDate && (
+                <div className="error-message">{errors.dueDate.message}</div>
+              )}
+              {selectedBuilding &&
+                expensesLoaded &&
+                propertyExpenses.length === 0 && (
+                  <div className="error-message">{valueErrors.noExpenses}</div>
+                )}
+              <Button
+                fullWidth
+                type="submit"
+                disabled={propertyExpenses.length === 0 || isSubmitting}
+              >
+                {createPropertyPaymentConstants.create}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Paper>
     </>
   );
 };

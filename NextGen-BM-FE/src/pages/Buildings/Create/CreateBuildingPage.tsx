@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Paper, TextField, Typography } from "@mui/material";
 import { FC, useEffect } from "react";
 import { Building } from "../../../models/building";
 import { RootState, useAppDispatch } from "../../../redux/store";
@@ -23,10 +23,9 @@ const CreateBuildingPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-
   useEffect(() => {
-        dispatch(resetProperties());
-      }, []);
+    dispatch(resetProperties());
+  }, []);
   const buildingProperties = useSelector(
     (state: RootState) => state.propertyReducer.value,
   );
@@ -59,7 +58,7 @@ const CreateBuildingPage: FC = () => {
         startDate: data.dateBuilt,
         endDate: null,
         approved: true,
-        requestTitle: ""
+        requestTitle: "",
       },
     ];
     try {
@@ -87,200 +86,204 @@ const CreateBuildingPage: FC = () => {
 
   return (
     <div>
-      <div className="text-field-container">
-        <form
-          className="create-building-form"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <h1 className="create-building-header">
-            {createBuildingConstants.createHeader}
-          </h1>
-          <TextField
-            {...register("alias", {
-              required: requiredErrors.alias,
-              minLength: {
-                value: 3,
-                message: valueErrors.aliasMinCharacter,
-              },
-            })}
-            label="Building Alias"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.alias && (
-            <div className="error-message">{errors.alias.message}</div>
-          )}
-          <TextField
-            {...register("floorNum", {
-              required: requiredErrors.floorNum,
-              validate: (value) =>
-                value <= 0 ? valueErrors.floorNumNegative : true,
-            })}
-            label="Number of Building Floors"
-            type="number"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.floorNum && (
-            <div className="error-message">{errors.floorNum.message}</div>
-          )}
-          <TextField
-            {...register("totalBuildingSize", {
-              required: requiredErrors.totalBuildingSize,
-              validate: (value) =>
-                value <= 0 ? valueErrors.buildingSizeNegative : true,
-            })}
-            label="Building Size"
-            type="text" 
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.totalBuildingSize && (
-            <div className="error-message">
-              {errors.totalBuildingSize.message}
+      <Paper className="paper-container" style={{ width: "50%" }}>
+        <div className="container" style={{ width: "85%" }}>
+          <form
+            className="create-building-form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <Typography variant="h4" style={{ textAlign: "center" }}>
+              {createBuildingConstants.createHeader}
+            </Typography>
+            <TextField
+              {...register("alias", {
+                required: requiredErrors.alias,
+                minLength: {
+                  value: 3,
+                  message: valueErrors.aliasMinCharacter,
+                },
+              })}
+              label="Building Alias"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.alias && (
+              <div className="error-message">{errors.alias.message}</div>
+            )}
+            <TextField
+              {...register("floorNum", {
+                required: requiredErrors.floorNum,
+                validate: (value) =>
+                  value <= 0 ? valueErrors.floorNumNegative : true,
+              })}
+              label="Number of Building Floors"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.floorNum && (
+              <div className="error-message">{errors.floorNum.message}</div>
+            )}
+            <TextField
+              {...register("totalBuildingSize", {
+                required: requiredErrors.totalBuildingSize,
+                validate: (value) =>
+                  value <= 0 ? valueErrors.buildingSizeNegative : true,
+              })}
+              label="Building Size"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.totalBuildingSize && (
+              <div className="error-message">
+                {errors.totalBuildingSize.message}
+              </div>
+            )}
+            <TextField
+              {...register("dateBuilt", {
+                required: requiredErrors.dateBuilt,
+              })}
+              slotProps={{ inputLabel: { shrink: true } }}
+              label="Date Built"
+              type="date"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.dateBuilt && (
+              <div className="error-message">{errors.dateBuilt.message}</div>
+            )}
+            <TextField
+              {...register("numOfElevators", {
+                required: requiredErrors.numOfElevators,
+                validate: (value) =>
+                  value < 0 ? valueErrors.numOfElevatorsNegative : true,
+              })}
+              label="Amount of Elevators"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.numOfElevators && (
+              <div className="error-message">
+                {errors.numOfElevators.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.streetName", {
+                required: requiredErrors.streetName,
+              })}
+              label="Street Name"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.streetName && (
+              <div className="error-message">
+                {errors.buildingAddress.streetName.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.streetNumber", {
+                required: requiredErrors.streetNumber,
+                validate: (value) =>
+                  value <= 0 ? valueErrors.streetNumberNegative : true,
+              })}
+              label="Street Number"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.streetNumber && (
+              <div className="error-message">
+                {errors.buildingAddress.streetNumber.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.district", {
+                required: requiredErrors.district,
+              })}
+              label="District"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.district && (
+              <div className="error-message">
+                {errors.buildingAddress.district.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.entrance")}
+              label="Entrance"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            <TextField
+              {...register("buildingAddress.city", {
+                required: requiredErrors.city,
+              })}
+              label="City"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.city && (
+              <div className="error-message">
+                {errors.buildingAddress?.city.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.postalCode", {
+                required: requiredErrors.postalCode,
+              })}
+              label="Postal Code"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.postalCode && (
+              <div className="error-message">
+                {errors.buildingAddress.postalCode.message}
+              </div>
+            )}
+            <TextField
+              {...register("buildingAddress.country", {
+                required: requiredErrors.country,
+              })}
+              label="Country"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            {errors.buildingAddress?.country && (
+              <div className="error-message">
+                {errors.buildingAddress.country.message}
+              </div>
+            )}
+            <div style={{ width: "100%" }}>
+              <EditableTable />
             </div>
-          )}
-          <TextField
-            {...register("dateBuilt", {
-              required: requiredErrors.dateBuilt,
-            })}
-            slotProps={{ inputLabel: { shrink: true } }}
-            label="Date Built"
-            type="date"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.dateBuilt && (
-            <div className="error-message">{errors.dateBuilt.message}</div>
-          )}
-          <TextField
-            {...register("numOfElevators", {
-              required: requiredErrors.numOfElevators,
-              validate: (value) =>
-                value < 0 ? valueErrors.numOfElevatorsNegative : true,
-            })}
-            label="Amount of Elevators"
-            type="number"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.numOfElevators && (
-            <div className="error-message">{errors.numOfElevators.message}</div>
-          )}
-          <TextField
-            {...register("buildingAddress.streetName", {
-              required: requiredErrors.streetName,
-            })}
-            label="Street Name"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.streetName && (
-            <div className="error-message">
-              {errors.buildingAddress.streetName.message}
-            </div>
-          )}
-          <TextField
-            {...register("buildingAddress.streetNumber", {
-              required: requiredErrors.streetNumber,
-              validate: (value) =>
-                value <= 0 ? valueErrors.streetNumberNegative : true,
-            })}
-            label="Street Number"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.streetNumber && (
-            <div className="error-message">
-              {errors.buildingAddress.streetNumber.message}
-            </div>
-          )}
-          <TextField
-            {...register("buildingAddress.district", {
-              required: requiredErrors.district,
-            })}
-            label="District"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.district && (
-            <div className="error-message">
-              {errors.buildingAddress.district.message}
-            </div>
-          )}
-          <TextField
-            {...register("buildingAddress.entrance")}
-            label="Entrance"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          <TextField
-            {...register("buildingAddress.city", {
-              required: requiredErrors.city,
-            })}
-            label="City"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.city && (
-            <div className="error-message">
-              {errors.buildingAddress?.city.message}
-            </div>
-          )}
-          <TextField
-            {...register("buildingAddress.postalCode", {
-              required: requiredErrors.postalCode,
-            })}
-            label="Postal Code"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.postalCode && (
-            <div className="error-message">
-              {errors.buildingAddress.postalCode.message}
-            </div>
-          )}
-          <TextField
-            {...register("buildingAddress.country", {
-              required: requiredErrors.country,
-            })}
-            label="Country"
-            type="text"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-          {errors.buildingAddress?.country && (
-            <div className="error-message">
-              {errors.buildingAddress.country.message}
-            </div>
-          )}
-          <Button fullWidth type="submit" disabled={isSubmitting}>
-            {createBuildingConstants.create}
-          </Button>
-        </form>
-      </div>
-      <div className="property-table">
-        <EditableTable />
-      </div>
+            <Button fullWidth type="submit" disabled={isSubmitting}>
+              {createBuildingConstants.create}
+            </Button>
+          </form>
+        </div>
+      </Paper>
     </div>
   );
 };
