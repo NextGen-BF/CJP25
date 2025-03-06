@@ -30,6 +30,7 @@ import { formatDate } from "../../utils/globalFunctions";
 import { Building } from "../../models/building";
 import { useSelector } from "react-redux";
 import { getBuildingsByUserId } from "../../redux/services/buildingService";
+import Overlay from "../Overlay";
 
 const CreatePropertyPaymentsPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -248,6 +249,7 @@ const CreatePropertyPaymentsPage: FC = () => {
             {createPropertyPaymentConstants.create}
           </Button>
         </form>
+        {isSubmitting && <Overlay />}
       </div>
     </>
   );
