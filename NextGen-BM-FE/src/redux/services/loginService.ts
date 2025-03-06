@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { apiURL } from "../../api/shared";
+import axiosInstance from "./interceptors/authorizationInterceptors";
 
 interface loginCredential {
   email: string;
@@ -27,7 +28,7 @@ export const loginCall = createAsyncThunk(
 export const getUserById = createAsyncThunk(
   "user/id",
   async (id: number, thunkAPI) => {
-    return await axios
+    return await axiosInstance
       .get(`${apiURL}/user/${id}`)
       .then(function (response) {
         return response.data;
