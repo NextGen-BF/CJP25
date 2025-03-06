@@ -6,6 +6,7 @@ using NextGen_BM_BE_Application.UseCases.Buildings.Update;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
+using Stripe;
 
 namespace NextGen_BM_BE_Application.Services
 {
@@ -43,7 +44,7 @@ namespace NextGen_BM_BE_Application.Services
 
         public async Task<BuildingViewModel> GetBuildingByIdAsync(int buildingId)
         {
-            var building =  await _getBuildingByIdUseCase.Execute(buildingId);
+            var building = await _getBuildingByIdUseCase.Execute(buildingId);
             return _mapper.Map<BuildingViewModel>(building);
         }
 
@@ -51,7 +52,8 @@ namespace NextGen_BM_BE_Application.Services
         {
             var buildings = await _getAllBuildingsUseCase.Execute();
             List<BuildingViewModel> buildingsList = new();
-            foreach(var building in buildings){
+            foreach (var building in buildings)
+            {
                 buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
             }
             return buildingsList;
@@ -72,6 +74,15 @@ namespace NextGen_BM_BE_Application.Services
         {
             var building = _mapper.Map<Building>(buildingDto);
             var createdBuilding = await _createBuildingUseCase.Execute(building);
+            if (createdBuilding != null)
+            {
+                var service = new CustomerService();
+                var createOptions = new CustomerCreateOptions
+                {
+                    Name = createdBuilding.Alias,
+                };
+                service.Create(createOptions);
+            }
             return _mapper.Map<BuildingViewModel>(createdBuilding);
         }
 

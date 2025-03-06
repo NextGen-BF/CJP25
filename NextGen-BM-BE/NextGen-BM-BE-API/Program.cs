@@ -26,6 +26,7 @@ using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -95,6 +96,7 @@ builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStripeService, StripeService>();
 
 builder.Services.AddScoped<GetPropertiesByIdUseCase>();
 builder.Services.AddScoped<GetAllPropertiesUseCase>();
@@ -187,6 +189,10 @@ builder.Services.AddScoped<IAuthorizationHandler, PropertyAccessHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, PropertyCreateUpdateHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, RequestCreateUpdateHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, PropertyDeleteHandler>();
+#endregion
+
+#region Stripe
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"] ?? "";
 #endregion
 
 #region Cors

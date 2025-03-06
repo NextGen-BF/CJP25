@@ -17,6 +17,6 @@
     <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.69.0" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.0" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.110" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Stripe.net" Version="47.4.0" />
   </ItemGroup>
 </Project>

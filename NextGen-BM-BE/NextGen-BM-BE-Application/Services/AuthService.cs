@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
+using Stripe;
 
 
 namespace NextGen_BM_BE_Application.Services
@@ -36,6 +37,16 @@ namespace NextGen_BM_BE_Application.Services
         {
             var user = new User { UserName = registerModel.Email, Email = registerModel.Email, FirstName = registerModel.FirstName, LastName = registerModel.LastName };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
+            if (result.Succeeded)
+            {
+                var service = new CustomerService();
+                var stripeUser = new CustomerCreateOptions
+                {
+                    Name = registerModel.FirstName + " " + registerModel.LastName,
+                    Email = registerModel.Email,
+                };
+                service.Create(stripeUser);
+            }
             return result;
         }
 
