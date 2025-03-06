@@ -12,7 +12,11 @@ import "./createPropertyPage.scss";
 import { CreatePropertyInput } from "./CreatePropertyControlledInput";
 import { createPropertyPageStyles } from "./CreatePropertyPageStyles";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice";
-import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import {
+  ErrorSnackbarConstants,
+  SucessSnackbarConstants,
+} from "../../../constants/snackbarConstants.ts";
+import Overlay from "../../Overlay.tsx";
 
 const textFieldInputProps = [
   {
@@ -43,7 +47,12 @@ const textFieldInputProps = [
 
 const CreatePropertyPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { control, handleSubmit } = useForm<Property>();
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Property>();
+
   const onSubmit: SubmitHandler<Property> = async (data) => {
     try {
       await dispatch(createProperty(data)).unwrap();
@@ -130,6 +139,7 @@ const CreatePropertyPage: FC = () => {
           Create Property
         </Button>
       </form>
+      {isSubmitting && <Overlay />}
     </div>
   );
 };

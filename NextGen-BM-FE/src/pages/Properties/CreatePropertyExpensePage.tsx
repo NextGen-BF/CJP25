@@ -21,6 +21,7 @@ import {
   ErrorSnackbarConstants,
   SucessSnackbarConstants,
 } from "../../constants/snackbarConstants";
+import Overlay from "../Overlay";
 
 const CreatePropertyExpense: FC = () => {
   const dispatch = useAppDispatch();
@@ -158,6 +159,7 @@ const CreatePropertyExpense: FC = () => {
             {createPropertyExpenseConstants.create}
           </Button>
         </form>
+        {isSubmitting && <Overlay />}
       </div>
     </>
   );
