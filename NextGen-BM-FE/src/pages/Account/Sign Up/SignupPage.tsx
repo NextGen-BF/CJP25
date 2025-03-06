@@ -49,6 +49,7 @@ const SignupPage: FC = () => {
           snackbarMessage: SucessSnackbarConstants.signUpSuccess,
         }),
       );
+      SetEmailDuplicateError("");
       setTimeout(() => {
         navigate("/login");
       }, 3000);
