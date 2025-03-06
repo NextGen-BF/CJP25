@@ -13,7 +13,8 @@ const initialState: PropertyState = {
         lastName: "",
         role: "",
         properties: [],
-        email: ""
+        email: "",
+        dateCreated: new Date()
     }
 }
 
