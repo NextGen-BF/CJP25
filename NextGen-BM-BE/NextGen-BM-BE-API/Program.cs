@@ -27,7 +27,6 @@ using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Infrastructure;
 using NextGen_BM_BE_Infrastructure.Repositories;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -45,7 +44,10 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 // builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true);
-builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<DataContext>();
+builder
+    .Services.AddIdentityApiEndpoints<User>()
+    .AddRoles<Role>()
+    .AddEntityFrameworkStores<DataContext>();
 
 #region Dependency Injection
 builder.Services.AddScoped<GetBuildingByIdUseCase>();
@@ -176,11 +178,27 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Super", policy => policy.RequireRole("Super"));
-    options.AddPolicy("User In Building", policy => policy.AddRequirements(new BuildingResidentRequirement()));
-    options.AddPolicy("Super For Building", policy => policy.AddRequirements(new BuildingManagerRequirement("Super")));
-    options.AddPolicy("Super For Property Building", policy => policy.AddRequirements(new PropertyPermissionRequirement("Super")));
-    options.AddPolicy("Property Owner", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner")));
-    options.AddPolicy("Property User", policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner", "Tenant")));
+    options.AddPolicy(
+        "User In Building",
+        policy => policy.AddRequirements(new BuildingResidentRequirement())
+    );
+    options.AddPolicy(
+        "Super For Building",
+        policy => policy.AddRequirements(new BuildingManagerRequirement("Super"))
+    );
+    options.AddPolicy(
+        "Super For Property Building",
+        policy => policy.AddRequirements(new PropertyPermissionRequirement("Super"))
+    );
+    options.AddPolicy(
+        "Property Owner",
+        policy => policy.AddRequirements(new PropertyPermissionRequirement("Property Owner"))
+    );
+    options.AddPolicy(
+        "Property User",
+        policy =>
+            policy.AddRequirements(new PropertyPermissionRequirement("Property Owner", "Tenant"))
+    );
     options.AddPolicy("Tenant", policy => policy.RequireRole("Tenant"));
 });
 builder.Services.AddScoped<IAuthorizationHandler, BuildingAccessHandler>();

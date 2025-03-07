@@ -6,7 +6,6 @@ using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
 
-
 namespace NextGen_BM_BE_Application.Services
 {
     public class AuthService : IAuthService
@@ -15,26 +14,47 @@ namespace NextGen_BM_BE_Application.Services
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _config;
 
-        public AuthService(UserManager<User> userManager, IJwtService jwtService, IConfiguration config)
+        public AuthService(
+            UserManager<User> userManager,
+            IJwtService jwtService,
+            IConfiguration config
+        )
         {
             _jwtService = jwtService;
             _userManager = userManager;
             _config = config;
         }
+
         public async Task<string> LoginAsync(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            try
             {
-                var token = _jwtService.GenerateJwtToken(user);
-                return token;
+                if (
+                    user != null
+                    && await _userManager.CheckPasswordAsync(user, loginModel.Password)
+                )
+                {
+                    var token = await _jwtService.GenerateJwtToken(user);
+                    return token;
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel registerModel)
         {
-            var user = new User { UserName = registerModel.Email, Email = registerModel.Email, FirstName = registerModel.FirstName, LastName = registerModel.LastName };
+            var user = new User
+            {
+                UserName = registerModel.Email,
+                Email = registerModel.Email,
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName,
+            };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             return result;
         }
@@ -47,7 +67,7 @@ namespace NextGen_BM_BE_Application.Services
                 if (result == null)
                     return null;
                 var user = await _userManager.FindByEmailAsync(result.Email);
-                var token = _jwtService.GenerateJwtToken(user);
+                var token = await _jwtService.GenerateJwtToken(user);
                 var refreshToken = GenerateRefreshToken();
                 //TODO: Insert refresh token to database
                 return token;
@@ -64,7 +84,10 @@ namespace NextGen_BM_BE_Application.Services
             {
                 var settings = new GoogleJsonWebSignature.ValidationSettings()
                 {
-                    Audience = new List<string>() { _config.GetSection("Authentication:Google:ClientId").Value }
+                    Audience = new List<string>()
+                    {
+                        _config.GetSection("Authentication:Google:ClientId").Value,
+                    },
                 };
                 var payload = await GoogleJsonWebSignature.ValidateAsync(googleToken, settings);
                 return payload;
