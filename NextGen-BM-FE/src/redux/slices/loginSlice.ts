@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginCall } from "../services/loginService";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtHeader } from "jwt-decode";
 import { loginWithGoogleCall } from "../services/googleLoginService";
 
 interface LoginState {
@@ -8,6 +8,7 @@ interface LoginState {
     token: string;
     userId: number;
     isLoggedIn: boolean;
+    role: string;
   };
 }
 
@@ -15,13 +16,15 @@ function getLoginState() {
   const token = localStorage.getItem("JWT-BM") ?? "";
   if (token.length > 0) {
     const user = jwtDecode(token);
+    const jwtHeader = jwtDecode<JwtHeader>(token);
     return {
       token: token,
       userId: parseInt(user.sub ?? "0"),
       isLoggedIn: true,
+      role: jwtHeader.typ ?? "",
     };
   }
-  return { token: "", userId: 0, isLoggedIn: false };
+  return { token: "", userId: 0, isLoggedIn: false, role: "tenant" };
 }
 
 const initialState: LoginState = {
@@ -38,6 +41,7 @@ const loginSlice = createSlice({
         token: "",
         userId: 0,
         isLoggedIn: false,
+        role: "",
       };
     },
   },
@@ -50,10 +54,12 @@ const loginSlice = createSlice({
           token = getLoginState().token;
         }
         const user = jwtDecode(token);
+        const jwtHeader = jwtDecode<JwtHeader>(token);
         state.value = {
           token: token,
           userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
+          role: jwtHeader.typ ?? "" 
         };
         localStorage.setItem("JWT-BM", action.payload.token);
       },
@@ -66,10 +72,12 @@ const loginSlice = createSlice({
           token = getLoginState().token;
         }
         const user = jwtDecode(token);
+        const jwtHeader = jwtDecode<JwtHeader>(token);
         state.value = {
           token: token,
           userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
+          role: jwtHeader.typ ?? "" 
         };
         localStorage.setItem("JWT-BM", action.payload.token);
         console.log(state.value);
