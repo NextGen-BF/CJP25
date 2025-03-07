@@ -138,7 +138,6 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
 
                 if (page!=null&&pageSize!=null)
                 {
-                    Console.WriteLine(pageSize);
                     var pagedList=new PagedList<PropertyPayments>{Page=(int)page, PageSize=(int)pageSize};
                     await pagedList.Paginate(query);
                     return pagedList;
@@ -197,7 +196,6 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
                     );
                 if (page!=null&&pageSize!=null)
                 {
-                    Console.WriteLine(pageSize);
                     var pagedList=new PagedList<PropertyExpense>{Page=(int)page, PageSize=(int)pageSize};
                     await pagedList.Paginate(query);
                     return pagedList;
