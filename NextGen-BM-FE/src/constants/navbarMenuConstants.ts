@@ -43,10 +43,6 @@ export const navbarMenuProps: navSubMenuProps[] = [
         title: "Properties List",
       },
       {
-        link: "/property",
-        title: "Property Details",
-      },
-      {
         link: "/create/property",
         title: "Create property",
       },

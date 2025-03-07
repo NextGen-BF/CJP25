@@ -4,7 +4,7 @@ import { Property } from "../../../models/property";
 import { RootState, useAppDispatch } from "../../../redux/store";
 import { createProperty } from "../../../redux/services/propertyService";
 import TextField from "@mui/material/TextField";
-import { Button, MenuItem } from "@mui/material";
+import { Button, MenuItem, Paper, Typography } from "@mui/material";
 import { Building } from "../../../models/building";
 import { getAllBuildings } from "../../../redux/services/buildingService";
 import { useSelector } from "react-redux";
@@ -94,52 +94,57 @@ const CreatePropertyPage: FC = () => {
 
   return (
     <div>
-      <h1>Add a new property</h1>
-
-      <form className="create-property-form" onSubmit={handleSubmit(onSubmit)}>
-        {textInputFields}
-        <Controller
-          name="entranceIsExternal"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={createPropertyPageStyles.inputStyles}
-              label="External entrance"
-              variant="standard"
-              type="checkbox"
-              defaultValue={false}
-              size="small"
-            />
-          )}
-        />
-        <Controller
-          name="buildingId"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={createPropertyPageStyles.inputStyles}
-              select
-              required={true}
-              label="Building"
-              size="small"
-              //should eventually only return the manager's buildings
-              onFocus={() => dispatch(getAllBuildings())}
-            >
-              {buildingList}
-            </TextField>
-          )}
-        />
-        <Button
-          sx={createPropertyPageStyles.inputStyles}
-          type="submit"
-          variant="contained"
-        >
-          Create Property
-        </Button>
-      </form>
       {isSubmitting && <Overlay />}
+      <Paper className="paper-container">
+        <Typography variant="h4" style={{ textAlign: "center" }}>
+          Add a new property
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="container">
+            {textInputFields}
+            <Controller
+              name="entranceIsExternal"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  sx={createPropertyPageStyles.inputStyles}
+                  label="External entrance"
+                  variant="standard"
+                  type="checkbox"
+                  defaultValue={false}
+                  size="small"
+                />
+              )}
+            />
+            <Controller
+              name="buildingId"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  sx={createPropertyPageStyles.inputStyles}
+                  select
+                  required={true}
+                  label="Building"
+                  size="small"
+                  //should eventually only return the manager's buildings
+                  onFocus={() => dispatch(getAllBuildings())}
+                >
+                  {buildingList}
+                </TextField>
+              )}
+            />
+            <Button
+              sx={createPropertyPageStyles.inputStyles}
+              type="submit"
+              variant="contained"
+            >
+              Create Property
+            </Button>
+          </div>
+        </form>
+      </Paper>
     </div>
   );
 };

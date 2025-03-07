@@ -15,7 +15,7 @@ import { useAppDispatch } from "../redux/store";
 import {
   addProperty,
   removeProperty,
-  updateProperty
+  updateProperty,
 } from "../redux/slices/propertySlice";
 import { Property } from "../models/property";
 import { editableTableConstants } from "../constants/constants";
@@ -171,7 +171,7 @@ export default function EditableTable() {
   ];
 
   return (
-    <div style={{ width: "90%" }}>
+    <div>
       <DataGrid
         rows={rows}
         getRowId={(row) => row.propertyNumber}
