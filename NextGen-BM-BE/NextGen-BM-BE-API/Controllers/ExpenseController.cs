@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -31,40 +32,48 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId)
+        public async Task<IActionResult> GetPropertyPaymentsByUserId(int userId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByUserId = await _expensesService.GetPropertyPaymentsByUserIdAsync(
-                userId
+                userId, page, pageSize
             );
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByUserId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByUserId).TotalPages});
             return Ok(propertyPaymentsByUserId);
         }
 
         [HttpGet]
         [Route("property/{propertyId}")]
         [Authorize(Policy = "Property Owner")]
-        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId)
+        public async Task<IActionResult> GetPropertyPaymentsByPropertyId(int propertyId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByPropertyId =
-                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId);
+                await _expensesService.GetPropertyPaymentsByPropertyIdAsync(propertyId, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByPropertyId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByPropertyId).TotalPages});
             return Ok(propertyPaymentsByPropertyId);
         }
 
         [HttpGet]
         [Route("building/{buildingId}")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyPaymentsByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var propertyPaymentsByBuildingId =
-                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId);
+                await _expensesService.GetPropertyPaymentsByBuildingIdAsync(buildingId, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyPaymentsViewModel>{Items= propertyPaymentsByBuildingId, PageCount=((PagedList<PropertyPaymentsViewModel>)propertyPaymentsByBuildingId).TotalPages});
             return Ok(propertyPaymentsByBuildingId);
         }
 
         [HttpGet]
         [Route("propertyexpense/{buildingid}")]
-        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid)
+        public async Task<IActionResult> GetPropertyExpensesByBuildingIdAsync(int buildingid, [FromQuery]int? page, [FromQuery]int? pageSize)
         {
             var propertyExpensesByBuildingId =
-                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid);
+                await _expensesService.GetPropertyExpensesByBuildingIdAsync(buildingid, page, pageSize);
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyExpenseViewModel>{Items= propertyExpensesByBuildingId, PageCount=((PagedList<PropertyExpenseViewModel>)propertyExpensesByBuildingId).TotalPages});
             return Ok(propertyExpensesByBuildingId);
         }
 

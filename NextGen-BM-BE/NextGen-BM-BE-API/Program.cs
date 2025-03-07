@@ -105,6 +105,8 @@ builder.Services.AddScoped<GetPropertiesByBuildingIdUseCase>();
 builder.Services.AddScoped<GetPropertiesByUserIdUseCase>();
 builder.Services.AddScoped<UpdatePropertyUseCase>();
 builder.Services.AddScoped<GetPropertyUserLinkUseCase>();
+
+builder.Services.AddScoped<IPaginationService, PaginationService>();
 #endregion
 
 

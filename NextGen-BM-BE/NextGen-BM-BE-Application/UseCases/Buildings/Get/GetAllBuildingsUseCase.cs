@@ -7,9 +7,9 @@ namespace NextGen_BM_BE_Application.UseCases.Buildings.Get
     {
         private readonly IBuildingRepository buildingRepository = _buildingRepository;
 
-        public async Task<IList<Building>> Execute()
+        public async Task<IList<Building>> Execute(int? page, int? pageSize)
         {
-            var result = await buildingRepository.GetAllBuildingsAsync();
+            var result = await buildingRepository.GetAllBuildingsAsync(page, pageSize);
             return result;
         }
     }

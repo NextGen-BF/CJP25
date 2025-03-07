@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NextGen_BM_BE_Domain.DataStructures;
+using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -21,18 +23,20 @@ namespace NextGen_BM_BE_API.Controllers
         [HttpGet]
         [Route("building/repair")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetRepairRequestsByBuildingId(IList<int> buildingIds)
+        public async Task<IActionResult> GetRepairRequestsByBuildingId(IList<int> buildingIds, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingIds);
+            var result = await _requestService.GetAllRepairRequestsByBuildingIdAsync(buildingIds, page, pageSize);
             if (result == null) return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<RepairRequestViewModel>{Items=result, PageCount=((PagedList<RepairRequestViewModel>)result).TotalPages});
             return Ok(result);
         }
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetRequestsByUserId(int userId)
+        public async Task<IActionResult> GetRequestsByUserId(int userId, int? page, int? pageSize)
         {
-            var requests = await _requestService.GetRequestsByUserIdAsync(userId);
+            var requests = await _requestService.GetRequestsByUserIdAsync(userId, page, pageSize);
             return Ok(requests);
         }
 
@@ -48,10 +52,12 @@ namespace NextGen_BM_BE_API.Controllers
         [HttpGet]
         [Route("user/building/{buildingId}")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetUserBuildingRequests(IList<int> buildingIds)
+        public async Task<IActionResult> GetUserBuildingRequests(IList<int> buildingIds, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _requestService.GetUserBuildingRequestsAsync(buildingIds);
+            var result = await _requestService.GetUserBuildingRequestsAsync(buildingIds, page, pageSize);
             if (result == null) return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<UserBuildings>{Items=result, PageCount=((PagedList<UserBuildings>)result).TotalPages});
             return Ok(result);
         }
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGen_BM_BE_Application.Services;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -25,11 +26,14 @@ namespace NextGen_BM_BE_API.Controllers
         [HttpGet]
         [Route("all")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> GetAllProperties()
+        public async Task<IActionResult> GetAllProperties([FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetAllPropertiesAsync();
+            var result = await _propertyService.GetAllPropertiesAsync(page, pageSize);
+            
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 
@@ -46,22 +50,26 @@ namespace NextGen_BM_BE_API.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> GetPropertiesByUserId(int userId)
+        public async Task<IActionResult> GetPropertiesByUserId(int userId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetPropertyByUserIdAsync(userId);
+            var result = await _propertyService.GetPropertyByUserIdAsync(userId, page, pageSize);
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 
         [HttpGet]
         [Route("building/{buildingId}")]
         [Authorize(Policy = "Super For Building")]
-        public async Task<IActionResult> GetPropertyByBuildingId(int buildingId)
+        public async Task<IActionResult> GetPropertyByBuildingId(int buildingId, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId);
+            var result = await _propertyService.GetPropertyByBuildingIdAsync(buildingId, page, pageSize);
             if (result == null)
                 return BadRequest();
+            if (page!=null&&pageSize!=null)
+                return Ok(new PageViewModel<PropertyViewModel>{Items=result, PageCount=((PagedList<PropertyViewModel>)result).TotalPages});
             return Ok(result);
         }
 

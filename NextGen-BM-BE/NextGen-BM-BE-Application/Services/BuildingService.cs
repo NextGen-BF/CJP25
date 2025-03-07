@@ -3,6 +3,7 @@ using NextGen_BM_BE_Application.UseCases.Buildings.Create;
 using NextGen_BM_BE_Application.UseCases.Buildings.Delete;
 using NextGen_BM_BE_Application.UseCases.Buildings.Get;
 using NextGen_BM_BE_Application.UseCases.Buildings.Update;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.ViewModels;
@@ -19,6 +20,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly DeleteUserBuildingLinkUseCase _deleteUserBuildingLinkUseCase;
         private readonly GetBuildingsByUserIdUseCase _getBuildingsByUserIdUseCase;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
 
         public BuildingService(
             GetBuildingsByUserIdUseCase getBuildingsByUserIdUseCase,
@@ -28,7 +30,8 @@ namespace NextGen_BM_BE_Application.Services
             UpdateBuildingUseCase updateBuildingUseCase,
             DeleteBuildingUseCase deleteBuildingUseCase,
             DeleteUserBuildingLinkUseCase deleteUserBuildingLinkUseCase,
-            IMapper mapper
+            IMapper mapper,
+            IPaginationService paginationService
         )
         {
             _getBuildingsByUserIdUseCase = getBuildingsByUserIdUseCase;
@@ -39,6 +42,7 @@ namespace NextGen_BM_BE_Application.Services
             _deleteBuildingUseCase = deleteBuildingUseCase;
             _deleteUserBuildingLinkUseCase = deleteUserBuildingLinkUseCase;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task<BuildingViewModel> GetBuildingByIdAsync(int buildingId)
@@ -47,25 +51,36 @@ namespace NextGen_BM_BE_Application.Services
             return _mapper.Map<BuildingViewModel>(building);
         }
 
-        public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync()
+        public async Task<IList<BuildingViewModel>> GetAllBuildingsAsync(int? page, int? pageSize)
         {
-            var buildings = await _getAllBuildingsUseCase.Execute();
-            List<BuildingViewModel> buildingsList = new();
-            foreach(var building in buildings){
-                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+            var buildings = await _getAllBuildingsUseCase.Execute(page, pageSize);
+            
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<BuildingViewModel, Building>((PagedList<Building>)buildings);
+            else 
+            {
+                var buildingsList = new List<BuildingViewModel>();
+                foreach(var building in buildings){
+                    buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                }
+                return buildingsList;
             }
-            return buildingsList;
         }
 
-        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId)
+        public async Task<IList<BuildingViewModel>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize)
         {
-            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
-            List<BuildingViewModel> buildingsList = new();
-            foreach (var building in buildings)
+            var buildings = await _getBuildingsByUserIdUseCase.Execute(userId, page, pageSize);
+            
+            if (page!=null&&pageSize!=null)
+                return _paginationService.MapPagedResult<BuildingViewModel, Building>((PagedList<Building>)buildings);
+            else 
             {
-                buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                var buildingsList = new List<BuildingViewModel>();
+                foreach(var building in buildings){
+                    buildingsList.Add(_mapper.Map<BuildingViewModel>(building));
+                }
+                return buildingsList;
             }
-            return buildingsList;
         }
 
         public async Task<BuildingViewModel> CreateBuildingAsync(BuildingViewModel buildingDto)

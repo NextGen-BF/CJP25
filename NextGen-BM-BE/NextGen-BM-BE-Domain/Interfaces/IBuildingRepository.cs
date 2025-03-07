@@ -6,8 +6,8 @@ namespace NextGen_BM_BE_Domain.Interfaces
     public interface IBuildingRepository
     {
         Task<Building> GetBuildingByIdAsync(int buildingId);
-        Task<List<Building>> GetAllBuildingsAsync();
-        Task<List<Building>> GetBuildingsByUserIdAsync(int userId);
+        Task<List<Building>> GetAllBuildingsAsync(int? page, int? pageSize);
+        Task<List<Building>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize);
         Task<Building> CreateBuildingAsync(Building building);
         Task UpdateBuildingAsync(Building building);
         Task DeleteBuildingAsync(int buildingId);

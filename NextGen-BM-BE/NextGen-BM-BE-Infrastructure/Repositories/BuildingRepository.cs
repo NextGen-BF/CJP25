@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.BuildingAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
@@ -47,15 +47,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetAllBuildingsAsync()
+        public async Task<List<Building>> GetAllBuildingsAsync(int? page, int? pageSize)
         {
             try
             {
-                return await _dbContext
+                var query = _dbContext
                     .Buildings.Where(b => b.DeletedDate == null)
                     .Include(b => b.BuildingAddress)
                     .Include(b => b.BuildingExpenses)
-                    .Include(b => b.Properties)
+                    .Include(b => b.Properties);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Building>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -86,19 +93,25 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId)
+        public async Task<List<Building>> GetBuildingsByUserIdAsync(int userId, int? page, int? pageSize)
         {
             try
             {
-                var buildings = await _dbContext
+                var buildingsQuery = _dbContext
                     .UserBuildings.Where(ub => ub.User.Id == userId && ub.DeletedDate == null)
                     .Include(b => b.Building.BuildingExpenses)
                     .Include(b => b.Building.Properties)
                     .Include(b => b.Building.BuildingAddress)
-                    .Select(ub => ub.Building)
+                    .Select(ub => ub.Building);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<Building>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(buildingsQuery);
+                    return pagedList;
+                }
+                return await buildingsQuery
                     .AsNoTracking()
                     .ToListAsync();
-                return buildings;
             }
             catch (Exception ex)
             {

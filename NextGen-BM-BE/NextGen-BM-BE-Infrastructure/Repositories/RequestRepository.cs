@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
@@ -117,15 +118,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<IList<RepairRequest>> GetRepairRequestsByUserId(int userId)
+        public async Task<IList<RepairRequest>> GetRepairRequestsByUserId(int userId, int? page, int? pageSize)
         {
             try
             {
-                return await _dataContext.RepairRequests
+                var query = _dataContext.RepairRequests
                 .Where(request => request.UserId == userId && request.DeletedDate == null)
-                .Include(request => request.Notes)
-                .Include(request => request.RequestStatus)
-                .ToListAsync();
+                .Include(request => request.Notes);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<RepairRequest>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
+                    .AsNoTracking()
+                    .ToListAsync();
 
             }
             catch (DbException exception)
@@ -135,18 +143,25 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds)
+        public async Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize)
         {
             try
             {
-                var requests = await _dataContext.RepairRequests
+                var requestsQuery = _dataContext.RepairRequests
                     .Where(request => buildingIds.Contains(request.BuildingId) && request.DeletedDate == null)
                     .Include(request => request.Notes)
                     .Include(request => request.RequestStatus)
                     .Include(request => request.Building)
-                    .Include(request => request.User)
+                    .Include(request => request.User);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<RepairRequest>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(requestsQuery);
+                    return pagedList;
+                }
+                return await requestsQuery
+                    .AsNoTracking()
                     .ToListAsync();
-                return requests;
             }
             catch (DbException exception)
             {
@@ -155,15 +170,22 @@ namespace NextGen_BM_BE_Infrastructure.Repositories
             }
         }
 
-        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds)
+        public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds, int? page, int? pageSize)
         {
             try
             {
-                return await _dataContext.UserBuildings
+                var query = _dataContext.UserBuildings
                     .Where(userBuilding => buildingIds.Contains(userBuilding.BuildingId) && userBuilding.DeletedDate == null)
                     .Include(userBuildings => userBuildings.Role)
                     .Include(userBuilding => userBuilding.Building)
-                    .Include(request => request.User)
+                    .Include(request => request.User);
+                if (page!=null&&pageSize!=null)
+                {
+                    var pagedList=new PagedList<UserBuildings>{Page=(int)page, PageSize=(int)pageSize};
+                    await pagedList.Paginate(query);
+                    return pagedList;
+                }
+                return await query
                     .AsNoTracking()
                     .ToListAsync();
             }

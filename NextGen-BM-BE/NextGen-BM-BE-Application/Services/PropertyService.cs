@@ -2,6 +2,7 @@ using AutoMapper;
 using NextGen_BM_BE_Application.UseCases.Expenses.Get;
 using NextGen_BM_BE_Application.UseCases.Properties.Create;
 using NextGen_BM_BE_Application.UseCases.Properties.Delete;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities.PropertyAggregate;
 using NextGen_BM_BE_Domain.Interfaces;
 using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
@@ -20,6 +21,7 @@ namespace NextGen_BM_BE_Application.Services
         private readonly UpdatePropertyUseCase _updatePropertyUseCase;
         private readonly DeletePropertyResidentUseCase _deletePropertyResidentUseCase;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
 
         public PropertyService(
             GetPropertiesByIdUseCase getPropertiesByIdUseCase,
@@ -30,7 +32,8 @@ namespace NextGen_BM_BE_Application.Services
             DeletePropertyUseCase deletePropertyUseCase,
             UpdatePropertyUseCase updatePropertyUseCase,
             DeletePropertyResidentUseCase deletePropertyResidentUseCase,
-            IMapper mapper
+            IMapper mapper,
+            IPaginationService paginationService
         )
         {
             _getPropertiesByIdUseCase = getPropertiesByIdUseCase;
@@ -42,6 +45,7 @@ namespace NextGen_BM_BE_Application.Services
             _updatePropertyUseCase = updatePropertyUseCase;
             _deletePropertyResidentUseCase = deletePropertyResidentUseCase;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task CreatePropertyAsync(PropertyViewModel propertyViewModel)
@@ -55,10 +59,16 @@ namespace NextGen_BM_BE_Application.Services
             await _deletePropertyUseCase.Execute(propertyId);
         }
 
-        public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync()
+        public async Task<IList<PropertyViewModel>> GetAllPropertiesAsync(int? page, int? pageSize)
         {
-            var properties = await _getAllPropertiesUseCase.Execute();
-            return _mapper.Map<IList<PropertyViewModel>>(properties);
+            var properties = await _getAllPropertiesUseCase.Execute(page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+            {
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
+            }
+
+            return _mapper.Map<List<PropertyViewModel>>(properties);
         }
 
         public async Task UpdatePropertyAsync(PropertyViewModel propertyViewModel)
@@ -73,15 +83,25 @@ namespace NextGen_BM_BE_Application.Services
             return _mapper.Map<PropertyViewModel>(property);
         }
 
-        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByUserIdAsync(int userId, int? page, int? pageSize)
         {
-            var properties = await _getPropertiesByUserIdUseCase.Execute(userId);
+            var properties = await _getPropertiesByUserIdUseCase.Execute(userId, page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+            {
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
+            }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 
-        public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId)
+        public async Task<IList<PropertyViewModel>> GetPropertyByBuildingIdAsync(int buildingId, int? page, int? pageSize)
         {
-            var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId);
+            var properties = await _getPropertiesByBuildingIdUseCase.Execute(buildingId, page, pageSize);
+
+            if (page!=null&&pageSize!=null)
+            {
+                return _paginationService.MapPagedResult<PropertyViewModel, Property>((PagedList<Property>)properties);
+            }
             return _mapper.Map<IList<PropertyViewModel>>(properties);
         }
 

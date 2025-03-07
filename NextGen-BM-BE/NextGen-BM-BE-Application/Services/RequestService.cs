@@ -4,8 +4,10 @@ using NextGen_BM_BE_Application.UseCases.Requests.Create;
 using NextGen_BM_BE_Application.UseCases.Requests.Delete;
 using NextGen_BM_BE_Application.UseCases.Requests.Get;
 using NextGen_BM_BE_Application.UseCases.Requests.Update;
+using NextGen_BM_BE_Domain.DataStructures;
 using NextGen_BM_BE_Domain.Entities;
 using NextGen_BM_BE_Domain.Entities.RequestAggregate;
+using NextGen_BM_BE_Domain.Interfaces.ServiceInterfaces;
 using NextGen_BM_BE_Domain.Services;
 using NextGen_BM_BE_Domain.ViewModels;
 
@@ -26,6 +28,7 @@ public class RequestService : IRequestService
     private readonly UpdateRequestNoteUseCase _updateRequestNoteUseCase;
     private readonly SetRequestStatusUseCase _setRequestStatusUseCase;
     private readonly IMapper _mapper;
+    private readonly IPaginationService _paginationService;
     public RequestService(CreateRepairRequestUseCase createRepairRequestUseCase,
                         CreateRequestNotesUseCase createRequestNoteUseCase,
                         CreateUserBuildingRequestUseCase createUserBuildingRequestUseCase,
@@ -40,7 +43,8 @@ public class RequestService : IRequestService
                         UpdateRequestNoteUseCase updateRequestNoteUseCase,
                         SetRequestStatusUseCase setRequestStatusUseCase,
                         GetRequestStatuesUseCase getRequestStatuesUseCase,
-                        IMapper mapper)
+                        IMapper mapper,
+                        IPaginationService paginationService)
     {
         _createRepairRequestUseCase = createRepairRequestUseCase;
         _createRequestNoteUseCase = createRequestNoteUseCase;
@@ -57,6 +61,7 @@ public class RequestService : IRequestService
         _setRequestStatusUseCase = setRequestStatusUseCase;
         _getRequestStatusesUseCase = getRequestStatuesUseCase;
         _mapper = mapper;
+        _paginationService = paginationService;
     }
     public async Task<RepairRequestViewModel> CreateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)
     {
@@ -65,15 +70,15 @@ public class RequestService : IRequestService
         return _mapper.Map<RepairRequestViewModel>(createdRequest);
     }
 
-    public async Task<IList<RequestsGenericViewModel>> GetRequestsByUserIdAsync(int userId)
+    public async Task<IList<RequestsGenericViewModel>> GetRequestsByUserIdAsync(int userId, int? page, int? pageSize)
     {
-        var buildings = await _getBuildingsByUserIdUseCase.Execute(userId);
+        var buildings = await _getBuildingsByUserIdUseCase.Execute(userId, page, pageSize);
         var buildingIds = new List<int>();
         foreach (var building in buildings)
         {
             buildingIds.Add(building.BuildingId);
         }
-        return await _getAllRequestsByUserIdUserCase.Execute(buildingIds);
+        return await _getAllRequestsByUserIdUserCase.Execute(buildingIds, page, pageSize);
     }
 
     public async Task<RequestNotesViewModel> CreateRequestNoteAsync(RequestNotesViewModel requestNotesViewModel)
@@ -99,9 +104,12 @@ public class RequestService : IRequestService
         await _deleteRepairRequestNoteUseCase.Execute(requestNoteId);
     }
 
-    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(IList<int> buildingIds)
+    public async Task<IList<RepairRequestViewModel>> GetAllRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize)
     {
-        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingIds);
+        var buildingRepairRequests = await _getAllRepairRequestsByBuildingIdUseCase.Execute(buildingIds, page, pageSize);
+        
+        if (page!=null&&pageSize!=null)
+            return _paginationService.MapPagedResult<RepairRequestViewModel, RequestsGenericViewModel>((PagedList<RequestsGenericViewModel>)buildingRepairRequests);
         return _mapper.Map<IList<RepairRequestViewModel>>(buildingRepairRequests);
     }
 
@@ -111,9 +119,13 @@ public class RequestService : IRequestService
         return _mapper.Map<RepairRequestViewModel>(repairRequest);
     }
 
-    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds)
+    public async Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingIds, int? page, int? pageSize)
     {
-        return await _getUserBuildingRequests.Execute(buildingIds);
+        var userBuildingRequests = await _getUserBuildingRequests.Execute(buildingIds, page, pageSize);
+        
+        if (page!=null&&pageSize!=null)
+            return _paginationService.MapPagedResult<UserBuildings, UserBuildings>((PagedList<UserBuildings>)userBuildingRequests);
+        return _mapper.Map<IList<UserBuildings>>(userBuildingRequests);
     }
 
     public async Task UpdateRepairRequestAsync(RepairRequestViewModel repairRequestViewModel)

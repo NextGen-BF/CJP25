@@ -6,8 +6,8 @@ namespace NextGen_BM_BE_Domain.Interfaces
     public interface IRequestRepository
     {
         Task<RepairRequest> GetRepairRequestByIdAsync(int requestId);
-        Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds);
-        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingId);
+        Task<List<RepairRequest>> GetRepairRequestsByBuildingIdAsync(IList<int> buildingIds, int? page, int? pageSize);
+        Task<IList<UserBuildings>> GetUserBuildingRequestsAsync(IList<int> buildingId, int? page, int? pageSize);
         Task<IList<Enums>> GetRequestStatusesAsync();
         Task<RepairRequest> CreateRepairRequestAsync(RepairRequest repairRequest);
         Task CreateUserBuildingRequestAsync(UserBuildings userBuildings);
