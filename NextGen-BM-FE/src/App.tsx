@@ -29,10 +29,15 @@ import Snackbar from "./pages/Snackbar";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import ForbiddenPage from "./pages/403ForbiddenPage.tsx";
 
 const App: FC = () => {
   const userId = useSelector(
     (state: RootState) => state.loginReducer.value.userId,
+  );
+  
+  const userRole = useSelector(
+    (state: RootState) => state.loginReducer.value.role,
   );
 
   const router = createBrowserRouter(
@@ -43,31 +48,52 @@ const App: FC = () => {
         <Route
           path="/create/request"
           element={
-            <ProtectedRoute element={<CreateRequestPage />} userId={userId} />
+            <ProtectedRoute
+              element={<CreateRequestPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
           path="/requests"
           element={
-            <ProtectedRoute element={<RequestsListPage />} userId={userId} />
+            <ProtectedRoute
+              element={<RequestsListPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
           path="/create/property"
           element={
-            <ProtectedRoute element={<CreatePropertyPage />} userId={userId} />
+            <ProtectedRoute
+              element={<CreatePropertyPage />}
+              userId={userId}
+              userRole={userRole}
+              requiredRole="super"
+            />
           }
         />
         <Route
           path="/properties"
           element={
-            <ProtectedRoute element={<PropertyListPage />} userId={userId} />
+            <ProtectedRoute
+              element={<PropertyListPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
           path="/property/:id?"
           element={
-            <ProtectedRoute element={<PropertyPage />} userId={userId} />
+            <ProtectedRoute
+              element={<PropertyPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
@@ -76,6 +102,7 @@ const App: FC = () => {
             <ProtectedRoute
               element={<PropertyResidentsPage />}
               userId={userId}
+              userRole={userRole}
             />
           }
         />
@@ -83,25 +110,42 @@ const App: FC = () => {
         <Route
           path="/account"
           element={
-            <ProtectedRoute element={<MyAccountPage />} userId={userId} />
+            <ProtectedRoute
+              element={<MyAccountPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
           path="/recover"
           element={
-            <ProtectedRoute element={<AccountRecoveryPage />} userId={userId} />
+            <ProtectedRoute
+              element={<AccountRecoveryPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
           path="/create/building"
           element={
-            <ProtectedRoute element={<CreateBuildingPage />} userId={userId} />
+            <ProtectedRoute
+              element={<CreateBuildingPage />}
+              userId={userId}
+              userRole={userRole}
+              requiredRole="super"
+            />
           }
         />
         <Route
           path="/buildings"
           element={
-            <ProtectedRoute element={<BuildingsListPage />} userId={userId} />
+            <ProtectedRoute
+              element={<BuildingsListPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
@@ -110,13 +154,19 @@ const App: FC = () => {
             <ProtectedRoute
               element={<BuildingExpensesPage />}
               userId={userId}
+              userRole={userRole}
+              requiredRole="super"
             />
           }
         />
         <Route
           path="/property/fees"
           element={
-            <ProtectedRoute element={<PropertyFeesPage />} userId={userId} />
+            <ProtectedRoute
+              element={<PropertyFeesPage />}
+              userId={userId}
+              userRole={userRole}
+            />
           }
         />
         <Route
@@ -125,6 +175,8 @@ const App: FC = () => {
             <ProtectedRoute
               element={<CreatePropertyPaymentsPage />}
               userId={userId}
+              userRole={userRole}
+              requiredRole="super"
             />
           }
         />
@@ -134,13 +186,22 @@ const App: FC = () => {
             <ProtectedRoute
               element={<CreatePropertyExpensePage />}
               userId={userId}
+              userRole={userRole}
+              requiredRole="super"
             />
           }
         />
         <Route
           path="/payment"
-          element={<ProtectedRoute element={<PaymentPage />} userId={userId} />}
+          element={
+            <ProtectedRoute
+              element={<PaymentPage />}
+              userId={userId}
+              userRole={userRole}
+            />
+          }
         />
+        <Route path="/forbidden" element={<ForbiddenPage />} />
       </Route>,
     ),
   );

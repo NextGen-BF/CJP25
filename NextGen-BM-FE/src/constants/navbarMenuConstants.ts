@@ -28,10 +28,12 @@ export const navbarMenuProps: navSubMenuProps[] = [
       {
         link: "/create/propertyexpense",
         title: "Create Property Expense",
+        role: "super",
       },
       {
         link: "/create/propertypayments",
         title: "Create Property Payments",
+        role: "super",
       },
     ],
   },
@@ -45,6 +47,7 @@ export const navbarMenuProps: navSubMenuProps[] = [
       {
         link: "/create/property",
         title: "Create property",
+        role: "super",
       },
       {
         link: "/property/residents",
@@ -58,6 +61,7 @@ export const navbarMenuProps: navSubMenuProps[] = [
       {
         link: "/create/building",
         title: "Create Building",
+        role: "super",
       },
       {
         link: "/buildings",
@@ -66,6 +70,7 @@ export const navbarMenuProps: navSubMenuProps[] = [
       {
         link: "/building/expenses",
         title: "Building Expenses",
+        role: "super",
       },
     ],
   },
