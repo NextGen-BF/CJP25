@@ -21,7 +21,7 @@ function getLoginState() {
       token: token,
       userId: parseInt(user.sub ?? "0"),
       isLoggedIn: true,
-      role: jwtHeader.typ ?? "",
+      role: jwtHeader.typ?.toLowerCase() ?? "",
     };
   }
   return { token: "", userId: 0, isLoggedIn: false, role: "tenant" };
@@ -59,7 +59,7 @@ const loginSlice = createSlice({
           token: token,
           userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
-          role: jwtHeader.typ ?? "" 
+          role: jwtHeader.typ?.toLowerCase() ?? "",
         };
         localStorage.setItem("JWT-BM", action.payload.token);
       },
@@ -77,10 +77,9 @@ const loginSlice = createSlice({
           token: token,
           userId: parseInt(user.sub ?? "0"),
           isLoggedIn: true,
-          role: jwtHeader.typ ?? "" 
+          role: jwtHeader.typ?.toLowerCase() ?? "",
         };
         localStorage.setItem("JWT-BM", action.payload.token);
-        console.log(state.value);
       },
     );
   },
