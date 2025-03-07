@@ -110,12 +110,10 @@ const CreateRequestPage: FC = () => {
                 {...register("requestTitle", {
                   required: "Request Title is required!",
                 })}
-                className="form-field"
               />
               <TextField
                 label="Request Type"
                 {...register("requestType")}
-                className="form-field"
                 select
               >
                 {requestTypes.map((index) => (
@@ -124,7 +122,6 @@ const CreateRequestPage: FC = () => {
               </TextField>
               <TextField
                 {...register("buildingId")}
-                className="form-field"
                 select
                 label="Request Building"
               >
@@ -137,14 +134,8 @@ const CreateRequestPage: FC = () => {
               {selectedRequestType == "Building Property Link" && (
                 <>
                   {/* TODO: Add actual roles */}
-                  <TextField
-                    label="Role within building"
-                    className="form-field"
-                  />
-                  <TextField
-                    label="Property request is about"
-                    className="form-field"
-                  />
+                  <TextField label="Role within building" />
+                  <TextField label="Property request is about" />
                 </>
               )}
               {selectedRequestType == "Repair" && (
@@ -159,8 +150,8 @@ const CreateRequestPage: FC = () => {
                       })}
                       multiline
                       minRows={3}
-                      className="form-field"
                       label="Description"
+                      fullWidth
                     />
                   </div>
                 </>

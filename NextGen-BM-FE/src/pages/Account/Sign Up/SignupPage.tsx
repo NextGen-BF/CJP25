@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import "./signup.scss";
 import {
@@ -10,7 +10,10 @@ import { useAppDispatch } from "../../../redux/store";
 import { signupCall } from "../../../redux/services/signupService";
 import { useNavigate } from "react-router-dom";
 import { setSnackbar } from "../../../redux/slices/snackbarSlice.ts";
-import { ErrorSnackbarConstants, SucessSnackbarConstants } from "../../../constants/snackbarConstants.ts";
+import {
+  ErrorSnackbarConstants,
+  SucessSnackbarConstants,
+} from "../../../constants/snackbarConstants.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginConstants } from "../../../constants/loginConstants.ts";
 
@@ -24,6 +27,7 @@ export interface FormData {
 }
 
 const SignupPage: FC = () => {
+  const [emailDuplicateError, SetEmailDuplicateError] = useState<string>("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -45,10 +49,14 @@ const SignupPage: FC = () => {
           snackbarMessage: SucessSnackbarConstants.signUpSuccess,
         }),
       );
+      SetEmailDuplicateError("");
       setTimeout(() => {
         navigate("/login");
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
+      if (error[0].code === "DuplicateUserName") {
+        SetEmailDuplicateError(error[0].description.replace("Username", "Email"));
+      }
       dispatch(
         setSnackbar({
           snackbarOpen: true,
@@ -56,7 +64,6 @@ const SignupPage: FC = () => {
           snackbarMessage: ErrorSnackbarConstants.signUpError,
         }),
       );
-      
       setError("root", {
         message: signupResponseConstants.genericError,
       });
@@ -105,6 +112,9 @@ const SignupPage: FC = () => {
         />
         {errors.email && (
           <span className="error-message">{errors.email.message}</span>
+        )}
+        {emailDuplicateError !== "" && (
+          <span className="error-message">{emailDuplicateError}</span>
         )}
         <TextField
           {...register("password", {
