@@ -21,6 +21,7 @@ import {
   ErrorSnackbarConstants,
   SucessSnackbarConstants,
 } from "../../constants/snackbarConstants";
+import Overlay from "../Overlay";
 
 const CreateRequestPage: FC = () => {
   const navigate = useNavigate();
@@ -178,6 +179,7 @@ const CreateRequestPage: FC = () => {
           </div>
         </Paper>
       </form>
+      {isSubmitting && <Overlay />}
     </div>
   );
 };

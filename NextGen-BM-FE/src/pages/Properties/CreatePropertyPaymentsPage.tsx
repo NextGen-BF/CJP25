@@ -32,6 +32,7 @@ import { formatDate } from "../../utils/globalFunctions";
 import { Building } from "../../models/building";
 import { useSelector } from "react-redux";
 import { getBuildingsByUserId } from "../../redux/services/buildingService";
+import Overlay from "../Overlay";
 
 const CreatePropertyPaymentsPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -134,6 +135,7 @@ const CreatePropertyPaymentsPage: FC = () => {
 
   return (
     <>
+      {isSubmitting && <Overlay />}
       <Paper className="paper-container">
         <Typography variant="h4" style={{ textAlign: "center" }}>
           {createPropertyPaymentConstants.title}

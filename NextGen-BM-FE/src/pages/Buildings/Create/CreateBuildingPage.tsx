@@ -17,6 +17,7 @@ import {
 } from "../../../constants/snackbarConstants.ts";
 import { useNavigate } from "react-router-dom";
 import { resetProperties } from "../../../redux/slices/propertySlice";
+import Overlay from "../../Overlay.tsx";
 
 const CreateBuildingPage: FC = () => {
   const user = useSelector((state: RootState) => state.loginReducer.value);
@@ -284,6 +285,7 @@ const CreateBuildingPage: FC = () => {
           </form>
         </div>
       </Paper>
+      {isSubmitting && <Overlay />}
     </div>
   );
 };
