@@ -5,6 +5,7 @@ export interface User {
   role: string;
   properties: UserProperties[];
   email: string;
+  dateCreated: Date;
 }
 
 export interface UserProperties {

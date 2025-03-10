@@ -12,6 +12,7 @@ import snackbarReducer from "./slices/snackbarSlice";
 import modalStateReducer from "./slices/modalSlice";
 import requestGenericReducer from "./slices/requestGenericSlice";
 import requestStatusReducer from "./slices/requestStatusesSlice";
+import accountReducer from "./slices/accountSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     modalStateReducer: modalStateReducer,
     requestGenericReducer: requestGenericReducer,
     requestStatusReducer: requestStatusReducer,
+    accountReducer: accountReducer
   },
 });
 
