@@ -16,7 +16,7 @@ const MainLayout: FC = () => {
   return (
     <Box sx={mainLayoutStyles.mainContainerStyle}>
       <Navbar />
-
+      <Header/>
       <Box
         sx={{
           ...mainLayoutStyles.contentContainerStyle,
@@ -26,8 +26,6 @@ const MainLayout: FC = () => {
           flexGrow: 1, 
         }}
       >
-        
-        <Header/>
         <Outlet />
       </Box>
     </Box>
