@@ -33,10 +33,11 @@ export const NavigationSubMenu: FC<navSubMenuProps> = (props) => {
         display:
           userRole !== "super" && groupLink.role === "super" ? "none" : "block",
       }}
+      component={NavLink}
+      className={"submenu-link"}
+      to={groupLink.link}
     >
-      <NavLink className={"submenu-link"} to={groupLink.link}>
-        {groupLink.title}
-      </NavLink>
+      {groupLink.title}
     </MenuItem>
   ));
   return (
