@@ -8,25 +8,31 @@ import { RootState } from "../../redux/store.ts";
 import "./navbar.scss";
 import { useSelector } from "react-redux";
 
-
 const Navbar: FC = () => {
-  const drawerMenus = navbarMenuProps.map(props =>
-    <NavigationSubMenu key={props.groupTitle} groupTitle={props.groupTitle} groupLinks={props.groupLinks} />
+  const drawerMenus = navbarMenuProps.map((props) => (
+    <NavigationSubMenu
+      key={props.groupTitle}
+      groupTitle={props.groupTitle}
+      groupLinks={props.groupLinks}
+    />
+  ));
+  const drawerOpen = useSelector(
+    (state: RootState) => state.navigationReducer.open,
   );
-  const drawerOpen = useSelector((state: RootState) => state.navigationReducer.open);
   return (
-    <Drawer
-      sx={navbarStyles.drawerStyles}
-      variant='persistent'
-      open={drawerOpen}
-      PaperProps={{
-        sx: navbarStyles.paperProps
-      }}>
-      {drawerMenus}
-      <Button sx={{ marginTop: 'auto' }}>
-        <NavLink className={'submenu-link'} to="/account">Profile</NavLink>
-      </Button>
-    </Drawer>
+      <Drawer
+        sx={navbarStyles.drawerStyles}
+        variant="persistent"
+        open={drawerOpen}
+        PaperProps={{
+          sx: navbarStyles.paperProps,
+        }}
+      >
+        {drawerMenus}
+        <Button sx={{ marginTop: "auto" }} component={NavLink} to="/account" className={"submenu-link"}>
+            Profile
+        </Button>
+      </Drawer>
   );
 };
 export default Navbar;
